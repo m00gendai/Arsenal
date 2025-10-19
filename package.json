@@ -20,6 +20,7 @@
     "@react-navigation/stack": "^6.4.0",
     "@types/papaparse": "^5.3.14",
     "colord": "^2.9.3",
+    "drizzle-orm": "^0.44.6",
     "expo": "^53.0.19",
     "expo-application": "~6.1.5",
     "expo-asset": "~11.1.7",
@@ -38,6 +39,7 @@
     "expo-secure-store": "~14.2.3",
     "expo-sharing": "~13.1.5",
     "expo-splash-screen": "~0.30.10",
+    "expo-sqlite": "~15.2.14",
     "expo-status-bar": "~2.2.3",
     "expo-system-ui": "~5.0.10",
     "expo-task-manager": "~13.1.6",
@@ -65,7 +67,8 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/plugin-proposal-decorators": "^7.24.1",
-    "@types/react-native-datepicker": "^1.7.6"
+    "@types/react-native-datepicker": "^1.7.6",
+    "drizzle-kit": "^0.31.5"
   },
   "private": true
 }
