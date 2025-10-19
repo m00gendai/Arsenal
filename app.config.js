@@ -45,7 +45,8 @@ export default {
           "android:largeHeap": false,
           "android:hardwareAccelerated": true
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "extra": {
       "eas": {
