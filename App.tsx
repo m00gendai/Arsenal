@@ -40,6 +40,10 @@ import migrations from './drizzle/migrations';
 import { checkBoxes } from './lib/gunDataTemplate';
 import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
 import * as FileSystem from 'expo-file-system';
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,6 +53,11 @@ export default function App() {
   useDrizzleStudio(expo)
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
+
+  configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
 
   const { 
     ammoDbImport, 
