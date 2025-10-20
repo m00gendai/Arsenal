@@ -13,7 +13,7 @@ import AmmoCollection from './components/AmmoCollection';
 import { StatusBar } from 'expo-status-bar';
 import { AmmoType, GunType, StackParamList } from './interfaces';
 import * as SecureStore from "expo-secure-store"
-import { alarm, doSortBy, getIcon } from './utils';
+import { alarm, getIcon } from './utils';
 import { useAmmoStore } from './stores/useAmmoStore';
 import { useTagStore } from './stores/useTagStore';
 import { useGunStore } from './stores/useGunStore';
@@ -74,16 +74,18 @@ export default function App() {
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
 
-  async function handleSaveGunDb(){
+  async function handleSaveGunDb(guns){
+    console.log("starting backup of gunDB")
           const fileName = `arsenal_legacy_gunDB_${new Date().getTime()}.json`
-          const collectionSize = gunCollection.length-1
+          const collectionSize = guns.length-1
           const cache = Dirs.CacheDir
+          console.log(`found ${collectionSize} guns`)
           try{
               await fs.writeFile(`${cache}/${fileName}`, "[")
           }catch(e){
               alarm("saveGunDb createTempFile", e)
           }
-          await Promise.all(gunCollection.map(async (gun, index) =>{
+          await Promise.all(guns.map(async (gun, index) =>{
               if(gun.images !== null && gun.images.length !== 0){
                   const base64images:string[] = await Promise.all(gun.images?.map(async image =>{
                       const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
@@ -176,7 +178,7 @@ export default function App() {
     } catch(e){
       alarm("Legacy Gun Key Error", e)
     }
-    console.log(keys)
+    console.log(`checked gun keys: ${keys}`)
     if(keys.length === 0){
       return
     }
@@ -189,7 +191,7 @@ export default function App() {
     } catch(e){
       alarm("Legacy Gun DB Error", e)
     }
-    console.log(guns)
+    console.log(`checked guns: ${guns}`)
     if(guns.length !== 0){
       await Promise.all(guns.map(async gun =>{
         if(gun !== null){
@@ -206,10 +208,10 @@ export default function App() {
           }
         }
       }))
+            await handleSaveGunDb(guns)
       await Promise.all(keys.map(async key =>{
         await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${key}`)
       }))
-      await handleSaveGunDb()
       await AsyncStorage.removeItem(KEY_DATABASE)
     }
   }
@@ -220,7 +222,7 @@ export default function App() {
     } catch(e){
       alarm("Legacy Ammo Key Error", e)
     }
-    console.log(keys)
+    console.log(`checked ammo keys: ${keys}`)
     if(keys.length === 0){
       return
     }
@@ -310,6 +312,7 @@ useEffect(() => {
       
     }
   }, [appIsReady]);
+  
   
   useEffect(()=>{
     async function getPreferences(){
@@ -401,98 +404,6 @@ useEffect(() => {
     }
     return JSON.parse(keys)
   }
-
-  useEffect(()=>{
-    async function getAmmo(){
-      let keys:string[]
-      try{
-      keys = await getKeys("ammo")
-      } catch(e){
-        alarm("Ammo Key Error", e)
-      }
-
-
-      let ammunitions:AmmoType[]
-      try{
-        ammunitions = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${AMMO_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-
-      if(ammunitions.length !== keys.length){
-        throw(`Key/Ammo DB Discrepancy: Found ${keys.length} keys and ${ammunitions.length} ammunitions`)
-      }
-    } catch(e){
-      alarm("Ammo DB Error", e)
-    }
-
-      try{
-      const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-      const isPreferences = preferences === null ? null : JSON.parse(preferences)
-      const filteredAmmunition = ammunitions.filter(item => item !== null) // null check if there are key corpses
-      if(ammunitions.length !== 0 && ammunitions.every(item => item ===null)){
-        throw(`Ammo DB Null Exception: Found ${keys.length} keys and ${ammunitions.length} null items`)
-      }
-
-      if(filteredAmmunition.length === 0){
-        setAmmoCollection([])
-      }
-      if(filteredAmmunition.length !== 0){
-        const sortedAmmo = doSortBy(isPreferences === null ? "alphabetical" : isPreferences.sortAmmoBy === undefined ? "alphabetical" : isPreferences.sortAmmoBy, isPreferences == null? true : isPreferences.sortOrderAmmo === null ? true : isPreferences.sortOrderAmmo, filteredAmmunition) as AmmoType[]
-        setAmmoCollection(sortedAmmo)
-      }
-    } catch(e){
-      alarm("Ammo Preference Error", e)
-    }
-    }
-    getAmmo()
-  },[ammoDbImport])
-
-  useEffect(()=>{
-    async function getGuns(){
-      let keys: string[]
-      try{
-      keys = await getKeys("guns")
-    }  catch(e){
-      alarm("Gun Key Error", e)
-    }
-
-
-    let guns:GunType[]
-    try{
-      guns = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${GUN_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-      if(guns.length !== keys.length){
-        throw(`Key/Gun DB Discrepancy: Found ${keys.length} keys and ${guns.length} guns`)
-      }
-    } catch(e){
-      alarm("Gun DB Error", e)
-    }
-
-    try{
-      const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-      const isPreferences = preferences === null ? null : JSON.parse(preferences)
-      const filteredGuns = guns.filter(item => item !== null) // null check if there are key corpses
-      if(guns.length !== 0 && guns.every(item => item ===null)){
-        throw(`Gun DB Null Exception: Found ${keys.length} keys and ${guns.length} null items`)
-      }
-
-      if(filteredGuns.length === 0){
-        setGunCollection([])
-      } 
-      if(filteredGuns.length !== 0) {
-        const sortedGuns = doSortBy(isPreferences === null ? "alphabetical" : isPreferences.sortBy === undefined ? "alphabetical" : isPreferences.sortBy, isPreferences == null? true : isPreferences.sortOrderGuns === null ? true : isPreferences.sortOrderGuns, filteredGuns) as GunType[]
-        setGunCollection(sortedGuns)
-      }
-    } catch(e){
-      alarm("Gun Preference Error", e)
-    }
-   }
-    getGuns()
-    setGunsLoaded(true)
-  },[dbImport])
 
   const currentTheme = {...theme, roundness : 5}
 
