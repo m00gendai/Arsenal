@@ -3,7 +3,6 @@ import { AmmoType, StackParamList } from '../interfaces';
 import { Avatar, Badge, Button, Card, Dialog, Icon, IconButton, Text, Modal, Portal, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from '../configs';
-import { ammoDataTemplate } from '../lib/ammoDataTemplate';
 import { useAmmoStore } from '../stores/useAmmoStore';
 import { useViewStore } from '../stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +13,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from "expo-secure-store"
 import { ammoDeleteAlert, gunDeleteAlert, longPressActions } from '../lib/textTemplates';
 import * as FileSystem from 'expo-file-system';
+import * as schema from "../db/schema"
+import { db } from "../db/client"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 interface Props{
     ammo: AmmoType
@@ -53,17 +55,7 @@ export default function AmmoCard({ammo}:Props){
       }
 
       async function deleteItem(ammo:AmmoType){
-        // Deletes gun in gun database
-        await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${ammo.id}`)
-
-        // retrieves gun ids from key database and removes the to be deleted id
-        const keys:string = await AsyncStorage.getItem(KEY_DATABASE)
-        const keyArray: string[] = JSON.parse(keys)
-        const newKeys: string[] = keyArray.filter(key => key != ammo.id)
-        AsyncStorage.setItem(KEY_DATABASE, JSON.stringify(newKeys))
-        const index:number = ammoCollection.indexOf(ammo)
-        const newCollection:AmmoType[] = ammoCollection.toSpliced(index, 1)
-        setAmmoCollection(newCollection)
+        await db.delete(schema.ammoCollection).where(eq(schema.ammoCollection.id, ammo.id));
         toggleDialogVisible(false)
         setLongVisible(false)
     }
@@ -126,7 +118,7 @@ export default function AmmoCard({ammo}:Props){
                         }}
                         size={40}
                     >
-                        {ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(ammo.currentStock) : "- - -" }
+                        {ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(ammo.currentStock)) : "- - -" }
                     </Badge>
                 </TouchableRipple>                
             </>
@@ -171,7 +163,7 @@ export default function AmmoCard({ammo}:Props){
                         }}
                         size={48}
                     >
-                        {ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(ammo.currentStock) : "- - -" }
+                        {ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(ammo.currentStock)) : "- - -" }
                     </Badge>
                 </TouchableRipple>
     
