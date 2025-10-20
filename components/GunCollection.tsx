@@ -176,23 +176,22 @@ export default function GunCollection({navigation, route}){
       <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{searchBannerVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQuery} value={searchQuery} /> : null}</Animated.View>
       {displayAsGrid ? 
         Dimensions.get("window").width > Dimensions.get("window").height ?
-        <FlatList 
+        <FlatList<GunType>
           numColumns={4} 
           initialNumToRender={10} 
           contentContainerStyle={{gap: defaultGridGap}}
           columnWrapperStyle={{gap: defaultGridGap}} 
           key={`gunCollectionGrid4`} 
           style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
-           /*@ts-expect-error*/
-           data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
           /*@ts-expect-error*/
-          renderItem={({item, index}) => <GunCard gun={item} />}                     
+          data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
+          renderItem={({item}) => <GunCard gun={item} />}                     
           keyExtractor={gun=>gun.id} 
           ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
           ListEmptyComponent={null}
         />
         :
-        <FlatList 
+        <FlatList<GunType>
           numColumns={2} 
           initialNumToRender={10} 
           contentContainerStyle={{gap: defaultGridGap}}
@@ -201,8 +200,7 @@ export default function GunCollection({navigation, route}){
           style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
            /*@ts-expect-error*/
            data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
-          /*@ts-expect-error*/
-          renderItem={({item, index}) => <GunCard gun={item} />}                     
+          renderItem={({item}) => <GunCard gun={item} />}                     
           keyExtractor={gun=>gun.id} 
           ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
           ListEmptyComponent={null}
@@ -217,7 +215,7 @@ export default function GunCollection({navigation, route}){
           /*@ts-expect-error*/
           data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
           /*@ts-expect-error*/
-          renderItem={({item, index}) => <GunCard gun={item} />}      
+          renderItem={({item}) => <GunCard gun={item} />}      
           keyExtractor={gun=>gun.id} 
           ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
           ListEmptyComponent={null}

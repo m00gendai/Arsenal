@@ -29,12 +29,12 @@ export default function GunCard({gun}:Props){
     const [longVisible, setLongVisible] = useState<boolean>(false)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
 
-    function handleGunCardPress(gun){
+    function handleGunCardPress(gun:GunType){
         setCurrentGun(gun)
         navigation.navigate("Gun")
       }
 
-      function handleShotButtonPress(gun){
+      function handleShotButtonPress(gun:GunType){
         setCurrentGun(gun)
         navigation.navigate("QuickShot")
       }
