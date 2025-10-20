@@ -32,11 +32,18 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Alert, Dimensions } from 'react-native';
 import { calibers } from './lib/caliberData';
-
+import { expo, db } from "./db/client"
+import * as schema from "./db/schema"
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+import migrations from './drizzle/migrations';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const { success, error } = useMigrations(db, migrations);
+  console.log(error)
+  useDrizzleStudio(expo)
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
 
