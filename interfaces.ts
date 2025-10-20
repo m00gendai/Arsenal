@@ -43,11 +43,11 @@ export interface AmmoType{
   caliber: string | null
   designation: string
   originCountry?: string | null
-  createdAt: string,
-  lastModifiedAt: string,
+  createdAt: number,
+  lastModifiedAt: number,
   headstamp?: string | null
-  currentStock?: number
-  previousStock?: number
+  currentStock?: string
+  previousStock?: string
   lastTopUpAt?: string
   criticalStock?: string
   tags: string[]
