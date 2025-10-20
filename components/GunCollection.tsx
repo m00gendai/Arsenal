@@ -17,6 +17,7 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import FilterMenu from './FilterMenu';
+import BottomBar from './BottomBar';
 
 export default function GunCollection({navigation, route}){
 
@@ -222,7 +223,7 @@ export default function GunCollection({navigation, route}){
           ListEmptyComponent={null}
         />
       }
-     
+     <BottomBar screen={route.name}/>
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, gunData.length === 0 ? pulsate : null]}>
         <FAB
           icon="plus"
