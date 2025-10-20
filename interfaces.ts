@@ -14,8 +14,8 @@ export interface GunType{
   mainColor?: string | null
   remarks? : string | null
   images: string[]
-  createdAt: string
-  lastModifiedAt: string
+  createdAt: number
+  lastModifiedAt: number
   status?: GunTypeStatus
   shotCount?: string
   tags: string[]
@@ -23,7 +23,7 @@ export interface GunType{
   lastCleanedAt?: string
   paidPrice?: string
   marketValue?: string
-  cleanInterval?: string | null
+  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
 }
 
 export interface GunTypeStatus{

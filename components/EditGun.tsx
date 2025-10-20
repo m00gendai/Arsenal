@@ -1,6 +1,5 @@
 import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} from 'react-native';
 import { Appbar, Button, Dialog, Icon, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
 import * as SecureStore from "expo-secure-store"
@@ -20,6 +19,9 @@ import NewChipArea from './NewChipArea';
 import * as FileSystem from 'expo-file-system';
 import { gunDataValidation, imageHandling } from '../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { db } from "../db/client"
+import * as schema from "../db/schema"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 
 export default function EditGun({navigation}){
@@ -73,8 +75,8 @@ export default function EditGun({navigation}){
     }
   },[gunData])
 
-    async function save(value: GunType) {
-        const validationResult:{field: string, error: string}[] = gunDataValidation(value, language)
+    async function save(gun: GunType) {
+        const validationResult:{field: string, error: string}[] = gunDataValidation(gun, language)
         if(validationResult.length != 0){
             Alert.alert(validationFailedAlert.title[language], `${validationResult.map(result => `${result.field}: ${result.error}`)}`, [
                 {
@@ -84,16 +86,12 @@ export default function EditGun({navigation}){
             ])
             return
         }
-        await SecureStore.setItemAsync(`${GUN_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the gun
-        console.log(`Saved item ${JSON.stringify(value)} with key ${GUN_DATABASE}_${value.id}`)
-        setCurrentGun({...value, images:selectedImage})
+        await db.update(schema.gunCollection).set(gun).where((eq(schema.gunCollection.id, gun.id)))
+        console.log(`Saved item ${JSON.stringify(gun)}`)
         setSaveState(true)
-        setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${value.model} ${toastMessages.changed[language]}`)
+        setSnackbarText(`${gun.manufacturer ? gun.manufacturer : ""} ${gun.model} ${toastMessages.changed[language]}`)
         onToggleSnackBar()
-        const currentObj:GunType = gunCollection.find(({id}) => id === value.id)
-        const index:number = gunCollection.indexOf(currentObj)
-        const newCollection:GunType[] = gunCollection.toSpliced(index, 1, value)
-        setGunCollection(newCollection)
+        setCurrentGun(gun)
       }
 
     function deleteImage(indx:number){
@@ -317,7 +315,7 @@ export default function EditGun({navigation}){
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
                 <Appbar.Content title={editGunTitle[language]} />
                 <Appbar.Action icon="delete" onPress={()=>toggleDialogVisible(!dialogVisible)} color='red'/>
-                <Appbar.Action icon="floppy" onPress={() => save({...gunData, lastModifiedAt: `${new Date()}`})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
+                <Appbar.Action icon="floppy" onPress={() => save({...gunData, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
             </Appbar>
         
             <View style={styles.container}>
@@ -393,7 +391,7 @@ export default function EditGun({navigation}){
                                 </View>
                             )
                         })}
-                         <NewCheckboxArea data={"status"} gunData={gunData} setGunData={setGunData}/>
+                         <NewCheckboxArea gunData={gunData} setGunData={setGunData}/>
                         <NewTextArea data={gunRemarks.name} gunData={gunData} setGunData={setGunData}/>
                         
                     </View>

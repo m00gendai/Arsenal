@@ -207,4 +207,3 @@ export const checkBoxes:{name: string, de:string, en:string, fr:string, it: stri
         ch: "Acquistà tenor il dretg vegl",
     }
 ]
-
