@@ -55,6 +55,14 @@ export interface AmmoType{
   remarks?: string
 }
 
+
+interface DbId{
+  db_id: number
+}
+
+export type GunTypeWithDbId = GunType & DbId
+export type AmmoTypeWithDbId = AmmoType & DbId
+
 export interface MenuVisibility{
   sortBy: boolean
   filterBy: boolean
