@@ -30,6 +30,7 @@ import * as SystemUI from "expo-system-ui"
 import * as Sharing from 'expo-sharing';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
+import { debugJsonError } from "../jsonDebugger"
 
 
 
@@ -507,19 +508,25 @@ export default function MainMenu({navigation}){
     }
 
     async function handleImportGunDb(){
+        console.log("start import gun db")
         const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
         if(result.assets === null){
             return
         }
-        if(!result.assets[0].name.startsWith("gunDB_")){
+        console.log("file type check")
+        if(!result.assets[0].name.startsWith("gunDB_") && !result.assets[0].name.startsWith("arsenal_legacy_gunDB_")){
             setSnackbarText(toastMessages.wrongGunDbSelected[language])
             onToggleSnackBar()
             toggleImportModalVisible()
             return
         }
+        console.log("content screen")
         setDbModalText(databaseOperations.import[language])
+        const fileData = debugJsonError(result.assets[0].uri)
         const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
+        console.log(content)
         const guns:GunType[] = JSON.parse(content)
+        console.log(`found ${guns.length} guns`)
         setImportSize(guns.length)
         const importTags:{label:string, status:boolean}[] = []
         const importableGunCollection:GunType[] = await Promise.all(guns.map(async gun=>{
