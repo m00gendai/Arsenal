@@ -624,11 +624,11 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "Schema da colur",
     },
     db_gun: {
-        de: "Datenbank Waffen",
-        en: "Gun Database",
-        fr: "Base de données armes",
-        it: "Database delle armi",
-        ch: "Banca da datas armas",
+        de: "Datenbanken",
+        en: "Database",
+        fr: "Base de données",
+        it: "Database",
+        ch: "Banca da datas",
     },
     saveDb_gun: {
         de: "Speichern",
@@ -673,11 +673,11 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "",
     },
     gunList: {
-        de: "Waffenverzeichnis",
-        en: "List of weapons",
-        fr: "Liste des armes",
-        it: "Elenco delle armi",
-        ch: "Register da las armas",
+        de: "Verzeichnisse",
+        en: "Lists",
+        fr: "Listes",
+        it: "Elenco",
+        ch: "Register",
     },
     printAllGuns: {
         de: "Komplettes Verzeichnis als Tabelle",

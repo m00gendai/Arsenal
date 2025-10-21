@@ -96,11 +96,11 @@ export const mainMenu_ammunitionDatabase: mainMenu_database = {
 
 export const mainMenu_gunDatabase: mainMenu_database = {
     title:{
-        de: "Datenbank Waffen",
-        en: "Ammunition Database",
-        fr: "Base de données munitions",
-        it: "Database munizioni",
-        ch: "Banca da datas muniziun",
+        de: "Datenbank",
+        en: "Database",
+        fr: "Base de données",
+        it: "Database",
+        ch: "Banca da datas",
     },
     saveArsenalDB:{
         de: "Arsenal Datenbank lokal auf dem Gerät speichern",
