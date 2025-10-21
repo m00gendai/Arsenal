@@ -31,7 +31,9 @@ import * as Sharing from 'expo-sharing';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
 import { debugJsonError } from "../jsonDebugger"
-
+import { expo, db } from "../db/client"
+import * as schema from "../db/schema"
+import saveDatabase from "../functions/saveDatabase"
 
 
 export default function MainMenu({navigation}){
@@ -96,7 +98,7 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
-                    await handleSaveGunDb().then(()=>{
+                    await saveDatabase().then(()=>{
                         dbSaveSuccess()
                     })
                 }
@@ -408,55 +410,7 @@ export default function MainMenu({navigation}){
         await FileSystem.writeAsStringAsync(fileUri, csv, {encoding: FileSystem.EncodingType.UTF8})
         return fileUri
     }
-
-    async function handleSaveGunDb(){
-        const fileName = `gunDB_${new Date().getTime()}.json`
-        const collectionSize = gunCollection.length-1
-        const cache = Dirs.CacheDir
-        try{
-            await fs.writeFile(`${cache}/${fileName}`, "[")
-        }catch(e){
-            alarm("saveGunDb createTempFile", e)
-        }
-        await Promise.all(gunCollection.map(async (gun, index) =>{
-            if(gun.images !== null && gun.images.length !== 0){
-                const base64images:string[] = await Promise.all(gun.images?.map(async image =>{
-                    const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                    return base64string
-                }))
-                const exportableGun:GunType = {...gun, images: base64images}
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableGun) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("saveGunDB appendExportableGun", e)
-                }
-            } else {
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(gun) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("saveGunDB appendGun", e)
-                }
-            }
-        }))
-        try{
-            await fs.appendFile(`${cache}/${fileName}`, "]")
-        } catch(e){
-            alarm("saveGunDB finishTempFile", e)
-        }
-        try{
-            await fs.cpExternal(`${cache}/${fileName}`, fileName, "downloads")
-            
-        } catch(e){
-            alarm("saveGunDb moveTempFile", e)
-        }
-        try{
-            await fs.unlink(`${cache}/${fileName}`)
-        }catch(e){
-            alarm("saveGunDb unlinkTempFile", e)
-        }
-    }
+   
 
     async function handleSaveAmmoDb(){
         const fileName = `ammoDB_${new Date().getTime()}.json`
@@ -940,6 +894,7 @@ export default function MainMenu({navigation}){
                                     </View>
                                 </View>
                                 <Divider style={{height: 2, backgroundColor: theme.colors.primary}} />
+                                
                                 <List.Accordion left={props => <><List.Icon {...props} icon="palette" /><List.Icon {...props} icon="brush" /></>} title={preferenceTitles.colors[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
@@ -965,14 +920,14 @@ export default function MainMenu({navigation}){
                                         </View>
                                     </View>
                                 </List.Accordion>
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="database-outline" /><List.Icon {...props} icon="pistol" /></>} title={preferenceTitles.db_gun[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                 <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                                                 <Text style={{width: "80%"}}>{mainMenu_gunDatabase.saveArsenalDB[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_gun_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
+                                                
+                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_gun_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
@@ -1013,62 +968,13 @@ export default function MainMenu({navigation}){
                                         </View>
                                     </View>
                                 </List.Accordion>
-                                <List.Accordion left={props => <><List.Icon {...props} icon="database-outline" /><List.Icon {...props} icon="bullet" /></>} title={preferenceTitles.db_ammo[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                                        <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.saveArsenalDB[language]}</Text>
-                                                {ammoCollection.length === 0 ?<Tooltip title={tooltips.noAmmoAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_ammo_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.shareArsenalDB[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noAmmoAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="share-variant" onPress={()=>handleDbOperation("share_arsenal_ammo_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.saveArsenalCSV[language]}</Text>
-                                                {ammoCollection.length === 0 ?<Tooltip title={tooltips.noAmmoAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_ammo_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.shareArsenalCSV[language]}</Text>
-                                                {ammoCollection.length === 0 ?<Tooltip title={tooltips.noAmmoAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="share-variant" onPress={()=>handleDbOperation("share_arsenal_ammo_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.importArsenalDB[language]}</Text>
-                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_arsenal_ammo_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.importCustomCSV[language]}</Text>
-                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_custom_ammo_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_ammunitionDatabase.importArsenalCSV[language]}</Text>
-                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_arsenal_ammo_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                                            </View>            
-                                        </View>
-                                    </View>
-                                </List.Accordion>
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="printer" /><List.Icon {...props} icon="pistol" /></>} title={preferenceTitles.gunList[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                                                 <Text style={{width: "80%"}}>{preferenceTitles.printAllGuns[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="table-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="table-large" onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollection") : handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
+                                                <IconButton icon="table-large" onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollection") : handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>   
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
@@ -1082,19 +988,7 @@ export default function MainMenu({navigation}){
                                         </View>
                                     </View>
                                 </List.Accordion>
-                                <List.Accordion left={props => <><List.Icon {...props} icon="printer" /><List.Icon {...props} icon="bullet" /></>} title={preferenceTitles.ammoList[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                                        <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
-                                                {ammoCollection.length === 0 ?<Tooltip title={tooltips.noAmmoAddedYet[language]}><IconButton icon="table-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="table-large" onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>   
-                                           {/* <Button style={{width: "45%"}} icon="badge-account-outline" onPress={()=>printAmmoGallery(ammoCollection, language)} mode="contained">{preferenceTitles.printGallery[language]}</Button> */}
-                                        </View>
-                                    </View>
-                                </List.Accordion>
+   
                                 <List.Accordion left={props => <><List.Icon {...props} icon="cog-outline" /><List.Icon {...props} icon="tune" /></>} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
@@ -1130,6 +1024,7 @@ export default function MainMenu({navigation}){
                                         </View>
                                     </View>
                                 </List.Accordion>
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="chart-box-outline" /><List.Icon {...props} icon="chart-arc" /></>} title={preferenceTitles.statistics[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                     <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.gunCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("guns"))}`}</Text></View>
@@ -1143,6 +1038,7 @@ export default function MainMenu({navigation}){
                                     <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.roundCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("totalStock"))}`}</Text></View>
                                     </View>
                                 </List.Accordion>
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="application-brackets-outline" /><List.Icon {...props} icon="cellphone-information" /></>} title={preferenceTitles.about[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <Text>{aboutText[language]}</Text>
