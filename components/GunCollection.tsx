@@ -105,20 +105,20 @@ export default function GunCollection({navigation, route}){
     }, searchBannerVisible ? 400 : 50)
   }
   
-  const height = useSharedValue(0);
+  const FABheight = useSharedValue(0);
   
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      height: height.value,
+      height: FABheight.value,
     };
   });
   
   const startAnimation = () => {
-    height.value = withTiming(defaultSearchBarHeight, { duration: 500 }); // 500 ms duration
+    FABheight.value = withTiming(defaultSearchBarHeight, { duration: 500 }); // 500 ms duration
   };
   
   const endAnimation = () => {
-    height.value = withTiming(0, { duration: 500 }); // 500 ms duration
+    FABheight.value = withTiming(0, { duration: 500 }); // 500 ms duration
   };
 
   const fabWidth = useSharedValue(1);
@@ -135,6 +135,16 @@ export default function GunCollection({navigation, route}){
     setCurrentGun(null)
     navigation.navigate("NewGun")
   }
+
+  const { width, height } = Dimensions.get("window");
+const isLandscape = width > height;
+
+const numColumns = isLandscape ? 4 : displayAsGrid ? 2 : 1;
+const listKey = isLandscape
+  ? "gunCollectionGrid4"
+  : displayAsGrid
+  ? "gunCollectionGrid2"
+  : "gunCollectionList";
 
   return(
     <View style={{flex: 1, backgroundColor: "transparent"}}>
@@ -174,53 +184,27 @@ export default function GunCollection({navigation, route}){
         </View>
       </Appbar>
       <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{searchBannerVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQuery} value={searchQuery} /> : null}</Animated.View>
-      {displayAsGrid ? 
-        Dimensions.get("window").width > Dimensions.get("window").height ?
-        <FlatList<GunType>
-          numColumns={4} 
-          initialNumToRender={10} 
-          contentContainerStyle={{gap: defaultGridGap}}
-          columnWrapperStyle={{gap: defaultGridGap}} 
-          key={`gunCollectionGrid4`} 
-          style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
-          /*@ts-expect-error*/
-          data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
-          renderItem={({item}) => <GunCard gun={item} />}                     
-          keyExtractor={gun=>gun.id} 
-          ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
-          ListEmptyComponent={null}
-        />
-        :
-        <FlatList<GunType>
-          numColumns={2} 
-          initialNumToRender={10} 
-          contentContainerStyle={{gap: defaultGridGap}}
-          columnWrapperStyle={{gap: defaultGridGap}} 
-          key={`gunCollectionGrid2`} 
-          style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
-           /*@ts-expect-error*/
-           data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
-          renderItem={({item}) => <GunCard gun={item} />}                     
-          keyExtractor={gun=>gun.id} 
-          ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
-          ListEmptyComponent={null}
-        />
-      :
-        <FlatList 
-          numColumns={1} 
-          initialNumToRender={10} 
-          contentContainerStyle={{gap: defaultGridGap}}
-          key={`gunCollectionList`} 
-          style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
-          /*@ts-expect-error*/
-          data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)} 
-          /*@ts-expect-error*/
-          renderItem={({item}) => <GunCard gun={item} />}      
-          keyExtractor={gun=>gun.id} 
-          ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
-          ListEmptyComponent={null}
-        />
-      }
+      <FlatList<GunType>
+    numColumns={numColumns}
+    initialNumToRender={10}
+    contentContainerStyle={{ gap: defaultGridGap }}
+    columnWrapperStyle={numColumns > 1 ? { gap: defaultGridGap } : undefined}
+    key={listKey}
+    style={{
+      height: "100%",
+      width: "100%",
+      paddingTop: defaultViewPadding,
+      paddingLeft: defaultViewPadding,
+      paddingRight: defaultViewPadding,
+      paddingBottom: 50,
+    }}
+    /*@ts-expect-error */
+    data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)}
+    renderItem={({ item }: { item: GunType }) => <GunCard gun={item} />}
+    keyExtractor={gun => gun.id}
+    ListFooterComponent={<View style={{ width: "100%", height: 100 }} />}
+    ListEmptyComponent={null}
+  />
      <BottomBar screen={route.name}/>
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, gunData.length === 0 ? pulsate : null]}>
         <FAB
