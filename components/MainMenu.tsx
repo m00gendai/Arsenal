@@ -34,6 +34,7 @@ import { debugJsonError } from "../jsonDebugger"
 import { expo, db } from "../db/client"
 import * as schema from "../db/schema"
 import saveDatabase from "../functions/saveDatabase"
+import importDatabase from "../functions/importDatabase"
 
 
 export default function MainMenu({navigation}){
@@ -250,7 +251,7 @@ export default function MainMenu({navigation}){
             toggleImportModalVisible()
             setDbModalText(databaseOperations.import[language])
             try{
-                await handleImportGunDb().then(()=>{
+                await importDatabase().then(()=>{
                     dbImportSuccess("import_arsenal_gun_db")
                 })
             }catch(e){
@@ -894,7 +895,7 @@ export default function MainMenu({navigation}){
                                     </View>
                                 </View>
                                 <Divider style={{height: 2, backgroundColor: theme.colors.primary}} />
-                                
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="palette" /><List.Icon {...props} icon="brush" /></>} title={preferenceTitles.colors[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
