@@ -49,7 +49,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const { success, error } = useMigrations(db, migrations);
-  console.log(error)
+  if(error){
+    console.log("Database Migration Error:")
+    console.log(error)
+  }
   useDrizzleStudio(expo)
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
@@ -83,103 +86,6 @@ export default function App() {
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
 
-  async function handleSaveGunDb(guns){
-    console.log("starting backup of gunDB")
-          const fileName = `arsenal_legacy_gunDB_${new Date().getTime()}.json`
-          const collectionSize = guns.length-1
-          const cache = Dirs.CacheDir
-          console.log(`found ${collectionSize} guns`)
-          try{
-              await fs.writeFile(`${cache}/${fileName}`, "[")
-          }catch(e){
-              alarm("saveGunDb createTempFile", e)
-          }
-          await Promise.all(guns.map(async (gun, index) =>{
-              if(gun.images !== null && gun.images.length !== 0){
-                  const base64images:string[] = await Promise.all(gun.images?.map(async image =>{
-                      const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                      return base64string
-                  }))
-                  const exportableGun:GunType = {...gun, images: base64images}
-                  try{
-                      await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableGun) + (collectionSize !== index ? ", " : ""))
-                  }catch(e){
-                      alarm("saveGunDB appendExportableGun", e)
-                  }
-              } else {
-                  try{
-                      await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(gun) + (collectionSize !== index ? ", " : ""))
-                  }catch(e){
-                      alarm("saveGunDB appendGun", e)
-                  }
-              }
-          }))
-          try{
-              await fs.appendFile(`${cache}/${fileName}`, "]")
-          } catch(e){
-              alarm("saveGunDB finishTempFile", e)
-          }
-          try{
-              await fs.cpExternal(`${cache}/${fileName}`, fileName, "downloads")
-              
-          } catch(e){
-              alarm("saveGunDb moveTempFile", e)
-          }
-          try{
-              await fs.unlink(`${cache}/${fileName}`)
-          }catch(e){
-              alarm("saveGunDb unlinkTempFile", e)
-          }
-      }
-
-      async function handleSaveAmmoDb(){
-          const fileName = `arsenal_legacy_ammoDB_${new Date().getTime()}.json`
-          const collectionSize = ammoCollection.length-1
-          const cache = Dirs.CacheDir
-          try{
-              await fs.writeFile(`${cache}/${fileName}`, "[")
-          }catch(e){
-              alarm("saveAmmoDb createTempFile", e)
-          }
-          await Promise.all(ammoCollection.map(async (ammo, index) =>{
-              if(ammo.images !== null && ammo.images.length !== 0){
-                  const base64images:string[] = await Promise.all(ammo.images?.map(async image =>{
-                      const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                      return base64string
-                  }))
-                  const exportableAmmo:AmmoType = {...ammo, images: base64images}
-                  try{
-                      await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableAmmo) + (collectionSize !== index ? ", " : ""))
-                  }catch(e){
-                      alarm("saveAmmoDb appendExportableAmmo", e)
-                  }
-              } else {
-                  try{
-                      await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(ammo) + (collectionSize !== index ? ", " : ""))
-                  }catch(e){
-                      alarm("saveAmmoDb appendAmmo", e)
-                  }
-              }
-          }))
-          try{
-              await fs.appendFile(`${cache}/${fileName}`, "]")
-          } catch(e){
-              alarm("saveAmmoDb finishTempFile", e)
-          }
-          try{
-              await fs.cpExternal(`${cache}/${fileName}`, fileName, "downloads")
-              
-          } catch(e){
-              alarm("saveAmmoDb moveTempFile", e)
-          }
-          try{
-              await fs.unlink(`${cache}/${fileName}`)
-          }catch(e){
-              alarm("saveAmmoDb unlinkTempFile", e)
-          }
-      }
-  
-
   async function checkLegacyGunData(){
     let keys:string[]
     try{
@@ -187,7 +93,8 @@ export default function App() {
     } catch(e){
       alarm("Legacy Gun Key Error", e)
     }
-    console.log(`checked gun keys: ${keys}`)
+    console.log("Checked Gun Keys:")
+    console.log(keys)
     if(keys.length === 0){
       return
     }
@@ -200,7 +107,8 @@ export default function App() {
     } catch(e){
       alarm("Legacy Gun DB Error", e)
     }
-    console.log(`checked guns: ${guns}`)
+    console.log("Checked Guns:")
+    console.log(guns)
     if(guns.length !== 0){
       await Promise.all(guns.map(async gun =>{
         if(gun !== null){
@@ -217,13 +125,13 @@ export default function App() {
           }
         }
       }))
-            await handleSaveGunDb(guns)
       await Promise.all(keys.map(async key =>{
         await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${key}`)
       }))
       await AsyncStorage.removeItem(KEY_DATABASE)
     }
   }
+
   async function checkLegacyAmmoData(){
     let keys:string[]
     try{
@@ -231,7 +139,8 @@ export default function App() {
     } catch(e){
       alarm("Legacy Ammo Key Error", e)
     }
-    console.log(`checked ammo keys: ${keys}`)
+    console.log("Checked Ammo Keys:")
+    console.log(keys)
     if(keys.length === 0){
       return
     }
@@ -251,68 +160,85 @@ export default function App() {
       await Promise.all(keys.map(async key =>{
         await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${key}`)
       }))
-      await handleSaveAmmoDb()
       await AsyncStorage.removeItem(A_KEY_DATABASE)
     }
   }
 
+
   
 useEffect(() => {
     async function prepare() {
-      try {
-        console.log("try: so hard")
+      try{
+        console.log("Get Preferences")
         const preferences:string = await AsyncStorage.getItem(PREFERENCES)
         const isPreferences = preferences === null ? null : JSON.parse(preferences)
-        console.log("isPreferences null")
+        console.log("Preferences Nullcheck:")
         if(isPreferences === null){
-          console.log("checking legacy gun data")
+          console.log("Preferences are Null")
+          console.log("Checking for Legacy Gun Data")
           await checkLegacyGunData()
-          console.log("checking legacy ammo data")
+          console.log("Checking for Legacy Ammo Data")
           await checkLegacyAmmoData()
-          console.log(success)
+          console.log("Successfully checked for legacy data")
           if(success){
+            console.log("Setting App to Ready")
             setAppIsReady(true)
           }
           return
         }
-        console.log("isPreferences.generalSettings null")
+
+        console.log("Preferences Nullcheck: General Settings:")
         if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
           if(success){
-            await checkLegacyGunData()
+            console.log("Checking for Legacy Gun Data")
+          await checkLegacyGunData()
+          console.log("Checking for Legacy Ammo Data")
           await checkLegacyAmmoData()
+          console.log("Successfully checked for legacy data")
+          console.log("Setting App to Ready")
             setAppIsReady(true)
           }
           return
         }
-        console.log("isPreferences.generalsettings.loginGuard null || false")
+
+        console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
         if(isPreferences.generalSettings.loginGuard !== null && isPreferences.generalSettings.loginGuard !== undefined && isPreferences.generalSettings.loginGuard === true){
           const authSuccess = await LocalAuthentication.authenticateAsync()
           if(authSuccess.success){
+            console.log("Login Guard active")
+            console.log("Checking for Legacy Gun Data")
             await checkLegacyGunData()
-          await checkLegacyAmmoData()
-          if(success){
-            setAppIsReady(true)
-          }
+            console.log("Checking for Legacy Ammo Data")
+            await checkLegacyAmmoData()
+            console.log("Successfully checked for legacy data")
+            if(success){
+              console.log("Setting App to Ready")
+              setAppIsReady(true)
+            }
           } else{
             throw new Error(`Local Authentification failed: ${JSON.stringify(authSuccess)} | ${isPreferences.generalSettings.loginGuard}`);
           }
         } else {
-          console.log("false")
-          await checkLegacyGunData()
-          await checkLegacyAmmoData()
+          console.log("Login Guard inactive")
+          console.log("Checking for Legacy Gun Data")
+            await checkLegacyGunData()
+            console.log("Checking for Legacy Ammo Data")
+            await checkLegacyAmmoData()
+            console.log("Successfully checked for legacy data")
           if(success){
+            console.log("Setting App to Ready")
             setAppIsReady(true)
           }
           return
         }
-      } catch (e) {
-        console.log("catch: got so far")
+      } catch (e){
+        console.log("Something went wrong:")
         console.log(e);
         alarm("Initialisation error", e)
       } 
     }
     prepare();
-  }, [success]);
+}, [success]);
 
 
   const onLayoutRootView = useCallback(async () => {
