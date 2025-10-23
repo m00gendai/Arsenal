@@ -17,6 +17,7 @@ import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from '
 
 interface Props{
     gun: GunType
+    index?: number
 }
 
 export default function GunCard({gun}:Props){
@@ -58,9 +59,8 @@ export default function GunCard({gun}:Props){
     }
 
     return(
-        <>
+        <View>
         <TouchableNativeFeedback 
-                key={gun.id} 
                 onPress={()=>handleGunCardPress(gun)}
                 onLongPress={()=>meloveyoulongtime()}
               >
@@ -86,7 +86,7 @@ export default function GunCard({gun}:Props){
                 subtitleNumberOfLines={2}
             />
             {displayAsGrid ? 
-            <>
+            <View>
                 <Card.Cover 
                     source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}`} : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
@@ -105,7 +105,7 @@ export default function GunCard({gun}:Props){
                     }} 
                     iconColor={theme.colors.onPrimary}
                 />
-            </>
+            </View>
             : 
             null}
             {displayAsGrid ? 
@@ -178,6 +178,6 @@ export default function GunCard({gun}:Props){
                         </Dialog>
                     </Portal>      
 
-        </>
+        </View>
     )
 }
