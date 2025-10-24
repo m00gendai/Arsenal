@@ -1,9 +1,8 @@
 import { create } from "zustand"
 import { AmmoType, DBOperations, GunType } from "../interfaces"
 import { exampleAmmoEmpty, exampleGunEmpty } from "../lib/examples"
-import { doSortBy } from "../utils"
 
-interface ImportExportStore {
+export interface ImportExportStore {
     CSVHeader: string[]
     setCSVHeader: (data:string[]) => void
     CSVBody: string[][]
