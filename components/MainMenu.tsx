@@ -2,7 +2,7 @@ import { ScrollView, TouchableNativeFeedback, View, Image, Platform, Dimensions 
 import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from "react-native-reanimated"
 import { useViewStore } from "../stores/useViewStore"
 import { ActivityIndicator, Button, Dialog, Divider, Icon, IconButton, List, Modal, Portal, Snackbar, Switch, Text, Tooltip } from "react-native-paper"
-import { aboutText, aboutThanks, aboutThanksPersons, databaseImportAlert, databaseOperations, generalSettingsLabels, iosWarningText, loginGuardAlert, preferenceTitles, resizeImageAlert, statisticItems, toastMessages, tooltips } from "../lib/textTemplates"
+import { aboutText, aboutThanks, aboutThanksPersons, databaseImportAlert, databaseOperations, generalSettingsLabels, importExportSelectionLabel, iosWarningText, loginGuardAlert, preferenceTitles, resizeImageAlert, statisticItems, tabBarLabels, toastMessages, tooltips } from "../lib/textTemplates"
 import { usePreferenceStore } from "../stores/usePreferenceStore"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { dateLocales, defaultViewPadding, languageSelection } from "../configs"
@@ -21,7 +21,7 @@ import { useTagStore } from "../stores/useTagStore"
 import * as Application from 'expo-application';
 import { manipulateAsync } from "expo-image-manipulator"
 import Papa from 'papaparse';
-import { mainMenu_ammunitionDatabase, mainMenu_gunDatabase } from "../lib/Text/mainMenu_ammunitionDatabase"
+import { mainMenu_DatabaseOperations } from "../lib/Text/mainMenu_DatabaseOperations"
 import { useImportExportStore } from "../stores/useImportExportStore"
 import CSVImportModal from "./CSVImportModal"
 import { flatten, unflatten } from 'flat'
@@ -35,6 +35,9 @@ import { expo, db } from "../db/client"
 import * as schema from "../db/schema"
 import saveDatabase from "../functions/saveDatabase"
 import importDatabase from "../functions/importDatabase"
+import { count, sql } from 'drizzle-orm';
+import { importLegacyGunDatabase } from "../functions/importLegacyGunDatabase"
+import { Dropdown } from 'react-native-paper-dropdown';
 
 
 export default function MainMenu({navigation}){
@@ -52,6 +55,12 @@ export default function MainMenu({navigation}){
 
     const [iosWarning, toggleiosWarning] = useState<boolean>(false)
     const [printerSrc, setPrinterSrc] = useState<null | "gunCollection" | "gunCollectionArt5" | "ammoCollection">(null)
+
+    const importOptionsLegacyDB = [
+        { label: tabBarLabels.gunCollection[language], value: 'gun' },
+        { label: tabBarLabels.ammoCollection[language], value: 'ammo' },
+    ];
+    const [importOptionLegacyDB, setImportOptionLegacyDB] = useState<"gun"|"ammo">("gun")
 
     const onToggleSnackBar = () => setToastVisible(true);
     const onDismissSnackBar = () => {
@@ -87,15 +96,15 @@ export default function MainMenu({navigation}){
 
     function dbImportSuccess(data: DBOperations){
         setDbModalVisible()
-        data === "import_arsenal_gun_db" ? setDbImport(new Date()) : data === "import_arsenal_gun_csv" ? setDbImport(new Date()) : setAmmoDbImport(new Date())
-        setSnackbarText(`${importSize} ${toastMessages.dbImportSuccess[language]}`)
+        setSnackbarText(`${useImportExportStore.getState().importSize} ${toastMessages.dbImportSuccess[language]}`)
         onToggleSnackBar()
     }
 
     async function handleDbOperation(data: DBOperations | ""){
         setDbModalVisible()
-        if(data === "save_arsenal_gun_db"){
-            setImportSize(gunCollection.length)
+        if(data === "save_arsenal_db"){
+            const collectionSize = await db.select({ count: count() }).from(schema.gunCollection);
+            setImportSize(collectionSize[0].count)
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
@@ -103,15 +112,8 @@ export default function MainMenu({navigation}){
                         dbSaveSuccess()
                     })
                 }
-                if(Platform.OS === "ios"){
-                    await handleShareGunDb().then(async (res)=>{
-                        await Sharing.shareAsync(res).then(()=>{
-                            dbSaveSuccess()
-                        })
-                    })
-                }
             }catch(e){
-                alarm("DB ops error save_arsenal_gun_db", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "save_arsenal_gun_csv"){
@@ -119,75 +121,19 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
-                    await exportCSV("save_arsenal_gun_csv").then(()=>{
+                    await exportCSV(data).then(()=>{
                         dbSaveSuccess()
                     })
                 }
-                if(Platform.OS === "ios"){
+                {/*if(Platform.OS === "ios"){
                     await shareCSV("share_arsenal_gun_csv").then(async (res)=>{
                         await Sharing.shareAsync(res).then(()=>{
                             dbSaveSuccess()
                         })
                     })
-                }
+                }*/}
             }catch(e){
-                alarm("DB ops error save_arsenal_gun_csv", e)
-            }
-        }
-        if(data === "share_arsenal_gun_db"){
-            setImportSize(gunCollection.length)
-            setDbModalText(databaseOperations.export[language])
-            try{
-                await handleShareGunDb().then(async (res)=>{
-                    await Sharing.shareAsync(res).then(async ()=>{
-                        dbSaveSuccess()
-                        try{
-                           await fs.unlink(res)
-                        }catch(e){
-                            alarm("shareGunDb unlinkTempFile", e)
-                        }
-                    })
-                })
-            }catch(e){
-                alarm("DB ops error share_arsenal_gun_db", e)
-            }
-        }
-        if(data === "share_arsenal_gun_csv"){
-            setImportSize(gunCollection.length)
-            setDbModalText(databaseOperations.export[language])
-            try{
-                await shareCSV("share_arsenal_gun_csv").then(async (res)=>{
-                    await Sharing.shareAsync(res).then(async ()=>{
-                        dbSaveSuccess()
-                        try{
-                           await fs.unlink(res)
-                        }catch(e){
-                            alarm("shareGunCSV unlinkTempFile", e)
-                        }
-                    })
-                })
-            }catch(e){
-                alarm("DB ops errorshare_arsenal_gun_csv", e)
-            }
-        }
-        if(data === "save_arsenal_ammo_db"){
-            setImportSize(ammoCollection.length)
-            setDbModalText(databaseOperations.export[language])
-            try{
-                if(Platform.OS === "android"){
-                    await handleSaveAmmoDb().then(()=>{
-                        dbSaveSuccess()
-                    })
-                }
-                if(Platform.OS === "ios"){
-                    await handleShareAmmoDb().then(async (res)=>{
-                        await Sharing.shareAsync(res).then(()=>{
-                            dbSaveSuccess()
-                        })
-                    })
-                }
-            }catch(e){
-                alarm("DB ops error save_arsenal_ammo_db", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "save_arsenal_ammo_csv"){
@@ -195,78 +141,24 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
-                    await exportCSV("save_arsenal_ammo_csv").then(()=>{
+                    await exportCSV(data).then(()=>{
                         dbSaveSuccess()
                     })
                 }
-                if(Platform.OS === "ios"){
-                    await shareCSV("share_arsenal_ammo_csv").then(async (res)=>{
-                        await Sharing.shareAsync(res).then(()=>{
-                            dbSaveSuccess()
-                        })
-                    })
-                }
+             
             }catch(e){
-                alarm("DB ops error save_arsenal_ammo_csv", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
-        if(data === "share_arsenal_ammo_db"){
-            setImportSize(ammoCollection.length)
-            setDbModalText(databaseOperations.export[language])
-            try{
-                await handleShareAmmoDb().then(async (res)=>{
-                    console.log(res)
-                    await Sharing.shareAsync(res).then(async ()=>{
-                        dbSaveSuccess()
-                        try{
-                           await fs.unlink(res)
-                        }catch(e){
-                            alarm("shareAmmoDB unlinkTempFile", e)
-                        }
-                    })
-                })
-            }catch(e){
-                alarm("DB ops error share_arsenal_ammo_db", e)
-            }
-        }
-        if(data === "share_arsenal_ammo_csv"){
-            setImportSize(ammoCollection.length)
-            setDbModalText(databaseOperations.export[language])
-            try{
-                await shareCSV("share_arsenal_ammo_csv").then(async (res)=>{
-                    await Sharing.shareAsync(res).then(async ()=>{
-                        dbSaveSuccess()
-                        try{
-                           await fs.unlink(res)
-                        }catch(e){
-                            alarm("shareAmmoCSV unlinkTempFile", e)
-                        }
-                    })
-                })
-            }catch(e){
-                alarm("DB ops error share_arsenal_ammo_csv", e)
-            }
-        }
-        if(data === "import_arsenal_gun_db"){
+        if(data === "import_arsenal_db"){
             toggleImportModalVisible()
             setDbModalText(databaseOperations.import[language])
             try{
                 await importDatabase().then(()=>{
-                    dbImportSuccess("import_arsenal_gun_db")
+                    dbImportSuccess(data)
                 })
             }catch(e){
-                alarm("DB ops error import_arsenal_gun_db", e)
-            }
-        }
-        if(data === "import_arsenal_ammo_db"){
-            toggleImportModalVisible()
-            setDbModalText(databaseOperations.import[language])
-            try{
-                await handleImportAmmoDb().then(()=>{
-                    dbImportSuccess("import_arsenal_ammo_db")
-                })
-            }catch(e){
-                alarm("DB ops error import_arsenal_ammo_db", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "import_arsenal_gun_csv"){
@@ -274,10 +166,10 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.import[language])
             try{
                 await importArsenalGunCSV().then(()=>{
-                    dbImportSuccess("import_arsenal_gun_csv")
+                    dbImportSuccess(data)
                 })
             }catch(e){
-                alarm("DB ops error import_arsenal_gun_csv", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "import_arsenal_ammo_csv"){
@@ -285,10 +177,10 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.import[language])
             try{
                 await importArsenalAmmoCSV().then(()=>{
-                    dbImportSuccess("import_arsenal_ammo_csv")
+                    dbImportSuccess(data)
                 })
             }catch(e){
-                alarm("DB ops error import_arsenal_ammo_csv", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "import_custom_gun_csv"){
@@ -296,10 +188,10 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.import[language])
             try{
                 await importCSV(data).then(()=>{
-                    dbImportSuccess("import_custom_gun_csv")
+                    dbImportSuccess(data)
                 })
             }catch(e){
-                alarm("DB ops error import_custom_gun_csv", e)
+                alarm(`DB ops error ${data}`, e)
             }
         }
         if(data === "import_custom_ammo_csv"){
@@ -307,10 +199,22 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.import[language])
             try{
                 await importCSV(data).then(()=>{
-                    dbImportSuccess("import_custom_ammo_csv")
+                    dbImportSuccess(data)
                 })
             }catch(e){
-                alarm("DB ops error import_custom_ammo_csv", e)
+                alarm(`DB ops error ${data}`, e)
+            }
+        }
+        if(data === "import_legacy_db"){
+            toggleImportModalVisible()
+            setDbModalText(databaseOperations.import[language])
+            try{
+                const collectionSize = await importLegacyGunDatabase(generalSettings.resizeImages, importOptionLegacyDB)
+                setImportSize(collectionSize)
+                dbImportSuccess(data) 
+            }catch(e){
+                setDbModalVisible()
+                alarm(`DB ops error ${data}`, e)
             }
         }
     }
@@ -399,7 +303,7 @@ export default function MainMenu({navigation}){
 
     }
 
-    async function shareCSV(data: DBOperations){
+   {/*} async function shareCSV(data: DBOperations){
         const fileName = `${data === "share_arsenal_gun_csv" ? "gunCSV" : "ammoCSV"}_${new Date().getTime()}.csv`
         const flattened = data === "share_arsenal_gun_csv" ? gunCollection.map(item => {
             return flatten(item, {safe: true})
@@ -410,10 +314,10 @@ export default function MainMenu({navigation}){
         const fileUri = FileSystem.cacheDirectory + fileName
         await FileSystem.writeAsStringAsync(fileUri, csv, {encoding: FileSystem.EncodingType.UTF8})
         return fileUri
-    }
+    }*/}
    
 
-    async function handleSaveAmmoDb(){
+   {/*} async function handleSaveAmmoDb(){
         const fileName = `ammoDB_${new Date().getTime()}.json`
         const collectionSize = ammoCollection.length-1
         const cache = Dirs.CacheDir
@@ -461,200 +365,8 @@ export default function MainMenu({navigation}){
             alarm("saveAmmoDb unlinkTempFile", e)
         }
     }
+        */}
 
-    async function handleImportGunDb(){
-        console.log("start import gun db")
-        const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
-        if(result.assets === null){
-            return
-        }
-        console.log("file type check")
-        if(!result.assets[0].name.startsWith("gunDB_") && !result.assets[0].name.startsWith("arsenal_legacy_gunDB_")){
-            setSnackbarText(toastMessages.wrongGunDbSelected[language])
-            onToggleSnackBar()
-            toggleImportModalVisible()
-            return
-        }
-        console.log("content screen")
-        setDbModalText(databaseOperations.import[language])
-        const fileData = debugJsonError(result.assets[0].uri)
-        const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
-        console.log(content)
-        const guns:GunType[] = JSON.parse(content)
-        console.log(`found ${guns.length} guns`)
-        setImportSize(guns.length)
-        const importTags:{label:string, status:boolean}[] = []
-        const importableGunCollection:GunType[] = await Promise.all(guns.map(async gun=>{
-            if(gun.images !== null && gun.images.length !== 0){
-                const base64images:string[] = await Promise.all(gun.images.map(async (image, index) =>{
-                    const base64ImageUri = `data:image/jpeg;base64,${image}`;
-                    const dimensions = await getImageSize(base64ImageUri) as {width: number, height: number}
-                    // Resize the image
-                    const resizedImage = dimensions.height !== 0 && dimensions.width !== 0 && generalSettings.resizeImages ? 
-                        dimensions.width >= 1000 ? 
-                            await manipulateAsync(
-                                base64ImageUri,
-                                [{ resize: dimensions.width >= 1000 ? {width: 1000} : {height: 1000}}], // Change dimensions as needed
-                                { base64: true }
-                            ) 
-                        : dimensions.height >= 1000 ?
-                            await manipulateAsync(
-                                base64ImageUri,
-                                [{ resize: dimensions.height >= 1000 ? {height: 1000} : {width: 1000}}], // Change dimensions as needed
-                                { base64: true }
-                            ) 
-                        : 
-                        await manipulateAsync(
-                            base64ImageUri,
-                            [{ resize: {width: dimensions.width, height: dimensions.height}}], // Change dimensions as needed
-                            { base64: true }
-                        ) 
-                    : await manipulateAsync(
-                        base64ImageUri,
-                        [{ resize: {width: dimensions.width, height: dimensions.height}}], // Change dimensions as needed
-                        { base64: true }
-                    ) 
-
-                    const base64Image = resizedImage.base64;
-                    const fileUri = FileSystem.documentDirectory + `${sanitizeFileName(gun.id)}_image_${index}.jpg`;
-                    await FileSystem.writeAsStringAsync(fileUri, base64Image, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    })
-                    return fileUri
-                }))
-                const importableGun:GunType = {...gun, images: base64images}
-                if(gun.tags !== undefined && gun.tags.length !== 0){
-                    for(const tag of gun.tags){
-                        if(!importTags.some(importTag => importTag.label === tag)){
-                            importTags.push({label: tag, status: true})
-                        }
-                    }
-                }
-                setImportProgress(importProgress + 1)
-                return importableGun
-            } else {
-                if(gun.tags !== undefined && gun.tags.length !== 0){
-                    for(const tag in gun.tags){
-                        if(!importTags.some(importTag => importTag.label === tag)){
-                            importTags.push({label: tag, status: true})
-                        }
-                    }
-                }
-                setImportProgress(importProgress+1)
-                return gun
-            }
-        }))
-        overWriteTags(importTags)
-        await AsyncStorage.setItem(TAGS, JSON.stringify(importTags)) // Save the key object
-        const allKeys:string = await AsyncStorage.getItem(KEY_DATABASE) // gets the object that holds all key values
-        let newKeys:string[] = []
-        
-        importableGunCollection.map(value =>{
-            newKeys.push(value.id) // if its the first gun to be saved, create an array with the id of the gun. Otherwise, merge the key into the existing array
-            SecureStore.setItem(`${GUN_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the gun
-        })
-    
-        await AsyncStorage.setItem(KEY_DATABASE, JSON.stringify(newKeys)) // Save the key object
-        try{
-            await fs.unlink(result.assets[0].uri)
-        }catch(e){
-            alarm("importAmmoDB unlinkTempFile", e)
-        }
-    }
-
-    async function handleImportAmmoDb(){
-        const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
-        if(result.assets === null){
-            return
-        }
-        if(!result.assets[0].name.startsWith("ammoDB_")){
-            setSnackbarText(toastMessages.wrongAmmoDbSelected[language])
-            onToggleSnackBar()
-            toggleImportModalVisible()
-            return
-        }
-        setDbModalText(databaseOperations.import[language])
-        const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
-        const ammunitions:AmmoType[] = JSON.parse(content)
-        setImportSize(ammunitions.length)
-        const importTags:{label:string, status:boolean}[] = []
-        const importableAmmoCollection:AmmoType[] = await Promise.all(ammunitions.map(async ammo=>{
-            if(ammo.images !== null && ammo.images.length !== 0){
-                const base64images:string[] = await Promise.all(ammo.images.map(async (image, index) =>{
-                    const base64ImageUri = `data:image/jpeg;base64,${image}`;
-                    const dimensions = await getImageSize(base64ImageUri) as {width: number, height: number}
-                    // Resize the image
-                    const resizedImage = dimensions.height !== 0 && dimensions.width !== 0 && generalSettings.resizeImages ? 
-                        dimensions.width >= 1000 ? 
-                            await manipulateAsync(
-                                base64ImageUri,
-                                [{ resize: dimensions.width >= 1000 ? {width: 1000} : {height: 1000}}], // Change dimensions as needed
-                                { base64: true }
-                            ) 
-                        : dimensions.height >= 1000 ?
-                            await manipulateAsync(
-                                base64ImageUri,
-                                [{ resize: dimensions.height >= 1000 ? {height: 1000} : {width: 1000}}], // Change dimensions as needed
-                                { base64: true }
-                            ) 
-                        : 
-                        await manipulateAsync(
-                            base64ImageUri,
-                            [{ resize: {width: dimensions.width, height: dimensions.height}}], // Change dimensions as needed
-                            { base64: true }
-                        ) 
-                    : await manipulateAsync(
-                        base64ImageUri,
-                        [{ resize: {width: dimensions.width, height: dimensions.height}}], // Change dimensions as needed
-                        { base64: true }
-                    ) 
-
-                    const base64Image = resizedImage.base64;
-                    const fileUri = FileSystem.documentDirectory + `${sanitizeFileName(ammo.id)}_image_${index}.jpg`;
-                    await FileSystem.writeAsStringAsync(fileUri, base64Image, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    })
-                    return fileUri
-                }))
-                const importableAmmo:AmmoType = {...ammo, images: base64images}
-                if(ammo.tags !== undefined && ammo.tags.length !== 0){
-                    for(const tag of ammo.tags){
-                        if(!importTags.some(importTag => importTag.label === tag)){
-                            importTags.push({label: tag, status: true})
-                        }
-                    }
-                }
-                setImportProgress(importProgress+1)
-                return importableAmmo
-            } else {
-                if(ammo.tags !== undefined && ammo.tags.length !== 0){
-                    for(const tag of ammo.tags){
-                        if(!importTags.some(importTag => importTag.label === tag)){
-                            importTags.push({label: tag, status: true})
-                        }
-                    }
-                }
-                setImportProgress(importProgress+1)
-                return ammo
-            }
-        }))
-        overWriteAmmoTags(importTags)
-        await AsyncStorage.setItem(A_TAGS, JSON.stringify(importTags)) // Save the key object
-        const allKeys:string = await AsyncStorage.getItem(A_KEY_DATABASE) // gets the object that holds all key values
-        let newKeys:string[] = []
-        
-        importableAmmoCollection.map(value =>{
-            newKeys.push(value.id) // if its the first gun to be saved, create an array with the id of the gun. Otherwise, merge the key into the existing array
-            SecureStore.setItem(`${AMMO_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the gun
-        })
-    
-        await AsyncStorage.setItem(A_KEY_DATABASE, JSON.stringify(newKeys)) // Save the key object
-        try{
-            await fs.unlink(result.assets[0].uri)
-        }catch(e){
-            alarm("importAmmoDB unlinkTempFile", e)
-        }
-    }
 
     async function handleSwitchesAlert(setting:string){
         if(setting === "resizeImages"){
@@ -896,6 +608,8 @@ export default function MainMenu({navigation}){
                                 </View>
                                 <Divider style={{height: 2, backgroundColor: theme.colors.primary}} />
 
+                                {/* COLOR PALETTE */ }
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="palette" /><List.Icon {...props} icon="brush" /></>} title={preferenceTitles.colors[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
@@ -922,53 +636,63 @@ export default function MainMenu({navigation}){
                                     </View>
                                 </List.Accordion>
 
+                                {/* DATABASE OPERATIONS */ }
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="database-outline" /><List.Icon {...props} icon="pistol" /></>} title={preferenceTitles.db_gun[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                         <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
+                                            
+                                            {/* SAVE ARSENAL DB LOCALLY */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.saveArsenalDB[language]}</Text>
-                                                
-                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_gun_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.saveArsenalDB[language]}</Text>
+                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
+                                            
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                                            {/* SAVE ARSENAL CSV LOCALLY */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.shareArsenalDB[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="share-variant" onPress={()=>handleDbOperation("share_arsenal_gun_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.saveArsenalCSV[language]}</Text>
+                                                <IconButton icon="file-delimited-outline" onPress={()=>handleDbOperation("save_arsenal_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
+
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                                            
+                                            {/* IMPORT ARSENAL DB */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.saveArsenalCSV[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="floppy" onPress={()=>handleDbOperation("save_arsenal_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.importArsenalDB[language]}</Text>
+                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_arsenal_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
+
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                                            {/* IMPORT CUSTOM CSV */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.shareArsenalCSV[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="content-save-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="share-variant" onPress={()=>handleDbOperation("share_arsenal_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.importArsenalDB[language]}</Text>
-                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_arsenal_gun_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.importCustomCSV[language]}</Text>
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.importCustomCSV[language]}</Text>
                                                 <IconButton icon="application-import" onPress={()=>handleDbImport("import_custom_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
+
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                                            {/* IMPORT ARSENAL CSV */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                                                <Text style={{width: "80%"}}>{mainMenu_gunDatabase.importArsenalCSV[language]}</Text>
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.importArsenalCSV[language]}</Text>
                                                 <IconButton icon="application-import" onPress={()=>handleDbImport("import_arsenal_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                                            </View>                                        
+                                            </View>   
+
+                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                                            {/* IMPORT LEGACY ARSENAL JSON */}
+                                            <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
+                                                <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.importLegacyDB[language]}</Text>
+                                                <IconButton icon="application-import" onPress={()=>handleDbImport("import_legacy_db")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                                            </View>  
+
                                         </View>
                                     </View>
                                 </List.Accordion>
+
+                                {/* LISTS */ }
 
                                 <List.Accordion left={props => <><List.Icon {...props} icon="printer" /><List.Icon {...props} icon="pistol" /></>} title={preferenceTitles.gunList[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
@@ -989,6 +713,8 @@ export default function MainMenu({navigation}){
                                         </View>
                                     </View>
                                 </List.Accordion>
+
+                                {/* GENERAL SETTINGS */ }
    
                                 <List.Accordion left={props => <><List.Icon {...props} icon="cog-outline" /><List.Icon {...props} icon="tune" /></>} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
@@ -1026,6 +752,8 @@ export default function MainMenu({navigation}){
                                     </View>
                                 </List.Accordion>
 
+                                {/* STATISTICS */ }
+
                                 <List.Accordion left={props => <><List.Icon {...props} icon="chart-box-outline" /><List.Icon {...props} icon="chart-arc" /></>} title={preferenceTitles.statistics[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                                     <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.gunCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("guns"))}`}</Text></View>
@@ -1039,6 +767,8 @@ export default function MainMenu({navigation}){
                                     <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.roundCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("totalStock"))}`}</Text></View>
                                     </View>
                                 </List.Accordion>
+
+                                {/* ABOUT */ }
 
                                 <List.Accordion left={props => <><List.Icon {...props} icon="application-brackets-outline" /><List.Icon {...props} icon="cellphone-information" /></>} title={preferenceTitles.about[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                                     <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
@@ -1056,6 +786,7 @@ export default function MainMenu({navigation}){
                                         <Text>Splash & Icon: Designed by dgim-studio / Freepik</Text>
                                     </View>
                                 </List.Accordion>
+
                             </ScrollView>
                         </View>
                         <View style={{width: "100%", flex: 1, padding: 0, marginTop: 10, marginBottom: 10, elevation: 4, backgroundColor: theme.colors.primary}}>
@@ -1080,7 +811,14 @@ export default function MainMenu({navigation}){
                     {`${databaseImportAlert.title[language]}`}
                     </Dialog.Title>
                     <Dialog.Content>
-                        <Text>{`${databaseImportAlert.subtitle[language]}`}</Text>
+                        <Dropdown
+                            label={importExportSelectionLabel[language]}
+                            placeholder=""
+                            options={importOptionsLegacyDB}
+                            value={importOptionLegacyDB}
+                            onSelect={(value) => setImportOptionLegacyDB(value as "gun" | "ammo")}
+                        />
+                        <Text>{`\n${databaseImportAlert.subtitle[language]}`}</Text>
                     </Dialog.Content>
                     <Dialog.Actions>
                         <Button onPress={()=>handleDbOperation(dbOperation)} icon="application-import" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{databaseImportAlert.yes[language]}</Button>
@@ -1122,7 +860,7 @@ export default function MainMenu({navigation}){
 
             <Modal visible={dbModalVisible}>
                 <ActivityIndicator size="large" animating={true} />
-                <Text variant="bodyLarge" style={{width: "100%", textAlign: "center", color: theme.colors.onBackground, marginTop: 10, backgroundColor: theme.colors.background}}>{`${dbModalText}: ${importProgress}/${importSize}`}</Text>
+                <Text variant="bodyLarge" style={{width: "100%", textAlign: "center", color: theme.colors.onBackground, marginTop: 10, backgroundColor: theme.colors.background}}>{`${dbModalText}`}</Text>
             </Modal>
 
             <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
