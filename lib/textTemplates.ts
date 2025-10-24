@@ -1301,3 +1301,11 @@ export const shotLabel: SimpleTranslation = {
     it: "colpi",
     ch: "culps",
 }
+
+export const importExportSelectionLabel: SimpleTranslation = {
+    de: "Ausgewählte Datenbank",
+    en: "Selected database",
+    fr: "Base de données sélectionnée",
+    it: "Database selezionato",
+    ch: "Banca da datas tschernida",
+}
