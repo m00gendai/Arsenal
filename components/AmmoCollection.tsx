@@ -106,21 +106,21 @@ export default function AmmoCollection({navigation, route}){
     }, searchBannerVisible ? 400 : 50)
   }
 
-  const height = useSharedValue(ammoSearchVisible ? defaultSearchBarHeight : 0);
+  const FABheight = useSharedValue(ammoSearchVisible ? defaultSearchBarHeight : 0);
 
   const animatedStyle = useAnimatedStyle(() => {
 
     return {
-      height: height.value,
+      height: FABheight.value,
     };
   });
 
   const startAnimation = () => {
-    height.value = withTiming(defaultSearchBarHeight, { duration: 500 }); // 500 ms duration
+    FABheight.value = withTiming(defaultSearchBarHeight, { duration: 500 }); // 500 ms duration
   };
 
   const endAnimation = () => {
-    height.value = withTiming(0, { duration: 500 }); // 500 ms duration
+    FABheight.value = withTiming(0, { duration: 500 }); // 500 ms duration
   };
 
   const fabWidth = useSharedValue(1);
@@ -138,8 +138,18 @@ export default function AmmoCollection({navigation, route}){
     navigation.navigate("NewAmmo")
   }
 
+  const { width, height } = Dimensions.get("window");
+  const isLandscape = width > height;
+  
+  const numColumns = isLandscape ? 4 : displayAmmoAsGrid ? 2 : 1;
+  const listKey = isLandscape
+    ? "ammoCollectionGrid4"
+    : displayAmmoAsGrid
+    ? "ammoCollectionGrid2"
+    : "ammoCollectionList";
+
   return(
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: "transparent"}}>
       <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
         <View  style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
           <Appbar.Action icon={"menu"} onPress={()=>navigation.navigate("MainMenu")} />
@@ -171,36 +181,26 @@ export default function AmmoCollection({navigation, route}){
         </View>
       </Appbar>
       <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{ammoSearchVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQueryAmmoCollection} value={searchQueryAmmoCollection} /> : null}</Animated.View>
-      {displayAmmoAsGrid ? 
         <FlatList<AmmoType> 
-          numColumns={2} 
+          numColumns={numColumns} 
           initialNumToRender={10} 
           contentContainerStyle={{gap: defaultGridGap}}
-          columnWrapperStyle={{gap: defaultGridGap}} 
-          key={`ammoCollectionGrid`} 
-          style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
+          columnWrapperStyle={numColumns > 1 ? { gap: defaultGridGap } : undefined}
+          key={listKey} 
+          style={{
+            height: "100%", 
+            width: "100%", 
+            paddingTop: defaultViewPadding, 
+            paddingLeft: defaultViewPadding, 
+            paddingRight: defaultViewPadding, 
+            paddingBottom: 50}} 
           /*@ts-expect-error*/
           data={ammoData.filter(ammo => ammoFilterOn ? tagData.filter(tag => tag.active).every(tag => ammo.tags?.includes(tag.label)) : ammo)} 
-          renderItem={({item}) => <AmmoCard ammo={item} />}                     
+          renderItem={({item}: {item: AmmoType}) => <AmmoCard ammo={item} />}                     
           keyExtractor={ammo=>ammo.id} 
-          ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
+          ListFooterComponent={<View style={{width: "100%", height: 100}} />}
           ListEmptyComponent={null}
         />
-      :
-        <FlatList<AmmoType> 
-          numColumns={1} 
-          initialNumToRender={10} 
-          contentContainerStyle={{gap: defaultGridGap}}
-          key={`ammoCollectionList`} 
-          style={{height: "100%", width: "100%", paddingTop: defaultViewPadding, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: 50}} 
-          /*@ts-expect-error*/
-          data={ammoData.filter(ammo => ammoFilterOn ? tagData.filter(tag => tag.active).every(tag => ammo.tags?.includes(tag.label)) : ammo)} 
-          renderItem={({item}) => <AmmoCard ammo={item} />}             
-          keyExtractor={gun=>gun.id} 
-          ListFooterComponent={<View style={{width: "100%", height: 100}}></View>}
-          ListEmptyComponent={null}
-        />
-      }
       <BottomBar screen={route.name}/>
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, ammoCollection.length === 0 ? pulsate : null]}>
         <FAB
