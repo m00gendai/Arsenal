@@ -116,6 +116,12 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
     if(importOptionLegacyDB === "gun"){
         const importableType = importable as GunType
         const flatGun = {...importableType, ...importableType.status}
+
+        if(!Array.isArray(importableType.caliber)){
+            /*@ts-expect-error */
+            flatGun.caliber = importableType.caliber.split("\n")
+        }
+
         await db.insert(schema.gunCollection).values(flatGun)
     }
     if(importOptionLegacyDB === "ammo"){
