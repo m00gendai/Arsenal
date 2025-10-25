@@ -568,7 +568,7 @@ export default function MainMenu({navigation}){
             case "gunCollection":
                 try{
                     console.log("Im printing gun collection!")
-                await printGunCollection(gunCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList);
+                await printGunCollection(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
                 return
                 } catch(e){
                     alarm("printGunCollection Error", e)
@@ -576,7 +576,7 @@ export default function MainMenu({navigation}){
             case "gunCollectionArt5":
                 try{
                     console.log("Im printing gun collection art 5!")
-                   await printGunCollectionArt5(gunCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList);
+                   await printGunCollectionArt5(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
                     return
                 } catch(e){
                     alarm("printGunCollectioNArt5 Error", e)
@@ -712,12 +712,9 @@ export default function MainMenu({navigation}){
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                                                 <Text style={{width: "80%"}}>{preferenceTitles.printArt5[language]}</Text>
-                                                {gunCollection.length === 0 ?<Tooltip title={tooltips.noGunsAddedYet[language]}><IconButton icon="table-off" mode="contained" disabled /></Tooltip>
-                                                :
-                                                <IconButton icon="table-large" onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionArt5") : handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>}
+                                                <IconButton icon="table-large" onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionArt5") : handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>   
-                                            {/*<Button style={{width: "45%"}} icon="badge-account-outline" onPress={()=>printGunGallery(gunCollection, language)} mode="contained">{preferenceTitles.printGallery[language]}</Button>*/}
-
+                                            
                                         </View>
                                     </View>
                                 </List.Accordion>
