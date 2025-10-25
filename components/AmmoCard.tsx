@@ -19,6 +19,7 @@ import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from '
 
 interface Props{
     ammo: AmmoType
+    index?: number
 }
 
 export default function AmmoCard({ammo}:Props){
@@ -70,7 +71,7 @@ export default function AmmoCard({ammo}:Props){
 
 
     return(
-        <>
+        <View>
         <TouchableNativeFeedback 
                 key={ammo.id} 
                 onPress={()=>handleAmmoCardPress(ammo)}
@@ -99,7 +100,7 @@ export default function AmmoCard({ammo}:Props){
                 subtitleNumberOfLines={2}
             />
             {displayAmmoAsGrid ? 
-            <>
+            <View>
                 <Card.Cover 
                     source={ammo.images && ammo.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${ammo.images[0].split("/").pop()}` } : require(`../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`)} 
                     style={{
@@ -121,7 +122,7 @@ export default function AmmoCard({ammo}:Props){
                         {ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(ammo.currentStock)) : "- - -" }
                     </Badge>
                 </TouchableRipple>                
-            </>
+            </View>
             : 
             null}
             {displayAmmoAsGrid ? 
@@ -204,6 +205,6 @@ export default function AmmoCard({ammo}:Props){
                     </Dialog>
                 </Portal>      
 
-    </>
+    </View>
     )
 }
