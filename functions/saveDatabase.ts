@@ -3,17 +3,17 @@ import * as FileSystem from "expo-file-system";
 import JSZip from "jszip";
 import { db } from "../db/client";
 import * as schema from "../db/schema";
-import { GunType } from "../interfaces";
+import { AmmoType, GunType } from "../interfaces";
 import { count } from "drizzle-orm";
+import { DB_NAME, ZIP_NAME } from "../configs_DB";
 
 export default async function saveDatabase(
-  importProgress:number, 
   setImportSize:(num:number)=>void, 
   setImportProgress:(num:number)=>void,
   resetImportProgress:(num:number)=>void
 ) {
-  const ZIP_NAME = "ArsenalDB";
-  const DB_NAME = "Arsenal.db"
+
+  let importProgress = 0
 
   try {
     // Ask user to select a folder
@@ -43,26 +43,62 @@ export default async function saveDatabase(
 
     // 3. Add images folder and content
     const imagesFolder = zip.folder("images");
-    const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
-    const collectionSize = await db.select({ count: count() }).from(schema.gunCollection)
-    setImportSize(collectionSize[0].count)
-    resetImportProgress(0)
-    for (const gun of gunsWithImages) {
-      if (gun.images?.length) {
-        for (const imagePath of gun.images) {
-          const fileName = imagePath.split("/").pop();
-          const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
-          const fileInfo = await FileSystem.getInfoAsync(sourceUri);
-          if (fileInfo.exists) {
-            const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-            imagesFolder.file(fileName!, imageContent, { base64: true });
+    const imagesFolder_Guns = imagesFolder.folder("gun")
+    const imagesFolder_Ammo = imagesFolder.folder("ammo")
+
+    // Handling GunCollection
+    try{
+      const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
+      const gunCollectionSize = await db.select({ count: count() }).from(schema.gunCollection)
+      setImportSize(gunCollectionSize[0].count)
+      importProgress = 0
+      for (const gun of gunsWithImages) {
+        if (gun.images?.length) {
+          for (const imagePath of gun.images) {
+            const fileName = imagePath.split("/").pop();
+            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
+            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
+            if (fileInfo.exists) {
+              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
+                encoding: FileSystem.EncodingType.Base64,
+              });
+              imagesFolder_Guns.file(fileName!, imageContent, { base64: true });
+            }
           }
         }
+        setImportProgress(importProgress+1)
       }
-      setImportProgress(importProgress+1)
+    } catch(e){
+      throw new Error("Save DB GunCollection: ", e)
     }
+    
+
+    // Handling Ammo
+    try{
+      const ammoWithImages = await db.select().from(schema.ammoCollection) as AmmoType[]
+      const ammoCollectionSize = await db.select({ count: count() }).from(schema.ammoCollection)
+      setImportSize(ammoCollectionSize[0].count)
+      importProgress = 0
+      for (const ammo of ammoWithImages) {
+        if (ammo.images?.length) {
+          for (const imagePath of ammo.images) {
+            const fileName = imagePath.split("/").pop();
+            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
+            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
+            if (fileInfo.exists) {
+              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
+                encoding: FileSystem.EncodingType.Base64,
+              });
+              imagesFolder_Ammo.file(fileName!, imageContent, { base64: true });
+            }
+          }
+        }
+        setImportProgress(importProgress+1)
+      }
+    }catch(e){
+      throw new Error("Save DB AmmoCollection: ", e)
+    }
+    
 
     // 4. Generate ZIP as base64
     const zipContent = await zip.generateAsync({
