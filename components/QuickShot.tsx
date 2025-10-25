@@ -32,8 +32,7 @@ export default function QuickShot({navigation}){
 
       async function saveNewStock(id: string, count:number){
         const date:Date = new Date()
-        /*@ts-expect-error*/
-        await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt: date.getTime()}).where(eq(schema.ammoCollection.id, id))
+        await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, id))
         
             
     
@@ -51,9 +50,9 @@ export default function QuickShot({navigation}){
 
         if (shotCountFromStock.length !== 0) {
          for (const count of Object.entries(shotCountFromStock)){
-          console.log(count)
+
           const ammo = await db.selectDistinct().from(schema.ammoCollection).where(eq(schema.ammoCollection.id, count[0]))
-          console.log(ammo)
+
           const newStock = parseInt(ammo[0].currentStock) - (count[1] === "" ? 0 : parseInt(count[1]))
           await saveNewStock(ammo[0].id, newStock)
          }
@@ -76,7 +75,7 @@ export default function QuickShot({navigation}){
           [`${ammoId}`]: newValue
         }));
       };
-      
+
   
 
 return(
