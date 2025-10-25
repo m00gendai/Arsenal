@@ -25,14 +25,19 @@ export default async function importDatabase() {
         // Handle Gun Collection
         try{
           const collection = cacheDBopen.select().from(schema.gunCollection).all()
+          const tags = cacheDBopen.select().from(schema.gunTags).all()
           try{
-            await db.delete(schema.gunCollection);
+            await db.delete(schema.gunCollection)
+            await db.delete(schema.gunTags)
           }catch(e){
             throw new Error("gunCollection: DB Delete failed", e)
           }
 
           for(const item of collection){
             await db.insert(schema.gunCollection).values(item);
+          }
+          for(const item of tags){
+            await db.insert(schema.gunTags).values(item);
           }
         }catch(e){
           throw new Error("gunCollection: ", e)
@@ -41,15 +46,19 @@ export default async function importDatabase() {
         // Handle Ammo Collection
         try{
           const collection = cacheDBopen.select().from(schema.ammoCollection).all()
-        
+          const tags = cacheDBopen.select().from(schema.ammoTags).all()
           try{
             await db.delete(schema.ammoCollection);
+            await db.delete(schema.ammoTags)
           }catch(e){
             throw new Error("ammoCollection: DB Delete failed", e)
           }
 
           for(const item of collection){
             await db.insert(schema.ammoCollection).values(item);
+          }
+          for(const item of tags){
+            await db.insert(schema.ammoTags).values(item);
           }
         }catch(e){
           throw new Error("ammoCollection: ", e)
