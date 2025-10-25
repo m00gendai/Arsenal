@@ -4,9 +4,15 @@ import JSZip from "jszip";
 import { db } from "../db/client";
 import * as schema from "../db/schema";
 import { GunType } from "../interfaces";
+import { count } from "drizzle-orm";
 
-export default async function saveDatabase() {
-  const ZIP_NAME = "ArsenalDB.arm";
+export default async function saveDatabase(
+  importProgress:number, 
+  setImportSize:(num:number)=>void, 
+  setImportProgress:(num:number)=>void,
+  resetImportProgress:(num:number)=>void
+) {
+  const ZIP_NAME = "ArsenalDB";
   const DB_NAME = "Arsenal.db"
 
   try {
@@ -38,7 +44,9 @@ export default async function saveDatabase() {
     // 3. Add images folder and content
     const imagesFolder = zip.folder("images");
     const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
-
+    const collectionSize = await db.select({ count: count() }).from(schema.gunCollection)
+    setImportSize(collectionSize[0].count)
+    resetImportProgress(0)
     for (const gun of gunsWithImages) {
       if (gun.images?.length) {
         for (const imagePath of gun.images) {
@@ -53,6 +61,7 @@ export default async function saveDatabase() {
           }
         }
       }
+      setImportProgress(importProgress+1)
     }
 
     // 4. Generate ZIP as base64

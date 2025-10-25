@@ -108,7 +108,7 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
-                    await saveDatabase().then(()=>{
+                    await saveDatabase(importProgress, setImportSize, setImportProgress, resetImportProgress).then(()=>{
                         dbSaveSuccess()
                     })
                 }
@@ -860,7 +860,9 @@ export default function MainMenu({navigation}){
 
             <Modal visible={dbModalVisible}>
                 <ActivityIndicator size="large" animating={true} />
-                <Text variant="bodyLarge" style={{width: "100%", textAlign: "center", color: theme.colors.onBackground, marginTop: 10, backgroundColor: theme.colors.background}}>{`${dbModalText}`}</Text>
+                <Text variant="bodyLarge" style={{width: "100%", textAlign: "center", color: theme.colors.onBackground, marginTop: 10, backgroundColor: theme.colors.background}}>
+                    {`${dbModalText}: ${useImportExportStore.getState().importProgress}/${useImportExportStore.getState().importSize}`}
+                </Text>
             </Modal>
 
             <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
