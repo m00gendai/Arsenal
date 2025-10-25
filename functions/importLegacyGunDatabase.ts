@@ -1,6 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import { GunType } from '../interfaces';
+import { AmmoType, GunType } from '../interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
 import { manipulateAsync } from "expo-image-manipulator"
 import { expo, db } from "../db/client"
@@ -20,17 +20,40 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
     }
 
     const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
-    let guns:GunType[]
-    try{
-        guns = JSON.parse(content)
-    }catch(e){
-        throw new Error(`JSON parsing gunDB: ${e}`)
+
+    let importables:GunType[] | AmmoType[]
+    try {
+        importables = JSON.parse(content)
+    } catch(e) {
+        // This tries to fix any malformed JSON
+        try {
+            let tryParse = content.trim();
+            
+            // Remove outer brackets if present
+            if (tryParse.startsWith('[')) {
+                tryParse = tryParse.slice(1);
+            }
+            if (tryParse.endsWith(']')) {
+                tryParse = tryParse.slice(0, -1);
+            }
+            
+            // Remove any trailing commas
+            tryParse = tryParse.trim().replace(/,\s*$/, '');
+            
+            // Fix missing commas between objects
+            tryParse = tryParse.replace(/}\s*{/g, '},{');
+            
+            const jsonString = '[' + tryParse + ']';
+            importables = JSON.parse(jsonString);
+        } catch(e) {
+            throw new Error(`JSON parsing ${importOptionLegacyDB}DB_: ${e}`)
+        }
     }
 
     const importTags:{label:string, status:boolean}[] = []
-    const importableGunCollection:GunType[] = await Promise.all(guns.map(async gun=>{
-        if(gun.images !== null && gun.images.length !== 0){
-            const base64images:string[] = await Promise.all(gun.images.map(async (image, index) =>{
+    const importableCollection:GunType[] | AmmoType[] = await Promise.all(importables.map(async importable=>{
+        if(importable.images !== null && importable.images.length !== 0){
+            const base64images:string[] = await Promise.all(importable.images.map(async (image, index) =>{
                 const base64ImageUri = `data:image/jpeg;base64,${image}`;
                 const dimensions = await getImageSize(base64ImageUri) as {width: number, height: number}
                 // Resize the image
@@ -60,43 +83,56 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
                 ) 
 
                 const base64Image = resizedImage.base64;
-                const fileUri = FileSystem.documentDirectory + `${sanitizeFileName(gun.id)}_image_${index}.jpg`;
+                const fileUri = FileSystem.documentDirectory + `${sanitizeFileName(importable.id)}_image_${index}.jpg`;
                 await FileSystem.writeAsStringAsync(fileUri, base64Image, {
                     encoding: FileSystem.EncodingType.Base64,
                 })
                 return fileUri
             }))
-            const importableGun:GunType = {...gun, images: base64images}
-            if(gun.tags !== undefined && gun.tags.length !== 0){
-                for(const tag of gun.tags){
+            const importableItem:GunType | AmmoType = {...importable, images: base64images}
+            if(importable.tags !== undefined && importable.tags.length !== 0){
+                for(const tag of importable.tags){
                     if(!importTags.some(importTag => importTag.label === tag)){
                         importTags.push({label: tag, status: true})
                     }
                 }
             }
-            return importableGun
+            return importableItem
         } else {
-            if(gun.tags !== undefined && gun.tags.length !== 0){
-                for(const tag in gun.tags){
+            if(importable.tags !== undefined && importable.tags.length !== 0){
+                for(const tag in importable.tags){
                     if(!importTags.some(importTag => importTag.label === tag)){
                         importTags.push({label: tag, status: true})
                     }
                 }
             }
-            return gun
+            return importable
         }
     }))
 
     await db.delete(schema.gunCollection);
 
-   for(const gun of importableGunCollection){
-    const flatGun = {...gun, ...gun.status}
-    await db.insert(schema.gunCollection).values(flatGun)
+   for(const importable of importableCollection){
+    if(importOptionLegacyDB === "gun"){
+        const importableType = importable as GunType
+        const flatGun = {...importableType, ...importableType.status}
+        await db.insert(schema.gunCollection).values(flatGun)
+    }
+    if(importOptionLegacyDB === "ammo"){
+        const importableType = importable as AmmoType
+        await db.insert(schema.ammoCollection).values(importableType)
+    }
+    
    }
 
    for(const tag of importTags){
-    await db.insert(schema.gunTags).values({label: tag.label}).onConflictDoNothing()
+    if(importOptionLegacyDB === "gun"){
+        await db.insert(schema.gunTags).values({label: tag.label}).onConflictDoNothing()
+    }
+    if(importOptionLegacyDB === "ammo"){
+        await db.insert(schema.ammoTags).values({label: tag.label}).onConflictDoNothing()
+    }
    }
 
-   return importableGunCollection.length
+   return importableCollection.length
 }
