@@ -108,7 +108,7 @@ export default function MainMenu({navigation}){
             setDbModalText(databaseOperations.export[language])
             try{
                 if(Platform.OS === "android"){
-                    await saveDatabase(importProgress, setImportSize, setImportProgress, resetImportProgress).then(()=>{
+                    await saveDatabase(setImportSize, setImportProgress, resetImportProgress).then(()=>{
                         dbSaveSuccess()
                     })
                 }
