@@ -113,6 +113,7 @@ export default function MainMenu({navigation}){
                     })
                 }
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -133,6 +134,7 @@ export default function MainMenu({navigation}){
                     })
                 }*/}
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -147,6 +149,7 @@ export default function MainMenu({navigation}){
                 }
              
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -158,6 +161,7 @@ export default function MainMenu({navigation}){
                     dbImportSuccess(data)
                 })
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -169,6 +173,7 @@ export default function MainMenu({navigation}){
                     dbImportSuccess(data)
                 })
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -180,6 +185,7 @@ export default function MainMenu({navigation}){
                     dbImportSuccess(data)
                 })
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -191,6 +197,7 @@ export default function MainMenu({navigation}){
                     dbImportSuccess(data)
                 })
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -202,6 +209,7 @@ export default function MainMenu({navigation}){
                     dbImportSuccess(data)
                 })
             }catch(e){
+                setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
             }
         }
@@ -810,14 +818,14 @@ export default function MainMenu({navigation}){
                     <Dialog.Title>
                     {`${databaseImportAlert.title[language]}`}
                     </Dialog.Title>
-                    <Dialog.Content>
-                        <Dropdown
+                     <Dialog.Content>
+                        {dbOperation === "import_legacy_db" ? <Dropdown
                             label={importExportSelectionLabel[language]}
                             placeholder=""
                             options={importOptionsLegacyDB}
                             value={importOptionLegacyDB}
                             onSelect={(value) => setImportOptionLegacyDB(value as "gun" | "ammo")}
-                        />
+                        /> : null}
                         <Text>{`\n${databaseImportAlert.subtitle[language]}`}</Text>
                     </Dialog.Content>
                     <Dialog.Actions>
