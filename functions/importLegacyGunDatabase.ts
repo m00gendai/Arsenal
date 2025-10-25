@@ -90,7 +90,8 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
     await db.delete(schema.gunCollection);
 
    for(const gun of importableGunCollection){
-    await db.insert(schema.gunCollection).values(gun)
+    const flatGun = {...gun, ...gun.status}
+    await db.insert(schema.gunCollection).values(flatGun)
    }
 
    for(const tag of importTags){
