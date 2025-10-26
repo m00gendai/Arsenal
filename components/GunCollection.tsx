@@ -18,6 +18,7 @@ import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import FilterMenu from './FilterMenu';
 import BottomBar from './BottomBar';
+import sortGunCollection from '../functions/sortGunCollection';
 
 export default function GunCollection({navigation, route}){
 
@@ -41,24 +42,7 @@ export default function GunCollection({navigation, route}){
         ),
       )
     )
-    .orderBy(
-      sortGunsAscending ?
-        sortBy === "alphabetical" ?
-          asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
-          : (sql`
-            CASE
-              WHEN NULLIF(${schema.gunCollection[sortBy]}, "") IS NULL THEN NULL
-              ELSE strftime('%s', ${schema.gunCollection[sortBy]})
-            END ASC NULLS LAST`)
-        :
-        sortBy === "alphabetical" ?
-          desc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
-          : (sql`
-            CASE
-                WHEN NULLIF(${schema.gunCollection[sortBy]}, "") IS NULL THEN NULL
-                ELSE strftime('%s', ${schema.gunCollection[sortBy]})
-              END DESC NULLS LAST`)
-    ),
+    .orderBy(sortGunCollection(sortGunsAscending, sortBy)),
     [searchQuery, sortGunsAscending, sortBy]
   )
 
