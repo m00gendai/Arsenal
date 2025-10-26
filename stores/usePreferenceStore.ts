@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypes} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo} from "../interfaces"
 
 interface GeneralSettings{
   displayImagesInListViewGun: boolean
@@ -21,15 +21,15 @@ interface PreferenceStore {
     displayAsGrid: boolean
     setDisplayAsGrid: (status: boolean) => void
     toggleDisplayAsGrid: () => void
-    sortBy: SortingTypes
-    setSortBy: (type: SortingTypes) => void
+    sortBy: SortingTypesGun
+    setSortBy: (type: SortingTypesGun) => void
     ammoDbImport: Date
     setAmmoDbImport: (date: Date) => void
     displayAmmoAsGrid: boolean
     setDisplayAmmoAsGrid: (status: boolean) => void
     toggleDisplayAmmoAsGrid: () => void
-    sortAmmoBy: SortingTypes
-    setSortAmmoBy: (type: SortingTypes) => void
+    sortAmmoBy: SortingTypesAmmo
+    setSortAmmoBy: (type: SortingTypesAmmo) => void
     generalSettings: GeneralSettings
     setGeneralSettings: (settings: GeneralSettings) => void
     sortAmmoIcon: string
@@ -63,14 +63,14 @@ interface PreferenceStore {
     setDisplayAsGrid: (status: boolean) => set((state) => ({displayAsGrid: status})),
     toggleDisplayAsGrid: () => set((state) => ({displayAsGrid: !state.displayAsGrid})),
     sortBy: "alphabetical",
-    setSortBy: (type: SortingTypes) => set((state) => ({sortBy: type})),
+    setSortBy: (type: SortingTypesGun) => set((state) => ({sortBy: type})),
     ammoDbImport: null,
     setAmmoDbImport: (date: Date) => set((state) => ({ammoDbImport: date})),
     displayAmmoAsGrid: true,
     setDisplayAmmoAsGrid: (status: boolean) => set((state) => ({displayAmmoAsGrid: status})),
     toggleDisplayAmmoAsGrid: () => set((state) => ({displayAmmoAsGrid: !state.displayAmmoAsGrid})),
     sortAmmoBy: "alphabetical",
-    setSortAmmoBy: (type: SortingTypes) => set((state) => ({sortAmmoBy: type})),
+    setSortAmmoBy: (type: SortingTypesAmmo) => set((state) => ({sortAmmoBy: type})),
     sortAmmoIcon: "alphabetical-variant",
     setSortAmmoIcon: (data: string) => set((state) => ({sortAmmoIcon: data})),
     sortGunIcon: "alphabetical-variant",

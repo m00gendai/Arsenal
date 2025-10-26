@@ -4,8 +4,8 @@ import { Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
 import { Appbar, FAB, Menu, Switch, Text, Tooltip, Searchbar, Button, Icon } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from '../configs';
 import { PREFERENCES } from "../configs_DB"
-import { GunType, MenuVisibility, SortingTypes } from '../interfaces';
-import { getIcon, getSortAlternateValue } from '../utils';
+import { GunType, MenuVisibility, SortingTypesGun } from '../interfaces';
+import { getIcon } from '../utils';
 import { useViewStore } from '../stores/useViewStore';
 import { useGunStore } from '../stores/useGunStore';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
@@ -53,7 +53,7 @@ export default function GunCollection({navigation, route}){
 
 
 
-  async function handleSortBy(type: SortingTypes){
+  async function handleSortBy(type: SortingTypesGun){
     setSortGunIcon(getIcon(type))
     setSortBy(type)
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)

@@ -1,10 +1,8 @@
 import * as schema from "../db/schema"
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
-import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import { SortingTypes } from "../interfaces";
+import { SortingTypesGun } from "../interfaces";
 
-export default function sortGunCollection(ascending:boolean, sortBy:SortingTypes){
+export default function sortGunCollection(ascending:boolean, sortBy:SortingTypesGun){
 
     const parseDateColumn = (column) => sql`
         CAST(
