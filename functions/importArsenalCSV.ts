@@ -65,13 +65,25 @@ export default async function importArsenalCSV(data:"gun"|"ammo"){
                     blooptoob: item.blooptoob,
                     grandfather: item.grandfather,
                 }
-                if(readyItem.model === "P226"){
-                    console.log(readyItem)
-                }
                 return readyItem
             }
             if(data === "ammo"){
-                const readyItem = {...importableItem, tags: filterEmptyTags} as AmmoType
+                const item = unitem as AmmoType
+                const readyItem:AmmoType = {...importableItem as AmmoType, 
+                    id: item.id,
+                    createdAt: item.createdAt === null ? new Date().getTime() : item.createdAt,
+                    lastModifiedAt: item.lastModifiedAt,
+                    manufacturer: item.manufacturer,
+                    designation: item.designation,
+                    originCountry: item.originCountry,
+                    caliber: item.caliber,
+                    headstamp: item.headstamp,
+                    currentStock: item.currentStock,
+                    lastTopUpAt: item.lastTopUpAt,
+                    criticalStock: item.criticalStock,
+                    tags: item.tags,
+                    images: []
+                }
                 return readyItem
             }
             return null
