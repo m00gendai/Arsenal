@@ -686,11 +686,11 @@ export default function MainMenu({navigation}){
                     {`${databaseImportAlert.title[language]}`}
                     </Dialog.Title>
                      <Dialog.Content>
-                        {dbOperation === "import_legacy_db" || "import_arsneal_csv" ? <Dropdown
+                        {dbOperation === "import_legacy_db" || dbOperation === "import_arsenal_csv" ? <Dropdown
                             label={importExportSelectionLabel[language]}
                             placeholder=""
                             options={dbOperation === "import_legacy_db" ? importOptionsLegacyDB : importOptions}
-                            value={dbOperation === "import_legacy_db" ? importOption : importOptionLegacyDB }
+                            value={dbOperation === "import_legacy_db" ? importOptionLegacyDB : importOption  }
                             onSelect={(value) => dbOperation === "import_legacy_db" ? setImportOptionLegacyDB(value as "gun" | "ammo") : setImportOption(value as "gun" | "ammo")}
                         /> : null}
                         <Text>{`\n${databaseImportAlert.subtitle[language]}`}</Text>
