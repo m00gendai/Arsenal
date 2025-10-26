@@ -137,7 +137,7 @@ export interface CommonStyles {
   tagContainerGap: string
 }
 
-export type SortingTypes =  "alphabetical" | 
+export type SortingTypesGun =  "alphabetical" | 
                             "createdAt" | 
                             "lastModifiedAt" | 
                             "caliber" | 
@@ -146,6 +146,14 @@ export type SortingTypes =  "alphabetical" |
                             "acquisitionDate" | 
                             "lastCleanedAt" |
                             "lastShotAt"
+
+export type SortingTypesAmmo = "alphabetical" |
+                            "createdAt" |
+                            "lastModifiedAt" |
+                            "currentStock" |
+                            "lastTopUpAt"
+
+
                             
 export type Languages = "de" | "en" | "fr" | "it" | "ch"
 export type CaliberArray = {id: string, amount: string }
