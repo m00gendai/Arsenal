@@ -70,16 +70,30 @@ const getTranslation = (key: string, language: string): string => {
 
   function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
     if(!shortCaliber){
-      return calibers
+      return Array.isArray(calibers) ? calibers : [calibers]
     }
-    const outputArray = calibers.map(item => {
+    console.log(calibers)
+    let outputArray
+    if(!Array.isArray(calibers)){
+      console.log("no arrey")
+       // Find an object where displayName matches the item
+        const match = displayNames.find(obj => obj.name === calibers)
+        // If a match is found, return the displayName, else return the original item as an Array
+        outputArray = match ? [match.displayName] : [calibers];
+        console.log(outputArray)
+        console.log("now is arrey")
+    }
+    if(Array.isArray(calibers)){
+      outputArray = calibers.map(item => {
         // Find an object where displayName matches the item
         const match = displayNames.find(obj => obj.name === item)
         // If a match is found, return the displayName, else return the original item
         return match ? match.displayName : item;
-    });
-    return outputArray
-}
+      });
+    }
+      console.log(outputArray)
+      return outputArray
+    }
 
 function getShortCaliberNameFromString(calibers:string, displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
   if(!shortCaliber){
@@ -296,13 +310,10 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
         margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
         base64: true
       });
-      console.log(file.uri);
       await shareAsync(file.uri);
     } else if(Platform.OS === "android"){
-      console.log("android")
       const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
       const cUri = await FileSystem.getContentUriAsync(uri)
-      console.log('File has been saved to:', uri);
       await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
           data: cUri,
           flags: 1,
@@ -494,13 +505,10 @@ export async function printSingleAmmo(ammo:AmmoType, language: string, shortCali
       margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
       base64: true
     });
-    console.log(file.uri);
     await shareAsync(file.uri);
   } else if(Platform.OS === "android"){
-    console.log("android")
     const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
     const cUri = await FileSystem.getContentUriAsync(uri)
-    console.log('File has been saved to:', uri);
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
         data: cUri,
         flags: 1,
@@ -681,7 +689,7 @@ return(
 
       // On iOS/android prints the given html. On web prints the HTML from the current page.
       const { uri } = await Print.printToFileAsync({html, height:842, width:595});
-      console.log('File has been saved to:', uri);
+    
      
      // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
      FileSystem.getContentUriAsync(uri).then(cUri => {
@@ -827,7 +835,6 @@ const guns = gunCollection.sort((a, b) =>{
   console.log("begin printing gun collection")
        
   if (Platform.OS === 'ios') {
-    console.log("ios")
     const file = await Print.printToFileAsync({
       html: html,
       height:595, 
@@ -835,13 +842,10 @@ const guns = gunCollection.sort((a, b) =>{
       margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
       base64: true
     });
-    console.log(file.uri);
     await shareAsync(file.uri);
   } else if(Platform.OS === "android"){
-    console.log("android")
     const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
     const cUri = await FileSystem.getContentUriAsync(uri)
-    console.log('File has been saved to:', uri);
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
         data: cUri,
         flags: 1,
@@ -855,7 +859,7 @@ console.log("HELLO THIS IS GUN COLLECTION ART 5")
 
 const gunCollection = db.select().from(schema.gunCollection).all()
 const gunHasArt5Key = gunCollection.filter(gun => {return art5Keys.some(art5 => gun[art5] === true)})
-console.log(gunHasArt5Key.map(gun => gun.model))
+
 const guns = gunHasArt5Key.sort((a, b) =>{
   const x = a.manufacturer
   const y = b.manufacturer
@@ -900,7 +904,6 @@ const guns = gunHasArt5Key.sort((a, b) =>{
                 : !(data.name in gun) && !excludedKeys.includes(data.name) ? 
                   `<td></td>`
                 : null}).join("")}${checkBoxes.map(box => {
-                  console.log(`${gun.model}: ${box.name}: ${gun[box.name]}`)
                   return gun[box.name] === true ? 
                     `<td class="xcell">X</td>` 
                   : `<td class="hidden"> </td>`}).join("")}
@@ -1006,13 +1009,10 @@ const guns = gunHasArt5Key.sort((a, b) =>{
       margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
       base64: true
     });
-    console.log(file.uri);
     await shareAsync(file.uri);
   } else if(Platform.OS === "android"){
-    console.log("android")
     const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
     const cUri = await FileSystem.getContentUriAsync(uri)
-    console.log('File has been saved to:', uri);
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
         data: cUri,
         flags: 1,
@@ -1196,7 +1196,7 @@ export async function printGunGallery(guns:GunType[], language: string){
 
         // On iOS/android prints the given html. On web prints the HTML from the current page.
         const { uri } = await Print.printToFileAsync({html, height:842, width:595});
-        console.log('File has been saved to:', uri);
+     
        
        // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
        FileSystem.getContentUriAsync(uri).then(cUri => {
@@ -1335,12 +1335,12 @@ console.log("HELLO THIS IS AMMO COLLECTION")
           margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
           base64: true
         });
-        console.log(file.uri);
+      
         await shareAsync(file.uri);
       } else if(Platform.OS === "android"){
-        console.log("android")
+       
         const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
-        console.log('File has been saved to:', uri);
+        
         const cUri = await FileSystem.getContentUriAsync(uri)
         await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
           data: cUri,
