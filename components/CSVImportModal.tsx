@@ -1,28 +1,26 @@
-import { Checkbox, Divider, IconButton, Modal, Text } from "react-native-paper"
+import { Checkbox, Divider, IconButton, Text } from "react-native-paper"
 import { useViewStore } from "../stores/useViewStore"
 import { usePreferenceStore } from "../stores/usePreferenceStore"
-import { View, ScrollView, Dimensions, Platform } from "react-native"
+import { View, ScrollView, Platform } from "react-native"
 import { defaultViewPadding } from "../configs"
-import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE } from "../configs_DB"
-import { mainMenu_ammunitionDatabase, mainMenu_gunDatabase } from "../lib/Text/mainMenu_DatabaseOperations"
-import { ammoDataTemplate } from "../lib/ammoDataTemplate"
+import { mainMenu_DatabaseOperations } from "../lib/Text/mainMenu_DatabaseOperations"
+import { ammoDataTemplate, emptyAmmoObject } from "../lib/ammoDataTemplate"
 import { Picker } from "@react-native-picker/picker"
 import { useImportExportStore } from "../stores/useImportExportStore"
-import { AmmoType, GunType } from "../interfaces"
-import { exampleAmmoEmpty, exampleGunEmpty } from "../lib/examples"
+import { AmmoType, GunType, GunTypeStatus } from "../interfaces"
 import { v4 as uuidv4 } from 'uuid';
-import * as SecureStore from "expo-secure-store"
 import { useGunStore } from "../stores/useGunStore"
 import { useAmmoStore } from "../stores/useAmmoStore"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { gunDataTemplate } from "../lib/gunDataTemplate"
+import { emptyGunObject, gunDataTemplate } from "../lib/gunDataTemplate"
 import ModalContainer from "./ModalContainer"
 import { useState } from "react"
+import { db } from "../db/client"
+import * as schema from "../db/schema"
 
 
 export default function CSVImportModal(){
 
-    const { setDbModalVisible, importCSVVisible, toggleImportCSVVisible } = useViewStore()
+    const { importCSVVisible, toggleImportCSVVisible } = useViewStore()
     const { language, theme } = usePreferenceStore()
     const { CSVHeader, CSVBody, importProgress, setImportProgress, setImportSize, mapCSVAmmo, setMapCSVAmmo, mapCSVGun, setMapCSVGun, dbCollectionType, setDbCollectionType } = useImportExportStore()
     const { setGunCollection } = useGunStore()
@@ -31,13 +29,11 @@ export default function CSVImportModal(){
     const [hasHeaders, setHasHeaders] = useState<boolean>(true)
 
     async function setImportedCSV(){
-        if(dbCollectionType === ""){
-            return
-        }
+
         toggleImportCSVVisible()
         setImportSize(CSVBody.length)
         const indexMapCSV:{[key: string]: number}= {}
-        for(const entry of Object.entries(dbCollectionType === "import_custom_gun_csv" ? mapCSVGun : mapCSVAmmo)){
+        for(const entry of Object.entries(dbCollectionType === "gun" ? mapCSVGun : mapCSVAmmo)){
             indexMapCSV[entry[0]] = CSVHeader.indexOf(entry[1])
         }
         const usedIndexes:number[] = []
@@ -50,19 +46,19 @@ export default function CSVImportModal(){
         const itemsToBeMapped:string[][] = hasHeaders ? [...CSVBody] : [[...CSVHeader], ...CSVBody]
 
         const objects: (AmmoType | GunType)[] = itemsToBeMapped.map((items, index)=>{
-            const mapped:AmmoType | GunType = dbCollectionType === "import_custom_gun_csv" ? {...exampleGunEmpty} : {...exampleAmmoEmpty}
+            const mapped:AmmoType | GunType = dbCollectionType === "gun" ? {...emptyGunObject} : {...emptyAmmoObject}
 
             for(const entry of Object.entries(indexMapCSV)){
+                console.log(entry)
                 if(entry[0] === "id"){
                     mapped[entry[0]] = uuidv4()  
                 } else if(entry[0] === "tags"){
                     mapped[entry[0]] = []
                 } else if(entry[0] === "createdAt"){
-                    mapped[entry[0]] = entry[1] === -1 ? `${new Date().toISOString()}` : items[entry[1]]
+                    /* @ts-expect-error */
+                    mapped[entry[0]] = entry[1] === -1 ? new Date().toISOString() : items[entry[1]]
                 } else if(entry[0] === "caliber"){
                     mapped[entry[0]] = entry[1] === -1 ? "" : items[entry[1]] !== undefined ? items[entry[1]].split(", ") : items[entry[1]]
-                } else if(entry[0] === "status"){
-                    mapped[entry[0]] = entry[1] === -1 ? exampleGunEmpty.status : items[entry[1]]
                 } else {
                     mapped[entry[0]] = entry[1] === -1 ? "" : items[entry[1]]
                 }
@@ -79,15 +75,20 @@ export default function CSVImportModal(){
             return mapped
         })
 
-        let newKeys:string[] = []
-        
-        objects.map(value =>{
-            newKeys.push(value.id) // if its the first gun to be saved, create an array with the id of the gun. Otherwise, merge the key into the existing array
-            SecureStore.setItem(`${dbCollectionType === "import_custom_gun_csv" ? GUN_DATABASE : AMMO_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the gun
-        })
-    
-        await AsyncStorage.setItem(dbCollectionType === "import_custom_gun_csv" ? KEY_DATABASE : A_KEY_DATABASE, JSON.stringify(newKeys)) // Save the key object
-        dbCollectionType === "import_custom_gun_csv" ? setGunCollection(objects as GunType[]) : setAmmoCollection(objects as AmmoType[])
+        if(dbCollectionType ==="gun"){
+            await db.delete(schema.gunCollection);
+            for(const item of objects){
+                await db.insert(schema.gunCollection).values(item as GunType&GunTypeStatus)
+            }
+        }
+
+        if(dbCollectionType ==="ammo"){
+            await db.delete(schema.ammoCollection);
+            for(const item of objects){
+                await db.insert(schema.ammoCollection).values(item as AmmoType)
+            }
+        }
+  
         setDbCollectionType("")
         setMapCSVAmmo(null)
         setMapCSVGun(null)
@@ -95,11 +96,11 @@ export default function CSVImportModal(){
 
     return(
         <ModalContainer visible={importCSVVisible} setVisible={toggleImportCSVVisible}
-        title={dbCollectionType === "import_custom_gun_csv" ? mainMenu_gunDatabase.importCSVModalTitle[language] : mainMenu_ammunitionDatabase.importCSVModalTitle[language]}
-        subtitle={dbCollectionType === "import_custom_gun_csv" ? mainMenu_gunDatabase.importCSVModalText[language] : mainMenu_ammunitionDatabase.importCSVModalText[language]}
-        content={<View><View><Checkbox.Item mode="android" label={dbCollectionType === "import_custom_gun_csv" ? mainMenu_gunDatabase.importCSVModalCheckbox[language] : mainMenu_ammunitionDatabase.importCSVModalCheckbox[language]} status={hasHeaders ? "checked" : "unchecked"} onPress={()=>setHasHeaders(!hasHeaders)} /></View><ScrollView style={{padding: defaultViewPadding}}>
+        title={mainMenu_DatabaseOperations.importCSVModalTitle[language]}
+        subtitle={mainMenu_DatabaseOperations.importCSVModalText[language]}
+        content={<View><View><Checkbox.Item mode="android" label={mainMenu_DatabaseOperations.importCSVModalCheckbox[language]} status={hasHeaders ? "checked" : "unchecked"} onPress={()=>setHasHeaders(!hasHeaders)} /></View><ScrollView style={{padding: defaultViewPadding}}>
                 
-            {dbCollectionType === "import_custom_gun_csv" ? gunDataTemplate.map((gunItem, gunIndex)=>{
+            {dbCollectionType === "gun" ? gunDataTemplate.map((gunItem, gunIndex)=>{
                 return(
                     <View key={`mapperRow_${gunIndex}`} style={{width: "100%", display: "flex", flexDirection: "row", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between"}}>
                         <Text style={{width: "50%"}}>{gunItem.de}</Text>
@@ -116,7 +117,7 @@ export default function CSVImportModal(){
                 )
                 }) 
             :
-            dbCollectionType === "import_custom_ammo_csv" ? ammoDataTemplate.map((ammoItem, ammoIndex)=>{
+            dbCollectionType === "ammo" ? ammoDataTemplate.map((ammoItem, ammoIndex)=>{
 
                 return(
                     <View key={`mapperRow_${ammoIndex}`} style={{width: "100%", display: "flex", flexDirection: "row", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between"}}>
