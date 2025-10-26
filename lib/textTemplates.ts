@@ -1200,12 +1200,13 @@ export const caliberPickerStrings:CaliberPickerStrings = {
     }
 }
 
-interface StatisticItems{
+export interface StatisticItems{
     gunCount: SimpleTranslation
     gunPrice: SimpleTranslation
     gunValue: SimpleTranslation
     ammoCount: SimpleTranslation
     roundCount: SimpleTranslation
+    uniqueCalibers: SimpleTranslation
 }
 
 export const statisticItems:StatisticItems = {
@@ -1243,6 +1244,13 @@ export const statisticItems:StatisticItems = {
         fr: "Nombre de coups total",
         it: "Numero totale di cartucce",
         ch: "Dumber da patronas total",
+    },
+    uniqueCalibers: {
+        de: "Anzahl verschiedener Kaliber",
+        en: "Number of different calibers",
+        fr: "Nombre de calibres différents",
+        it: "Numero di calibri diversi",
+        ch: "Dumber da calibers differents",
     }
 }
 
