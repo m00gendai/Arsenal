@@ -4,7 +4,7 @@ import { Dimensions, FlatList, View } from 'react-native';
 import { Appbar, FAB, Menu, Switch, Text, Tooltip, Searchbar } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from '../configs';
 import { PREFERENCES } from "../configs_DB"
-import { AmmoType, MenuVisibility, SortingTypes } from '../interfaces';
+import { AmmoType, MenuVisibility, SortingTypesAmmo } from '../interfaces';
 import { getIcon } from '../utils';
 import { useViewStore } from '../stores/useViewStore';
 import { useAmmoStore } from '../stores/useAmmoStore';
@@ -20,6 +20,7 @@ import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import FilterMenu from './FilterMenu';
 import BottomBar from './BottomBar';
+import sortAmmoCollection from '../functions/sortAmmoCollection';
 
 export default function AmmoCollection({navigation, route}){
 
@@ -44,24 +45,7 @@ export default function AmmoCollection({navigation, route}){
         ),
       )
     )
-    .orderBy(
-      sortAmmoAscending ?
-        sortAmmoBy === "alphabetical" ?
-          asc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-          : (sql`
-            CASE
-              WHEN NULLIF(${schema.ammoCollection[sortAmmoBy]}, "") IS NULL THEN NULL
-              ELSE strftime('%s', ${schema.ammoCollection[sortAmmoBy]})
-            END ASC NULLS LAST`)
-        :
-        sortAmmoBy === "alphabetical" ?
-          desc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-          : (sql`
-            CASE
-                WHEN NULLIF(${schema.ammoCollection[sortAmmoBy]}, "") IS NULL THEN NULL
-                ELSE strftime('%s', ${schema.ammoCollection[sortAmmoBy]})
-              END DESC NULLS LAST`)
-    ),
+    .orderBy(sortAmmoCollection(sortAmmoBy, sortAmmoAscending)),
     [searchQuery, sortAmmoAscending, sortAmmoBy]
   )
 
@@ -70,7 +54,7 @@ export default function AmmoCollection({navigation, route}){
     .from(schema.ammoTags)
   )
   
-  async function handleSortBy(type:SortingTypes){
+  async function handleSortBy(type:SortingTypesAmmo){
     setSortAmmoIcon(getIcon(type))
     setSortAmmoBy(type)
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
@@ -176,6 +160,8 @@ export default function AmmoCollection({navigation, route}){
               <Menu.Item onPress={() => handleSortBy("alphabetical")} title={`${sorting.alphabetic[language]}`} leadingIcon={getIcon("alphabetical")}/>
               <Menu.Item onPress={() => handleSortBy("createdAt")} title={`${sorting.lastAdded[language]}`} leadingIcon={getIcon("createdAt")}/>
               <Menu.Item onPress={() => handleSortBy("lastModifiedAt")} title={`${sorting.lastModified[language]}`} leadingIcon={getIcon("lastModifiedAt")}/>
+              <Menu.Item onPress={() => handleSortBy("currentStock")} title={`${sorting.currentStock[language]}`} leadingIcon={getIcon("currentStock")}/>
+              <Menu.Item onPress={() => handleSortBy("lastTopUpAt")} title={`${sorting.lastTopUpAt[language]}`} leadingIcon={getIcon("lastTopUpAt")}/>
           </Menu>
           <Appbar.Action icon={sortAmmoAscending ? "arrow-up" : "arrow-down"} onPress={() => handleSortOrder()} />
         </View>
