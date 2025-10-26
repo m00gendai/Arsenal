@@ -153,8 +153,7 @@ export type DBOperations = "save_arsenal_db" |
                            "save_arsenal_csv" | 
                            "import_arsenal_db" |
                            "import_arsenal_csv" |
-                           "import_custom_gun_csv" | 
-                           "import_custom_ammo_csv" |  
+                           "import_custom_csv" | 
                            "import_legacy_db"
                            
                            
