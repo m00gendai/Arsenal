@@ -19,7 +19,7 @@ export default async function importDatabase() {
 
     const importDatabase = await FileSystem.getInfoAsync(`${FileSystem.cacheDirectory}${DB_NAME}`)
     if(importDatabase.exists){
-        const cacheDB = SQLite.openDatabaseSync(`${FileSystem.cacheDirectory}${DB_NAME}`)
+        const cacheDB = SQLite.openDatabaseSync(`${DB_NAME}`)
         const cacheDBopen = drizzle(cacheDB)
 
         // Handle Gun Collection
