@@ -459,6 +459,37 @@ export const databaseImportAlert:Alert = {
     }
 }
 
+export const databaseExportAlert:Alert = {
+    title: {
+        de: "Datenbank im CSV-Format exportieren",
+        en: "Export database to CSV format",
+        fr: "Exporter la base de données au format CSV",
+        it: "Esporta la banca dati in formato CSV",
+        ch: "Exportar la banca da datas en il format CSV",
+    },
+    subtitle: {
+        de: "Der Export im CSV Format erfolgt ohne Bilder",
+        en: "The export in CSV format only contains data, no images",
+        fr: "L'exportation au format CSV ne contient que des données, pas d'images",
+        it: "L'esportazione in formato CSV contiene solo i dati, non le immagini",
+        ch: "L'export en il format da CSV cuntegna mo datas, nagins maletgs",
+    },
+    yes: {
+        de: "Ja",
+        en: "Yes",
+        fr: "Oui",
+        it: "Sì",
+        ch: "Gea",
+    },
+    no: {
+        de: "Nein",
+        en: "No",
+        fr: "Non",
+        it: "No",
+        ch: "Na",
+    }
+}
+
 export const deleteTagFromListAlert:Alert = {
     title: {
         de: "Schlagwort wirklich löschen?",
