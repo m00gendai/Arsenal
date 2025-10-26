@@ -79,6 +79,8 @@ interface Sorting{
     acquisitionDate: SimpleTranslation
     lastCleaned: SimpleTranslation
     lastShot: SimpleTranslation
+    currentStock: SimpleTranslation
+    lastTopUpAt: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -948,6 +950,20 @@ export const sorting:Sorting = {
         it: "Ultimo sparo",
         ch: "L'ultim culp",        
     },
+    lastTopUpAt:{
+        de: "Zuletzt aufgestockt",     
+        en: "Last topped up",
+        fr: "dernier rempli",
+        it: "Ultimo rifornito",
+        ch: "Ultimas emplenidas",    
+    },
+    currentStock:{
+        de: "Aktuelle Menge",     
+        en: "Current quantity",
+        fr: "Quantité actuelle",
+        it: "Quantità attuale",
+        ch: "Quantitad actuala",    
+    }
 }
 
 export const search:SimpleTranslation = {
