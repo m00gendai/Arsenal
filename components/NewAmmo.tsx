@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker"
 import { useEffect, useState } from 'react';
 import * as SecureStore from "expo-secure-store"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ammoDataTemplate, ammoRemarks } from "../lib/ammoDataTemplate"
+import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "../lib/ammoDataTemplate"
 import NewText from "./NewText"
 import "react-native-get-random-values"
 import { v4 as uuidv4 } from 'uuid';
@@ -21,7 +21,6 @@ import { useViewStore } from '../stores/useViewStore';
 import NewChipArea from './NewChipArea';
 import { useAmmoStore } from '../stores/useAmmoStore';
 import * as FileSystem from 'expo-file-system';
-import { exampleAmmoEmpty } from '../lib/examples';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
 
@@ -35,8 +34,8 @@ export default function NewAmmo({navigation}){
     const [selectedImage, setSelectedImage] = useState<string[]>(currentAmmo ? currentAmmo.images : null)
     const [initCheck, setInitCheck] = useState<boolean>(true)
     const [granted, setGranted] = useState<boolean>(false)
-    const [ammoData, setAmmoData] = useState<AmmoType>(currentAmmo ? currentAmmo : exampleAmmoEmpty)
-    const [ammoDataCompare, setAmmoDataCompare] = useState<AmmoType>(currentAmmo ? currentAmmo : exampleAmmoEmpty)
+    const [ammoData, setAmmoData] = useState<AmmoType>(currentAmmo ? currentAmmo : emptyAmmoObject)
+    const [ammoDataCompare, setAmmoDataCompare] = useState<AmmoType>(currentAmmo ? currentAmmo : emptyAmmoObject)
     const [visible, setVisible] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string>("")
     const [saveState, setSaveState] = useState<boolean>(null)
