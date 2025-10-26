@@ -191,13 +191,12 @@ export default function MainMenu({navigation}){
                 alarm(`DB ops error ${data}`, e)
             }
         }
-        if(data === "import_custom_gun_csv"){
+        if(data === "import_custom_csv"){
             toggleImportModalVisible()
             setDbModalText(databaseOperations.import[language])
             try{
-                await importCSV(data).then(()=>{
-                    dbImportSuccess(data)
-                })
+                await importCSV(data)
+                dbImportSuccess(data)
             }catch(e){
                 setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
@@ -428,7 +427,7 @@ export default function MainMenu({navigation}){
         const bodyRows:string[][] = filteredForEmptyRow.toSpliced(0, 1)
         setCSVHeader(headerRow)
         setCSVBody(bodyRows)    
-        setDbCollectionType(data)
+        setDbCollectionType(importOption)
     }catch(e){
         alarm("Custom CSV Import File Error", e)
     }
@@ -574,7 +573,7 @@ export default function MainMenu({navigation}){
                                             {/* IMPORT CUSTOM CSV */}
                                             <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                                                 <Text style={{width: "80%"}}>{mainMenu_DatabaseOperations.importCustomCSV[language]}</Text>
-                                                <IconButton icon="table-large-plus" onPress={()=>handleDbImport("import_custom_gun_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                                                <IconButton icon="table-large-plus" onPress={()=>handleDbImport("import_custom_csv")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                                             </View>
 
                                             <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
@@ -686,7 +685,7 @@ export default function MainMenu({navigation}){
                     {`${databaseImportAlert.title[language]}`}
                     </Dialog.Title>
                      <Dialog.Content>
-                        {dbOperation === "import_legacy_db" || dbOperation === "import_arsenal_csv" ? <Dropdown
+                        {dbOperation === "import_legacy_db" || dbOperation === "import_arsenal_csv" || dbOperation === "import_custom_csv" ? <Dropdown
                             label={importExportSelectionLabel[language]}
                             placeholder=""
                             options={dbOperation === "import_legacy_db" ? importOptionsLegacyDB : importOptions}
