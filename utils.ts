@@ -1,4 +1,4 @@
-import { AmmoType, GunType, SortingTypes } from "./interfaces";
+import { AmmoType, GunType, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
 import { gunDataTemplate } from "./lib/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
 import { ammoDataTemplate } from "./lib/ammoDataTemplate";
@@ -8,32 +8,7 @@ import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
 
-const nonSetValue: number = 999999999999999
-
-export function getSortAlternateValue(sortBy:SortingTypes){
-    switch(sortBy){
-        case "alphabetical":
-            return ""
-        case "caliber":
-            return ""
-        case "acquisitionDate":
-            return nonSetValue
-        case "createdAt":
-            return schema.gunCollection.createdAt
-        case "lastCleanedAt":
-            return nonSetValue
-        case "lastModifiedAt":
-            return schema.gunCollection.createdAt
-        case "lastShotAt":
-            return nonSetValue
-        case "marketValue":
-            return nonSetValue
-        case "paidPrice":
-            return nonSetValue
-    }
-}
-
-export function getIcon(type:SortingTypes){
+export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
     switch(type){
         case "alphabetical":
             return "alphabetical-variant"
@@ -51,6 +26,10 @@ export function getIcon(type:SortingTypes){
             return "toothbrush"
         case "lastShotAt":
             return "bullseye"
+        case "currentStock":
+            return "counter"
+        case "lastTopUpAt":
+            return "basket-plus-outline"
         default:
             return "alphabetical-variant"
     }
