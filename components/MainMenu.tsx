@@ -1,43 +1,40 @@
-import { ScrollView, TouchableNativeFeedback, View, Image, Platform, Dimensions } from "react-native"
-import Animated, { LightSpeedInLeft, LightSpeedOutLeft } from "react-native-reanimated"
+import { ScrollView, TouchableNativeFeedback, View, Platform, Dimensions } from "react-native"
 import { useViewStore } from "../stores/useViewStore"
-import { ActivityIndicator, Button, Dialog, Divider, Icon, IconButton, List, Modal, Portal, Snackbar, Switch, Text, Tooltip } from "react-native-paper"
-import { aboutText, aboutThanks, aboutThanksPersons, databaseImportAlert, databaseOperations, generalSettingsLabels, importExportSelectionLabel, iosWarningText, loginGuardAlert, preferenceTitles, resizeImageAlert, statisticItems, tabBarLabels, toastMessages, tooltips } from "../lib/textTemplates"
+import { ActivityIndicator, Button, Dialog, Divider, Icon, IconButton, List, Modal, Portal, Snackbar, Switch, Text } from "react-native-paper"
+import { databaseImportAlert, databaseOperations, generalSettingsLabels, importExportSelectionLabel, iosWarningText, loginGuardAlert, preferenceTitles, resizeImageAlert, tabBarLabels, toastMessages } from "../lib/textTemplates"
 import { usePreferenceStore } from "../stores/usePreferenceStore"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { dateLocales, defaultViewPadding, languageSelection } from "../configs"
-import { AMMO_DATABASE, A_KEY_DATABASE, A_TAGS, GUN_DATABASE, KEY_DATABASE, PREFERENCES, TAGS } from "../configs_DB"
+import { defaultViewPadding, languageSelection } from "../configs"
+import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "../configs_DB"
 import { colorThemes } from "../lib/colorThemes"
 import { useEffect, useState } from "react"
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { AmmoType, DBOperations, GunType, GunTypeStatus, Languages } from "../interfaces"
+import { AmmoType, DBOperations, GunType, Languages } from "../interfaces"
 import * as SecureStore from "expo-secure-store"
 import { useGunStore } from "../stores/useGunStore"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { printAmmoCollection, printAmmoGallery, printGunCollection, printGunCollectionArt5, printGunGallery } from "../functions/printToPDF"
+import { printAmmoCollection, printGunCollection, printGunCollectionArt5 } from "../functions/printToPDF"
 import { useAmmoStore } from "../stores/useAmmoStore"
 import { useTagStore } from "../stores/useTagStore"
-import * as Application from 'expo-application';
 import { manipulateAsync } from "expo-image-manipulator"
 import Papa from 'papaparse';
 import { mainMenu_DatabaseOperations } from "../lib/Text/mainMenu_DatabaseOperations"
 import { useImportExportStore } from "../stores/useImportExportStore"
 import CSVImportModal from "./CSVImportModal"
 import { flatten, unflatten } from 'flat'
-import { alarm, getImageSize, sanitizeFileName } from "../utils"
+import { alarm } from "../utils"
 import * as SystemUI from "expo-system-ui"
-import * as Sharing from 'expo-sharing';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
-import { debugJsonError } from "../jsonDebugger"
-import { expo, db } from "../db/client"
+import { Dirs, FileSystem as fs } from 'react-native-file-access';
+import { db } from "../db/client"
 import * as schema from "../db/schema"
 import saveDatabase from "../functions/saveDatabase"
 import importDatabase from "../functions/importDatabase"
-import { count, sql } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 import { importLegacyGunDatabase } from "../functions/importLegacyGunDatabase"
 import { Dropdown } from 'react-native-paper-dropdown';
+import Statistics from "./Statistics"
+import About from "./About"
 
 
 export default function MainMenu({navigation}){
@@ -531,26 +528,6 @@ export default function MainMenu({navigation}){
         return trigger
     },[navigation])
 
-    function getStatistics(type){
-        switch(type){
-            case "guns":
-                return gunCollection.length
-            case "gunPrice":
-                return gunCollection.reduce((acc, curr) => {
-                    return acc + (curr.paidPrice !== undefined ? Number(curr.paidPrice) : 0);
-                }, 0)
-            case "gunValue":
-                return gunCollection.reduce((acc, curr) => {
-                    return acc + (curr.marketValue !== undefined ? Number(curr.marketValue) : 0);
-                }, 0)
-            case "ammo":
-                return ammoCollection.length
-            case "totalStock":
-                return ammoCollection.reduce((acc, curr) => {
-                    return acc + (curr.currentStock !== undefined ? Number(curr.currentStock) : 0);
-                }, 0)
-        }
-    }
 
     async function handleIOSprints(printer: "gunCollection" | "gunCollectionArt5" | "ammoCollection"){
         setPrinterSrc(printer)
@@ -759,38 +736,11 @@ export default function MainMenu({navigation}){
 
                                 {/* STATISTICS */ }
 
-                                <List.Accordion left={props => <><List.Icon {...props} icon="chart-box-outline" /><List.Icon {...props} icon="chart-arc" /></>} title={preferenceTitles.statistics[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                                    <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.gunCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("guns"))}`}</Text></View>
-                                    <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                    <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.gunPrice[language]}`}</Text><Text>{`CHF ${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("gunPrice"))}`}</Text></View>
-                                    <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                    <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.gunValue[language]}`}</Text><Text>{`CHF ${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("gunValue"))}`}</Text></View>
-                                    <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                    <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.ammoCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("ammo"))}`}</Text></View>
-                                    <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                    <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{`${statisticItems.roundCount[language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(getStatistics("totalStock"))}`}</Text></View>
-                                    </View>
-                                </List.Accordion>
+                                <Statistics />
 
                                 {/* ABOUT */ }
 
-                                <List.Accordion left={props => <><List.Icon {...props} icon="application-brackets-outline" /><List.Icon {...props} icon="cellphone-information" /></>} title={preferenceTitles.about[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                                        <Text>{aboutText[language]}</Text>
-                                        <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                        <Text style={{color: theme.colors.onBackground}} >{`Version ${Application.nativeApplicationVersion}`}</Text>
-                                        <Text style={{color: theme.colors.onBackground}} >{`© ${currentYear === 2024 ? currentYear : `2024 - ${currentYear}`} Marcel Weber`} </Text>
-                                        <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                        <Text style={{color: theme.colors.onBackground}} >{aboutThanks[language]}</Text>
-                                        <Text>{`- ${aboutThanksPersons.michelle[language]}`}</Text>
-                                        <Text>{`- ${aboutThanksPersons.jonas[language]}`}</Text>
-                                        <Text>{`- ${aboutThanksPersons.waffenforum[language]}`}</Text>
-                                        <Text>{`- ${aboutThanksPersons.others[language]}`}</Text>
-                                        <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                        <Text>Splash & Icon: Designed by dgim-studio / Freepik</Text>
-                                    </View>
-                                </List.Accordion>
+                                <About />
 
                             </ScrollView>
                         </View>
