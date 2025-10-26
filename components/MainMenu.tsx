@@ -265,111 +265,6 @@ export default function MainMenu({navigation}){
         return `${FileSystem.cacheDirectory}/${fileName}`
     }
 
-    async function handleShareAmmoDb(){
-        const fileName = `ammoDB_${new Date().getTime()}.json`
-        const collectionSize = ammoCollection.length-1
-        const cache = Dirs.CacheDir
-        try{
-            await fs.writeFile(`${cache}/${fileName}`, "[")
-        }catch(e){
-            alarm("shareAmmoDb createTempFile", e)
-        }
-        await Promise.all(ammoCollection.map(async (ammo, index) =>{
-            if(ammo.images !== null && ammo.images.length !== 0){
-                const base64images:string[] = await Promise.all(ammo.images?.map(async image =>{
-                    const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                    return base64string
-                }))
-                const exportableAmmo:AmmoType = {...ammo, images: base64images}
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableAmmo) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("shareAmmoDb appendExportableAmmo", e)
-                }
-            } else {
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(ammo) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("shareAmmoDb appendAmmo", e)
-                }
-            }
-        }))
-        try{
-            await fs.appendFile(`${cache}/${fileName}`, "]")
-        } catch(e){
-            alarm("shareAmmoDb finishTempFile", e)
-        }
-        return `${FileSystem.cacheDirectory}/${fileName}`
-
-    }
-
-   {/*} async function shareCSV(data: DBOperations){
-        const fileName = `${data === "share_arsenal_gun_csv" ? "gunCSV" : "ammoCSV"}_${new Date().getTime()}.csv`
-        const flattened = data === "share_arsenal_gun_csv" ? gunCollection.map(item => {
-            return flatten(item, {safe: true})
-        }) : ammoCollection.map(item => {
-            return flatten(item, {safe: true})
-        })
-        const csv = Papa.unparse(flattened)
-        const fileUri = FileSystem.cacheDirectory + fileName
-        await FileSystem.writeAsStringAsync(fileUri, csv, {encoding: FileSystem.EncodingType.UTF8})
-        return fileUri
-    }*/}
-   
-
-   {/*} async function handleSaveAmmoDb(){
-        const fileName = `ammoDB_${new Date().getTime()}.json`
-        const collectionSize = ammoCollection.length-1
-        const cache = Dirs.CacheDir
-        try{
-            await fs.writeFile(`${cache}/${fileName}`, "[")
-        }catch(e){
-            alarm("saveAmmoDb createTempFile", e)
-        }
-        await Promise.all(ammoCollection.map(async (ammo, index) =>{
-            if(ammo.images !== null && ammo.images.length !== 0){
-                const base64images:string[] = await Promise.all(ammo.images?.map(async image =>{
-                    const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                    return base64string
-                }))
-                const exportableAmmo:AmmoType = {...ammo, images: base64images}
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableAmmo) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("saveAmmoDb appendExportableAmmo", e)
-                }
-            } else {
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(ammo) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("saveAmmoDb appendAmmo", e)
-                }
-            }
-        }))
-        try{
-            await fs.appendFile(`${cache}/${fileName}`, "]")
-        } catch(e){
-            alarm("saveAmmoDb finishTempFile", e)
-        }
-        try{
-            await fs.cpExternal(`${cache}/${fileName}`, fileName, "downloads")
-            
-        } catch(e){
-            alarm("saveAmmoDb moveTempFile", e)
-        }
-        try{
-            await fs.unlink(`${cache}/${fileName}`)
-        }catch(e){
-            alarm("saveAmmoDb unlinkTempFile", e)
-        }
-    }
-        */}
-
-
     async function handleSwitchesAlert(setting:string){
         if(setting === "resizeImages"){
             toggleImageResizeVisible()        
@@ -465,26 +360,29 @@ export default function MainMenu({navigation}){
                 try{
                     console.log("Im printing gun collection!")
                 await printGunCollection(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
-                return
+               
                 } catch(e){
                     alarm("printGunCollection Error", e)
                 }
+                break
             case "gunCollectionArt5":
                 try{
                     console.log("Im printing gun collection art 5!")
                    await printGunCollectionArt5(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
-                    return
+                 
                 } catch(e){
                     alarm("printGunCollectioNArt5 Error", e)
                 }
+                break
             case "ammoCollection":
                 try{
                     console.log("Im printing ammo collection!")
                    await printAmmoCollection(ammoCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList);
-                    return
+                 
                 } catch(e){
                     alarm("printAmmoCollection Error", e)
                 }
+                break
                 
         }
     }
