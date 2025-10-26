@@ -1,3 +1,5 @@
+import { GunType, GunTypeStatus } from "../interfaces"
+
 export const gunDataTemplate:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
     {
             name: "manufacturer",
@@ -207,3 +209,38 @@ export const checkBoxes:{name: string, de:string, en:string, fr:string, it: stri
         ch: "Acquistà tenor il dretg vegl",
     }
 ]
+
+export const emptyGunObject:GunType&GunTypeStatus= {
+    id: "",
+    manufacturer: null,
+    model: "",
+    manufacturingDate: null,
+    originCountry: null,
+    gunType: null,
+    functionType: null,
+    caliber: null,
+    serial: null,
+    permit: null,
+    acquisitionDate: null,
+    boughtFrom: null,
+    mainColor: null,
+    remarks : null,
+    images: [],
+    createdAt: 0,
+    lastModifiedAt: 0,
+    shotCount: "",
+    tags: [],
+    lastShotAt: "",
+    lastCleanedAt: "",
+    paidPrice: "",
+    marketValue: "",
+    cleanInterval: null,
+    exFullAuto: false,
+    highCapacityMagazine: false,
+    short: false,
+    fullAuto: false,
+    launcher: false,
+    decepticon: false,
+    blooptoob: false,
+    grandfather: false,
+}
