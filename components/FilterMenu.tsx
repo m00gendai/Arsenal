@@ -24,13 +24,13 @@ export default function FilterMenu({collection}:Props){
       db.select()
       .from(schema.ammoTags)
   ) 
-
+console.log(gunTags)
     async function handleFilterPressGuns(tag){
         
         collection === "gunCollection" ? 
-          await db.update(schema.gunTags).set({active: not(schema.gunTags.active)}).where((eq(schema.gunTags.label, tag.label)))
+          await db.update(schema.gunTags).set({active: !tag.active}).where((eq(schema.gunTags.label, tag.label)))
           :
-          await db.update(schema.ammoTags).set({active: not(schema.ammoTags.active)}).where((eq(schema.ammoTags.label, tag.label)))
+          await db.update(schema.ammoTags).set({active: !tag.active}).where((eq(schema.ammoTags.label, tag.label)))
     }
 
     return(
@@ -42,11 +42,11 @@ export default function FilterMenu({collection}:Props){
               <View>
               {collection === "gunCollection" ? 
                 gunTags.map((tag, index)=>{
-                return <Checkbox.Item mode="android" key={`filter_${tag.label}_${index}`} label={tag.label} status={tag.active ? "checked" : "unchecked"} onPress={()=>handleFilterPressGuns(tag)} />
+                return tag.label === "0" ? null : <Checkbox.Item mode="android" key={`filter_${tag.label}_${index}`} label={tag.label} status={tag.active ? "checked" : "unchecked"} onPress={()=>handleFilterPressGuns(tag)} />
               })
             :
             ammoTags.map((tag, index)=>{
-              return <Checkbox.Item mode="android" key={`filter_${tag.label}_${index}`} label={tag.label} status={tag.active ? "checked" : "unchecked"} onPress={()=>handleFilterPressGuns(tag)} />
+              return tag.label === "0" ? null : <Checkbox.Item mode="android" key={`filter_${tag.label}_${index}`} label={tag.label} status={tag.active ? "checked" : "unchecked"} onPress={()=>handleFilterPressGuns(tag)} />
             })
             }
               </View>

@@ -129,6 +129,31 @@ const listKey = isLandscape
   : displayAsGrid
   ? "gunCollectionGrid2"
   : "gunCollectionList";
+  
+
+  function filterCollection(){
+    const guns = gunData.filter(gun => {
+      if(!gunFilterOn){
+        return true
+      }
+    
+      // Get all active tag labels
+      const activeTagLabels = tagData
+        .filter(tag => tag.active && tag.label !== "0")
+        .map(tag => tag.label);
+      
+      // If no tags are active, show all guns
+      if(activeTagLabels.length === 0){
+        return true
+      }
+      
+      // Show gun if it has at least one active tag
+      /*@ts-expect-error */
+      return gun.tags?.some(gunTag => activeTagLabels.includes(gunTag));
+    })
+
+    return guns
+  }
 
   return(
     <View style={{flex: 1, backgroundColor: "transparent"}}>
@@ -183,7 +208,7 @@ const listKey = isLandscape
       paddingBottom: 50,
     }}
     /*@ts-expect-error */
-    data={gunData.filter(gun => gunFilterOn ? tagData.filter(tag => tag.active).every(tag => gun.tags?.includes(tag.label)) : gun)}
+    data={filterCollection()}
     renderItem={({ item }: { item: GunType }) => <GunCard gun={item} />}
     keyExtractor={gun => gun.id}
     ListFooterComponent={<View style={{ width: "100%", height: 100 }} />}
