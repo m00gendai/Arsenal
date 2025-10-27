@@ -383,7 +383,7 @@ export default function MainMenu({navigation}){
                     alarm("printAmmoCollection Error", e)
                 }
                 break
-                
+
         }
     }
     
