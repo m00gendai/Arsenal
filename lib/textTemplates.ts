@@ -79,6 +79,8 @@ interface Sorting{
     acquisitionDate: SimpleTranslation
     lastCleaned: SimpleTranslation
     lastShot: SimpleTranslation
+    currentStock: SimpleTranslation
+    lastTopUpAt: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -459,6 +461,37 @@ export const databaseImportAlert:Alert = {
     }
 }
 
+export const databaseExportAlert:Alert = {
+    title: {
+        de: "Datenbank im CSV-Format exportieren",
+        en: "Export database to CSV format",
+        fr: "Exporter la base de données au format CSV",
+        it: "Esporta la banca dati in formato CSV",
+        ch: "Exportar la banca da datas en il format CSV",
+    },
+    subtitle: {
+        de: "Der Export im CSV Format erfolgt ohne Bilder",
+        en: "The export in CSV format only contains data, no images",
+        fr: "L'exportation au format CSV ne contient que des données, pas d'images",
+        it: "L'esportazione in formato CSV contiene solo i dati, non le immagini",
+        ch: "L'export en il format da CSV cuntegna mo datas, nagins maletgs",
+    },
+    yes: {
+        de: "Ja",
+        en: "Yes",
+        fr: "Oui",
+        it: "Sì",
+        ch: "Gea",
+    },
+    no: {
+        de: "Nein",
+        en: "No",
+        fr: "Non",
+        it: "No",
+        ch: "Na",
+    }
+}
+
 export const deleteTagFromListAlert:Alert = {
     title: {
         de: "Schlagwort wirklich löschen?",
@@ -624,11 +657,11 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "Schema da colur",
     },
     db_gun: {
-        de: "Datenbank Waffen",
-        en: "Gun Database",
-        fr: "Base de données armes",
-        it: "Database delle armi",
-        ch: "Banca da datas armas",
+        de: "Datenbanken",
+        en: "Database",
+        fr: "Base de données",
+        it: "Database",
+        ch: "Banca da datas",
     },
     saveDb_gun: {
         de: "Speichern",
@@ -673,11 +706,11 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "",
     },
     gunList: {
-        de: "Waffenverzeichnis",
-        en: "List of weapons",
-        fr: "Liste des armes",
-        it: "Elenco delle armi",
-        ch: "Register da las armas",
+        de: "Verzeichnisse",
+        en: "Lists",
+        fr: "Listes",
+        it: "Elenco",
+        ch: "Register",
     },
     printAllGuns: {
         de: "Komplettes Verzeichnis als Tabelle",
@@ -917,6 +950,20 @@ export const sorting:Sorting = {
         it: "Ultimo sparo",
         ch: "L'ultim culp",        
     },
+    lastTopUpAt:{
+        de: "Zuletzt aufgestockt",     
+        en: "Last topped up",
+        fr: "dernier rempli",
+        it: "Ultimo rifornito",
+        ch: "Ultimas emplenidas",    
+    },
+    currentStock:{
+        de: "Aktuelle Menge",     
+        en: "Current quantity",
+        fr: "Quantité actuelle",
+        it: "Quantità attuale",
+        ch: "Quantitad actuala",    
+    }
 }
 
 export const search:SimpleTranslation = {
@@ -1200,12 +1247,13 @@ export const caliberPickerStrings:CaliberPickerStrings = {
     }
 }
 
-interface StatisticItems{
+export interface StatisticItems{
     gunCount: SimpleTranslation
     gunPrice: SimpleTranslation
     gunValue: SimpleTranslation
     ammoCount: SimpleTranslation
     roundCount: SimpleTranslation
+    uniqueCalibers: SimpleTranslation
 }
 
 export const statisticItems:StatisticItems = {
@@ -1243,6 +1291,13 @@ export const statisticItems:StatisticItems = {
         fr: "Nombre de coups total",
         it: "Numero totale di cartucce",
         ch: "Dumber da patronas total",
+    },
+    uniqueCalibers: {
+        de: "Anzahl verschiedener Kaliber",
+        en: "Number of different calibers",
+        fr: "Nombre de calibres différents",
+        it: "Numero di calibri diversi",
+        ch: "Dumber da calibers differents",
     }
 }
 
@@ -1300,4 +1355,12 @@ export const shotLabel: SimpleTranslation = {
     fr: "coups",
     it: "colpi",
     ch: "culps",
+}
+
+export const importExportSelectionLabel: SimpleTranslation = {
+    de: "Ausgewählte Datenbank",
+    en: "Selected database",
+    fr: "Base de données sélectionnée",
+    it: "Database selezionato",
+    ch: "Banca da datas tschernida",
 }

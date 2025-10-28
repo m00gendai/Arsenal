@@ -1,4 +1,4 @@
-import { AmmoType, GunType, SortingTypes } from "./interfaces";
+import { AmmoType, GunType, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
 import { gunDataTemplate } from "./lib/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
 import { ammoDataTemplate } from "./lib/ammoDataTemplate";
@@ -6,150 +6,15 @@ import { requiredFieldsAmmo, requiredFieldsGun } from "./configs";
 import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
+import * as schema from "./db/schema"
 
-const nonSetValue: number = 999999999999999
-
-export function doSortBy(value: SortingTypes, ascending: boolean, items: GunType[] | AmmoType[]){
-    if(value === "alphabetical"){
-        const sorted = items.sort((a, b) =>{
-
-            let x:string
-            let y:string
-            if(a.model !== undefined){
-                x = a.manufacturer === null ? a.model : a.manufacturer === undefined ? a.model : a.manufacturer === "" ? a.model : `${a.manufacturer} ${a.model}`
-                y = b.manufacturer === null ? b.model : b.manufacturer === undefined ? b.model : b.manufacturer === "" ? b.model : `${b.manufacturer} ${b.model}`
-            }
-            if(a.designation !== undefined){
-                x = a.manufacturer === null ? a.designation : a.manufacturer === undefined ? a.designation : a.manufacturer === "" ? a.designation : `${a.designation} ${a.manufacturer}`
-                y = b.manufacturer === null ? b.designation : b.manufacturer === undefined ? b.designation : b.manufacturer === "" ? b.designation : `${b.designation} ${b.manufacturer}`
-            }
-            
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "lastAdded"){
-        try{
-        const sorted = items.sort((a, b) =>{
-            const x = a.createdAt === undefined ? nonSetValue : a.createdAt === null ? nonSetValue : a.createdAt === "" ? nonSetValue : new Date(a.createdAt).getTime()
-            const y = b.createdAt === undefined ? nonSetValue : b.createdAt === null ? nonSetValue : b.createdAt === "" ? nonSetValue : new Date(b.createdAt).getTime()
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }catch(e){
-        console.log(e)
-    }
-    }
-    if(value === "lastModified"){
-        const sorted = items.sort((a, b) =>{
-            const x = a.lastModifiedAt !== undefined ? new Date(a.lastModifiedAt).getTime() : new Date(a.createdAt).getTime()
-            const y = b.lastModifiedAt !== undefined ? new Date(b.lastModifiedAt).getTime() : new Date(b.createdAt).getTime()
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "caliber"){
-        const sorted = items.sort((a, b) =>{
-            const x = a.caliber !== undefined ? a.caliber : a.designation
-            const y = b.caliber !== undefined ? b.caliber : b.designation
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "paidPrice"){
-        const sorted = items.sort((a, b) =>{
-            const x = a.paidPrice === undefined ? nonSetValue : a.paidPrice === null ? nonSetValue : a.paidPrice === "" ? nonSetValue : Number(a.paidPrice)
-            const y = b.paidPrice === undefined ? nonSetValue : b.paidPrice === null ? nonSetValue : b.paidPrice === "" ? nonSetValue : Number(b.paidPrice)
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "marketValue"){
-        const sorted = items.sort((a, b) =>{
-            const x = a.marketValue === undefined ? nonSetValue : a.marketValue === null ? nonSetValue : a.marketValue === "" ? nonSetValue : Number(a.marketValue)
-            const y = b.marketValue === undefined ? nonSetValue : b.marketValue === null ? nonSetValue : b.marketValue === "" ? nonSetValue : Number(b.marketValue)
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "acquisitionDate"){
-        const parseDate = (dateStr:string) => {
-            if (!dateStr) return new Date(0);
-            const [day, month, year]:number[] = dateStr.split('.').map(Number);
-            return new Date(year, month - 1, day);
-        };
-        const sorted = items.sort((a, b) =>{
-            const x = a.acquisitionDate === undefined ? nonSetValue : a.acquisitionDate === null ? nonSetValue : a.acquisitionDate === "" ? nonSetValue : Math.floor(parseDate(a.acquisitionDate).getTime() / 1000) 
-            const y = b.acquisitionDate === undefined ? nonSetValue : b.acquisitionDate === null ? nonSetValue : b.acquisitionDate === "" ? nonSetValue : Math.floor(parseDate(b.acquisitionDate).getTime() / 1000)
-    
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "lastCleaned"){
-        const parseDate = (dateStr:string) => {
-            if (!dateStr) return new Date(0);
-            const [day, month, year]:number[] = dateStr.split('.').map(Number);
-            return new Date(year, month - 1, day);
-        };
-        const sorted = items.sort((a, b) =>{
-            const x = a.lastCleanedAt === undefined ? nonSetValue : a.lastCleanedAt === null ? nonSetValue : a.lastCleanedAt === "" ? nonSetValue : Math.floor(parseDate(a.lastCleanedAt).getTime() / 1000)
-            const y = b.lastCleanedAt === undefined ? nonSetValue : b.lastCleanedAt === null ? nonSetValue : b.lastCleanedAt === "" ? nonSetValue : Math.floor(parseDate(b.lastCleanedAt).getTime() / 1000)
-    
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-    if(value === "lastShot"){
-        const parseDate = (dateStr:string) => {
-            if (!dateStr) return new Date(0);
-            const [day, month, year]:number[] = dateStr.split('.').map(Number);
-            return new Date(year, month - 1, day);
-        };
-        const sorted = items.sort((a, b) =>{
-            const x = a.lastShotAt === undefined ? nonSetValue : a.lastShotAt === null ? nonSetValue : a.lastShotAt === "" ? nonSetValue : Math.floor(parseDate(a.lastShotAt).getTime() / 1000)
-            const y = b.lastShotAt === undefined ? nonSetValue : b.lastShotAt === null ? nonSetValue : b.lastShotAt === "" ? nonSetValue : Math.floor(parseDate(b.lastShotAt).getTime() / 1000)
-    
-            if(ascending){
-                return x > y ? 1 : x < y ? -1 : 0
-            } else {
-                return x < y ? 1 : x > y ? -1 : 0
-        }})
-        return sorted
-    }
-}
-
-export function getIcon(type:SortingTypes){
+export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
     switch(type){
         case "alphabetical":
             return "alphabetical-variant"
-        case "lastAdded":
+        case "createdAt":
             return "clock-plus-outline"
-        case "lastModified":
+        case "lastModifiedAt":
             return "clock-edit-outline"
         case "paidPrice":
             return "cash-register"
@@ -157,10 +22,14 @@ export function getIcon(type:SortingTypes){
             return "chart-line"
         case "acquisitionDate":
             return "credit-card-clock-outline"
-        case "lastCleaned":
+        case "lastCleanedAt":
             return "toothbrush"
-        case "lastShot":
+        case "lastShotAt":
             return "bullseye"
+        case "currentStock":
+            return "counter"
+        case "lastTopUpAt":
+            return "basket-plus-outline"
         default:
             return "alphabetical-variant"
     }
@@ -263,6 +132,9 @@ function mapIntervals(interval){
 }
 
 export function checkDate(gun:GunType){
+    if(gun === undefined){
+        return
+    }
     if(gun.lastCleanedAt === undefined){
         return
     }

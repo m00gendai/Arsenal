@@ -9,14 +9,15 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { checkDate } from '../utils';
 import { useState } from 'react';
-import { GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from "expo-secure-store"
 import { gunDeleteAlert, longPressActions } from '../lib/textTemplates';
 import * as FileSystem from 'expo-file-system';
+import * as schema from "../db/schema"
+import { db } from "../db/client"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 interface Props{
     gun: GunType
+    index?: number
 }
 
 export default function GunCard({gun}:Props){
@@ -29,12 +30,12 @@ export default function GunCard({gun}:Props){
     const [longVisible, setLongVisible] = useState<boolean>(false)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
 
-    function handleGunCardPress(gun){
+    function handleGunCardPress(gun:GunType){
         setCurrentGun(gun)
         navigation.navigate("Gun")
       }
 
-      function handleShotButtonPress(gun){
+      function handleShotButtonPress(gun:GunType){
         setCurrentGun(gun)
         navigation.navigate("QuickShot")
       }
@@ -52,25 +53,14 @@ export default function GunCard({gun}:Props){
       }
 
       async function deleteItem(gun:GunType){
-        // Deletes gun in gun database
-        await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${gun.id}`)
-
-        // retrieves gun ids from key database and removes the to be deleted id
-        const keys:string = await AsyncStorage.getItem(KEY_DATABASE)
-        const keyArray: string[] = JSON.parse(keys)
-        const newKeys: string[] = keyArray.filter(key => key != gun.id)
-        AsyncStorage.setItem(KEY_DATABASE, JSON.stringify(newKeys))
-        const index:number = gunCollection.indexOf(gun)
-        const newCollection:GunType[] = gunCollection.toSpliced(index, 1)
-        setGunCollection(newCollection)
+        await db.delete(schema.gunCollection).where(eq(schema.gunCollection.id, gun.id));
         toggleDialogVisible(false)
         setLongVisible(false)
     }
 
     return(
-        <>
+        <View>
         <TouchableNativeFeedback 
-                key={gun.id} 
                 onPress={()=>handleGunCardPress(gun)}
                 onLongPress={()=>meloveyoulongtime()}
               >
@@ -96,7 +86,7 @@ export default function GunCard({gun}:Props){
                 subtitleNumberOfLines={2}
             />
             {displayAsGrid ? 
-            <>
+            <View>
                 <Card.Cover 
                     source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}`} : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
@@ -115,7 +105,7 @@ export default function GunCard({gun}:Props){
                     }} 
                     iconColor={theme.colors.onPrimary}
                 />
-            </>
+            </View>
             : 
             null}
             {displayAsGrid ? 
@@ -188,6 +178,6 @@ export default function GunCard({gun}:Props){
                         </Dialog>
                     </Portal>      
 
-        </>
+        </View>
     )
 }

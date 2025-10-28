@@ -1,0 +1,144 @@
+import { expo } from "../db/client";
+import * as FileSystem from "expo-file-system";
+import JSZip from "jszip";
+import { db } from "../db/client";
+import * as schema from "../db/schema";
+import { AmmoType, GunType } from "../interfaces";
+import { count } from "drizzle-orm";
+import { DB_NAME, ZIP_NAME } from "../configs_DB";
+import { Platform } from "react-native";
+import * as Sharing from 'expo-sharing';
+
+export default async function saveDatabase(
+  setImportSize:(num:number)=>void, 
+  setImportProgress:(num:number)=>void,
+  resetImportProgress:(num:number)=>void
+) {
+
+  let importProgress = 0
+  let permissions:FileSystem.FileSystemRequestDirectoryPermissionsResult
+  let fileUri:string
+
+  try {
+    
+    if(Platform.OS === "android"){
+      permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+
+      if (!permissions.granted || !permissions.directoryUri) {
+        console.log("User did not grant folder permissions.");
+        return;
+      }
+
+      fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        ZIP_NAME,
+        "application/zip"
+      );
+    }
+    
+    console.log("Creating ZIP instance")
+    const zip = new JSZip();
+
+    console.log("Adding DB to ZIP file")
+    const dbPath = `file://${expo.databasePath}`;
+    const dbContent = await FileSystem.readAsStringAsync(dbPath, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    zip.file(DB_NAME, dbContent, { base64: true });
+
+    console.log("Creating folders")
+    const imagesFolder = zip.folder("images");
+    const imagesFolder_Guns = imagesFolder.folder("gun")
+    const imagesFolder_Ammo = imagesFolder.folder("ammo")
+
+    console.log("Handling GUN Collection")
+    try{
+      const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
+      const gunCollectionSize = await db.select({ count: count() }).from(schema.gunCollection)
+      setImportSize(gunCollectionSize[0].count)
+      importProgress = 0
+      for (const gun of gunsWithImages) {
+        if (gun.images?.length) {
+          for (const imagePath of gun.images) {
+            const fileName = imagePath.split("/").pop();
+            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
+            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
+            if (fileInfo.exists) {
+              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
+                encoding: FileSystem.EncodingType.Base64,
+              });
+              imagesFolder_Guns.file(fileName!, imageContent, { base64: true });
+            }
+          }
+        }
+        setImportProgress(importProgress+1)
+      }
+    } catch(e){
+      throw new Error("Save DB GunCollection: ", e)
+    }
+    
+
+    console.log("Handling AMMO Collection")
+    try{
+      const ammoWithImages = await db.select().from(schema.ammoCollection) as AmmoType[]
+      const ammoCollectionSize = await db.select({ count: count() }).from(schema.ammoCollection)
+      setImportSize(ammoCollectionSize[0].count)
+      importProgress = 0
+      for (const ammo of ammoWithImages) {
+        if (ammo.images?.length) {
+          for (const imagePath of ammo.images) {
+            const fileName = imagePath.split("/").pop();
+            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
+            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
+            if (fileInfo.exists) {
+              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
+                encoding: FileSystem.EncodingType.Base64,
+              });
+              imagesFolder_Ammo.file(fileName!, imageContent, { base64: true });
+            }
+          }
+        }
+        setImportProgress(importProgress+1)
+      }
+    }catch(e){
+      throw new Error("Save DB AmmoCollection: ", e)
+    }
+    
+
+    console.log("Generating ZIP Content")
+    const zipContent = await zip.generateAsync({
+      type: "base64",
+      compression: "DEFLATE",
+      compressionOptions: { level: 9 },
+    });
+
+    if(Platform.OS === "android"){
+      console.log("Save ZIP on Android")
+      await FileSystem.writeAsStringAsync(fileUri, zipContent, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+    }else if(Platform.OS === "ios"){
+      console.log("Share ZIP on iOS")
+      const tempZipPath = `${FileSystem.cacheDirectory}${ZIP_NAME}`;
+      
+      await FileSystem.writeAsStringAsync(tempZipPath, zipContent, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      
+      await Sharing.shareAsync(tempZipPath, {
+        mimeType: 'application/zip',
+      })
+    }
+   
+
+    console.log("Export completed successfully!");
+    console.log("File saved at:", fileUri);
+
+    
+  } catch (error) {
+    console.error("Export failed:", error);
+    throw error;
+  }
+}
+
+/*} // 7. Share the ZIP file if (await Sharing.isAvailableAsync()) { await Sharing.shareAsync(zipPath, { mimeType: 'application/zip', dialogTitle: 'Export Gun Collection' }); } */

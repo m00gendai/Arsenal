@@ -20,6 +20,9 @@ import NewChipArea from './NewChipArea';
 import * as FileSystem from 'expo-file-system';
 import { ammoDataValidation, imageHandling } from '../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { db } from "../db/client"
+import * as schema from "../db/schema"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 
 export default function EditAmmo({navigation}){
@@ -84,15 +87,12 @@ export default function EditAmmo({navigation}){
             ])
             return
         }
-        await SecureStore.setItemAsync(`${AMMO_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the ammo
+        await db.update(schema.ammoCollection).set(value).where((eq(schema.ammoCollection.id, value.id)))
+        console.log(`Saved item ${JSON.stringify(value)} with key ${AMMO_DATABASE}_${value.id}`)
         setCurrentAmmo({...value, images:selectedImage})
         setSaveState(true)
-        setSnackbarText(`${value.designation} ${value.manufacturer ? value.manufacturer : ""} ${toastMessages.changed[language]}`)
+        setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${value.designation} ${toastMessages.changed[language]}`)
         onToggleSnackBar()
-        const currentObj:AmmoType = ammoCollection.find(({id}) => id === value.id)
-        const index:number = ammoCollection.indexOf(currentObj)
-        const newCollection:AmmoType[] = ammoCollection.toSpliced(index, 1, value)
-        setAmmoCollection(newCollection)
       }
 
     function deleteImage(indx:number){
@@ -292,24 +292,13 @@ export default function EditAmmo({navigation}){
           deleteItem(ammo)
         }
     
-    
-
-        async function deleteItem(ammo:AmmoType){
-            // Deletes ammo in gun database
-            await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${ammo.id}`)
-    
-            // retrieves ammo ids from key database and removes the to be deleted id
-            const keys:string = await AsyncStorage.getItem(A_KEY_DATABASE)
-            const keyArray: string[] = JSON.parse(keys)
-            const newKeys: string[] = keyArray.filter(key => key != ammo.id)
-            AsyncStorage.setItem(A_KEY_DATABASE, JSON.stringify(newKeys))
-            const index:number = ammoCollection.indexOf(ammo)
-            const newCollection:AmmoType[] = ammoCollection.toSpliced(index, 1)
-            setAmmoCollection(newCollection)
+    async function deleteItem(ammo:AmmoType){
+            await db.delete(schema.ammoCollection).where(eq(schema.ammoCollection.id, currentAmmo.id))
             toggleDialogVisible(false)
             navigation.navigate("AmmoCollection")
             aboutToDeleteRef.current = false;
         }
+
     return(
         <KeyboardAvoidingView behavior='padding' style={{flex: 1}}>
             
@@ -317,7 +306,7 @@ export default function EditAmmo({navigation}){
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
                 <Appbar.Content title={editAmmoTitle[language]} />
                 <Appbar.Action icon="delete" onPress={()=>toggleDialogVisible(!dialogVisible)} color='red'/>
-                <Appbar.Action icon="floppy" onPress={() => save({...ammoData, lastModifiedAt: `${new Date()}`})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
+                <Appbar.Action icon="floppy" onPress={() => save({...ammoData, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
             </Appbar>
         
             <View style={styles.container}>

@@ -13,6 +13,54 @@ Enter or paste your release notes for fr-FR here
 Enter or paste your release notes for it-IT here
 </it-IT>
 
+V2.0.0
+<de-DE>
+Völlig überarbeitete interne Datenbankstruktur
+- Legacy-Importer für Arsenal-Datenbank <V2.0.0
+
+Weitere Änderungen:
+- Konsolidierte Datenbankoptionen im Hauptmenü
+- Nicht korrekt funktionierende Filter behoben
+- Hinzufügung einiger weiterer Sortierarten
+- Die Datenbankimporter sind viel toleranter gegenüber fehlerhaften Daten
+
+Weitere neue Funktionen werden in Version 2.1.0 eingeführt
+</de-DE>
+<en-US>
+Completely reworked internal database structure
+- Legacy importer for Arsenal database <V2.0.0
+
+Other changes:
+- Consolidated Database options in main menu
+- Fixed Filters not working properly
+- Added some more sorting types 
+- Importers are way more lenient towards malformed data
+
+More new features are slated for release 2.1.0
+</en-US>
+<fr-FR>
+Restructuration complète de la base de données interne
+- Importateur de la base de données Arsenal <V2.0.0> obsolète
+Autres changements:
+- Consolidation des options de la base de données dans le menu principal
+- Correction du problème de filtres qui ne fonctionnaient pas correctement
+- Ajout de quelques types de tri supplémentaires 
+- Les importateurs sont beaucoup plus tolérants vis-à-vis des données mal formatées
+D'autres nouvelles fonctionnalités seront ajoutées dans la version 2.1.0
+</fr-FR>
+<it-IT>
+Struttura del database interno completamente rinnovata
+- Importazione legacy per il database Arsenal <V2.0.0
+
+Altre modifiche:
+- Opzioni del database consolidate nel menu principale
+- Corretto il problema dei filtri che non funzionavano correttamente
+- Aggiunti altri tipi di ordinamento 
+- Gli importatori sono molto più tolleranti nei confronti di dati malformati
+
+Ulteriori nuove funzionalità saranno disponibili nella versione 2.1.0
+</it-IT>
+
 V1.4.1
 
 <de-DE>

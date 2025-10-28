@@ -2,13 +2,17 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateLocales, defaultViewPadding } from "../configs";
+import { dateLocales, dateTimeOptions, defaultViewPadding } from "../configs";
 import { AMMO_DATABASE } from "../configs_DB"
 import { AmmoType } from "../interfaces";
 import * as SecureStore from "expo-secure-store"
 import { useAmmoStore } from "../stores/useAmmoStore";
 import { ammoQuickUpdate, gunQuickShot } from "../lib/textTemplates";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { db } from "../db/client"
+import * as schema from "../db/schema"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 
 export default function QuickStock({navigation}){
 
@@ -21,29 +25,25 @@ export default function QuickStock({navigation}){
     const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
     const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
 
+     const { data } = useLiveQuery(
+        db.select()
+        .from(schema.ammoCollection)
+        .where(eq(schema.ammoCollection.caliber, currentAmmo.caliber))
+      )
+
     async function saveNewStock(ammo:AmmoType){
         const date:Date = new Date()
         if(stockChange !== ""){
-        const currentValue:number = ammo.currentStock ? ammo.currentStock : 0
+        const currentValue:number = parseInt(ammo.currentStock) ? parseInt(ammo.currentStock) : 0
         const increase:number = Number(input)
         const total:number = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
-        await SecureStore.setItemAsync(`${AMMO_DATABASE}_${ammo.id}`, JSON.stringify({...ammo, previousStock: currentValue, currentStock:total, lastTopUpAt: date.toLocaleDateString(dateLocales.de)})) // Save the ammo
-            console.log(`Updated item ${JSON.stringify(ammo)} with key ${AMMO_DATABASE}_${ammo.id}`)
-            setCurrentAmmo({...ammo, currentStock:parseInt(input)})
-            setStockValue(parseInt(input))
-            setInput("")
-            setStockChange("")
-            const currentObj:AmmoType = ammoCollection.find(({id}) => id === ammo.id)
-            const index:number = ammoCollection.indexOf(currentObj)
-            const newCollection:AmmoType[] = ammoCollection.toSpliced(index, 1, {...ammo, currentStock:total})
-            setAmmoCollection(newCollection)
-            navigation.goBack()
-            displayError(false)
-    
-        }
-        else {
-            displayError(true)
-        }
+        await db.update(schema.ammoCollection).set({currentStock: `${total}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, currentAmmo.id))
+        navigation.goBack()
+        displayError(false)
+      }
+      else {
+          displayError(true)
+      }
     }
 
     function handleInput(input:string){
