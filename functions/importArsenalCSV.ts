@@ -21,10 +21,11 @@ export default async function importArsenalCSV(data:"gun"|"ammo"){
         const content:string = await FileSystem.readAsStringAsync(result.assets[0].uri)
         
         const parsed = Papa.parse(content, {header: true, dynamicTyping: true})
-        
+
         // The errors are due to GunType expecting string[], but the parsed content is only a string. Maybe a type ImportableGunType[] should be created.
         // Future me: What the hell dude, the caliber should, nay MUST be a string[], ffs, what were you THINKING past me
         const unflat:(GunType&GunTypeStatus | AmmoType)[] = parsed.data.map(item => {
+
             const unitem:GunType&GunTypeStatus | AmmoType = unflatten(item)
             /* @ts-expect-error */
             const filterEmptyTags:string[] = unitem.tags === undefined ? [] : unitem.tags === null ? [] : unitem.tags === "" ? [] : typeof unitem.tags === "string" ? unitem.tags.split(",") : unitem.tags
@@ -33,7 +34,7 @@ export default async function importArsenalCSV(data:"gun"|"ammo"){
                 const item = unitem as GunType&GunTypeStatus
                 const multiCal:string[] = unitem.caliber === undefined ? [] : unitem.caliber === null ? [] : typeof unitem.caliber === "string" ? unitem.caliber.split(",") : unitem.caliber
                 
-                const readyItem:GunType&GunTypeStatus = {...importableItem as GunType, 
+                const readyItem:GunType&GunTypeStatus = {...importableItem as GunType&GunTypeStatus, 
                     id: item.id,
                     manufacturer: item.manufacturer,
                     model: item.model,
@@ -95,7 +96,11 @@ export default async function importArsenalCSV(data:"gun"|"ammo"){
         if(data === "gun"){
             await db.delete(schema.gunCollection);
             for(const item of unflat){
-                await db.insert(schema.gunCollection).values(item as GunType&GunTypeStatus)
+                try{
+                    await db.insert(schema.gunCollection).values(item as GunType&GunTypeStatus)
+                }catch(e){
+                    console.log(e)
+                }  
             }
         }
         if(data === "ammo"){

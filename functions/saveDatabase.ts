@@ -6,6 +6,8 @@ import * as schema from "../db/schema";
 import { AmmoType, GunType } from "../interfaces";
 import { count } from "drizzle-orm";
 import { DB_NAME, ZIP_NAME } from "../configs_DB";
+import { Platform } from "react-native";
+import * as Sharing from 'expo-sharing';
 
 export default async function saveDatabase(
   setImportSize:(num:number)=>void, 
@@ -14,39 +16,42 @@ export default async function saveDatabase(
 ) {
 
   let importProgress = 0
+  let permissions:FileSystem.FileSystemRequestDirectoryPermissionsResult
+  let fileUri:string
 
   try {
-    // Ask user to select a folder
-    const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    
+    if(Platform.OS === "android"){
+      permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
 
-    if (!permissions.granted || !permissions.directoryUri) {
-      console.log("User did not grant folder permissions.");
-      return;
+      if (!permissions.granted || !permissions.directoryUri) {
+        console.log("User did not grant folder permissions.");
+        return;
+      }
+
+      fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        ZIP_NAME,
+        "application/zip"
+      );
     }
-
-    // Create a file inside that folder
-    const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
-      permissions.directoryUri,
-      ZIP_NAME,
-      "application/zip"
-    );
-
-    // 1. Create ZIP instance
+    
+    console.log("Creating ZIP instance")
     const zip = new JSZip();
 
-    // 2. Add database file to ZIP
+    console.log("Adding DB to ZIP file")
     const dbPath = `file://${expo.databasePath}`;
     const dbContent = await FileSystem.readAsStringAsync(dbPath, {
       encoding: FileSystem.EncodingType.Base64,
     });
     zip.file(DB_NAME, dbContent, { base64: true });
 
-    // 3. Add images folder and content
+    console.log("Creating folders")
     const imagesFolder = zip.folder("images");
     const imagesFolder_Guns = imagesFolder.folder("gun")
     const imagesFolder_Ammo = imagesFolder.folder("ammo")
 
-    // Handling GunCollection
+    console.log("Handling GUN Collection")
     try{
       const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
       const gunCollectionSize = await db.select({ count: count() }).from(schema.gunCollection)
@@ -73,7 +78,7 @@ export default async function saveDatabase(
     }
     
 
-    // Handling Ammo
+    console.log("Handling AMMO Collection")
     try{
       const ammoWithImages = await db.select().from(schema.ammoCollection) as AmmoType[]
       const ammoCollectionSize = await db.select({ count: count() }).from(schema.ammoCollection)
@@ -100,22 +105,36 @@ export default async function saveDatabase(
     }
     
 
-    // 4. Generate ZIP as base64
+    console.log("Generating ZIP Content")
     const zipContent = await zip.generateAsync({
       type: "base64",
       compression: "DEFLATE",
       compressionOptions: { level: 9 },
     });
 
-    // 5. Write ZIP to selected folder (via SAF)
-    await FileSystem.writeAsStringAsync(fileUri, zipContent, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
+    if(Platform.OS === "android"){
+      console.log("Save ZIP on Android")
+      await FileSystem.writeAsStringAsync(fileUri, zipContent, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+    }else if(Platform.OS === "ios"){
+      console.log("Share ZIP on iOS")
+      const tempZipPath = `${FileSystem.cacheDirectory}${ZIP_NAME}`;
+      
+      await FileSystem.writeAsStringAsync(tempZipPath, zipContent, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      
+      await Sharing.shareAsync(tempZipPath, {
+        mimeType: 'application/zip',
+      })
+    }
+   
 
     console.log("Export completed successfully!");
     console.log("File saved at:", fileUri);
 
-    return fileUri;
+    
   } catch (error) {
     console.error("Export failed:", error);
     throw error;

@@ -135,11 +135,9 @@ export default function MainMenu({navigation}){
             setImportSize(collectionSize[0].count)
             setDbModalText(databaseOperations.export[language])
             try{
-                if(Platform.OS === "android"){
                     await saveDatabase(setImportSize, setImportProgress, resetImportProgress).then(()=>{
                         dbSaveSuccess()
                     })
-                }
             }catch(e){
                 setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
@@ -150,18 +148,9 @@ export default function MainMenu({navigation}){
             setImportSize(gunCollection.length)
             setDbModalText(databaseOperations.export[language])
             try{
-                if(Platform.OS === "android"){
                     await exportArsenalCSV(exportOption).then(()=>{
                         dbSaveSuccess()
                     })
-                }
-                {/*if(Platform.OS === "ios"){
-                    await shareCSV("share_arsenal_gun_csv").then(async (res)=>{
-                        await Sharing.shareAsync(res).then(()=>{
-                            dbSaveSuccess()
-                        })
-                    })
-                }*/}
             }catch(e){
                 setDbModalVisible()
                 alarm(`DB ops error ${data}`, e)
