@@ -44,6 +44,7 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
+import DEV_importLegacyDatabaseAsJSON from './functions/DEV_importLegacyDatabaseAsJSON';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -85,6 +86,17 @@ export default function App() {
  const { gunCollection, setGunCollection } = useGunStore()
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
+
+    async function getKeys(data: "guns" | "ammo"){
+    const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
+    if(keys == null){
+      return []
+    }
+    return JSON.parse(keys)
+  }
+
+   // DEV_importLegacyDatabaseAsJSON()
+
 
   async function checkLegacyGunData(){
     let keys:string[]
@@ -331,14 +343,6 @@ useEffect(() => {
     }
     getPreferences()
   },[])
-
-  async function getKeys(data: "guns" | "ammo"){
-    const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
-    if(keys == null){
-      return []
-    }
-    return JSON.parse(keys)
-  }
 
   const currentTheme = {...theme, roundness : 5}
 
