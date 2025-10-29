@@ -169,3 +169,14 @@ export function alarm(title: string, error:string){
       },
     ])
   }
+
+export function cleanNullValues (obj: GunType | AmmoType){
+    if (!obj) return obj;
+    const cleaned = { ...obj };
+    Object.keys(cleaned).forEach(key => {
+      if (cleaned[key] === null) {
+        cleaned[key] = "";
+      }
+    });
+    return cleaned;
+  };
