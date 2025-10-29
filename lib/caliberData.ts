@@ -133,6 +133,7 @@ export const calibers:Caliber[] = [
             {"name": ".243 WSSM"},
             {"name": ".244 H&H Magnum"},
             {"name": ".25 ACP (.25 Auto)"},
+            {"name": "6.35mm Browning"},
             {"name": ".25 NAA"},
             {"name": ".25 Remington"},
             {"name": ".25 WSSM"},
@@ -713,6 +714,7 @@ export const calibers:Caliber[] = [
             {"name": "12 bore: 2 in (51mm)"},
             {"name": "12 bore: 2+1⁄4 in (57mm)"},
             {"name": "12 bore: 2+1⁄2 in (64mm)"},
+            {"name": "12 bore: 2+21/32 in (67.5mm)"},
             {"name": "12 bore: 2+3⁄4 in (70mm)"},
             {"name": "12 bore: 3 in (76mm)"},
             {"name": "12 bore: 3+1⁄2 in (89mm)"},
@@ -741,6 +743,23 @@ export const calibers:Caliber[] = [
             {"name": "6 mm (No. 1 bore) short rimfire"},
             {"name": "6 mm (No. 1 bore) long rimfire"}
           ],         
+    },
+    {
+        range: "Flobert",
+        variants: [
+            {"name":"4mm Flobert"},
+            {"name":"6mm Flobert"},
+            {"name":"7mm Flobert"},
+            {"name":"9mm Flobert"},
+            {"name":"6mm Flobert Schrot"},
+            {"name":"6mm Flobert Schrot lang"},
+            {"name":"6mm Flobert Doppelschrot"},
+            {"name":"7mm Flobert Schrot"},
+            {"name":"7mm Flobert Schrot lang"},
+            {"name":"9mm Flobert Schrot"},
+            {"name":"9mm Flobert Schrot lang"},
+            {"name":"9mm Flobert Schrot kurz"},
+        ]
     },
     {
         range: "Luft",

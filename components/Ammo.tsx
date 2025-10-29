@@ -18,7 +18,9 @@ import { defaultViewPadding } from '../configs';
 import { alarm } from '../utils';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
-
+import * as schema from "../db/schema"
+import { db } from "../db/client"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 export default function Ammo({navigation}){
 
@@ -68,20 +70,10 @@ export default function Ammo({navigation}){
     })
 
     async function deleteItem(ammo:AmmoType){
-        // Deletes ammo in gun database
-        await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${ammo.id}`)
-
-        // retrieves ammo ids from key database and removes the to be deleted id
-        const keys:string = await AsyncStorage.getItem(A_KEY_DATABASE)
-        const keyArray: string[] = JSON.parse(keys)
-        const newKeys: string[] = keyArray.filter(key => key != ammo.id)
-        AsyncStorage.setItem(A_KEY_DATABASE, JSON.stringify(newKeys))
-        const index:number = ammoCollection.indexOf(ammo)
-        const newCollection:AmmoType[] = ammoCollection.toSpliced(index, 1)
-        setAmmoCollection(newCollection)
-        toggleDialogVisible(false)
-        navigation.navigate("AmmoCollection")
-    }
+            await db.delete(schema.ammoCollection).where(eq(schema.ammoCollection.id, ammo.id));
+            toggleDialogVisible(false)
+            navigation.navigate("AmmoCollection")
+        }
 
     function handleIosPrint(){
         toggleiosWarning(true)

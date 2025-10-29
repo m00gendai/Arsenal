@@ -3,9 +3,9 @@ export const IS_PREV = process.env.APP_VARIANT === "preview"
 
 export default {
   "expo": {
-    "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : "Arsenal",
+    "name": IS_DEV ? "Arsenal DEV" : IS_PREV ? "Arsenal PRE" : "Arsenal",
     "slug": "waffenschrank",
-    "version": "1.4.1",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/appIconC.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,11 @@ export default {
       "supportsTablet": true,
       "bundleIdentifier": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal.pre" : "com.m00gendai.arsenal",
       "name": "Arsenal: Armamentarium",
-      "buildNumber": "5"
+      "buildNumber": "5",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -29,14 +33,17 @@ export default {
         "backgroundColor": "#ffffff"
       },
       "package": IS_DEV ? "com.m00gendai.arsenal.dev" : "com.m00gendai.arsenal",
-      "versionCode": 14
+      "versionCode": 14,
+      "permissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+      ]
     },
     "web": {
       "favicon": "./assets/appIconC.png"
     },
     "plugins": [
       "expo-secure-store",
-      "expo-build-properties",
       "expo-asset",
       "expo-local-authentication",
       [
@@ -44,6 +51,15 @@ export default {
         {
           "android:largeHeap": false,
           "android:hardwareAccelerated": true
+        }
+      ],
+      "expo-sqlite",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.5"
+          }
         }
       ]
     ],
@@ -53,17 +69,5 @@ export default {
       }
     },
     "owner": "m00gendai"
-  },
-  "android": {
-    "permissions": [
-      "android.permission.READ_MEDIA_IMAGES",
-      "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
-    ]
-  },
-  "ios": {
-    "infoPlist": {
-      "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
-      "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos."
-    }
   }
 }

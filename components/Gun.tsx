@@ -1,19 +1,14 @@
 import { StyleSheet, View, ScrollView, Alert, TouchableNativeFeedback, TouchableOpacity, Pressable, Platform } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
 import { checkBoxes, gunDataTemplate, gunRemarks } from "../lib/gunDataTemplate"
-import * as SecureStore from "expo-secure-store"
 import { useState} from "react"
-import EditGun from "./EditGun"
 import ImageViewer from "./ImageViewer"
-import { GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
 import { useViewStore } from '../stores/useViewStore';
 import { useGunStore } from '../stores/useGunStore';
 import { cleanIntervals, gunDeleteAlert, iosWarningText } from '../lib/textTemplates';
 import { printSingleGun } from '../functions/printToPDF';
 import { GunType } from '../interfaces';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { alarm, checkDate } from '../utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
@@ -21,6 +16,9 @@ import { defaultViewPadding } from '../configs';
 import { GetColorName } from 'hex-color-to-color-name';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import * as schema from "../db/schema"
+import { db } from "../db/client"
+import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
 
 export default function Gun({navigation}){
 
@@ -71,17 +69,7 @@ export default function Gun({navigation}){
     })
 
     async function deleteItem(gun:GunType){
-        // Deletes gun in gun database
-        await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${gun.id}`)
-
-        // retrieves gun ids from key database and removes the to be deleted id
-        const keys:string = await AsyncStorage.getItem(KEY_DATABASE)
-        const keyArray: string[] = JSON.parse(keys)
-        const newKeys: string[] = keyArray.filter(key => key != gun.id)
-        AsyncStorage.setItem(KEY_DATABASE, JSON.stringify(newKeys))
-        const index:number = gunCollection.indexOf(gun)
-        const newCollection:GunType[] = gunCollection.toSpliced(index, 1)
-        setGunCollection(newCollection)
+        await db.delete(schema.gunCollection).where(eq(schema.gunCollection.id, gun.id));
         toggleDialogVisible(false)
         navigation.navigate("GunCollection")
     }
@@ -185,6 +173,7 @@ export default function Gun({navigation}){
                                                 currentGun.mainColor ? GetColorName(`${checkColor(currentGun.mainColor).split("#")[1]}`) : "" 
                                             : item.name === "paidPrice" ? `CHF ${currentGun[item.name] ? currentGun[item.name] :  ""}` 
                                             : item.name === "marketValue" ? `CHF ${currentGun[item.name] ? currentGun[item.name] : ""}` 
+                                            : item.name === "lastShotAt" ? `${currentGun[item.name] ? currentGun[item.name] : ""}`
                                             : item.name === "cleanInterval" && currentGun[item.name] !== undefined ? cleanIntervals[currentGun[item.name]] !== undefined ? cleanIntervals[currentGun[item.name]][language] : ""
                                             : currentGun[item.name]}</Text>
                                         }
@@ -244,7 +233,7 @@ export default function Gun({navigation}){
                         <View style={{flex: 1, flexDirection: "column"}} >
                         {checkBoxes.map(checkBox=>{
                             return(
-                                <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentGun.status && currentGun.status[checkBox.name] ? "checked" : "unchecked"}/>
+                                <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentGun[checkBox.name] ? "checked" : "unchecked"}/>
                             )
                         })}
                         </View>

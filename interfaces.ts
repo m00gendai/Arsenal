@@ -14,8 +14,8 @@ export interface GunType{
   mainColor?: string | null
   remarks? : string | null
   images: string[]
-  createdAt: string
-  lastModifiedAt: string
+  createdAt: number
+  lastModifiedAt: number
   status?: GunTypeStatus
   shotCount?: string
   tags: string[]
@@ -23,7 +23,7 @@ export interface GunType{
   lastCleanedAt?: string
   paidPrice?: string
   marketValue?: string
-  cleanInterval?: string | null
+  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
 }
 
 export interface GunTypeStatus{
@@ -43,17 +43,25 @@ export interface AmmoType{
   caliber: string | null
   designation: string
   originCountry?: string | null
-  createdAt: string,
-  lastModifiedAt: string,
+  createdAt: number,
+  lastModifiedAt: number,
   headstamp?: string | null
-  currentStock?: number
-  previousStock?: number
+  currentStock?: string
+  previousStock?: string
   lastTopUpAt?: string
   criticalStock?: string
   tags: string[]
   images: string[]
   remarks?: string
 }
+
+
+interface DbId{
+  db_id: number
+}
+
+export type GunTypeWithDbId = GunType & DbId
+export type AmmoTypeWithDbId = AmmoType & DbId
 
 export interface MenuVisibility{
   sortBy: boolean
@@ -129,32 +137,34 @@ export interface CommonStyles {
   tagContainerGap: string
 }
 
-export type SortingTypes =  "alphabetical" | 
-                            "lastAdded" | 
-                            "lastModified" | 
+export type SortingTypesGun =  "alphabetical" | 
+                            "createdAt" | 
+                            "lastModifiedAt" | 
                             "caliber" | 
                             "paidPrice" | 
                             "marketValue" | 
                             "acquisitionDate" | 
-                            "lastCleaned" |
-                            "lastShot"
+                            "lastCleanedAt" |
+                            "lastShotAt"
+
+export type SortingTypesAmmo = "alphabetical" |
+                            "createdAt" |
+                            "lastModifiedAt" |
+                            "currentStock" |
+                            "lastTopUpAt"
+
+
                             
 export type Languages = "de" | "en" | "fr" | "it" | "ch"
 export type CaliberArray = {id: string, amount: string }
-export type DBOperations = "save_arsenal_gun_db" | 
-                           "save_arsenal_gun_csv" | 
-                           "save_arsenal_ammo_db" | 
-                           "save_arsenal_ammo_csv" | 
-                           "import_arsenal_gun_db" | 
-                           "import_custom_gun_csv" | 
-                           "import_arsenal_gun_csv" | 
-                           "import_arsenal_ammo_db" | 
-                           "import_custom_ammo_csv" | 
-                           "import_arsenal_ammo_csv" | 
-                           "share_arsenal_gun_db" |
-                           "share_arsenal_gun_csv" |
-                           "share_arsenal_ammo_db" |
-                           "share_arsenal_ammo_csv"
+export type DBOperations = "save_arsenal_db" |
+                           "save_arsenal_csv" | 
+                           "import_arsenal_db" |
+                           "import_arsenal_csv" |
+                           "import_custom_csv" | 
+                           "import_legacy_db"
+                           
+                           
 
 
 export type StackParamList = {

@@ -1,3 +1,5 @@
+import { AmmoType } from "../interfaces"
+
 export const ammoDataTemplate:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
         {
                 name: "manufacturer",
@@ -74,3 +76,18 @@ export const ammoDataTemplate:{name:string, de:string, en:string, fr:string, it:
         ch: "Remartgar",
     }
     
+export const emptyAmmoObject:AmmoType = {
+    id: "",
+    createdAt: 0,
+    lastModifiedAt: 0,
+    manufacturer: null,
+    designation: "",
+    originCountry: null,
+    caliber: null,
+    headstamp: null,
+    currentStock: null,
+    lastTopUpAt: null,
+    criticalStock: null,
+    tags: [],
+    images: []
+}

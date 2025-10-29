@@ -4,13 +4,13 @@ import * as ImagePicker from "expo-image-picker"
 import { useEffect, useState } from 'react';
 import * as SecureStore from "expo-secure-store"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { gunDataTemplate, gunRemarks } from "../lib/gunDataTemplate"
+import { emptyGunObject, gunDataTemplate, gunRemarks } from "../lib/gunDataTemplate"
 import NewText from "./NewText"
 import "react-native-get-random-values"
 import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "./ImageViewer"
 import { GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
-import { GunType } from '../interfaces';
+import { GunType, GunTypeWithDbId } from '../interfaces';
 import { gunDataValidation, imageHandling } from '../utils';
 import NewTextArea from './NewTextArea';
 import NewCheckboxArea from './NewCheckboxArea';
@@ -20,8 +20,8 @@ import { useViewStore } from '../stores/useViewStore';
 import NewChipArea from './NewChipArea';
 import { useGunStore } from '../stores/useGunStore';
 import * as FileSystem from 'expo-file-system';
-import { exampleGun, exampleGunEmpty } from '../lib/examples';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import * as schema from "../db/schema"
+import { db } from "../db/client"
 
 
 export default function NewGun({navigation}){
@@ -33,8 +33,8 @@ export default function NewGun({navigation}){
     const [selectedImage, setSelectedImage] = useState<string[]>(currentGun ? currentGun.images : null)
     const [initCheck, setInitCheck] = useState<boolean>(true)
     const [granted, setGranted] = useState<boolean>(false)
-    const [gunData, setGunData] = useState<GunType>(currentGun ? currentGun : exampleGunEmpty)
-    const [gunDataCompare, setGunDataCompare] = useState<GunType>(currentGun ? currentGun : exampleGunEmpty)
+    const [gunData, setGunData] = useState<GunType>(currentGun ? currentGun : emptyGunObject)
+    const [gunDataCompare, setGunDataCompare] = useState<GunType>(currentGun ? currentGun : emptyGunObject)
     const [visible, setVisible] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string>("")
     const [saveState, setSaveState] = useState<boolean>(null)
@@ -71,7 +71,7 @@ export default function NewGun({navigation}){
 
   const onDismissSnackBar = () => setVisible(false);
 
-    async function save(value:GunType) {
+    async function save(value:GunTypeWithDbId) {
         const validationResult:{field: string, error: string}[] = gunDataValidation(value, language)
         if(validationResult.length != 0){
             Alert.alert(validationFailedAlert.title[language], `${validationResult.map(result => `${result.field}: ${result.error}`)}`, [
@@ -82,20 +82,10 @@ export default function NewGun({navigation}){
             ])
             return
         }
-        /* 
-            Saving a gun is a two-step process:
-            1. Save the key of the gun to the key database
-            2. Save the gun object as a separate key/value pair in the gun database
-        */
-
         
-            
-
-        const allKeys:string = await AsyncStorage.getItem(KEY_DATABASE) // gets the object that holds all key values
-        const newKeys:string[] = allKeys == null ? [value.id] : [...JSON.parse(allKeys), value.id] // if its the first gun to be saved, create an array with the id of the gun. Otherwise, merge the key into the existing array
-        await AsyncStorage.setItem(KEY_DATABASE, JSON.stringify(newKeys)) // Save the key object
-        SecureStore.setItem(`${GUN_DATABASE}_${value.id}`, JSON.stringify(value)) // Save the gun
-        console.log(`Saved item ${JSON.stringify(value)} with key ${GUN_DATABASE}_${value.id}`)
+    const {db_id, ...idless} = value
+        await db.insert(schema.gunCollection).values(idless)
+        console.log(`Saved item ${JSON.stringify(idless)} with key ${GUN_DATABASE}_${value.id}`)
         setSaveState(true)
         setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${value.model} ${toastMessages.saved[language]}`)
         onToggleSnackBar()
@@ -241,7 +231,18 @@ useEffect(() => {
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
                 <Appbar.Content title={newGunTitle[language]} />
-                <Appbar.Action icon="floppy" onPress={() => save({...gunData, id: uuidv4(), images:selectedImage, createdAt: `${new Date()}`, lastModifiedAt: `${new Date()}`})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"} />
+                <Appbar.Action 
+                    icon="floppy" 
+                    onPress={() => save(
+                        {...gunData, 
+                            db_id: null, 
+                            id: uuidv4(), 
+                            images:selectedImage, 
+                            createdAt: new Date().getTime(), 
+                            lastModifiedAt: new Date().getTime()}
+                    )} 
+                    color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"} 
+                />
             </Appbar>
 
             <View style={styles.container}>
@@ -291,7 +292,7 @@ useEffect(() => {
                                 </View>
                             )
                         })}
-                        <NewCheckboxArea data={"status"} gunData={gunData} setGunData={setGunData} />
+                        <NewCheckboxArea gunData={gunData} setGunData={setGunData} />
                         <NewTextArea data={gunRemarks.name} gunData={gunData} setGunData={setGunData}/>
                     </View>
                 </ScrollView>

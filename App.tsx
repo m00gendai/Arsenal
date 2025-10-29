@@ -13,7 +13,7 @@ import AmmoCollection from './components/AmmoCollection';
 import { StatusBar } from 'expo-status-bar';
 import { AmmoType, GunType, StackParamList } from './interfaces';
 import * as SecureStore from "expo-secure-store"
-import { alarm, doSortBy, getIcon } from './utils';
+import { alarm, getIcon } from './utils';
 import { useAmmoStore } from './stores/useAmmoStore';
 import { useTagStore } from './stores/useTagStore';
 import { useGunStore } from './stores/useGunStore';
@@ -32,13 +32,36 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Alert, Dimensions } from 'react-native';
 import { calibers } from './lib/caliberData';
-
+import { expo, db } from "./db/client"
+import * as schema from "./db/schema"
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+import migrations from './drizzle/migrations';
+import { checkBoxes } from './lib/gunDataTemplate';
+import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
+import * as FileSystem from 'expo-file-system';
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+import DEV_importLegacyDatabaseAsJSON from './functions/DEV_importLegacyDatabaseAsJSON';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const { success, error } = useMigrations(db, migrations);
+  if(error){
+    console.log("Database Migration Error:")
+    console.log(error)
+  }
+  useDrizzleStudio(expo)
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
+
+  configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
 
   const { 
     ammoDbImport, 
@@ -59,50 +82,176 @@ export default function App() {
     caliberDisplayNameList
   } = usePreferenceStore();
   const { mainMenuOpen } = useViewStore()
-  const { setAmmoCollection } = useAmmoStore()
-  const { setGunCollection } = useGunStore()
+  const { ammoCollection, setAmmoCollection } = useAmmoStore()
+ const { gunCollection, setGunCollection } = useGunStore()
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
 
+    async function getKeys(data: "guns" | "ammo"){
+    const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
+    if(keys == null){
+      return []
+    }
+    return JSON.parse(keys)
+  }
+
+   // DEV_importLegacyDatabaseAsJSON()
+
+
+  async function checkLegacyGunData(){
+    let keys:string[]
+    try{
+      keys = await getKeys("guns")
+    } catch(e){
+      alarm("Legacy Gun Key Error", e)
+    }
+    console.log("Checked Gun Keys:")
+    console.log(keys)
+    if(keys.length === 0){
+      return
+    }
+    let guns:GunType[]
+    try{
+      guns = await Promise.all(keys.map(async key =>{
+        const item:string = await SecureStore.getItemAsync(`${GUN_DATABASE}_${key}`)
+        return JSON.parse(item)
+      }))
+    } catch(e){
+      alarm("Legacy Gun DB Error", e)
+    }
+    console.log("Checked Guns:")
+    console.log(guns)
+    if(guns.length !== 0){
+      await Promise.all(guns.map(async gun =>{
+        if(gun !== null){
+          await Promise.all(checkBoxes.map(checkbox =>{
+            gun[checkbox.name] = gun !== undefined && gun !== null && gun.status !== undefined && gun.status !== null ? gun.status[checkbox.name] : false
+          }))
+          gun.createdAt = gun !== undefined && gun !== null && isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt
+          gun.lastModifiedAt = gun !== undefined && gun !== null && isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt
+          await db.insert(schema.gunCollection).values(gun)
+          if(gun.tags !== undefined && gun.tags !== null && gun.tags.length !== 0){
+            await Promise.all(gun.tags.map(async tag =>{
+              await db.insert(schema.gunTags).values({label: tag}).onConflictDoNothing()
+            }))
+          }
+        }
+      }))
+      await Promise.all(keys.map(async key =>{
+        await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${key}`)
+      }))
+      await AsyncStorage.removeItem(KEY_DATABASE)
+    }
+  }
+
+  async function checkLegacyAmmoData(){
+    let keys:string[]
+    try{
+      keys = await getKeys("ammo")
+    } catch(e){
+      alarm("Legacy Ammo Key Error", e)
+    }
+    console.log("Checked Ammo Keys:")
+    console.log(keys)
+    if(keys.length === 0){
+      return
+    }
+    let ammunition:AmmoType[]
+    try{
+      ammunition = await Promise.all(keys.map(async key =>{
+        const item:string = await SecureStore.getItemAsync(`${AMMO_DATABASE}_${key}`)
+        return JSON.parse(item)
+      }))
+    } catch(e){
+      alarm("Legacy Ammo DB Error", e)
+    }
+    if(ammunition.length !== 0){
+      await Promise.all(ammunition.map(async ammo =>{
+        await db.insert(schema.ammoCollection).values(ammo)
+      }))
+      await Promise.all(keys.map(async key =>{
+        await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${key}`)
+      }))
+      await AsyncStorage.removeItem(A_KEY_DATABASE)
+    }
+  }
+
+
   
-  useEffect(() => {
+useEffect(() => {
     async function prepare() {
-      try {
-        console.log("try: so hard")
+      try{
+        console.log("Get Preferences")
         const preferences:string = await AsyncStorage.getItem(PREFERENCES)
         const isPreferences = preferences === null ? null : JSON.parse(preferences)
-        console.log("isPreferences null")
+        console.log("Preferences Nullcheck:")
         if(isPreferences === null){
-          setAppIsReady(true)
+          console.log("Preferences are Null")
+          console.log("Checking for Legacy Gun Data")
+          await checkLegacyGunData()
+          console.log("Checking for Legacy Ammo Data")
+          await checkLegacyAmmoData()
+          console.log("Successfully checked for legacy data")
+          if(success){
+            console.log("Setting App to Ready")
+            setAppIsReady(true)
+          }
           return
         }
-        console.log("isPreferences.generalSettings null")
+
+        console.log("Preferences Nullcheck: General Settings:")
         if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
-          setAppIsReady(true)
+          if(success){
+            console.log("Checking for Legacy Gun Data")
+          await checkLegacyGunData()
+          console.log("Checking for Legacy Ammo Data")
+          await checkLegacyAmmoData()
+          console.log("Successfully checked for legacy data")
+          console.log("Setting App to Ready")
+            setAppIsReady(true)
+          }
           return
         }
-        console.log("isPreferences.generalsettings.loginGuard null || false")
+
+        console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
         if(isPreferences.generalSettings.loginGuard !== null && isPreferences.generalSettings.loginGuard !== undefined && isPreferences.generalSettings.loginGuard === true){
-          const success = await LocalAuthentication.authenticateAsync()
-          console.log(success)
-          if(success.success){
-            setAppIsReady(true);
+          const authSuccess = await LocalAuthentication.authenticateAsync()
+          if(authSuccess.success){
+            console.log("Login Guard active")
+            console.log("Checking for Legacy Gun Data")
+            await checkLegacyGunData()
+            console.log("Checking for Legacy Ammo Data")
+            await checkLegacyAmmoData()
+            console.log("Successfully checked for legacy data")
+            if(success){
+              console.log("Setting App to Ready")
+              setAppIsReady(true)
+            }
           } else{
-            throw new Error(`Local Authentification failed: ${JSON.stringify(success)} | ${isPreferences.generalSettings.loginGuard}`);
+            throw new Error(`Local Authentification failed: ${JSON.stringify(authSuccess)} | ${isPreferences.generalSettings.loginGuard}`);
           }
         } else {
-          console.log("false")
-          setAppIsReady(true)
+          console.log("Login Guard inactive")
+          console.log("Checking for Legacy Gun Data")
+            await checkLegacyGunData()
+            console.log("Checking for Legacy Ammo Data")
+            await checkLegacyAmmoData()
+            console.log("Successfully checked for legacy data")
+          if(success){
+            console.log("Setting App to Ready")
+            setAppIsReady(true)
+          }
           return
         }
-      } catch (e) {
-        console.log("catch: got so far")
+      } catch (e){
+        console.log("Something went wrong:")
         console.log(e);
         alarm("Initialisation error", e)
       } 
     }
     prepare();
-  }, []);
+}, [success]);
+
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -110,6 +259,7 @@ export default function App() {
       
     }
   }, [appIsReady]);
+  
   
   useEffect(()=>{
     async function getPreferences(){
@@ -193,106 +343,6 @@ export default function App() {
     }
     getPreferences()
   },[])
-
-  async function getKeys(data: "guns" | "ammo"){
-    const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
-    if(keys == null){
-      return []
-    }
-    return JSON.parse(keys)
-  }
-
-  useEffect(()=>{
-    async function getAmmo(){
-      let keys:string[]
-      try{
-      keys = await getKeys("ammo")
-      } catch(e){
-        alarm("Ammo Key Error", e)
-      }
-
-
-      let ammunitions:AmmoType[]
-      try{
-        ammunitions = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${AMMO_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-
-      if(ammunitions.length !== keys.length){
-        throw(`Key/Ammo DB Discrepancy: Found ${keys.length} keys and ${ammunitions.length} ammunitions`)
-      }
-    } catch(e){
-      alarm("Ammo DB Error", e)
-    }
-
-      try{
-      const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-      const isPreferences = preferences === null ? null : JSON.parse(preferences)
-      const filteredAmmunition = ammunitions.filter(item => item !== null) // null check if there are key corpses
-      if(ammunitions.length !== 0 && ammunitions.every(item => item ===null)){
-        throw(`Ammo DB Null Exception: Found ${keys.length} keys and ${ammunitions.length} null items`)
-      }
-
-      if(filteredAmmunition.length === 0){
-        setAmmoCollection([])
-      }
-      if(filteredAmmunition.length !== 0){
-        const sortedAmmo = doSortBy(isPreferences === null ? "alphabetical" : isPreferences.sortAmmoBy === undefined ? "alphabetical" : isPreferences.sortAmmoBy, isPreferences == null? true : isPreferences.sortOrderAmmo === null ? true : isPreferences.sortOrderAmmo, filteredAmmunition) as AmmoType[]
-        setAmmoCollection(sortedAmmo)
-      }
-    } catch(e){
-      alarm("Ammo Preference Error", e)
-    }
-    }
-    getAmmo()
-  },[ammoDbImport])
-
-  useEffect(()=>{
-    async function getGuns(){
-      let keys: string[]
-      try{
-      keys = await getKeys("guns")
-    }  catch(e){
-      alarm("Gun Key Error", e)
-    }
-
-
-    let guns:GunType[]
-    try{
-      guns = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${GUN_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-      if(guns.length !== keys.length){
-        throw(`Key/Gun DB Discrepancy: Found ${keys.length} keys and ${guns.length} guns`)
-      }
-    } catch(e){
-      alarm("Gun DB Error", e)
-    }
-
-    try{
-      const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-      const isPreferences = preferences === null ? null : JSON.parse(preferences)
-      const filteredGuns = guns.filter(item => item !== null) // null check if there are key corpses
-      if(guns.length !== 0 && guns.every(item => item ===null)){
-        throw(`Gun DB Null Exception: Found ${keys.length} keys and ${guns.length} null items`)
-      }
-
-      if(filteredGuns.length === 0){
-        setGunCollection([])
-      } 
-      if(filteredGuns.length !== 0) {
-        const sortedGuns = doSortBy(isPreferences === null ? "alphabetical" : isPreferences.sortBy === undefined ? "alphabetical" : isPreferences.sortBy, isPreferences == null? true : isPreferences.sortOrderGuns === null ? true : isPreferences.sortOrderGuns, filteredGuns) as GunType[]
-        setGunCollection(sortedGuns)
-      }
-    } catch(e){
-      alarm("Gun Preference Error", e)
-    }
-   }
-    getGuns()
-    setGunsLoaded(true)
-  },[dbImport])
 
   const currentTheme = {...theme, roundness : 5}
 

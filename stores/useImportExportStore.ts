@@ -1,9 +1,9 @@
 import { create } from "zustand"
 import { AmmoType, DBOperations, GunType } from "../interfaces"
-import { exampleAmmoEmpty, exampleGunEmpty } from "../lib/examples"
-import { doSortBy } from "../utils"
+import { emptyAmmoObject } from "../lib/ammoDataTemplate"
+import { emptyGunObject } from "../lib/gunDataTemplate"
 
-interface ImportExportStore {
+export interface ImportExportStore {
     CSVHeader: string[]
     setCSVHeader: (data:string[]) => void
     CSVBody: string[][]
@@ -18,7 +18,7 @@ interface ImportExportStore {
     setMapCSVAmmo: (data: AmmoType) => void
     mapCSVGun: GunType
     setMapCSVGun: (data: GunType) => void
-    dbCollectionType: DBOperations | ""
+    dbCollectionType: "gun" | "ammo"
     setDbCollectionType: (data: string) => void
   }
 
@@ -33,10 +33,10 @@ interface ImportExportStore {
     importSize: 0,
     setImportSize: (num: number) => set((state) => ({importSize: num})),
     resetImportSize: (num: number) => set((state) => ({importSize: num})),
-    mapCSVAmmo: exampleAmmoEmpty,
-    setMapCSVAmmo: (data: AmmoType) => set((state => ({mapCSVAmmo: data}))),
-    mapCSVGun: exampleGunEmpty,
-    setMapCSVGun: (data: GunType) => set((state => ({mapCSVGun: data}))),
-    dbCollectionType: "",
-    setDbCollectionType: (data: DBOperations | "") => set((state) => ({dbCollectionType: data}))
+    mapCSVAmmo: emptyAmmoObject,
+    setMapCSVAmmo: (data: AmmoType | null) => set((state => ({mapCSVAmmo: data}))),
+    mapCSVGun: emptyGunObject,
+    setMapCSVGun: (data: GunType | null) => set((state => ({mapCSVGun: data}))),
+    dbCollectionType: "gun",
+    setDbCollectionType: (data: "gun" | "ammo") => set((state) => ({dbCollectionType: data}))
   }))
