@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "./ImageViewer"
 import { AMMO_DATABASE, A_KEY_DATABASE } from '../configs_DB';
 import { AmmoType, AmmoTypeWithDbId } from '../interfaces';
-import { ammoDataValidation, imageHandling } from '../utils';
+import { ammoDataValidation, cleanNullValues, imageHandling } from '../utils';
 import NewTextArea from './NewTextArea';
 import NewCheckboxArea from './NewCheckboxArea';
 import { newAmmoTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';
@@ -335,7 +335,7 @@ export default function NewAmmo({navigation}){
                                         
                                 }}>
                                     
-                                    <NewText data={data.name} ammoData={ammoData} setAmmoData={setAmmoData} label={data[language]}/>
+                                    <NewText data={data.name} ammoData={cleanNullValues(ammoData) as AmmoType} setAmmoData={setAmmoData} label={data[language]}/>
                                 </View>
                             )
                         })}
