@@ -180,44 +180,21 @@ export default function App() {
   
 useEffect(() => {
     async function prepare() {
+     //  DEV_importLegacyDatabaseAsJSON()
       try{
-        console.log("Get Preferences")
-        const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-        const isPreferences = preferences === null ? null : JSON.parse(preferences)
-        console.log("Preferences Nullcheck:")
-        if(isPreferences === null){
-          console.log("Preferences are Null")
-          console.log("Checking for Legacy Gun Data")
-          await checkLegacyGunData()
-          console.log("Checking for Legacy Ammo Data")
-          await checkLegacyAmmoData()
-          console.log("Successfully checked for legacy data")
-          if(success){
-            console.log("Setting App to Ready")
-            setAppIsReady(true)
-          }
-          return
+        let isPreferences 
+        try{
+          console.log("Get Preferences")
+         const preferences:string = await AsyncStorage.getItem(PREFERENCES)
+          isPreferences = preferences === null ? null : JSON.parse(preferences)
+          } catch(e){
+          throw new Error(`Init: Get Preferences: ${e}`)
         }
 
-        console.log("Preferences Nullcheck: General Settings:")
-        if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
-          if(success){
-            console.log("Checking for Legacy Gun Data")
-          await checkLegacyGunData()
-          console.log("Checking for Legacy Ammo Data")
-          await checkLegacyAmmoData()
-          console.log("Successfully checked for legacy data")
-          console.log("Setting App to Ready")
-            setAppIsReady(true)
-          }
-          return
-        }
-
-        console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
-        if(isPreferences.generalSettings.loginGuard !== null && isPreferences.generalSettings.loginGuard !== undefined && isPreferences.generalSettings.loginGuard === true){
-          const authSuccess = await LocalAuthentication.authenticateAsync()
-          if(authSuccess.success){
-            console.log("Login Guard active")
+        try{
+          console.log("Preferences Nullcheck:")
+          if(isPreferences === null){
+            console.log("Preferences are Null")
             console.log("Checking for Legacy Gun Data")
             await checkLegacyGunData()
             console.log("Checking for Legacy Ammo Data")
@@ -227,27 +204,71 @@ useEffect(() => {
               console.log("Setting App to Ready")
               setAppIsReady(true)
             }
-          } else{
-            throw new Error(`Local Authentification failed: ${JSON.stringify(authSuccess)} | ${isPreferences.generalSettings.loginGuard}`);
+            return
           }
-        } else {
-          console.log("Login Guard inactive")
-          console.log("Checking for Legacy Gun Data")
+        }catch(e){
+          throw new Error(`Init: Get Preferences: Nullcheck: ${e}`)
+        }
+
+        try{
+          console.log("Preferences Nullcheck: General Settings:")
+          if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
+            if(success){
+              console.log("Checking for Legacy Gun Data")
             await checkLegacyGunData()
             console.log("Checking for Legacy Ammo Data")
             await checkLegacyAmmoData()
             console.log("Successfully checked for legacy data")
-          if(success){
             console.log("Setting App to Ready")
-            setAppIsReady(true)
+              setAppIsReady(true)
+            }
+            return
           }
-          return
+        }catch(e){
+          throw new Error(`Init: Get Preferences: General Settings: ${e}`)
         }
-      } catch (e){
-        console.log("Something went wrong:")
-        console.log(e);
-        alarm("Initialisation error", e)
-      } 
+
+        try{
+          console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
+          if(isPreferences.generalSettings.loginGuard !== null && isPreferences.generalSettings.loginGuard !== undefined && isPreferences.generalSettings.loginGuard === true){
+            const authSuccess = await LocalAuthentication.authenticateAsync()
+            if(authSuccess.success){
+              console.log("Login Guard active")
+              console.log("Checking for Legacy Gun Data")
+              await checkLegacyGunData()
+              console.log("Checking for Legacy Ammo Data")
+              await checkLegacyAmmoData()
+              console.log("Successfully checked for legacy data")
+              if(success){
+                console.log("Setting App to Ready")
+                setAppIsReady(true)
+              }
+            } else{
+              if(!authSuccess.success){
+                return
+              }
+              throw new Error(`Local Authentification failed: ${JSON.stringify(authSuccess)} | ${isPreferences.generalSettings.loginGuard}`);
+            }
+          } else {
+            console.log("Login Guard inactive")
+            console.log("Checking for Legacy Gun Data")
+              await checkLegacyGunData()
+              console.log("Checking for Legacy Ammo Data")
+              await checkLegacyAmmoData()
+              console.log("Successfully checked for legacy data")
+            if(success){
+              console.log("Setting App to Ready")
+              setAppIsReady(true)
+            }
+            return
+          }
+        } catch(e){
+          throw new Error(`Init: Get Preferences: Login Guard: ${e}`)
+        }
+      }catch(e){
+        console.error(e)
+        alarm("Initialisation error", e?.message || String(e));
+      }
     }
     prepare();
 }, [success]);
