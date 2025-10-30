@@ -32,7 +32,7 @@ export default {
         "foregroundImage": "./assets/appIconC.png",
         "backgroundColor": "#ffffff"
       },
-      "package": IS_DEV ? "com.m00gendai.arsenal.dev" : "com.m00gendai.arsenal",
+      "package": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal" : "com.m00gendai.arsenal",
       "versionCode": 14,
       "permissions": [
         "android.permission.READ_MEDIA_IMAGES",
