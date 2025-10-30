@@ -11,6 +11,8 @@ export const defaultBottomBarHeight:number = 60
 
 export const defaultSearchBarHeight:number = 56
 
+export const defaultBottomBarTextHeight: number = 30
+
 export const dateLocales:SimpleTranslation = {
     de: "de-CH",
     en: "en-US",
@@ -35,3 +37,11 @@ export const languageSelection:{flag:string, code:Languages}[] = [
 
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
+
+export type ScreenNames = "GunCollection" | 
+                          "AmmoCollection" | 
+                          "AccessoryCollection_Optics" | 
+                          "AccessoryCollection_Scopes" | 
+                          "AccessoryCollection_Magazines" | 
+                          "AccessoryCollection_Misc" | 
+                          "AccessoryCollection_Silencers"

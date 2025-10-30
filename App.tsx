@@ -1,6 +1,6 @@
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { AMMO_DATABASE, A_KEY_DATABASE, A_TAGS, GUN_DATABASE, KEY_DATABASE, PREFERENCES, TAGS } from "./configs_DB"
 import 'react-native-gesture-handler';
 import React from 'react';
@@ -45,6 +45,10 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import DEV_importLegacyDatabaseAsJSON from './functions/DEV_importLegacyDatabaseAsJSON';
+import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomBar from './components/BottomBar';
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding } from './configs';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -81,11 +85,12 @@ export default function App() {
     setCaliberDisplayNameList,
     caliberDisplayNameList
   } = usePreferenceStore();
-  const { mainMenuOpen } = useViewStore()
+  const { mainMenuOpen, hideBottomSheet, currentCollectionScreen } = useViewStore()
   const { ammoCollection, setAmmoCollection } = useAmmoStore()
  const { gunCollection, setGunCollection } = useGunStore()
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
     async function getKeys(data: "guns" | "ammo"){
     const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
@@ -364,6 +369,7 @@ useEffect(() => {
 
 
   return (
+    <GestureHandlerRootView>
     <NavigationContainer theme={navTheme}>
       <PaperProvider theme={currentTheme}>
         <StatusBar backgroundColor={mainMenuOpen ? theme.colors.primary : theme.colors.background} style={theme.name.includes("dark") ? "light" : "dark"} />
@@ -445,9 +451,25 @@ useEffect(() => {
             />
 
           </Stack.Navigator>
+          {mainMenuOpen ? null : hideBottomSheet ? null : <BottomSheet
+        ref={bottomSheetRef}
+        
+            snapPoints={[
+              defaultBottomBarHeight, 
+             Dimensions.get("window").height-defaultViewPadding
+            ]}
+            handleComponent={null}
+            backgroundStyle={{backgroundColor: theme.colors.background}}
+            maxDynamicContentSize={(defaultBottomBarHeight*3)+(defaultBottomBarTextHeight*2) + (defaultViewPadding*3)}
+      >
+        <BottomSheetView>
+          <BottomBar screen={currentCollectionScreen}/>
+        </BottomSheetView>
+      </BottomSheet>}
         </SafeAreaView>
       </PaperProvider>
     </NavigationContainer>
+    </GestureHandlerRootView>
   )
 }
 

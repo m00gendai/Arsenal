@@ -28,7 +28,7 @@ export default function GunCollection({navigation, route}){
   const [searchBannerVisible, toggleSearchBannerVisible] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const { displayAsGrid, toggleDisplayAsGrid, sortBy, setSortBy, language, setSortGunIcon, sortGunIcon, sortGunsAscending, toggleSortGunsAscending, theme, gunFilterOn } = usePreferenceStore()
-  const { mainMenuOpen } = useViewStore()
+  const { mainMenuOpen, hideBottomSheet, setHideBottomSheet } = useViewStore()
   const { setCurrentGun } = useGunStore()
 
   const { data: gunData } = useLiveQuery(
@@ -116,6 +116,7 @@ export default function GunCollection({navigation, route}){
   });
 
   function handleFAB(){
+    setHideBottomSheet(true)
     setCurrentGun(null)
     navigation.navigate("NewGun")
   }
@@ -214,7 +215,7 @@ const listKey = isLandscape
     ListFooterComponent={<View style={{ width: "100%", height: 100 }} />}
     ListEmptyComponent={null}
   />
-     <BottomBar screen={route.name}/>
+
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, gunData.length === 0 ? pulsate : null]}>
         <FAB
           icon="plus"
