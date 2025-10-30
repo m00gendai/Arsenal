@@ -2,7 +2,9 @@
   "build": {
     "preview": {
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle",
+        "autoIncrement": true
+        
       },
       "env": {
         "APP_VARIANT": "preview"
