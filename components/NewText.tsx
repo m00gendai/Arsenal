@@ -255,7 +255,7 @@ function handleInputPress(){
                 subtitle={modalTexts.colorPicker.text[language]}
                 visible={showModal}
                 setVisible={setShowModal}
-                content={<ColorPicker style={{ width: '100%', padding: 10 }} value={gunData ? gunData[data] : "#000"} onComplete={onSelectColor}>
+                content={<ColorPicker style={{ width: '100%', padding: 10 }} value={gunData ? gunData[data] ? gunData[data] : "#000" : "#000"} onComplete={onSelectColor}>
                 <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}><Text>{currentGun ? GetColorName(checkColor(currentGun.mainColor)) : ""}</Text><Text>{currentGun ? GetColorName(checkColor(currentGun.mainColor)) : ""}</Text></View>
                 <Preview style={{marginBottom: 10}} />
                 <ScrollView >
