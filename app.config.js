@@ -1,9 +1,10 @@
 export const IS_DEV = process.env.APP_VARIANT === 'development';
 export const IS_PREV = process.env.APP_VARIANT === "preview"
+export const IS_RC = process.env.APP_VARIANT === "releaseCandidate"
 
 export default {
   "expo": {
-    "name": IS_DEV ? "Arsenal DEV" : IS_PREV ? "Arsenal PRE" : "Arsenal",
+    "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
     "version": "2.0.0",
     "orientation": "portrait",
@@ -19,7 +20,7 @@ export default {
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal.pre" : "com.m00gendai.arsenal",
+      "bundleIdentifier": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal.pre" : IS_RC ? "com.m00gendai.arsenal.rc" : "com.m00gendai.arsenal",
       "name": "Arsenal: Armamentarium",
       "buildNumber": "5",
       "infoPlist": {

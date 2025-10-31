@@ -10,6 +10,15 @@
         "APP_VARIANT": "preview"
       }
     },
+    "releaseCandidate": {
+      "android": {
+        "buildType": "apk",
+        "autoIncrement": true
+      },
+      "env": {
+        "APP_VARIANT": "releaseCandidate"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
