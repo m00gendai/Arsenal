@@ -129,10 +129,19 @@ export default function App() {
           }))
           gun.createdAt = gun !== undefined && gun !== null && isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt
           gun.lastModifiedAt = gun !== undefined && gun !== null && isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt
-          await db.insert(schema.gunCollection).values(gun)
+          try{
+            await db.insert(schema.gunCollection).values(gun)
+          }catch(e){
+            throw new Error(`Check Legacy Gun Data: Insert gun ${gun.model} into DB: ${e}`)
+          }
           if(gun.tags !== undefined && gun.tags !== null && gun.tags.length !== 0){
             await Promise.all(gun.tags.map(async tag =>{
-              await db.insert(schema.gunTags).values({label: tag}).onConflictDoNothing()
+              try{
+                await db.insert(schema.gunTags).values({label: tag}).onConflictDoNothing()
+              }catch(e){
+                throw new Error(`Check Legacy Gun Data: Insert tag ${tag} into DB: ${e}`)
+              }
+              
             }))
           }
         }
@@ -167,7 +176,20 @@ export default function App() {
     }
     if(ammunition.length !== 0){
       await Promise.all(ammunition.map(async ammo =>{
-        await db.insert(schema.ammoCollection).values(ammo)
+        try{
+          await db.insert(schema.ammoCollection).values(ammo)
+        }catch(e){
+          throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
+        }
+        if(ammo.tags !== undefined && ammo.tags !== null && ammo.tags.length !== 0){
+            await Promise.all(ammo.tags.map(async tag =>{
+              try{
+                await db.insert(schema.ammoTags).values({label: tag}).onConflictDoNothing()
+              }catch(e){
+                throw new Error(`Check Legacy Ammo Data: Insert tag ${tag} into DB: ${e}`)
+              }
+            }))
+          }
       }))
       await Promise.all(keys.map(async key =>{
         await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${key}`)
@@ -180,13 +202,16 @@ export default function App() {
   
 useEffect(() => {
     async function prepare() {
+      if(!success){
+        return
+      }
      //  DEV_importLegacyDatabaseAsJSON()
       try{
         let isPreferences 
         try{
           console.log("Get Preferences")
          const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-          isPreferences = preferences === null ? null : JSON.parse(preferences)
+          isPreferences = preferences ? JSON.parse(preferences) : null;
           } catch(e){
           throw new Error(`Init: Get Preferences: ${e}`)
         }
@@ -196,9 +221,17 @@ useEffect(() => {
           if(isPreferences === null){
             console.log("Preferences are Null")
             console.log("Checking for Legacy Gun Data")
-            await checkLegacyGunData()
+            try{
+              await checkLegacyGunData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: Legacy Gun Data: ${e}`)
+            }
             console.log("Checking for Legacy Ammo Data")
-            await checkLegacyAmmoData()
+            try{
+              await checkLegacyAmmoData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
+            }
             console.log("Successfully checked for legacy data")
             if(success){
               console.log("Setting App to Ready")
@@ -215,9 +248,17 @@ useEffect(() => {
           if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
             if(success){
               console.log("Checking for Legacy Gun Data")
-            await checkLegacyGunData()
+            try{
+              await checkLegacyGunData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Gun Data: ${e}`)
+            }
             console.log("Checking for Legacy Ammo Data")
-            await checkLegacyAmmoData()
+            try{
+              await checkLegacyAmmoData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
+            }
             console.log("Successfully checked for legacy data")
             console.log("Setting App to Ready")
               setAppIsReady(true)
@@ -235,9 +276,17 @@ useEffect(() => {
             if(authSuccess.success){
               console.log("Login Guard active")
               console.log("Checking for Legacy Gun Data")
+              try{
               await checkLegacyGunData()
-              console.log("Checking for Legacy Ammo Data")
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Gun Data: ${e}`)
+            }
+            console.log("Checking for Legacy Ammo Data")
+            try{
               await checkLegacyAmmoData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Ammo Data: ${e}`)
+            }
               console.log("Successfully checked for legacy data")
               if(success){
                 console.log("Setting App to Ready")
@@ -252,9 +301,17 @@ useEffect(() => {
           } else {
             console.log("Login Guard inactive")
             console.log("Checking for Legacy Gun Data")
+              try{
               await checkLegacyGunData()
-              console.log("Checking for Legacy Ammo Data")
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Gun Data: ${e}`)
+            }
+            console.log("Checking for Legacy Ammo Data")
+            try{
               await checkLegacyAmmoData()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Ammo Data: ${e}`)
+            }
               console.log("Successfully checked for legacy data")
             if(success){
               console.log("Setting App to Ready")
@@ -299,30 +356,22 @@ useEffect(() => {
       
       /* GENERAL SETTINGS AND PREFERENCES */
       try{
-      switchLanguage(isPreferences === null ? "de" : isPreferences.language === undefined ? "de" : isPreferences.language)
-      switchTheme(isPreferences === null ? "default" : isPreferences.theme === undefined ? "default" : isPreferences.theme)
-      setGeneralSettings(isPreferences === null ? {
+      switchLanguage(isPreferences?.language ?? "de")
+      switchTheme(isPreferences?.theme ?? "default")
+      setGeneralSettings(isPreferences?.generalSettings ?? {
         displayImagesInListViewAmmo: true, 
         displayImagesInListViewGun: true,
         resizeImages: true,
-      } : isPreferences.generalSettings === undefined ? {
-        displayImagesInListViewAmmo: true, 
-        displayImagesInListViewGun: true,
-        resizeImages: true,
-      } : isPreferences.generalSettings)
+      })
       let shortCalibers:{name: string, displayName?: string}[] = []
-      if(isPreferences !== null){
-        if(isPreferences.generalSettings !== undefined){
-          if(isPreferences.generalSettings.caliberDisplayName !== undefined){
-            calibers.map(variant =>{
-              variant.variants.map(caliber =>{
-                if(caliber.displayName !== undefined){
-                  shortCalibers.push(caliber)
-                }
-              })
-            })
-          }
-        }
+      if(isPreferences?.generalSettings?.caliberDisplayName){
+        calibers.map(variant =>{
+          variant.variants.map(caliber =>{
+            if(caliber.displayName !== undefined){
+              shortCalibers.push(caliber)
+            }
+          })
+        })
       }
       setCaliberDisplayNameList(shortCalibers)
     } catch(e){
@@ -332,12 +381,12 @@ useEffect(() => {
       /* AMMO PREFERENCES */
       try{
       const ammo_tagList: string = await AsyncStorage.getItem(A_TAGS)
-      const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList === null ? null : JSON.parse(ammo_tagList)
-      setDisplayAmmoAsGrid(isPreferences === null ? true : isPreferences.displayAmmoAsGrid === null ? true : isPreferences.displayAmmoAsGrid)
-      setSortAmmoBy(isPreferences === null ? "alphabetical" : isPreferences.sortAmmoBy === undefined ? "alphabetical" : isPreferences.sortAmmoBy)
-      setSortAmmoIcon(getIcon((isPreferences === null ? "alphabetical" : isPreferences.sortAmmoBy === null ? "alphabetical" : isPreferences.sortAmmoBy)))
-      setSortAmmoAscending(isPreferences === null ? true : isPreferences.sortOrderAmmo === null ? true : isPreferences.sortOrderAmmo)
-      if(isAmmoTagList !== null && isAmmoTagList !== undefined){
+      const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList ? JSON.parse(ammo_tagList) : null
+      setDisplayAmmoAsGrid(isPreferences?.displayAmmoAsGrid ?? true)
+      setSortAmmoBy(isPreferences?.sortAmmoBy ?? "alphabetical")
+      setSortAmmoIcon(getIcon(isPreferences?.sortAmmoBy ?? "alphabetical"))
+      setSortAmmoAscending(isPreferences?.sortOrderAmmo ?? true)
+      if(isAmmoTagList){
         Object.values(isAmmoTagList).map(tag =>{
           setAmmoTags(tag)
         }) 
@@ -348,12 +397,12 @@ useEffect(() => {
       /* GUN PREFERENCE */
       try{
       const gun_tagList: string = await AsyncStorage.getItem(TAGS) 
-      const isGunTagList:{label: string, status: boolean}[] = gun_tagList === null ? null : JSON.parse(gun_tagList)
-      setDisplayAsGrid(isPreferences === null ? true : isPreferences.displayAsGrid === null ? true : isPreferences.displayAsGrid)
-      setSortBy(isPreferences === null ? "alphabetical" : isPreferences.sortBy === undefined ? "alphabetical" : isPreferences.sortBy)
-      setSortGunIcon(getIcon((isPreferences === null ? "alphabetical" : isPreferences.sortBy === null ? "alphabetical" : isPreferences.sortBy)))
-      setSortGunsAscending(isPreferences === null ? true : isPreferences.sortOrderGuns === null ? true : isPreferences.sortOrderGuns)
-      if(isGunTagList !== null && isGunTagList !== undefined){
+      const isGunTagList:{label: string, status: boolean}[] = gun_tagList ? JSON.parse(gun_tagList) : null
+      setDisplayAsGrid(isPreferences?.displayAsGrid ?? true)
+      setSortBy(isPreferences?.sortBy ?? "alphabetical")
+      setSortGunIcon(getIcon(isPreferences?.sortBy ?? "alphabetical"))
+      setSortGunsAscending(isPreferences?.sortOrderGuns ?? true)
+      if(isGunTagList){
         Object.values(isGunTagList).map(tag =>{
           setTags(tag)
         }) 
