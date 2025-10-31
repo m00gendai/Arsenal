@@ -274,7 +274,7 @@ useEffect(() => {
 
         try{
           console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
-          if(isPreferences.generalSettings.loginGuard !== null && isPreferences.generalSettings.loginGuard !== undefined && isPreferences.generalSettings.loginGuard === true){
+          if(isPreferences?.generalSettings?.loginGuard){
             const authSuccess = await LocalAuthentication.authenticateAsync()
             if(authSuccess.success){
               console.log("Login Guard active")
