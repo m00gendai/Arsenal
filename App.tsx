@@ -30,7 +30,7 @@ import EditGun from './components/EditGun';
 import EditAmmo from './components/EditAmmo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Alert, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import { calibers } from './lib/caliberData';
 import { expo, db } from "./db/client"
 import * as schema from "./db/schema"
@@ -38,17 +38,17 @@ import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from './drizzle/migrations';
 import { checkBoxes } from './lib/gunDataTemplate';
-import { Dirs, Util, FileSystem as fs } from 'react-native-file-access';
-import * as FileSystem from 'expo-file-system';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
-import DEV_importLegacyDatabaseAsJSON from './functions/DEV_importLegacyDatabaseAsJSON';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+
+  // Run migrations and initialize SQLite DB
+
   const { success, error } = useMigrations(db, migrations);
   
   if(error){
@@ -59,16 +59,23 @@ export default function App() {
 
   useDrizzleStudio(expo)
 
+
+  // Only on appIsReady is the splash screen deactivated
+
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
 
+
+  // This is some React Reanimated stuff
+
   configureReanimatedLogger({
-  level: ReanimatedLogLevel.warn,
-  strict: false, // Reanimated runs in strict mode by default
-});
+    level: ReanimatedLogLevel.warn,
+    strict: false, // Reanimated runs in strict mode by default
+  });
+
+
+  // Zustand Store declarations
 
   const { 
-    ammoDbImport, 
-    dbImport,
     switchLanguage, 
     theme, 
     switchTheme, 
@@ -82,15 +89,14 @@ export default function App() {
     setSortGunsAscending, 
     setSortAmmoAscending, 
     setCaliberDisplayNameList,
-    caliberDisplayNameList
   } = usePreferenceStore();
   const { mainMenuOpen } = useViewStore()
-  const { ammoCollection, setAmmoCollection } = useAmmoStore()
- const { gunCollection, setGunCollection } = useGunStore()
   const { setAmmoTags, setTags } = useTagStore()
-  const [gunsLoaded, setGunsLoaded] = useState(false)
 
-    async function getKeys(data: "guns" | "ammo"){
+
+  // This checks for legacy DB keys
+
+  async function getKeys(data: "guns" | "ammo"){
     const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
     if(keys == null){
       return []
@@ -98,8 +104,10 @@ export default function App() {
     return JSON.parse(keys)
   }
 
-   // DEV_importLegacyDatabaseAsJSON()
 
+  // This checks for legacy gun data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy gun data from SecureStore
+  // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no
+  // gun data should be checked
 
   async function checkLegacyGunData(){
     let keys:string[]
@@ -156,6 +164,11 @@ export default function App() {
     }
   }
 
+
+  // This checks for legacy ammo data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy ammo data from SecureStore
+  // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no
+  // ammo data should be checked
+
   async function checkLegacyAmmoData(){
     let keys:string[]
     try{
@@ -202,134 +215,145 @@ export default function App() {
   }
 
 
+  // INIT PREPARE FUNCTION - THIS ESSENTAILLY SETS UP THE APP
   
-useEffect(() => {
+  useEffect(() => {
     async function prepare() {
       if(!success){
         return
       }
-     //  DEV_importLegacyDatabaseAsJSON()
+
       try{
         let isPreferences 
         try{
           console.log("Get Preferences")
-         const preferences:string = await AsyncStorage.getItem(PREFERENCES)
+          const preferences:string = await AsyncStorage.getItem(PREFERENCES)
           isPreferences = preferences ? JSON.parse(preferences) : null;
-          } catch(e){
+        } catch(e){
           throw new Error(`Init: Get Preferences: ${e}`)
         }
 
-        try{
-          console.log("Preferences Nullcheck:")
-          if(isPreferences === null){
-            console.log("Preferences are Null")
+      try{
+        console.log("Preferences Nullcheck:")
+        if(isPreferences === null){
+          console.log("Preferences are Null")
+
+          console.log("Checking for Legacy Gun Data")
+          try{
+            await checkLegacyGunData()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: Legacy Gun Data: ${e}`)
+          }
+
+          console.log("Checking for Legacy Ammo Data")
+          try{
+            await checkLegacyAmmoData()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
+          }
+
+          console.log("Successfully checked for legacy data")
+          console.log("Setting App to Ready")
+          setAppIsReady(true)
+          return
+        }
+      }catch(e){
+        throw new Error(`Init: Get Preferences: Nullcheck: ${e}`)
+      }
+
+      try{
+        console.log("Preferences Nullcheck: General Settings:")
+        if(!isPreferences?.generalSettings){ 
+          console.log("Checking for Legacy Gun Data")
+          try{
+            await checkLegacyGunData()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Gun Data: ${e}`)
+          }
+
+          console.log("Checking for Legacy Ammo Data")
+          try{
+            await checkLegacyAmmoData()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
+          }
+
+          console.log("Successfully checked for legacy data")
+          console.log("Setting App to Ready")
+          setAppIsReady(true)
+          return
+        }
+      }catch(e){
+        throw new Error(`Init: Get Preferences: General Settings: ${e}`)
+      }
+
+      try{
+        console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
+        if(isPreferences?.generalSettings?.loginGuard){
+
+          const authSuccess = await LocalAuthentication.authenticateAsync()
+
+          if(authSuccess.success){
+            console.log("Login Guard active")
+
             console.log("Checking for Legacy Gun Data")
             try{
               await checkLegacyGunData()
             }catch(e){
-              throw new Error(`Init: Get Preferences: Nullcheck: Legacy Gun Data: ${e}`)
-            }
-            console.log("Checking for Legacy Ammo Data")
-            try{
-              await checkLegacyAmmoData()
-            }catch(e){
-              throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
-            }
-            console.log("Successfully checked for legacy data")
-            if(success){
-              console.log("Setting App to Ready")
-              setAppIsReady(true)
-            }
-            return
-          }
-        }catch(e){
-          throw new Error(`Init: Get Preferences: Nullcheck: ${e}`)
-        }
-
-        try{
-          console.log("Preferences Nullcheck: General Settings:")
-          if(isPreferences.generalSettings === null || isPreferences.generalSettings === undefined){ 
-            if(success){
-              console.log("Checking for Legacy Gun Data")
-            try{
-              await checkLegacyGunData()
-            }catch(e){
-              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Gun Data: ${e}`)
-            }
-            console.log("Checking for Legacy Ammo Data")
-            try{
-              await checkLegacyAmmoData()
-            }catch(e){
-              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
-            }
-            console.log("Successfully checked for legacy data")
-            console.log("Setting App to Ready")
-              setAppIsReady(true)
-            }
-            return
-          }
-        }catch(e){
-          throw new Error(`Init: Get Preferences: General Settings: ${e}`)
-        }
-
-        try{
-          console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
-          if(isPreferences?.generalSettings?.loginGuard){
-            const authSuccess = await LocalAuthentication.authenticateAsync()
-            if(authSuccess.success){
-              console.log("Login Guard active")
-              console.log("Checking for Legacy Gun Data")
-              try{
-              await checkLegacyGunData()
-            }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Gun Data: ${e}`)
             }
+
             console.log("Checking for Legacy Ammo Data")
             try{
               await checkLegacyAmmoData()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Ammo Data: ${e}`)
             }
-              console.log("Successfully checked for legacy data")
-              if(success){
-                console.log("Setting App to Ready")
-                setAppIsReady(true)
-              }
-            } else{
-                return
-            }
-          } else {
+
+            console.log("Successfully checked for legacy data")
+            console.log("Setting App to Ready")
+            setAppIsReady(true)
+            return
+          } else{
+            return
+          }  
+        } else {
             console.log("Login Guard inactive")
             console.log("Checking for Legacy Gun Data")
-              try{
+            try{
               await checkLegacyGunData()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Gun Data: ${e}`)
             }
+
             console.log("Checking for Legacy Ammo Data")
             try{
               await checkLegacyAmmoData()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Ammo Data: ${e}`)
             }
-              console.log("Successfully checked for legacy data")
-            if(success){
-              console.log("Setting App to Ready")
-              setAppIsReady(true)
-            }
+
+            console.log("Successfully checked for legacy data")
+            console.log("Setting App to Ready")
+            setAppIsReady(true)
             return
           }
         } catch(e){
           throw new Error(`Init: Get Preferences: Login Guard: ${e}`)
         }
+
       }catch(e){
         console.error(e)
         alarm("Initialisation error", e?.message || String(e));
       }
     }
-    prepare();
-}, [success]);
 
+    prepare();
+
+  }, [success]);
+
+
+  // This turns off the splash screen when appIsReady returns true
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -337,7 +361,9 @@ useEffect(() => {
       
     }
   }, [appIsReady]);
-  
+
+
+  // This gets the preferences - it runs after the prepare() useEffect  
   
   useEffect(()=>{
     async function getPreferences(){
@@ -347,6 +373,7 @@ useEffect(() => {
       } catch(e){
         alarm("Preference DB Error", e)
       }
+
       let isPreferences
       try{
        isPreferences = preferences === null ? null : JSON.parse(preferences)
@@ -356,68 +383,80 @@ useEffect(() => {
       
       /* GENERAL SETTINGS AND PREFERENCES */
       try{
-      switchLanguage(isPreferences?.language ?? "de")
-      switchTheme(isPreferences?.theme ?? "default")
-      setGeneralSettings(isPreferences?.generalSettings ?? {
-        displayImagesInListViewAmmo: true, 
-        displayImagesInListViewGun: true,
-        resizeImages: true,
-      })
-      let shortCalibers:{name: string, displayName?: string}[] = []
-      if(isPreferences?.generalSettings?.caliberDisplayName){
-        calibers.map(variant =>{
-          variant.variants.map(caliber =>{
-            if(caliber.displayName !== undefined){
-              shortCalibers.push(caliber)
-            }
-          })
+        switchLanguage(isPreferences?.language ?? "de")
+        switchTheme(isPreferences?.theme ?? "default")
+        setGeneralSettings(isPreferences?.generalSettings ?? {
+          displayImagesInListViewAmmo: true, 
+          displayImagesInListViewGun: true,
+          resizeImages: true,
         })
+
+        let shortCalibers:{name: string, displayName?: string}[] = []
+        if(isPreferences?.generalSettings?.caliberDisplayName){
+          calibers.map(variant =>{
+            variant.variants.map(caliber =>{
+              if(caliber.displayName !== undefined){
+                shortCalibers.push(caliber)
+              }
+            })
+          })
+        }
+        setCaliberDisplayNameList(shortCalibers)
+      }catch(e){
+        alarm("General Preferences Error", e)
       }
-      setCaliberDisplayNameList(shortCalibers)
-    } catch(e){
-      alarm("General Preferences Error", e)
-    }
 
       /* AMMO PREFERENCES */
       try{
-      const ammo_tagList: string = await AsyncStorage.getItem(A_TAGS)
-      const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList ? JSON.parse(ammo_tagList) : null
-      setDisplayAmmoAsGrid(isPreferences?.displayAmmoAsGrid ?? true)
-      setSortAmmoBy(isPreferences?.sortAmmoBy ?? "alphabetical")
-      setSortAmmoIcon(getIcon(isPreferences?.sortAmmoBy ?? "alphabetical"))
-      setSortAmmoAscending(isPreferences?.sortOrderAmmo ?? true)
-      if(isAmmoTagList){
-        Object.values(isAmmoTagList).map(tag =>{
-          setAmmoTags(tag)
-        }) 
+        const ammo_tagList: string = await AsyncStorage.getItem(A_TAGS)
+        const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList ? JSON.parse(ammo_tagList) : null
+        setDisplayAmmoAsGrid(isPreferences?.displayAmmoAsGrid ?? true)
+        setSortAmmoBy(isPreferences?.sortAmmoBy ?? "alphabetical")
+        setSortAmmoIcon(getIcon(isPreferences?.sortAmmoBy ?? "alphabetical"))
+        setSortAmmoAscending(isPreferences?.sortOrderAmmo ?? true)
+        if(isAmmoTagList){
+          Object.values(isAmmoTagList).map(tag =>{
+            setAmmoTags(tag)
+          }) 
+        }
+      } catch(e){
+        alarm("Ammo Preferences Error", e)
       }
-    } catch(e){
-      alarm("Ammo Preferences Error", e)
-    }
+
       /* GUN PREFERENCE */
       try{
-      const gun_tagList: string = await AsyncStorage.getItem(TAGS) 
-      const isGunTagList:{label: string, status: boolean}[] = gun_tagList ? JSON.parse(gun_tagList) : null
-      setDisplayAsGrid(isPreferences?.displayAsGrid ?? true)
-      setSortBy(isPreferences?.sortBy ?? "alphabetical")
-      setSortGunIcon(getIcon(isPreferences?.sortBy ?? "alphabetical"))
-      setSortGunsAscending(isPreferences?.sortOrderGuns ?? true)
-      if(isGunTagList){
-        Object.values(isGunTagList).map(tag =>{
-          setTags(tag)
-        }) 
+        const gun_tagList: string = await AsyncStorage.getItem(TAGS) 
+        const isGunTagList:{label: string, status: boolean}[] = gun_tagList ? JSON.parse(gun_tagList) : null
+        setDisplayAsGrid(isPreferences?.displayAsGrid ?? true)
+        setSortBy(isPreferences?.sortBy ?? "alphabetical")
+        setSortGunIcon(getIcon(isPreferences?.sortBy ?? "alphabetical"))
+        setSortGunsAscending(isPreferences?.sortOrderGuns ?? true)
+        if(isGunTagList){
+          Object.values(isGunTagList).map(tag =>{
+            setTags(tag)
+          }) 
+        }
+      } catch(e){
+        alarm("Gun Preferences Error", e)
       }
-    } catch(e){
-      alarm("Gun Preferences Error", e)
     }
-    }
+
     getPreferences()
+
   },[])
+
+
+  // This adds roundness to theme
 
   const currentTheme = {...theme, roundness : 5}
 
+
+  // This sets up the navigation stack
+
   const Stack = createStackNavigator<StackParamList>()
 
+
+  // This sets up the theme for the NavigationContainer
 
   const navTheme = {
     ...DefaultTheme,
@@ -426,12 +465,16 @@ useEffect(() => {
       background: theme.colors.background
     }
   }
+
+
+  // This repeatedly checks for appIsReady
   
   if (!appIsReady) {
     return null;
   }
 
 
+  // Actual main structure
 
   return (
     <NavigationContainer theme={navTheme}>
