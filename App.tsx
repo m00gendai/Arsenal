@@ -50,10 +50,13 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const { success, error } = useMigrations(db, migrations);
+  
   if(error){
     console.log("Database Migration Error:")
     console.log(error)
+    alarm("Database Migration Error", `Error Name: ${error.name} --- Error Cause: ${error.cause} --- Error Message: ${error.message} --- Error Stack: ${error.stack}`)
   }
+
   useDrizzleStudio(expo)
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
@@ -293,10 +296,7 @@ useEffect(() => {
                 setAppIsReady(true)
               }
             } else{
-              if(!authSuccess.success){
                 return
-              }
-              throw new Error(`Local Authentification failed: ${JSON.stringify(authSuccess)} | ${isPreferences.generalSettings.loginGuard}`);
             }
           } else {
             console.log("Login Guard inactive")
