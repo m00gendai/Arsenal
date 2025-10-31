@@ -36,5 +36,5 @@ yarn-error.*
 
 # build
 android/
-
+ios/
 *ods
