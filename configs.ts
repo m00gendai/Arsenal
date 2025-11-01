@@ -36,6 +36,9 @@ export const languageSelection:{flag:string, code:Languages}[] = [
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
 
+export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
+export const numberTextFields: string[] = ["shotCount", "currentSock", "criticalStock", "marketValue", "paidPrice"]
+
 export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
 export const colorPickerTriggerFields: string[] = ["mainColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
