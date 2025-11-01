@@ -18,10 +18,10 @@ interface Props{
 
 export default function NewText({data, itemData, setItemData, label}: Props){
     console.log(`${data}: DATEPICKER TEXT`)
-    const [input, setInput] = useState<string>(itemData ? itemData[data] : "")
+    const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showDateTime, setShowDateTime] = useState<boolean>(false)
     const [date, setDate] = useState<(string | number | Date | dayjs.Dayjs)>(dayjs());
-    const [initialDate, setInitialDate] = useState<string>(itemData ? itemData[data] : "")
+    const [initialDate, setInitialDate] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
 
     const { language, theme } = usePreferenceStore()
 
