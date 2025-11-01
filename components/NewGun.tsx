@@ -27,6 +27,7 @@ import NewText_DatePicker from './NewText_DatePicker';
 import NewText_ColorPicker from './NewText_ColorPicker';
 import NewText_CaliberPicker from './NewText_CaliberPicker';
 import NewText_IntervalPicker from './NewText_IntervalPicker';
+import NewText_Text from './NewText_Text';
 
 
 export default function NewGun({navigation}){
@@ -300,8 +301,7 @@ useEffect(() => {
                                         <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                     intervalPickerTriggerFields.includes(data.name) ? 
                                         <NewText_IntervalPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
-                                        
-                                    <NewText data={data.name} gunData={gunData} setGunData={setGunData} label={data[language]}/>}
+                                        <NewText_Text data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} />}
                                 </View>
                             )
                         })}
