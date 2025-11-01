@@ -38,3 +38,4 @@ export const requiredFieldsAmmo:string[] = ["designation"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
 export const colorPickerTriggerFields: string[] = ["mainColor"]
+export const caliberPickerTriggerFields: string[] = ["caliber"]
