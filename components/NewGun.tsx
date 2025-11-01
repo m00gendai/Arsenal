@@ -22,10 +22,11 @@ import { useGunStore } from '../stores/useGunStore';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields } from '../configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
 import NewText_DatePicker from './NewText_DatePicker';
 import NewText_ColorPicker from './NewText_ColorPicker';
 import NewText_CaliberPicker from './NewText_CaliberPicker';
+import NewText_IntervalPicker from './NewText_IntervalPicker';
 
 
 export default function NewGun({navigation}){
@@ -297,6 +298,8 @@ useEffect(() => {
                                         <NewText_ColorPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                     caliberPickerTriggerFields.includes(data.name) ?
                                         <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    intervalPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_IntervalPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                         
                                     <NewText data={data.name} gunData={gunData} setGunData={setGunData} label={data[language]}/>}
                                 </View>
