@@ -22,8 +22,9 @@ import { useGunStore } from '../stores/useGunStore';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
-import { datePickerTriggerFields } from '../configs';
+import { colorPickerTriggerFields, datePickerTriggerFields } from '../configs';
 import NewText_DatePicker from './NewText_DatePicker';
+import NewText_ColorPicker from './NewText_ColorPicker';
 
 
 export default function NewGun({navigation}){
@@ -291,6 +292,8 @@ useEffect(() => {
                                 }}>
                                     {datePickerTriggerFields.includes(data.name) ? 
                                         <NewText_DatePicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    colorPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_ColorPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                         
                                     <NewText data={data.name} gunData={gunData} setGunData={setGunData} label={data[language]}/>}
                                 </View>
