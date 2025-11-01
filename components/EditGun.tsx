@@ -22,6 +22,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from "../db/client"
 import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
+import NewText_DatePicker from './NewText_DatePicker';
+import NewText_ColorPicker from './NewText_ColorPicker';
+import NewText_CaliberPicker from './NewText_CaliberPicker';
+import NewText_IntervalPicker from './NewText_IntervalPicker';
+import NewText_Text from './NewText_Text';
 
 
 export default function EditGun({navigation}){
@@ -58,17 +64,12 @@ export default function EditGun({navigation}){
         for(const key in gunData){
             if(gunData[key] !== gunDataCompare[key]){
                 setSaveState(false)
-                if(gunDataCompare[key] === null && gunData[key].length === 0){
-                    setSaveState(null)
-                }
+                return
             }
-            if(!(key in gunDataCompare) && gunData[key] !== ""){
-                setSaveState(false)
-            }
-            if(!(key in gunDataCompare) && gunData[key] === ""){
+            if(!gunDataCompare[key] && !gunData[key]){
                 setSaveState(null)
             }
-            if(!(key in gunDataCompare) && gunData[key] !== undefined && gunData[key].length === 0){
+            if(!(key in gunDataCompare) && !gunData[key]){
                 setSaveState(null)
             }
         }
@@ -378,7 +379,15 @@ export default function EditGun({navigation}){
                                         gap: 5,
                                         
                                 }}>
-                                    <NewText data={data.name} gunData={gunData} setGunData={setGunData} label={data[language]}/>
+                                    {datePickerTriggerFields.includes(data.name) ? 
+                                        <NewText_DatePicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    colorPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_ColorPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    caliberPickerTriggerFields.includes(data.name) ?
+                                        <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    intervalPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_IntervalPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                        <NewText_Text data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} />}
                                 </View>
                             )
                         })}
