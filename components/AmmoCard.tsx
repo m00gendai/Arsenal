@@ -93,7 +93,7 @@ export default function AmmoCard({ammo}:Props){
                 color: ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.criticalStock ? Number(ammo.currentStock.toString()) <= Number(ammo.criticalStock.toString()) ? theme.colors.error : theme.colors.onSurfaceVariant : theme.colors.onSurfaceVariant,
                 }}
                 title={`${ammo.manufacturer && ammo.manufacturer.length !== 0 ? `${ammo.manufacturer}` : ""}${ammo.manufacturer && ammo.manufacturer.length !== 0 ? ` ` : ""}${ammo.designation}`} 
-                subtitle={ammo.caliber && ammo.caliber.length !== 0 ? `${getShortCaliberName([ammo.caliber.slice(1, -1)].join(""))}` : " "}
+                subtitle={ammo.caliber && ammo.caliber.length !== 0 ? `${getShortCaliberName(ammo.caliber)}` : " "}
                 subtitleVariant='bodySmall' 
                 titleVariant='titleSmall' 
                 titleNumberOfLines={2} 
