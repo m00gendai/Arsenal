@@ -384,7 +384,7 @@ export default function EditGun({navigation}){
                                     colorPickerTriggerFields.includes(data.name) ? 
                                         <NewText_ColorPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                     caliberPickerTriggerFields.includes(data.name) ?
-                                        <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                        <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} multiCaliber={true} /> :
                                     intervalPickerTriggerFields.includes(data.name) ? 
                                         <NewText_IntervalPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
                                         <NewText_Text data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} />}

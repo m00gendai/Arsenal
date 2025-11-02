@@ -384,7 +384,7 @@ export default function EditAmmo({navigation}){
                                     colorPickerTriggerFields.includes(data.name) ? 
                                         <NewText_ColorPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
                                     caliberPickerTriggerFields.includes(data.name) ?
-                                        <NewText_CaliberPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                        <NewText_CaliberPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} multiCaliber={false} /> :
                                     intervalPickerTriggerFields.includes(data.name) ? 
                                         <NewText_IntervalPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
                                         <NewText_Text data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} />}
