@@ -88,7 +88,11 @@ export default function EditAmmo({navigation}){
             ])
             return
         }
-        await db.update(schema.ammoCollection).set(value).where((eq(schema.ammoCollection.id, value.id)))
+        try{
+            await db.update(schema.ammoCollection).set(value).where((eq(schema.ammoCollection.id, value.id)))
+        }catch(e){
+            console.error(e)
+        }
         console.log(`Saved item ${JSON.stringify(value)} with key ${AMMO_DATABASE}_${value.id}`)
         setCurrentAmmo({...value, images:selectedImage})
         setSaveState(true)

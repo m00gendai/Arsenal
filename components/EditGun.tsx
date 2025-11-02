@@ -87,7 +87,12 @@ export default function EditGun({navigation}){
             ])
             return
         }
-        await db.update(schema.gunCollection).set(gun).where((eq(schema.gunCollection.id, gun.id)))
+        try{
+            await db.update(schema.gunCollection).set(gun).where((eq(schema.gunCollection.id, gun.id)))
+        }catch(e){
+            console.error(e)
+        }
+        
         console.log(`Saved item ${JSON.stringify(gun)}`)
         setSaveState(true)
         setSnackbarText(`${gun.manufacturer ? gun.manufacturer : ""} ${gun.model} ${toastMessages.changed[language]}`)
