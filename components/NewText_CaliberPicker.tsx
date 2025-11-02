@@ -1,5 +1,5 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip } from 'react-native-paper';
-import { useState } from 'react';
+import { act, useState } from 'react';
 import { GunType, AmmoType } from '../interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
@@ -13,16 +13,34 @@ interface Props{
     itemData?: GunType | AmmoType 
     setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
     label: string
+    multiCaliber: boolean
 }
 
-export default function NewText({data, itemData, setItemData, label}: Props){
+export default function NewText({data, itemData, setItemData, label, multiCaliber}: Props){
+
+    function determineActiveCaliber(itemData: GunType | AmmoType ){
+        if(!itemData){
+            return [] // if itemData is falsy, return an empty array. This shouldnt really happen but you never know
+        }
+        if(itemData && !itemData[data]){
+            return [] // if itemData does exist, but caliber property is falsy, return an empty array
+        }
+        if(Array.isArray(itemData[data])){
+            return itemData[data] // if itemData does exist and caliber property contains an array of calibers as it should be, return it
+        }
+        if(!Array.isArray(itemData[data]) && itemData[data].startsWith("[")){
+            return [itemData[data].slice(1,-1)] // if for whatever reason (legacy/imports) the caliber property is a stringed array, return an array with the [ and ] removed
+        }
+        return [itemData[data]] // if its JUST a string, return an aray of it
+    }
+
     console.log(`${data}: CALIBERPICKER TEXT`)
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showModalCaliber, setShowModalCaliber] = useState<boolean>(false)
-    const [activeCaliber, setActiveCaliber] = useState<string[]>(itemData && itemData[data] ? itemData[data] : [])
+    const [activeCaliber, setActiveCaliber] = useState<string[]>(determineActiveCaliber(itemData))
     const [caliberView, setCaliberView] = useState<"search" | "list">("search")
     const [caliberQuery, setCaliberQuery] = useState<string>("")
-    
+
     const { language, theme } = usePreferenceStore()
 
     const [charCount, setCharCount] = useState(0)
@@ -56,9 +74,14 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                 setActiveCaliber(newActiveCaliber)
                 return
             }
-            if(!activeCaliber.includes(name)){ // not empty, name does not exist in caliber array -> push it
-                setActiveCaliber([...activeCaliber, name])
-                return
+            if(!activeCaliber.includes(name)){ // not empty, name does not exist in caliber array -> ...
+                if(multiCaliber){ // ... if multiple calibers are allowed, push it
+                    setActiveCaliber([...activeCaliber, name])
+                    return
+                } else { // ... if multiple calibers are disallowed, replace it
+                    setActiveCaliber([name])
+                    return
+                }
             }
         }
     }
@@ -124,7 +147,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         <ScrollView style={{height: "20%", width: "100%", backgroundColor: theme.colors.background}}>
                             {Array.isArray(activeCaliber) && activeCaliber.length !== 0 ? 
                                 activeCaliber.map((cal, index) => {return <View key={cal} style={{paddingTop: index === 0 ? defaultViewPadding : 0, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: defaultViewPadding/2}}><Chip onClose={()=>{console.log(cal);handleCaliberItemSelect(cal)}}>{cal}</Chip></View>}) 
-                                : <Text>{`${caliberPickerStrings.caliberSelection[language]}`}</Text>
+                                : <Text style={{padding: defaultViewPadding}}>{`${caliberPickerStrings.caliberSelection[language]}`}</Text>
                             }
                         </ScrollView>
                         <View style={{height: "10%", display: "flex", flexDirection: "row", justifyContent: "space-between", padding: defaultViewPadding}}>
@@ -171,6 +194,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                                 </View>
                             </TouchableNativeFeedback>
                         </View>
+{/* #################### LIST VIEW #################### */}
                         {caliberView === "list" ?
                         <ScrollView style={{height: "70%", width: "100%", backgroundColor: "yellow"}}>
                             {calibers.map((caliber, index) =>{
@@ -195,6 +219,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         </ScrollView>
                         :
                         <View style={{height: "70%"}}>
+{/* #################### SEARCH VIEW #################### */}
                             <View style={{padding: defaultViewPadding}}>
                                 <Searchbar
                                     placeholder={caliberPickerStrings.tabSearch[language]}
@@ -204,12 +229,24 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                             </View>
                             <ScrollView>
                             {calibers.map((caliber, index) =>{
-                                return caliber.variants.map((variant, index)=>{
-                                    if(variant.name.toLowerCase().replaceAll(".", "").replaceAll(" ", "").includes(caliberQuery.toLowerCase().replaceAll(".", "").replaceAll(" ", ""))){
-                                    return(
-                                        <List.Item key={`${variant.name}_${index}`} title={variant.name} titleStyle={{color: activeCaliber !== undefined && activeCaliber !== null && activeCaliber.length !== 0 && activeCaliber.includes(variant.name) ? theme.colors.onTertiary : theme.colors.onTertiaryContainer}} onPress={()=>handleCaliberItemSelect(variant.name)} style={{backgroundColor: activeCaliber.includes(variant.name) ? theme.colors.tertiary : "transparent"}}/>
-                                    )}
-                                })})}
+                                if(caliberQuery.length >= 2){
+                                    return caliber.variants.map((variant, index)=>{
+                                        if(variant.name.toLowerCase().replaceAll(".", "").replaceAll(" ", "").includes(caliberQuery.toLowerCase().replaceAll(".", "").replaceAll(" ", ""))){
+                                            return(
+                                                <List.Item key={`${variant.name}_${index}`} title={variant.name} titleStyle={{color: activeCaliber && activeCaliber.length !== 0 && activeCaliber.includes(variant.name) ? theme.colors.onTertiary : theme.colors.onTertiaryContainer}} onPress={()=>handleCaliberItemSelect(variant.name)} style={{backgroundColor: activeCaliber.includes(variant.name) ? theme.colors.tertiary : "transparent"}}/>
+                                            )
+                                        }
+                                    })
+                                } 
+                            })}
+                            {caliberQuery.length < 1 && activeCaliber.length > 0 ?
+                                activeCaliber.map((variant, index) => {
+                                    if(activeCaliber.includes(variant)){
+                                        return <List.Item key={`${variant}_${index}`} title={variant} titleStyle={{color: activeCaliber && activeCaliber.includes(variant) ? theme.colors.onTertiary : theme.colors.onTertiaryContainer}} onPress={()=>handleCaliberItemSelect(variant)} style={{backgroundColor: activeCaliber.includes(variant) ? theme.colors.tertiary : "transparent"}}/>
+                                    }
+                                })
+                            :
+                            null}
                             </ScrollView>
                         </View>}
                     </List.Section>
