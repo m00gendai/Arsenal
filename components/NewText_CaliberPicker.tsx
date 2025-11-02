@@ -49,18 +49,29 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
 
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(input:string | string[]){
-        if(charCount < MAX_CHAR_COUNT){
-            setCharCount(input !== undefined ? input.length : 0)
-            setInput(Array.isArray(input) ? input.join("\n") : input)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
-        }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
-            setCharCount(input !== undefined ? input.length : 0)
-            setInput(Array.isArray(input) ? input.join("\n") : input)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
-        }
+    function updateItemData(input: string | string[]){
+    // Convert to appropriate format based on multiCaliber
+    let finalValue: string | string[];
+    
+    if (multiCaliber) {
+        // Keep as array for guns
+        finalValue = Array.isArray(input) ? input : [input];
+    } else {
+        // Convert to string for ammo
+        finalValue = Array.isArray(input) ? (input[0] || "") : input;
     }
+    
+    if(charCount < MAX_CHAR_COUNT){
+        setCharCount(finalValue !== undefined ? (Array.isArray(finalValue) ? finalValue.join("\n").length : finalValue.length) : 0)
+        setInput(Array.isArray(finalValue) ? finalValue.join("\n") : finalValue)
+        setItemData({...itemData, [data]: finalValue})
+    }
+    if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        setCharCount(finalValue !== undefined ? (Array.isArray(finalValue) ? finalValue.join("\n").length : finalValue.length) : 0)
+        setInput(Array.isArray(finalValue) ? finalValue.join("\n") : finalValue)
+        setItemData({...itemData, [data]: finalValue})
+    }
+}
 
     function handleCaliberItemSelect(name:string){
         if(activeCaliber.length === 0){ // empty caliber array, just push the new selection
