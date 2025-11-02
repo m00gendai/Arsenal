@@ -151,8 +151,8 @@ export default function Ammo({navigation}){
                                         {currentAmmo[item.name] 
                                                 ? item.name === "caliber" 
                                                     ? generalSettings.caliberDisplayName 
-                                                        ? getShortCaliberName([currentAmmo.caliber.slice(1, -1)].join(""))
-                                                        : currentAmmo.caliber.slice(1, -1)
+                                                        ? getShortCaliberName(currentAmmo.caliber)
+                                                        : currentAmmo.caliber
                                                     : currentAmmo[item.name]
                                                 : ""}
                                         </Text>
