@@ -391,7 +391,7 @@ export default function EditAmmo({navigation}){
                                 </View>
                             )
                         })}
-                        <NewTextArea data={ammoRemarks.name} ammoData={ammoData} setAmmoData={setAmmoData}/>
+                        <NewTextArea data={ammoRemarks.name} itemData={ammoData} setItemData={setAmmoData} label={ammoRemarks[language]}/>
                        
                     </View>
                 </ScrollView>
