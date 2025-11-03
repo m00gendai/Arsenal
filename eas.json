@@ -2,7 +2,7 @@
   "build": {
     "preview": {
       "android": {
-        "buildType": "app-bundle",
+        "buildType": "apk",
         "autoIncrement": true
         
       },
@@ -12,7 +12,7 @@
     },
     "releaseCandidate": {
       "android": {
-        "buildType": "apk",
+        "buildType": "app-bundle",
         "autoIncrement": true
       },
       "env": {
