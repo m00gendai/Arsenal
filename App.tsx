@@ -138,8 +138,8 @@ export default function App() {
           await Promise.all(checkBoxes.map(checkbox =>{
             gun[checkbox.name] = gun !== undefined && gun !== null && gun.status !== undefined && gun.status !== null ? gun.status[checkbox.name] : false
           }))
-          gun.createdAt = gun !== undefined && gun !== null && isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt
-          gun.lastModifiedAt = gun !== undefined && gun !== null && isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt
+          gun.createdAt = gun.createdAt ? (isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt) : Date.now() 
+          gun.lastModifiedAt = gun.lastModifiedAt ? (isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt) : Date.now() 
           try{
             await db.insert(schema.gunCollection).values(gun)
           }catch(e){
@@ -190,23 +190,30 @@ export default function App() {
     } catch(e){
       alarm("Legacy Ammo DB Error", e)
     }
+    console.log("Checked Ammo:")
+    console.log(ammunition)
     if(ammunition.length !== 0){
       await Promise.all(ammunition.map(async ammo =>{
-        try{
-          await db.insert(schema.ammoCollection).values(ammo)
-        }catch(e){
-          throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
-        }
-        if(ammo.tags !== undefined && ammo.tags !== null && ammo.tags.length !== 0){
-            await Promise.all(ammo.tags.map(async tag =>{
-              try{
-                await db.insert(schema.ammoTags).values({label: tag}).onConflictDoNothing()
-              }catch(e){
-                throw new Error(`Check Legacy Ammo Data: Insert tag ${tag} into DB: ${e}`)
-              }
-            }))
+        if(ammo !== null){
+          ammo.createdAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
+          ammo.lastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
+          try{
+            await db.insert(schema.ammoCollection).values(ammo)
+          }catch(e){
+            throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
           }
-      }))
+          if(ammo.tags !== undefined && ammo.tags !== null && ammo.tags.length !== 0){
+              await Promise.all(ammo.tags.map(async tag =>{
+                try{
+                  await db.insert(schema.ammoTags).values({label: tag}).onConflictDoNothing()
+                }catch(e){
+                  throw new Error(`Check Legacy Ammo Data: Insert tag ${tag} into DB: ${e}`)
+                }
+
+              }))
+            }
+          }
+        }))
       await Promise.all(keys.map(async key =>{
         await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${key}`)
       }))

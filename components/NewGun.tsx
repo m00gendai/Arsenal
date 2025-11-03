@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "./ImageViewer"
 import { GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
 import { GunType, GunTypeWithDbId } from '../interfaces';
-import { gunDataValidation, imageHandling } from '../utils';
+import { cleanNullValues, gunDataValidation, imageHandling } from '../utils';
 import NewTextArea from './NewTextArea';
 import NewCheckboxArea from './NewCheckboxArea';
 import { newGunTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "./ImageViewer"
 import { AMMO_DATABASE, A_KEY_DATABASE } from '../configs_DB';
 import { AmmoType, AmmoTypeWithDbId } from '../interfaces';
-import { ammoDataValidation, imageHandling } from '../utils';
+import { ammoDataValidation, cleanNullValues, imageHandling } from '../utils';
 import NewTextArea from './NewTextArea';
 import NewCheckboxArea from './NewCheckboxArea';
 import { newAmmoTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';
