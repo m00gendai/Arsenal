@@ -22,6 +22,12 @@ import { useGunStore } from '../stores/useGunStore';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
+import NewText_DatePicker from './NewText_DatePicker';
+import NewText_ColorPicker from './NewText_ColorPicker';
+import NewText_CaliberPicker from './NewText_CaliberPicker';
+import NewText_IntervalPicker from './NewText_IntervalPicker';
+import NewText_Text from './NewText_Text';
 
 
 export default function NewGun({navigation}){
@@ -287,13 +293,20 @@ useEffect(() => {
                                         gap: 5,
                                         
                                 }}>
-                                    
-                                    <NewText data={data.name} gunData={cleanNullValues(gunData) as GunType} setGunData={setGunData} label={data[language]}/>
+                                    {datePickerTriggerFields.includes(data.name) ? 
+                                        <NewText_DatePicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    colorPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_ColorPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                    caliberPickerTriggerFields.includes(data.name) ?
+                                        <NewText_CaliberPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} multiCaliber={true} /> :
+                                    intervalPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_IntervalPicker data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} /> :
+                                        <NewText_Text data={data.name} itemData={gunData} setItemData={setGunData} label={data[language]} />}
                                 </View>
                             )
                         })}
                         <NewCheckboxArea gunData={gunData} setGunData={setGunData} />
-                        <NewTextArea data={gunRemarks.name} gunData={gunData} setGunData={setGunData}/>
+                        <NewTextArea data={gunRemarks.name} itemData={gunData} setItemData={setGunData} label={gunRemarks[language]}/>
                     </View>
                 </ScrollView>
             </View>

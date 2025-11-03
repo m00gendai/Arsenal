@@ -23,6 +23,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from "../db/client"
 import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
+import NewText_DatePicker from './NewText_DatePicker';
+import NewText_ColorPicker from './NewText_ColorPicker';
+import NewText_CaliberPicker from './NewText_CaliberPicker';
+import NewText_IntervalPicker from './NewText_IntervalPicker';
+import NewText_Text from './NewText_Text';
 
 
 export default function EditAmmo({navigation}){
@@ -59,17 +65,12 @@ export default function EditAmmo({navigation}){
         for(const key in ammoData){
             if(ammoData[key] !== ammoDataCompare[key]){
                 setSaveState(false)
-                if(ammoDataCompare[key] === null && ammoData[key].length === 0){
-                    setSaveState(null)
-                }
+                return
             }
-            if(!(key in ammoDataCompare) && ammoData[key] !== ""){
-                setSaveState(false)
-            }
-            if(!(key in ammoDataCompare) && ammoData[key] === ""){
+            if(!ammoDataCompare[key] && !ammoData[key]){
                 setSaveState(null)
             }
-            if(!(key in ammoDataCompare) && ammoData[key] !== undefined && ammoData[key].length === 0){
+            if(!(key in ammoDataCompare) && !ammoData[key]){
                 setSaveState(null)
             }
         }
@@ -87,7 +88,11 @@ export default function EditAmmo({navigation}){
             ])
             return
         }
-        await db.update(schema.ammoCollection).set(value).where((eq(schema.ammoCollection.id, value.id)))
+        try{
+            await db.update(schema.ammoCollection).set(value).where((eq(schema.ammoCollection.id, value.id)))
+        }catch(e){
+            console.error(e)
+        }
         console.log(`Saved item ${JSON.stringify(value)} with key ${AMMO_DATABASE}_${value.id}`)
         setCurrentAmmo({...value, images:selectedImage})
         setSaveState(true)
@@ -378,11 +383,19 @@ export default function EditAmmo({navigation}){
                                         gap: 5,
                                         
                                 }}>
-                                    <NewText data={data.name} ammoData={ammoData} setAmmoData={setAmmoData} label={data[language]}/>
+                                    {datePickerTriggerFields.includes(data.name) ? 
+                                        <NewText_DatePicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                    colorPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_ColorPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                    caliberPickerTriggerFields.includes(data.name) ?
+                                        <NewText_CaliberPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} multiCaliber={false} /> :
+                                    intervalPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_IntervalPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                        <NewText_Text data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} />}
                                 </View>
                             )
                         })}
-                        <NewTextArea data={ammoRemarks.name} ammoData={ammoData} setAmmoData={setAmmoData}/>
+                        <NewTextArea data={ammoRemarks.name} itemData={ammoData} setItemData={setAmmoData} label={ammoRemarks[language]}/>
                        
                     </View>
                 </ScrollView>
