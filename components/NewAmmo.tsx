@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "./ImageViewer"
 import { AMMO_DATABASE, A_KEY_DATABASE } from '../configs_DB';
 import { AmmoType, AmmoTypeWithDbId } from '../interfaces';
-import { ammoDataValidation, imageHandling } from '../utils';
+import { ammoDataValidation, cleanNullValues, imageHandling } from '../utils';
 import NewTextArea from './NewTextArea';
 import NewCheckboxArea from './NewCheckboxArea';
 import { newAmmoTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';
@@ -23,6 +23,12 @@ import { useAmmoStore } from '../stores/useAmmoStore';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
+import NewText_DatePicker from './NewText_DatePicker';
+import NewText_ColorPicker from './NewText_ColorPicker';
+import NewText_CaliberPicker from './NewText_CaliberPicker';
+import NewText_IntervalPicker from './NewText_IntervalPicker';
+import NewText_Text from './NewText_Text';
 
 
 export default function NewAmmo({navigation}){
@@ -335,11 +341,19 @@ export default function NewAmmo({navigation}){
                                         
                                 }}>
                                     
-                                    <NewText data={data.name} ammoData={ammoData} setAmmoData={setAmmoData} label={data[language]}/>
+                                    {datePickerTriggerFields.includes(data.name) ? 
+                                        <NewText_DatePicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                    colorPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_ColorPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                    caliberPickerTriggerFields.includes(data.name) ?
+                                        <NewText_CaliberPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} multiCaliber={false} /> :
+                                    intervalPickerTriggerFields.includes(data.name) ? 
+                                        <NewText_IntervalPicker data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} /> :
+                                        <NewText_Text data={data.name} itemData={ammoData} setItemData={setAmmoData} label={data[language]} />}
                                 </View>
                             )
                         })}
-                        <NewTextArea data={ammoRemarks.name} ammoData={ammoData} setAmmoData={setAmmoData}/>
+                        <NewTextArea data={ammoRemarks.name} itemData={ammoData} setItemData={setAmmoData} label={ammoRemarks[language]}/>
                     </View>
                 </ScrollView>
             </View>

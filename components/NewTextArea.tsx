@@ -4,83 +4,67 @@ import { GunType, AmmoType } from '../interfaces';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
 import { gunRemarks } from '../lib/gunDataTemplate';
 import { ammoRemarks } from '../lib/ammoDataTemplate';
+import { Pressable, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { defaultViewPadding } from '../configs';
 
 interface Props{
     data: string
-    gunData?: GunType
-    setGunData?: React.Dispatch<React.SetStateAction<GunType>>
-    ammoData?: AmmoType
-    setAmmoData?: React.Dispatch<React.SetStateAction<AmmoType>>
+    itemData?: GunType | AmmoType 
+    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    label: string
 }
 
-export default function NewText({data, gunData, setGunData, ammoData, setAmmoData}: Props){
-
-    const [input, setInput] = useState<string>(gunData ? gunData[data] : ammoData ? ammoData[data] : "")
+export default function NewText({data, itemData, setItemData, label}: Props){
+    console.log(`${data}: TEXT AREA`)
+    const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [charCount, setCharCount] = useState(0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const { language } = usePreferenceStore()
+    const MAX_CHAR_COUNT: number = 1000
 
-    const MAX_CHAR_COUNT = 1000
-
-    /* Chunking isnt necessary at 1000 characters max limit. However, for future reference it remains. Who knows, maybe I need it somehow*/
-    function chunking(input:string){
-        
-        const MAX_CHUNK_SIZE = 50
-
-        const chunkCount = Math.ceil(input.length/MAX_CHUNK_SIZE)
-
-        const chunks = Array.from(Array(chunkCount).keys()).map((_, index) =>{
-            return input.substring((MAX_CHUNK_SIZE*index), ((MAX_CHUNK_SIZE*index)+MAX_CHUNK_SIZE))
-        })
-        
-        return chunks
-    }
-
-    function updateGunData(input:string){
+    function updateItemData(input:string | string[]){
         if(charCount < MAX_CHAR_COUNT){
-            setCharCount(input.length)
-            setInput(input)
-            setGunData({...gunData, [data]: input.trim()})
-            }
-            
+            setCharCount(input !== undefined ? input.length : 0)
+            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
+        }
         if(charCount >= MAX_CHAR_COUNT && isBackspace){
-            setCharCount(input.length)
-            setInput(input)
-            setGunData({...gunData, [data]: input.trim()})
+            setCharCount(input !== undefined ? input.length : 0)
+            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
         }
     }
 
-    function updateAmmoData(input:string){
-        if(charCount < MAX_CHAR_COUNT){
-            setCharCount(input.length)
-            setInput(input)
-            setAmmoData({...ammoData, [data]: input.trim()})
-            }
-            
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
-            setCharCount(input.length)
-            setInput(input)
-            setAmmoData({...ammoData, [data]: input.trim()})
+    function handleFocus(){
+        setFocus(true)
+        if(input === undefined){
+            setCharCount(0)
+        } else if(input === null){
+            setCharCount(0)
+        } else {
+            setCharCount(input.toString().length)
         }
     }
 
     return(
-        <TextInput
-            label={`${gunData ? gunRemarks[language] : ammoRemarks[language]} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
-            style={{
-                flex: 1,
-                height: 200
-            }}
-            value={input}
-            onFocus={()=>setFocus(true)}
-            onBlur={()=>setFocus(false)}
-            onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
-            onChangeText={(input:string) => gunData ? updateGunData(input) : updateAmmoData(input)}
-            multiline={true}
-            returnKeyType='done'
-            returnKeyLabel='OK'
-        />
+        <Pressable style={{flex: 1, height: 200}}>
+            <TextInput
+                label={`${label} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                style={{
+                    height: 200
+                }}
+                onFocus={()=>handleFocus()}
+                onBlur={()=>{
+                    setFocus(false)
+                    updateItemData(input)
+                }}
+                value={input ? input.toString() : ""}
+                onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
+                onChangeText={input => setInput(input)}
+                multiline={true}
+                returnKeyType='done'
+                returnKeyLabel='OK'
+            />
+        </Pressable>
     )
 }

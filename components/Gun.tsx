@@ -114,7 +114,7 @@ export default function Gun({navigation}){
             
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={() => navigation.navigate("GunCollection")} />
-                <Appbar.Content title={`${currentGun.manufacturer !== undefined? currentGun.manufacturer : ""} ${currentGun.model}`} />
+                <Appbar.Content title={`${currentGun.manufacturer ? currentGun.manufacturer : ""} ${currentGun.model}`} />
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
                 <Appbar.Action icon="pencil" onPress={()=>navigation.navigate("EditGun")} />
             </Appbar>

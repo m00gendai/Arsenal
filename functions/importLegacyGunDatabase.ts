@@ -110,7 +110,12 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
         }
     }))
 
-    await db.delete(schema.gunCollection);
+    if(importOptionLegacyDB === "gun"){
+        await db.delete(schema.gunCollection);
+    }
+    if(importOptionLegacyDB === "ammo"){
+        await db.delete(schema.ammoCollection);
+    }
 
    for(const importable of importableCollection){
     if(importOptionLegacyDB === "gun"){
