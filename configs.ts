@@ -11,6 +11,8 @@ export const defaultBottomBarHeight:number = 60
 
 export const defaultSearchBarHeight:number = 56
 
+export const defaultBottomBarTextHeight: number = 30
+
 export const dateLocales:SimpleTranslation = {
     de: "de-CH",
     en: "en-US",
@@ -45,3 +47,10 @@ export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
 
 export const collectionExportDirectories: string[] = ["gun", "ammo"]
+export type ScreenNames = "GunCollection" | 
+                          "AmmoCollection" | 
+                          "AccessoryCollection_Optics" | 
+                          "AccessoryCollection_Scopes" | 
+                          "AccessoryCollection_Magazines" | 
+                          "AccessoryCollection_Misc" | 
+                          "AccessoryCollection_Silencers"

@@ -56,6 +56,14 @@ interface DatabaseOperation{
 interface TabBarLabels{
     gunCollection: SimpleTranslation
     ammoCollection: SimpleTranslation
+    scopeCollection: SimpleTranslation
+    opticCollection: SimpleTranslation
+    silencerCollection: SimpleTranslation
+    lightLaserCollection: SimpleTranslation
+    conversionCollection: SimpleTranslation
+    barrelCollection: SimpleTranslation
+    magazineCollection: SimpleTranslation
+    miscCollection: SimpleTranslation
 }
 
 interface AmmoQuickUpdate{
@@ -833,7 +841,63 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Munitions",
         it: "Munizioni",
         ch: "Muniziun",
-    }
+    },
+    opticCollection: {
+        de: "Optiken",
+        en: "Optics",
+        fr: "Optiques",
+        it: "Ottici",
+        ch: "Opticas",
+    },
+    scopeCollection: {
+        de: "Zielfernrohre",
+        en: "Riflescopes",
+        fr: "Cannocchiali di mira",
+        it: "Cannocchiali di mira",
+        ch: "Bischen d'arriv",
+    },
+    magazineCollection: {
+        de: "Magazine",
+        en: "Magazines",
+        fr: "Magazines",
+        it: "Riviste",
+        ch: "mMgasins",
+    },
+    silencerCollection: {
+        de: "Schalldämpfer",
+        en: "Silencers",
+        fr: "Silencieux",
+        it: "Silenziatore",
+        ch: "Surdina dal tun",
+    },
+    lightLaserCollection: {
+        de: "Licht & Laser",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses",
+    },
+    conversionCollection: {
+        de: "Wechelsysteme",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses",
+    },
+    barrelCollection: {
+        de: "Läufe",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses",
+    },
+    miscCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses",
+    },
 }
 
 export const newTags:{name:string, de:string, en:string, fr:string, it:string, ch:string} = {
