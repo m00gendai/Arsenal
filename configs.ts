@@ -43,3 +43,5 @@ export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastClean
 export const colorPickerTriggerFields: string[] = ["mainColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
+
+export const collectionExportDirectories: string[] = ["gun", "ammo"]
