@@ -7,6 +7,8 @@ import * as schema from "../db/schema";
 import { GunType } from "../interfaces";
 import * as ExpoFS from "expo-file-system";
 import { collectionExportDirectories } from "../configs";
+import * as Sharing from 'expo-sharing';
+import { Platform } from "react-native";
 
 function getSchema(item:string){
   switch(item){
@@ -86,14 +88,22 @@ export default async function saveDatabase(
     console.error(`Failed to ZIP content of temp1 to temp2: ${e}`)
     return;
   }
-  
-  try {
-    const zipPath = `${Paths.document.uri}/${ZIP_NAME}.zip`;
-    await FileSystem.cpExternal(zipPath, `${ZIP_NAME}.zip`, "downloads")
-    console.log('Database backup successful!')
-  } catch(e) {
-    console.error(`failed to copy external: ${e}`)
-    return;
+  if(Platform.OS === "android"){
+    try {
+      const zipPath = `${Paths.document.uri}/${ZIP_NAME}.zip`;
+      await FileSystem.cpExternal(zipPath, `${ZIP_NAME}.zip`, "downloads")
+      console.log('Database backup successful!')
+    } catch(e) {
+      console.error(`ANDROID failed to copy external: ${e}`)
+      return;
+    }
+  } else if(Platform.OS === "ios"){
+    try{
+      await Sharing.shareAsync(`${Paths.document.uri}/${ZIP_NAME}.zip`);
+    }catch(e){
+      console.error(`IOS failed to share external: ${e}`)
+      return
+    }
   }
   
   // Clean up temp directories
