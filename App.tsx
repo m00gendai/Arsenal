@@ -7,7 +7,7 @@ import React from 'react';
 import { usePreferenceStore } from './stores/usePreferenceStore';
 import { useViewStore } from './stores/useViewStore';
 import GunCollection from './components/Collections/GunCollection/GunCollection';
-import MainMenu from './components/MainMenu';
+import MainMenu from './components/MainMenu/MainMenu';
 import { NavigationContainer } from '@react-navigation/native';
 import AmmoCollection from './components/Collections/AmmoCollection/AmmoCollection';
 import { StatusBar } from 'expo-status-bar';

@@ -1,8 +1,8 @@
 import { View } from "react-native";
 import { Divider, List, Text } from "react-native-paper";
-import { aboutText, aboutThanks, aboutThanksPersons, preferenceTitles } from "../lib/textTemplates";
-import { defaultViewPadding } from "../configs";
-import { usePreferenceStore } from "../stores/usePreferenceStore";
+import { aboutText, aboutThanks, aboutThanksPersons, preferenceTitles } from "lib/textTemplates";
+import { defaultViewPadding } from "configs";
+import { usePreferenceStore } from "stores/usePreferenceStore";
 import * as Application from 'expo-application';
 
 export default function About(){

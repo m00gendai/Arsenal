@@ -1,11 +1,11 @@
 import { Divider, List, Text } from "react-native-paper";
-import { preferenceTitles, statisticItems } from "../lib/textTemplates";
-import { dateLocales, defaultViewPadding } from "../configs";
-import { usePreferenceStore } from "../stores/usePreferenceStore";
+import { preferenceTitles, statisticItems } from "lib/textTemplates";
+import { dateLocales, defaultViewPadding } from "configs";
+import { usePreferenceStore } from "stores/usePreferenceStore";
 import { View } from "react-native";
-import { db } from "../db/client";
+import { db } from "db/client";
 import { count } from "drizzle-orm";
-import * as schema from "../db/schema"
+import * as schema from "db/schema"
 import { useEffect, useState } from "react";
 
 
