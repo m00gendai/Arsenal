@@ -56,14 +56,22 @@ interface DatabaseOperation{
 interface TabBarLabels{
     gunCollection: SimpleTranslation
     ammoCollection: SimpleTranslation
-    scopeCollection: SimpleTranslation
     opticCollection: SimpleTranslation
     silencerCollection: SimpleTranslation
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
-    barrelCollection: SimpleTranslation
-    magazineCollection: SimpleTranslation
-    miscCollection: SimpleTranslation
+    gunMagazineCollection: SimpleTranslation
+    accessoriesMiscCollection: SimpleTranslation
+    bookCollection: SimpleTranslation
+    printMagazineCollection: SimpleTranslation
+    swissMilitaryRegulationCollection: SimpleTranslation
+    literatureMiscCollection: SimpleTranslation
+    diesCollection: SimpleTranslation
+    bulletCollection: SimpleTranslation
+    caseCollection: SimpleTranslation
+    primerCollection: SimpleTranslation
+    powderCollection: SimpleTranslation
+    reloadingMiscCollection: SimpleTranslation
 }
 
 interface AmmoQuickUpdate{
@@ -849,14 +857,7 @@ export const tabBarLabels: TabBarLabels = {
         it: "Ottici",
         ch: "Opticas",
     },
-    scopeCollection: {
-        de: "Zielfernrohre",
-        en: "Riflescopes",
-        fr: "Cannocchiali di mira",
-        it: "Cannocchiali di mira",
-        ch: "Bischen d'arriv",
-    },
-    magazineCollection: {
+    gunMagazineCollection: {
         de: "Magazine",
         en: "Magazines",
         fr: "Magazines",
@@ -878,26 +879,136 @@ export const tabBarLabels: TabBarLabels = {
         ch: "Diverses",
     },
     conversionCollection: {
-        de: "Wechelsysteme",
+        de: "Wechelsysteme & Läufe",
         en: "Miscellaneous",
         fr: "Divers",
         it: "Varie",
         ch: "Diverses",
     },
-    barrelCollection: {
-        de: "Läufe",
-        en: "Miscellaneous",
-        fr: "Divers",
-        it: "Varie",
-        ch: "Diverses",
-    },
-    miscCollection: {
+    accessoriesMiscCollection: {
         de: "Diverses",
         en: "Miscellaneous",
         fr: "Divers",
         it: "Varie",
         ch: "Diverses",
     },
+    bookCollection: {
+        de: "Bücher",
+        en: "Books",
+        fr: "Livres",
+        it: "Libri",
+        ch: "Cudeschs",
+    },
+    printMagazineCollection: {
+        de: "Magazine",
+        en: "Magazines",
+        fr: "Magazines",
+        it: "Rivista",
+        ch: "Revista",
+    },
+    swissMilitaryRegulationCollection: {
+        de: "Reglemente Schweizer Armee",
+        en: "Swiss Army Rulebooks",
+        fr: "Règlements de l'armée suisse",
+        it: "Regolamenti dell'esercito svizzero",
+        ch: "Reglaments da l'armada svizra",
+    },
+    literatureMiscCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses", 
+    },
+    diesCollection:{
+        de: "Matritzen",
+        en: "Dies",
+        fr: "Recharger des cartouches",
+        it: "Ricaricare le cartucce",
+        ch: "Matriza", 
+    },
+    bulletCollection: {
+        de: "Geschosse",
+        en: "Bullets",
+        fr: "Projectiles",
+        it: "Proiettile",
+        ch: "Projectil", 
+    },
+    caseCollection: {
+        de: "Hülsen",
+        en: "Casings",
+        fr: "Boîtes",
+        it: "Cartucce",
+        ch: "Mantuns", 
+    },
+    primerCollection: {
+        de: "Zündhütchen",
+        en: "Primers",
+        fr: "Amorces",
+        it: "Capsule",
+        ch: "Chamona d'envidar", 
+    },
+    powderCollection: {
+        de: "Pulver",
+        en: "Poweder",
+        fr: "Poudre",
+        it: "Polvere",
+        ch: "Pulvrus", 
+    },
+    reloadingMiscCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses", 
+    }
+}
+
+interface MainCollectionCategories {
+    gunCollection: SimpleTranslation
+    ammoCollection: SimpleTranslation
+    accessoryCollection: SimpleTranslation
+    literatureCollection: SimpleTranslation
+    reloadingCollection: SimpleTranslation
+
+}
+
+export const mainCollectionCategories: MainCollectionCategories = {
+    gunCollection: {
+        de: "Waffen",
+        en: "Weapons",
+        fr: "Armes",
+        it: "Armi",
+        ch: "Armas",
+    },
+    ammoCollection: {
+        de: "Munition",
+        en: "Ammunition",
+        fr: "Munitions",
+        it: "Munizioni",
+        ch: "Muniziun",
+    },
+    accessoryCollection: {
+        de: "Zubehör",
+        en: "Accessories", 
+        fr: "Accessoires",
+        it: "Accessorio",
+        ch: "Accessoris",
+    },
+    literatureCollection: {
+        de: "Literatur",
+        en: "Literature", 
+        fr: "Littérature",
+        it: "Letteratura",
+        ch: "Litteratura",
+    },
+    reloadingCollection: {
+        de: "Wiederladen",
+        en: "Reloading", 
+        fr: "Recharger",
+        it: "Ricaricare",
+        ch: "Rechargiar",
+    }
 }
 
 export const newTags:{name:string, de:string, en:string, fr:string, it:string, ch:string} = {
