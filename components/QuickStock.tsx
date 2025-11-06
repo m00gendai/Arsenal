@@ -20,7 +20,7 @@ export default function QuickStock({navigation}){
     const [stockChange, setStockChange] = useState<"dec" | "inc" | "">("")
     const [stockValue, setStockValue] = useState<number>(0)
     const [input, setInput] = useState<string>("")
-    const { ammoDbImport, displayAmmoAsGrid, setDisplayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon } = usePreferenceStore()
+    const { displayAmmoAsGrid, setDisplayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon } = usePreferenceStore()
     const { ammoCollection, setAmmoCollection, currentAmmo, setCurrentAmmo } = useAmmoStore()
     const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
     const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
