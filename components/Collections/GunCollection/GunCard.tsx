@@ -1,19 +1,19 @@
 import { Dimensions, Pressable, TouchableNativeFeedback, View } from 'react-native';
-import { GunType, StackParamList } from '../interfaces';
+import { GunType, StackParamList } from 'interfaces';
 import { Button, Card, Dialog, Icon, IconButton, Modal, Portal, Text } from 'react-native-paper';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { defaultGridGap, defaultViewPadding } from '../configs';
-import { useViewStore } from '../stores/useViewStore';
-import { useGunStore } from '../stores/useGunStore';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { defaultGridGap, defaultViewPadding } from 'configs';
+import { useViewStore } from 'stores/useViewStore';
+import { useGunStore } from 'stores/useGunStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate } from '../utils';
+import { checkDate } from 'utils';
 import { useState } from 'react';
-import { gunDeleteAlert, longPressActions } from '../lib/textTemplates';
+import { gunDeleteAlert, longPressActions } from 'lib/textTemplates';
 import * as FileSystem from 'expo-file-system';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq } from 'drizzle-orm';
 
 interface Props{
     gun: GunType
@@ -88,7 +88,7 @@ export default function GunCard({gun}:Props){
             {displayAsGrid ? 
             <View>
                 <Card.Cover 
-                    source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}`} : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                    source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}`} : require(`../../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
                         height: 100
                     }}
@@ -125,7 +125,7 @@ export default function GunCard({gun}:Props){
                 }}
             >
                 {generalSettings.displayImagesInListViewGun ? <Card.Cover 
-                    source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}` } : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                    source={gun.images && gun.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${gun.images[0].split("/").pop()}` } : require(`../../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
                         height: "75%",
                         aspectRatio: "4/3"

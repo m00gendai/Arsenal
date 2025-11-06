@@ -1,21 +1,18 @@
-import { Dimensions, ScrollView, StyleSheet, TouchableNativeFeedback, View, Pressable } from 'react-native';
-import { AmmoType, StackParamList } from '../interfaces';
-import { Avatar, Badge, Button, Card, Dialog, Icon, IconButton, Text, Modal, Portal, TouchableRipple } from 'react-native-paper';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding } from '../configs';
-import { useAmmoStore } from '../stores/useAmmoStore';
-import { useViewStore } from '../stores/useViewStore';
+import { Dimensions, TouchableNativeFeedback, View, Pressable } from 'react-native';
+import { AmmoType, StackParamList } from 'interfaces';
+import { Badge, Button, Card, Dialog, Icon, Text, Modal, Portal, TouchableRipple } from 'react-native-paper';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
+import { useAmmoStore } from 'stores/useAmmoStore';
+import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import { AMMO_DATABASE, KEY_DATABASE } from '../configs_DB';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from "expo-secure-store"
-import { ammoDeleteAlert, gunDeleteAlert, longPressActions } from '../lib/textTemplates';
+import { ammoDeleteAlert, gunDeleteAlert, longPressActions } from 'lib/textTemplates';
 import * as FileSystem from 'expo-file-system';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq } from 'drizzle-orm';
 
 interface Props{
     ammo: AmmoType
@@ -102,7 +99,7 @@ export default function AmmoCard({ammo}:Props){
             {displayAmmoAsGrid ? 
             <View>
                 <Card.Cover 
-                    source={ammo.images && ammo.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${ammo.images[0].split("/").pop()}` } : require(`../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`)} 
+                    source={ammo.images && ammo.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${ammo.images[0].split("/").pop()}` } : require(`../../../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`)} 
                     style={{
                         height: 100
                     }}
@@ -144,7 +141,7 @@ export default function AmmoCard({ammo}:Props){
                 }}
             >
                 {generalSettings.displayImagesInListViewAmmo ? <Card.Cover 
-                    source={ammo.images && ammo.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${ammo.images[0].split("/").pop()}` } : require(`../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`)} 
+                    source={ammo.images && ammo.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${ammo.images[0].split("/").pop()}` } : require(`../../../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`)} 
                     style={{
                         height: "75%",
                         aspectRatio: "4/3"

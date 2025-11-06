@@ -1,24 +1,24 @@
-import { StyleSheet, View, ScrollView, Alert, TouchableNativeFeedback, TouchableOpacity, Pressable, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
-import { checkBoxes, gunDataTemplate, gunRemarks } from "../lib/gunDataTemplate"
+import { checkBoxes, gunDataTemplate, gunRemarks } from "lib/gunDataTemplate"
 import { useState} from "react"
-import ImageViewer from "./ImageViewer"
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { useViewStore } from '../stores/useViewStore';
-import { useGunStore } from '../stores/useGunStore';
-import { cleanIntervals, gunDeleteAlert, iosWarningText } from '../lib/textTemplates';
-import { printSingleGun } from '../functions/printToPDF';
-import { GunType } from '../interfaces';
-import { alarm, checkDate } from '../utils';
+import ImageViewer from "components/ImageViewer"
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { useViewStore } from 'stores/useViewStore';
+import { useGunStore } from 'stores/useGunStore';
+import { cleanIntervals, gunDeleteAlert, iosWarningText } from 'lib/textTemplates';
+import { printSingleGun } from 'functions/printToPDF';
+import { GunType } from 'interfaces';
+import { alarm, checkDate } from 'utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
-import { defaultViewPadding } from '../configs';
+import { defaultViewPadding } from 'configs';
 import { GetColorName } from 'hex-color-to-color-name';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq } from 'drizzle-orm';
 
 export default function Gun({navigation}){
 

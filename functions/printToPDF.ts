@@ -5,15 +5,12 @@ import * as FileSystem from 'expo-file-system';
 import { AmmoType, CommonStyles, GunType } from '../interfaces';
 import { checkBoxes, gunDataTemplate, gunRemarks } from '../lib/gunDataTemplate';
 import { newTags, pdfTitleAmmo, pdfTitleArt5 } from '../lib/textTemplates';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
 import { pdfFooter, pdfTitle } from '../lib/textTemplates';
 import { dateLocales } from '../configs';
 import { ammoDataTemplate, ammoRemarks } from '../lib/ammoDataTemplate';
 import { Platform } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import { db } from '../db/client';
 import * as schema from "../db/schema"
-import GunCollection from '../components/GunCollection';
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 

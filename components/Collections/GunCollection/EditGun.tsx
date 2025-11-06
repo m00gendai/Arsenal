@@ -1,33 +1,29 @@
 import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} from 'react-native';
-import { Appbar, Button, Dialog, Icon, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
+import { Appbar, Button, Dialog, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
-import * as SecureStore from "expo-secure-store"
-import { gunDataTemplate, gunRemarks } from "../lib/gunDataTemplate"
-import NewText from "./NewText"
+import { gunDataTemplate, gunRemarks } from "lib/gunDataTemplate"
 import "react-native-get-random-values"
-import ImageViewer from "./ImageViewer"
-import { GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
-import { GunType } from '../interfaces';
-import NewTextArea from './NewTextArea';
-import NewCheckboxArea from './NewCheckboxArea';
-import { editGunTitle, gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { useViewStore } from '../stores/useViewStore';
-import { useGunStore } from '../stores/useGunStore';
-import NewChipArea from './NewChipArea';
+import ImageViewer from "../../ImageViewer"
+import { GunType } from 'interfaces';
+import NewTextArea from 'components/NewTextArea';
+import NewCheckboxArea from 'components/NewCheckboxArea';
+import { editGunTitle, gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { useViewStore } from 'stores/useViewStore';
+import { useGunStore } from 'stores/useGunStore';
+import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
-import { gunDataValidation, imageHandling } from '../utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { db } from "../db/client"
-import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
-import NewText_DatePicker from './NewText_DatePicker';
-import NewText_ColorPicker from './NewText_ColorPicker';
-import NewText_CaliberPicker from './NewText_CaliberPicker';
-import NewText_IntervalPicker from './NewText_IntervalPicker';
-import NewText_Text from './NewText_Text';
+import { gunDataValidation, imageHandling } from 'utils';
+import { db } from "db/client"
+import * as schema from "db/schema"
+import { eq } from 'drizzle-orm';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from 'configs';
+import NewText_DatePicker from 'components/NewText_DatePicker';
+import NewText_ColorPicker from 'components/NewText_ColorPicker';
+import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
+import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
+import NewText_Text from 'components/NewText_Text';
 
 
 export default function EditGun({navigation}){

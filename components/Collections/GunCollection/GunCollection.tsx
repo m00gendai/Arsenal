@@ -1,24 +1,23 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
-import { Appbar, FAB, Menu, Switch, Text, Tooltip, Searchbar, Button, Icon } from 'react-native-paper';
-import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from '../configs';
-import { PREFERENCES } from "../configs_DB"
-import { GunType, MenuVisibility, SortingTypesGun } from '../interfaces';
-import { getIcon } from '../utils';
-import { useViewStore } from '../stores/useViewStore';
-import { useGunStore } from '../stores/useGunStore';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
+import { useState } from 'react';
+import { Dimensions, FlatList, View } from 'react-native';
+import { Appbar, FAB, Menu, Searchbar } from 'react-native-paper';
+import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from 'configs';
+import { PREFERENCES } from "configs_DB"
+import { GunType, MenuVisibility, SortingTypesGun } from 'interfaces';
+import { getIcon } from 'utils';
+import { useViewStore } from 'stores/useViewStore';
+import { useGunStore } from 'stores/useGunStore';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
 import GunCard from './GunCard';
-import { search, sorting, tooltips } from '../lib/textTemplates';
+import { search, sorting } from 'lib/textTemplates';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import * as schema from "../db/schema"
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
-import {db} from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import FilterMenu from './FilterMenu';
-import BottomBar from './BottomBar';
-import sortGunCollection from '../functions/sortGunCollection';
+import * as schema from "db/schema"
+import { useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { db } from "db/client"
+import { and, or, like } from 'drizzle-orm';
+import FilterMenu from 'components/FilterMenu';
+import sortGunCollection from 'functions/sortGunCollection';
 
 export default function GunCollection({navigation, route}){
 

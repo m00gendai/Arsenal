@@ -1,34 +1,29 @@
 import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} from 'react-native';
-import { Appbar, Button, Dialog, Portal, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Appbar, Button, Dialog, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
-import * as SecureStore from "expo-secure-store"
-import { ammoDataTemplate, ammoRemarks } from "../lib/ammoDataTemplate"
-import NewText from "./NewText"
+import { ammoDataTemplate, ammoRemarks } from "lib/ammoDataTemplate"
 import "react-native-get-random-values"
-import ImageViewer from "./ImageViewer"
-import { AMMO_DATABASE, A_KEY_DATABASE } from '../configs_DB';
-import { AmmoType } from '../interfaces';
-import NewTextArea from './NewTextArea';
-import NewCheckboxArea from './NewCheckboxArea';
-import { ammoDeleteAlert, editAmmoTitle, editGunTitle, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../lib/textTemplates';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { useViewStore } from '../stores/useViewStore';
-import { useAmmoStore } from '../stores/useAmmoStore';
-import NewChipArea from './NewChipArea';
+import ImageViewer from "components/ImageViewer"
+import { AMMO_DATABASE } from 'configs_DB';
+import { AmmoType } from 'interfaces';
+import NewTextArea from 'components/NewTextArea';
+import { ammoDeleteAlert, editAmmoTitle, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { useViewStore } from 'stores/useViewStore';
+import { useAmmoStore } from 'stores/useAmmoStore';
+import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
-import { ammoDataValidation, imageHandling } from '../utils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { db } from "../db/client"
-import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../configs';
-import NewText_DatePicker from './NewText_DatePicker';
-import NewText_ColorPicker from './NewText_ColorPicker';
-import NewText_CaliberPicker from './NewText_CaliberPicker';
-import NewText_IntervalPicker from './NewText_IntervalPicker';
-import NewText_Text from './NewText_Text';
+import { ammoDataValidation, imageHandling } from 'utils';
+import { db } from "db/client"
+import * as schema from "db/schema"
+import { eq } from 'drizzle-orm';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from 'configs';
+import NewText_DatePicker from 'components/NewText_DatePicker';
+import NewText_ColorPicker from 'components/NewText_ColorPicker';
+import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
+import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
+import NewText_Text from 'components/NewText_Text';
 
 
 export default function EditAmmo({navigation}){

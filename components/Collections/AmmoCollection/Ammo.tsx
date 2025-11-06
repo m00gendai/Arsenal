@@ -1,26 +1,21 @@
-import { StyleSheet, View, ScrollView, Alert, TouchableNativeFeedback, TouchableOpacity, Pressable, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform } from 'react-native';
 import { Button, Appbar, Icon, Chip, Text, Dialog, Portal, Modal} from 'react-native-paper';
-import { ammoDataTemplate, ammoRemarks } from "../lib/ammoDataTemplate"
-import * as SecureStore from "expo-secure-store"
+import { ammoDataTemplate, ammoRemarks } from "lib/ammoDataTemplate"
 import { useState} from "react"
-import EditAmmo from "./EditAmmo"
-import ImageViewer from "./ImageViewer"
-import { AMMO_DATABASE, A_KEY_DATABASE } from '../configs_DB';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { useViewStore } from '../stores/useViewStore';
-import { useAmmoStore } from '../stores/useAmmoStore';
-import { ammoDeleteAlert, iosWarningText } from '../lib/textTemplates';
-import { printSingleAmmo, printSingleGun } from '../functions/printToPDF';
-import { AmmoType } from '../interfaces';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { defaultViewPadding } from '../configs';
-import { alarm } from '../utils';
+import ImageViewer from "components/ImageViewer"
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { useViewStore } from 'stores/useViewStore';
+import { useAmmoStore } from 'stores/useAmmoStore';
+import { ammoDeleteAlert, iosWarningText } from 'lib/textTemplates';
+import { printSingleAmmo } from 'functions/printToPDF';
+import { AmmoType } from 'interfaces';
+import { defaultViewPadding } from 'configs';
+import { alarm } from 'utils';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql } from 'drizzle-orm';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq } from 'drizzle-orm';
 
 export default function Ammo({navigation}){
 
