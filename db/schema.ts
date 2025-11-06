@@ -2,7 +2,7 @@ import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 
 export const gunCollection = sqliteTable('guns', {
     db_id: integer('id').primaryKey().notNull(),
-    id: text("uuid").notNull(),
+    id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -36,7 +36,7 @@ export const gunCollection = sqliteTable('guns', {
 
 export const ammoCollection = sqliteTable("ammo", {
     db_id: integer('id').primaryKey().notNull(),
-    id: text("uuid").notNull(),
+    id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -71,4 +71,50 @@ export const gunReminders = sqliteTable("gunReminder",{
     id: text("uuid").notNull(),
     label: text("label").notNull(),
     gun_id: text('gun_id').references(() => gunCollection.id),
+})
+
+export const AccessoryCollection_ConversionKits = sqliteTable("accessories_conversionKits", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    caliber: text("caliber", {mode: "json"}),
+    serial: text("serial"),
+    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
+})
+
+export const accessoryCollection_Silencers = sqliteTable("accessories_silencers", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    caliber: text("caliber", {mode: "json"}),
+    serial: text("serial"),
+    material: text("material"),
+    decibelRating: text("decibelRating"),
+    permit: text("permit"),
+    acquisitionDate: text("acquisitionDate"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt: text("lastShotAt"),
+    lastCleanedAt: text("lastCleanedAt"),
+    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
+    currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>AccessoryCollection_ConversionKits.id),
 })
