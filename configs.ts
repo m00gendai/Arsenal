@@ -47,10 +47,25 @@ export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
 
 export const collectionExportDirectories: string[] = ["gun", "ammo"]
+
 export type ScreenNames = "GunCollection" | 
                           "AmmoCollection" | 
                           "AccessoryCollection_Optics" | 
-                          "AccessoryCollection_Scopes" | 
+                          "AccessoryCollection_Silencers" |
+                          "AccessoryCollection_LightLaser" |
+                          "AccessoryCollection_ConversionKits" |
                           "AccessoryCollection_Magazines" | 
-                          "AccessoryCollection_Misc" | 
-                          "AccessoryCollection_Silencers"
+                          "AccessoryCollection_Misc" |
+                          "LiteratureCollection_Books" |
+                          "LiteratureCollection_Magazines" |
+                          "LiteratureCollection_Rulebooks" |
+                          "LiteratureCollection_Misc" |
+                          "ReloadingCollection_Dies" |
+                          "ReloadingCollection_Bullets" |
+                          "ReloadingCollection_Casings" |
+                          "ReloadingCollection_Primers" |
+                          "ReloadingCollection_Powder" |
+                          "ReloadingCollection_Misc"
+                          
+                          
+
