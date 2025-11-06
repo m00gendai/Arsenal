@@ -184,6 +184,16 @@ export type SortingTypesAmmo = "alphabetical" |
                             "currentStock" |
                             "lastTopUpAt"
 
+export type SortingTypesAccessory_Silencer = "alphabetical" |
+                                            "createdAt" |
+                                            "lastModifiedAt" |
+                                            "paidPrice" |
+                                            "marketValue" |
+                                            "acquisitionDate" | 
+                                            "lastCleanedAt" |
+                                            "lastShotAt" |
+                                            "decibelRating"
+
 
                             
 export type Languages = "de" | "en" | "fr" | "it" | "ch"
