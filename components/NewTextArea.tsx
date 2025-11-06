@@ -1,12 +1,7 @@
 import { TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { gunRemarks } from '../lib/gunDataTemplate';
-import { ammoRemarks } from '../lib/ammoDataTemplate';
-import { Pressable, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { defaultViewPadding } from '../configs';
+import { GunType, AmmoType } from 'interfaces';
+import { Pressable } from 'react-native';
 
 interface Props{
     data: string

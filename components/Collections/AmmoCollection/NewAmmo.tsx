@@ -2,7 +2,7 @@ import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView } f
 import { Appbar, Button, Dialog, FAB, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useState } from 'react';
-import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/ammoDataTemplate"
+import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate"
 import "react-native-get-random-values"
 import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "components/ImageViewer"

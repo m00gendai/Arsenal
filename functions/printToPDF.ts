@@ -2,15 +2,15 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
-import { AmmoType, CommonStyles, GunType } from '../interfaces';
-import { checkBoxes, gunDataTemplate, gunRemarks } from '../lib/gunDataTemplate';
-import { newTags, pdfTitleAmmo, pdfTitleArt5 } from '../lib/textTemplates';
-import { pdfFooter, pdfTitle } from '../lib/textTemplates';
-import { dateLocales } from '../configs';
-import { ammoDataTemplate, ammoRemarks } from '../lib/ammoDataTemplate';
+import { AmmoType, CommonStyles, GunType } from 'interfaces';
+import { checkBoxes, gunDataTemplate, gunRemarks } from 'lib/DataTemplates/gunDataTemplate';
+import { newTags, pdfTitleAmmo, pdfTitleArt5 } from 'lib/textTemplates';
+import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { dateLocales } from 'configs';
+import { ammoDataTemplate, ammoRemarks } from 'lib/DataTemplates/ammoDataTemplate';
 import { Platform } from 'react-native';
-import { db } from '../db/client';
-import * as schema from "../db/schema"
+import { db } from 'db/client';
+import * as schema from "db/schema"
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 

@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import { AmmoType, DBOperations, GunType } from "../interfaces"
-import { emptyAmmoObject } from "../lib/ammoDataTemplate"
-import { emptyGunObject } from "../lib/gunDataTemplate"
+import { emptyAmmoObject } from "../lib/DataTemplates/ammoDataTemplate"
+import { emptyGunObject } from "../lib/DataTemplates/gunDataTemplate"
 
 export interface ImportExportStore {
     CSVHeader: string[]

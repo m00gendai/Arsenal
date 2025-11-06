@@ -2,7 +2,7 @@ import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} fr
 import { Appbar, Button, Dialog, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
-import { ammoDataTemplate, ammoRemarks } from "lib/ammoDataTemplate"
+import { ammoDataTemplate, ammoRemarks } from "lib/DataTemplates/ammoDataTemplate"
 import "react-native-get-random-values"
 import ImageViewer from "components/ImageViewer"
 import { AMMO_DATABASE } from 'configs_DB';

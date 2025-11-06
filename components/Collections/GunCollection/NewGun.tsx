@@ -2,32 +2,29 @@ import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView } f
 import { Appbar, Button, Dialog, FAB, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useState } from 'react';
-import * as SecureStore from "expo-secure-store"
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { emptyGunObject, gunDataTemplate, gunRemarks } from "../../../lib/gunDataTemplate"
-import NewText from "../../NewText"
+import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate"
 import "react-native-get-random-values"
 import { v4 as uuidv4 } from 'uuid';
-import ImageViewer from "../../ImageViewer"
-import { GUN_DATABASE, KEY_DATABASE } from '../../../configs_DB';
-import { GunType, GunTypeWithDbId } from '../../../interfaces';
-import { cleanNullValues, gunDataValidation, imageHandling } from '../../../utils';
-import NewTextArea from '../../NewTextArea';
-import NewCheckboxArea from '../../NewCheckboxArea';
-import { newGunTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from '../../../lib/textTemplates';
-import { usePreferenceStore } from '../../../stores/usePreferenceStore';
-import { useViewStore } from '../../../stores/useViewStore';
-import NewChipArea from '../../NewChipArea';
-import { useGunStore } from '../../../stores/useGunStore';
+import ImageViewer from "components/ImageViewer"
+import { GUN_DATABASE } from 'configs_DB';
+import { GunType, GunTypeWithDbId } from 'interfaces';
+import { gunDataValidation, imageHandling } from 'utils';
+import NewTextArea from 'components/NewTextArea';
+import NewCheckboxArea from 'components/NewCheckboxArea';
+import { newGunTitle, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { useViewStore } from 'stores/useViewStore';
+import NewChipArea from 'components/NewChipArea';
+import { useGunStore } from 'stores/useGunStore';
 import * as FileSystem from 'expo-file-system';
-import * as schema from "../../../db/schema"
-import { db } from "../../../db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from '../../../configs';
-import NewText_DatePicker from '../../NewText_DatePicker';
-import NewText_ColorPicker from '../../NewText_ColorPicker';
-import NewText_CaliberPicker from '../../NewText_CaliberPicker';
-import NewText_IntervalPicker from '../../NewText_IntervalPicker';
-import NewText_Text from '../../NewText_Text';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from 'configs';
+import NewText_DatePicker from 'components/NewText_DatePicker';
+import NewText_ColorPicker from 'components/NewText_ColorPicker';
+import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
+import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
+import NewText_Text from 'components/NewText_Text';
 
 
 export default function NewGun({navigation}){

@@ -1,6 +1,6 @@
 import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform } from 'react-native';
 import { Button, Appbar, Icon, Chip, Text, Dialog, Portal, Modal} from 'react-native-paper';
-import { ammoDataTemplate, ammoRemarks } from "lib/ammoDataTemplate"
+import { ammoDataTemplate, ammoRemarks } from "lib/DataTemplates/ammoDataTemplate"
 import { useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';

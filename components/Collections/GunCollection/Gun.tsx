@@ -1,6 +1,6 @@
 import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
-import { checkBoxes, gunDataTemplate, gunRemarks } from "lib/gunDataTemplate"
+import { checkBoxes, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate"
 import { useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';

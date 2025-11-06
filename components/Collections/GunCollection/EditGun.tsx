@@ -2,7 +2,7 @@ import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} fr
 import { Appbar, Button, Dialog, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
-import { gunDataTemplate, gunRemarks } from "lib/gunDataTemplate"
+import { gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate"
 import "react-native-get-random-values"
 import ImageViewer from "../../ImageViewer"
 import { GunType } from 'interfaces';

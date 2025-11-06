@@ -1,4 +1,4 @@
-import { GunType, GunTypeStatus } from "../interfaces"
+import { GunType, GunTypeStatus } from "interfaces"
 
 export const gunDataTemplate:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
     {

@@ -1,4 +1,4 @@
-import { AmmoType } from "../interfaces"
+import { AmmoType } from "interfaces"
 
 export const ammoDataTemplate:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
         {

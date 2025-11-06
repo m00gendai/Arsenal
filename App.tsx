@@ -37,7 +37,7 @@ import * as schema from "./db/schema"
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from './drizzle/migrations';
-import { checkBoxes } from './lib/gunDataTemplate';
+import { checkBoxes } from './lib/DataTemplates/gunDataTemplate';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

@@ -1,8 +1,8 @@
 import { View } from "react-native"
 import { Checkbox } from 'react-native-paper';
-import { GunType } from "../interfaces"
-import { checkBoxes } from "../lib/gunDataTemplate";
-import { usePreferenceStore } from "../stores/usePreferenceStore";
+import { GunType } from "interfaces"
+import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
+import { usePreferenceStore } from "stores/usePreferenceStore";
 
 interface Props{
     gunData: GunType

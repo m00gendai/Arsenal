@@ -2,11 +2,11 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import Papa from 'papaparse';
 import { unflatten } from 'flat'
-import { AmmoType, GunType, GunTypeStatus } from '../interfaces';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { emptyGunObject } from '../lib/gunDataTemplate';
-import { emptyAmmoObject } from '../lib/ammoDataTemplate';
+import { AmmoType, GunType, GunTypeStatus } from 'interfaces';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { emptyGunObject } from 'lib/DataTemplates/gunDataTemplate';
+import { emptyAmmoObject } from 'lib/DataTemplates/ammoDataTemplate';
 
 export default async function importArsenalCSV(data:"gun"|"ammo"){
 

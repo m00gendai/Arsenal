@@ -1,7 +1,7 @@
 import { AmmoType, GunType, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
-import { gunDataTemplate } from "./lib/gunDataTemplate";
+import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
-import { ammoDataTemplate } from "./lib/ammoDataTemplate";
+import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
 import { requiredFieldsAmmo, requiredFieldsGun } from "./configs";
 import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';

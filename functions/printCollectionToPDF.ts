@@ -2,12 +2,12 @@ import { generatePDF } from 'react-native-html-to-pdf';
 import * as FileSystem from "expo-file-system";
 import { Platform } from 'react-native';
 import { shareAsync } from 'expo-sharing';
-import { CommonStyles } from '../interfaces';
-import { db } from '../db/client';
-import * as schema from "../db/schema"
-import { dateLocales } from '../configs';
-import { pdfFooter, pdfTitle } from '../lib/textTemplates';
-import { gunDataTemplate } from '../lib/gunDataTemplate';
+import { CommonStyles } from 'interfaces';
+import { db } from 'db/client';
+import * as schema from "db/schema"
+import { dateLocales } from 'configs';
+import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
 
 export default async function printCollectionToPDF(language:string){
 
