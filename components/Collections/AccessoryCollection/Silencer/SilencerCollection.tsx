@@ -4,10 +4,9 @@ import { Dimensions, FlatList, View } from 'react-native';
 import { Appbar, FAB, Menu, Searchbar } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from 'configs';
 import { PREFERENCES } from "configs_DB"
-import { AmmoType, MenuVisibility, SortingTypesAmmo } from 'interfaces';
+import { AccessoryType_Silencer, MenuVisibility, SortingTypesAccessory_Silencer, SortingTypesAmmo } from 'interfaces';
 import { getIcon } from 'utils';
 import { useViewStore } from 'stores/useViewStore';
-import { useAmmoStore } from 'stores/useAmmoStore';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { search, sorting } from 'lib/textTemplates';
 import AmmoCard from './SilencerCard';
@@ -17,9 +16,11 @@ import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
 import { and, or, like } from 'drizzle-orm';
 import FilterMenu from 'components/FilterMenu';
-import sortAmmoCollection from 'functions/sortAmmoCollection';
+import sortAccessoryCollection_Silencer from 'functions/sortAccessoryCollection_Silencer';
+import { useAccessoryStore } from 'stores/useAccessoryStore';
+import { access } from 'fs';
 
-export default function AmmoCollection({navigation, route}){
+export default function AccessoryCollection_Silencer({navigation, route}){
 
 
   const [menuVisibility, setMenuVisibility] = useState<MenuVisibility>({sortBy: false, filterBy: false});
@@ -27,35 +28,35 @@ export default function AmmoCollection({navigation, route}){
 
   const [searchBannerVisible, toggleSearchBannerVisible] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>("")
-  const { displayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon, sortAmmoAscending, toggleSortAmmoAscending, ammoFilterOn } = usePreferenceStore()
-  const { mainMenuOpen, ammoSearchVisible, toggleAmmoSearchVisible, searchQueryAmmoCollection, setSearchQueryAmmoCollection } = useViewStore()
-  const { ammoCollection, setAmmoCollection, currentAmmo, setCurrentAmmo } = useAmmoStore()
+  const { displayAccessory_SilencerAsGrid, toggleDisplayAccessory_SilencerAsGrid, sortAccessory_SilencerBy, setSortAccessory_SilencerBy, language, sortAccessory_SilencerIcon, setsortAccessory_SilencerIcon, sortAccessory_SilencerAscending, toggleSortAccessory_SilencerAscending, accessory_SilencerFilterOn } = usePreferenceStore()
+  const { mainMenuOpen } = useViewStore()
+  const { setCurrentAccessory } = useAccessoryStore()
 
-  const { data: ammoData } = useLiveQuery(
+  const { data: silencerData } = useLiveQuery(
     db.select()
-    .from(schema.ammoCollection)
+    .from(schema.accessoryCollection_Silencers)
     .where(
       and(
         or(
-          like(schema.ammoCollection.designation, `%${searchQuery}%`),
-          like(schema.ammoCollection.manufacturer, `%${searchQuery}%`)
+          like(schema.accessoryCollection_Silencers.model, `%${searchQuery}%`),
+          like(schema.accessoryCollection_Silencers.manufacturer, `%${searchQuery}%`)
         ),
       )
     )
-    .orderBy(sortAmmoCollection(sortAmmoBy, sortAmmoAscending)),
-    [searchQuery, sortAmmoAscending, sortAmmoBy]
+    .orderBy(sortAccessoryCollection_Silencer(sortAccessory_SilencerBy, sortAccessory_SilencerAscending)),
+    [searchQuery, sortAccessory_SilencerAscending, sortAccessory_SilencerBy]
   )
 
   const { data: tagData } = useLiveQuery(
     db.select()
-    .from(schema.ammoTags)
+    .from(schema.accessory_SilencerTags)
   )
   
-  async function handleSortBy(type:SortingTypesAmmo){
-    setSortAmmoIcon(getIcon(type))
-    setSortAmmoBy(type)
+  async function handleSortBy(type:SortingTypesAccessory_Silencer){
+    setsortAccessory_SilencerIcon(getIcon(type))
+    setSortAccessory_SilencerBy(type)
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortAmmoBy": type} : {...JSON.parse(preferences), "sortAmmoBy":type} 
+    const newPreferences:{[key:string] : string} = preferences == null ? {"sortAccessory_SilencerBy": type} : {...JSON.parse(preferences), "sortAccessory_SilencerBy":type} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
 
@@ -64,16 +65,16 @@ export default function AmmoCollection({navigation, route}){
   }
 
   async function handleSortOrder(){
-    toggleSortAmmoAscending()
+    toggleSortAccessory_SilencerAscending()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortOrderAmmo": !sortAmmoAscending} : {...JSON.parse(preferences), "sortOrderAmmo": !sortAmmoAscending} 
+    const newPreferences:{[key:string] : string} = preferences == null ? {"sortOrderAccessory_Silencer": !sortAccessory_SilencerAscending} : {...JSON.parse(preferences), "sortOrderAccessory_Silencer": !sortAccessory_SilencerAscending} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
         
   async function handleDisplaySwitch(){
-    toggleDisplayAmmoAsGrid()
+    toggleDisplayAccessory_SilencerAsGrid()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"displayAmmoAsGrid": !displayAmmoAsGrid} : {...JSON.parse(preferences), "displayAmmoAsGrid": !displayAmmoAsGrid} 
+    const newPreferences:{[key:string] : string} = preferences == null ? {"displayAccessory_SilencerAsGrid": !displayAccessory_SilencerAsGrid} : {...JSON.parse(preferences), "displayAccessory_SilencerAsGrid": !displayAccessory_SilencerAsGrid} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   } 
 
@@ -87,7 +88,7 @@ export default function AmmoCollection({navigation, route}){
     }, searchBannerVisible ? 400 : 50)
   }
 
-  const FABheight = useSharedValue(ammoSearchVisible ? defaultSearchBarHeight : 0);
+  const FABheight = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
 
@@ -115,17 +116,17 @@ export default function AmmoCollection({navigation, route}){
   });
 
   function handleFAB(){
-    setCurrentAmmo(null)
-    navigation.navigate("NewAmmo")
+    setCurrentAccessory(null)
+    navigation.navigate("NewAccessory_Silencer")
   }
 
   const { width, height } = Dimensions.get("window");
   const isLandscape = width > height;
   
-  const numColumns = isLandscape ? 4 : displayAmmoAsGrid ? 2 : 1;
+  const numColumns = isLandscape ? 4 : displayAccessory_SilencerAsGrid ? 2 : 1;
   const listKey = isLandscape
     ? "ammoCollectionGrid4"
-    : displayAmmoAsGrid
+    : displayAccessory_SilencerAsGrid
     ? "ammoCollectionGrid2"
     : "ammoCollectionList";
 
@@ -147,24 +148,22 @@ export default function AmmoCollection({navigation, route}){
                       >
                        <FilterMenu collection='ammoCollection'/>
             </Menu>
-            <Appbar.Action icon={displayAmmoAsGrid ? "view-grid" : "format-list-bulleted-type"} onPress={handleDisplaySwitch} />
+            <Appbar.Action icon={displayAccessory_SilencerAsGrid ? "view-grid" : "format-list-bulleted-type"} onPress={handleDisplaySwitch} />
             <Menu
               visible={menuVisibility.sortBy}
               onDismiss={()=>handleMenu("sortBy", false)}
-              anchor={<Appbar.Action icon={sortAmmoIcon} onPress={() => handleMenu("sortBy", true)} />}
+              anchor={<Appbar.Action icon={sortAccessory_SilencerIcon} onPress={() => handleMenu("sortBy", true)} />}
               anchorPosition='bottom'
             >
               <Menu.Item onPress={() => handleSortBy("alphabetical")} title={`${sorting.alphabetic[language]}`} leadingIcon={getIcon("alphabetical")}/>
               <Menu.Item onPress={() => handleSortBy("createdAt")} title={`${sorting.lastAdded[language]}`} leadingIcon={getIcon("createdAt")}/>
               <Menu.Item onPress={() => handleSortBy("lastModifiedAt")} title={`${sorting.lastModified[language]}`} leadingIcon={getIcon("lastModifiedAt")}/>
-              <Menu.Item onPress={() => handleSortBy("currentStock")} title={`${sorting.currentStock[language]}`} leadingIcon={getIcon("currentStock")}/>
-              <Menu.Item onPress={() => handleSortBy("lastTopUpAt")} title={`${sorting.lastTopUpAt[language]}`} leadingIcon={getIcon("lastTopUpAt")}/>
           </Menu>
-          <Appbar.Action icon={sortAmmoAscending ? "arrow-up" : "arrow-down"} onPress={() => handleSortOrder()} />
+          <Appbar.Action icon={sortAccessory_SilencerAscending ? "arrow-up" : "arrow-down"} onPress={() => handleSortOrder()} />
         </View>
       </Appbar>
-      <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{ammoSearchVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQueryAmmoCollection} value={searchQueryAmmoCollection} /> : null}</Animated.View>
-        <FlatList<AmmoType> 
+      <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{searchBannerVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQuery} value={searchQuery} /> : null}</Animated.View>
+        <FlatList<AccessoryType_Silencer> 
           numColumns={numColumns} 
           initialNumToRender={10} 
           contentContainerStyle={{gap: defaultGridGap}}
@@ -178,8 +177,8 @@ export default function AmmoCollection({navigation, route}){
             paddingRight: defaultViewPadding, 
             paddingBottom: 50}} 
           /*@ts-expect-error*/
-          data={ammoData.filter(ammo => ammoFilterOn ? tagData.filter(tag => tag.active).every(tag => ammo.tags?.includes(tag.label)) : ammo)} 
-          renderItem={({item}: {item: AmmoType}) => <AmmoCard ammo={item} />}                     
+          data={silencerData.filter(silencer => accessory_SilencerFilterOn ? tagData.filter(tag => tag.active).every(tag => silencer.tags?.includes(tag.label)) : silencer)} 
+          renderItem={({item}: {item: AccessoryType_Silencer}) => <AmmoCard ammo={item} />}                     
           keyExtractor={ammo=>ammo.id} 
           ListFooterComponent={<View style={{width: "100%", height: 100}} />}
           ListEmptyComponent={null}
