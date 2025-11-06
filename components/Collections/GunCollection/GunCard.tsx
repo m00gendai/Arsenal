@@ -23,7 +23,6 @@ interface Props{
 export default function GunCard({gun}:Props){
 
     const { displayAsGrid, setDisplayAsGrid, toggleDisplayAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, generalSettings } = usePreferenceStore()
-    const { mainMenuOpen, setMainMenuOpen, newGunOpen, setNewGunOpen, editGunOpen, setEditGunOpen, seeGunOpen, setSeeGunOpen } = useViewStore()
     const { gunCollection, setGunCollection, currentGun, setCurrentGun } = useGunStore()  
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
