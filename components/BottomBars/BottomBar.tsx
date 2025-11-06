@@ -1,11 +1,11 @@
 import { Dimensions, TouchableOpacity, View } from "react-native";
-import { Card, Divider, Icon, Text } from "react-native-paper";
-import { usePreferenceStore } from "../stores/usePreferenceStore";
+import { Card, Icon, Text } from "react-native-paper";
+import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { tabBarLabels } from "../lib/textTemplates";
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, ScreenNames } from "../configs";
-import { useViewStore } from "../stores/useViewStore";
+import { tabBarLabels } from "lib/textTemplates";
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, ScreenNames } from "configs";
+import { useViewStore } from "stores/useViewStore";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,

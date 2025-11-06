@@ -41,7 +41,7 @@ import { checkBoxes } from './lib/gunDataTemplate';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomBar from './components/BottomBar';
+import BottomBar from './components/BottomBars/BottomBar';
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding } from './configs';
 
 SplashScreen.preventAutoHideAsync();
