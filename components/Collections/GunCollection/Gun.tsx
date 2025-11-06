@@ -25,7 +25,7 @@ export default function Gun({navigation}){
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
 
-    const { setSeeGunOpen, editGunOpen, setEditGunOpen, lightBoxOpen, setLightBoxOpen } = useViewStore()
+    const { lightBoxOpen, setLightBoxOpen } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
     const { currentGun, setCurrentGun, gunCollection, setGunCollection} = useGunStore()
 
