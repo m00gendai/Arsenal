@@ -1,11 +1,20 @@
-import { TouchableOpacity, View } from "react-native";
-import { Divider, Icon, Text } from "react-native-paper";
+import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Card, Divider, Icon, Text } from "react-native-paper";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tabBarLabels } from "../lib/textTemplates";
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, ScreenNames } from "../configs";
 import { useViewStore } from "../stores/useViewStore";
+import { useSharedValue } from "react-native-reanimated";
+import Carousel, {
+  ICarouselInstance,
+  Pagination,
+} from "react-native-reanimated-carousel";
+import { useRef } from "react";
+import BottomBar_AccessoryCollection from "./BottomBar_AccessoryCollection";
+import BottomBar_LiteratureCollection from "./BottomBar_LiteratureCollection";
+import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
 
 type RootStackParamList = {
   GunCollection: undefined;
@@ -26,7 +35,21 @@ export default function BottomBar({screen}:Props){
         AmmoCollection: undefined;
         // Add other routes here if needed
       };
-      
+      const ref = useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+    const data = ["Accessories"] // ["Accessories", "Literature", "Reloading"];
+const width = Dimensions.get("window").width;
+
+const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      /**
+       * Calculate the difference between the current index and the target index
+       * to ensure that the carousel scrolls to the nearest index
+       */
+      count: index - progress.value,
+      animated: true,
+    });
+  };
 
     const { displayAsGrid, toggleDisplayAsGrid, sortBy, setSortBy, language, setSortGunIcon, sortGunIcon, sortGunsAscending, toggleSortGunsAscending, theme } = usePreferenceStore()
     const navigation = useNavigation<BottomBarNavigationProp>()
@@ -40,9 +63,10 @@ export default function BottomBar({screen}:Props){
 
     
     return(
-      <View style={{width: "100%", backgroundColor: theme.colors.surface, flexDirection: "column", justifyContent: "center", alignItems: "flex-start"}}>
+      <View style={{width: "100%", flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "flex-start"}}>
         
-        <View style={{width: "100%", height: defaultBottomBarHeight, flexDirection: "row", justifyContent: "space-around", alignItems: "center", borderTopColor: theme.colors.primary, borderTopWidth: 2, paddingTop: 2}}>
+        <View style={{backgroundColor: theme.colors.surface, width: "100%", height: defaultBottomBarHeight, flexDirection: "row", justifyContent: "space-around", alignItems: "center", borderTopColor: theme.colors.primary, borderTopWidth: 2, paddingTop: 2}}>
+          
           <View style={{width: "100%", position: "absolute", left: 0, top: 0}}>
             <View style={{alignSelf: "center"}}>
               <Icon
@@ -59,54 +83,53 @@ export default function BottomBar({screen}:Props){
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>handleNavigation("AmmoCollection")} style={{ alignItems: 'center' }}>
-            <Icon source="bullet" size={24} color={screen === "AmmoCollection" ? theme.colors.primary : theme.colors.secondary} />
+            <Icon source="ammunition" size={24} color={screen === "AmmoCollection" ? theme.colors.primary : theme.colors.secondary} />
             <Text style={{ color: screen === "AmmoCollection" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{tabBarLabels.ammoCollection[language]}</Text>
           </TouchableOpacity>
+
         </View>
-        <View>
-          <View style={{paddingBottom: defaultBottomBarTextHeight*2}}>
 
-            <View style={{width: "100%", height: defaultBottomBarTextHeight, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <Divider style={{width: "100%"}}/>
-            <Text style={{position: "absolute", backgroundColor: theme.colors.background, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}}>{"Label"}</Text>
-          </View>
-
-          <View style={{width: "100%", height: defaultBottomBarHeight, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", flexWrap: "wrap", marginTop: defaultViewPadding, marginBottom: defaultViewPadding}}>
+        <View style={{flex: 1, backgroundColor: theme.colors.surface, paddingBottom: defaultBottomBarTextHeight*2}}>
+          <Carousel
+            ref={ref}
+            width={width}
+            height={400}
+            data={data}
+            autoFillData={false}
+            onProgressChange={progress}
+            mode={"parallax"}
+            enabled={false}
+            renderItem={({ index }) => (
+              <Card
+                style={{
+                  flex: 1,
+                  paddingTop: defaultViewPadding,
+                  width: width-defaultViewPadding,
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+              {index === 0 ? 
+                <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> : 
+                /*index=== 1 ? 
+                <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
+                index=== 2 ? 
+                <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> : */
+                null}
+              </Card>
+            )}
+          />
+ 
+          <Pagination.Basic
+            progress={progress}
+            data={data}
+            dotStyle={{ backgroundColor: theme.colors.secondary, borderRadius: 50 }}
+            activeDotStyle={{ backgroundColor: theme.colors.primary, borderRadius: 50 }}
+            containerStyle={{ gap: 5, marginTop: 10 }}
+            onPress={onPressPagination}
+          />
       
-      <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Optics")} style={{width: "33%", alignItems: 'center', marginBottom: 10}}>
-              <Icon source="target" size={24} color={currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary} />
-              <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.scopeCollection[language]}`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Optics")} style={{width: "33%", alignItems: 'center', marginBottom: 10}}>
-              <Icon source="toslink" size={24} color={currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary} />
-              <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.opticCollection[language]}`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Silencers")} style={{width: "33%", alignItems: 'center', marginBottom: 10}}>
-              <Icon source="volume-off" size={24} color={currentCollectionScreen === "AccessoryCollection_Silencers" ? theme.colors.primary : theme.colors.secondary} />
-              <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Silencers" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.silencerCollection[language]}`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Optics")} style={{width: "33%", alignItems: 'center', marginBottom: 10}}>
-              <Icon source="flashlight" size={24} color={currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary} />
-              <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.lightLaserCollection[language]}`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Optics")} style={{width: "33%", alignItems: 'center', marginBottom: 10}}>
-              <Icon source="swap-horizontal" size={24} color={currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary} />
-              <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Optics" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.conversionCollection[language]}`}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Magazines")} style={{width: "33%", alignItems: 'center', marginBottom: 10 }}>
-                <Icon source="lightbulb-fluorescent-tube-outline" size={24} color={currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary} />
-                <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.barrelCollection[language]}`}</Text>
-              </TouchableOpacity>
-            <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Magazines")} style={{width: "33%", alignItems: 'center', marginBottom: 10 }}>
-                <Icon source="magazine-rifle" size={24} color={currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary} />
-                <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.magazineCollection[language]}`}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>handleNavigation("AccessoryCollection_Magazines")} style={{width: "33%", alignItems: 'center', marginBottom: 10 }}>
-                <Icon source="shape-plus" size={24} color={currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary} />
-                <Text style={{ color: currentCollectionScreen === "AccessoryCollection_Magazines" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.miscCollection[language]}`}</Text>
-              </TouchableOpacity>
-</View>
-          </View>
         </View>
       </View>
     )
