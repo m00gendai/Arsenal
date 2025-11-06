@@ -30,7 +30,6 @@ import NewText_Text from 'components/NewText_Text';
 export default function NewGun({navigation}){
 
     const { language, theme, generalSettings } = usePreferenceStore()
-    const { setNewGunOpen, setSeeGunOpen } = useViewStore()
     const { setCurrentGun, gunCollection, setGunCollection, currentGun } = useGunStore()
 
     const [selectedImage, setSelectedImage] = useState<string[]>(currentGun ? currentGun.images : null)
@@ -92,11 +91,9 @@ export default function NewGun({navigation}){
         setSaveState(true)
         setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${value.model} ${toastMessages.saved[language]}`)
         onToggleSnackBar()
-        setNewGunOpen()
         setCurrentGun({...gunData, id: value.id})
         const newCollection:GunType[] = [...gunCollection, value]
         setGunCollection(newCollection)
-        setSeeGunOpen()
         navigation.navigate("Gun")
     }
     
