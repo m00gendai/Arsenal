@@ -38,11 +38,7 @@ import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from './drizzle/migrations';
 import { checkBoxes } from './lib/gunDataTemplate';
-import {
-  configureReanimatedLogger,
-  ReanimatedLogLevel,
-} from 'react-native-reanimated';
-import DEV_importLegacyDatabaseAsJSON from './functions/DEV_importLegacyDatabaseAsJSON';
+import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBar';
@@ -579,14 +575,11 @@ export default function App() {
         ref={bottomSheetRef}
         
             snapPoints={[
-              defaultBottomBarHeight, 
-             Dimensions.get("window").height-defaultViewPadding
+              defaultBottomBarHeight
             ]}
-            handleComponent={null}
-            backgroundStyle={{backgroundColor: theme.colors.background}}
-            maxDynamicContentSize={(defaultBottomBarHeight*3)+(defaultBottomBarTextHeight*2) + (defaultViewPadding*3)}
+            handleComponent={null}            
       >
-        <BottomSheetView>
+        <BottomSheetView style={{ flex: 1 }}>
           <BottomBar screen={currentCollectionScreen}/>
         </BottomSheetView>
       </BottomSheet>}
