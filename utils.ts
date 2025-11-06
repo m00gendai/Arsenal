@@ -1,4 +1,4 @@
-import { AmmoType, GunType, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
+import { AmmoType, GunType, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
 import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
 import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
@@ -8,7 +8,7 @@ import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
 
-export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
+export function getIcon(type:SortingTypesGun | SortingTypesAmmo | SortingTypesAccessory_Silencer){
     switch(type){
         case "alphabetical":
             return "alphabetical-variant"
@@ -30,6 +30,8 @@ export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
             return "counter"
         case "lastTopUpAt":
             return "basket-plus-outline"
+        case "decibelRating":
+            return "volume-source"
         default:
             return "alphabetical-variant"
     }
