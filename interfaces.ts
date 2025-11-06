@@ -1,4 +1,4 @@
-export interface GunType{
+export interface GunTypeDetails{
   id: string
   manufacturer?: string | null
   model: string
@@ -37,6 +37,8 @@ export interface GunTypeStatus{
   grandfather: boolean
 }
 
+export type GunType = GunTypeDetails & GunTypeStatus
+
 export interface AmmoType{
   id: string
   manufacturer?: string | null
@@ -53,6 +55,35 @@ export interface AmmoType{
   tags: string[]
   images: string[]
   remarks?: string
+}
+
+export interface AccessoryType_Silencer{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string []
+  manufacturer?: string
+  model: string
+  manufacturingDate?: string
+  originCountry?: string
+  caliber?: string[]
+  serial?: string
+  material?: string
+  decibelRating?: string
+  permit?: string
+  acquisitionDate?: string
+  paidPrice?: string
+  boughtFrom?: string
+  marketValue?: string
+  shotCount?: string
+  lastShotAt?: string
+  lastCleanedAt?: string
+  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  mainColor?: string
+  remarks?: string
+  currentlyMountedOnGun?: string
+  currentlyMountedOnConversionKit?: string
 }
 
 
