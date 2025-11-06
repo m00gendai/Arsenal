@@ -34,6 +34,13 @@ export const gunCollection = sqliteTable('guns', {
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
 })
 
+export const gunTags = sqliteTable("gunTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("gunTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const ammoCollection = sqliteTable("ammo", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
@@ -52,25 +59,11 @@ export const ammoCollection = sqliteTable("ammo", {
     remarks: text("remarks"),
 })
 
-export const gunTags = sqliteTable("gunTags", {
-    db_id: integer('id').primaryKey().notNull(),
-    label: text("label").notNull().unique("gunTag_label"),
-    color: text("color"),
-    active: integer("active", {mode: "boolean"}).default(true),
-})
-
 export const ammoTags = sqliteTable("ammoTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("ammoTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
-})
-
-export const gunReminders = sqliteTable("gunReminder",{
-    db_id: integer('id').primaryKey().notNull(),
-    id: text("uuid").notNull(),
-    label: text("label").notNull(),
-    gun_id: text('gun_id').references(() => gunCollection.id),
 })
 
 export const AccessoryCollection_ConversionKits = sqliteTable("accessories_conversionKits", {
@@ -87,6 +80,13 @@ export const AccessoryCollection_ConversionKits = sqliteTable("accessories_conve
     caliber: text("caliber", {mode: "json"}),
     serial: text("serial"),
     currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
+})
+
+export const accessory_ConversionKitsTags = sqliteTable("accessories_ConversionKitsTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("ammoTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
 })
 
 export const accessoryCollection_Silencers = sqliteTable("accessories_silencers", {
@@ -118,3 +118,18 @@ export const accessoryCollection_Silencers = sqliteTable("accessories_silencers"
     currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
     currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>AccessoryCollection_ConversionKits.id),
 })
+
+export const accessory_SilencerTags = sqliteTable("accessories_SilencerTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("ammoTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
+export const gunReminders = sqliteTable("gunReminder",{
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull(),
+    label: text("label").notNull(),
+    gun_id: text('gun_id').references(() => gunCollection.id),
+})
+
