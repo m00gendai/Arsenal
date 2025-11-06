@@ -17,7 +17,6 @@ import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
 import { and, or, like } from 'drizzle-orm';
 import FilterMenu from 'components/FilterMenu';
-import BottomBar from 'components/BottomBar';
 import sortAmmoCollection from 'functions/sortAmmoCollection';
 
 export default function AmmoCollection({navigation, route}){
@@ -185,7 +184,7 @@ export default function AmmoCollection({navigation, route}){
           ListFooterComponent={<View style={{width: "100%", height: 100}} />}
           ListEmptyComponent={null}
         />
-      <BottomBar screen={route.name}/>
+
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, ammoCollection.length === 0 ? pulsate : null]}>
         <FAB
           icon="plus"
