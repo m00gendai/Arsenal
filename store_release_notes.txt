@@ -13,6 +13,24 @@ Enter or paste your release notes for fr-FR here
 Enter or paste your release notes for it-IT here
 </it-IT>
 
+V2.0.1
+<de-DE>
+- Potentielle Out of Memory Fehler beim Export der Arsenal-Datenbank behoben
+- Fehler behoben bei seltenen Fällen, in denen Sammlungen erst dann angezeigt werden, wenn die Sortierreihenfolge manuell geändert wird
+</de-DE>
+<en-US>
+- Fixed potential out of memory errors in exporting Arsenal Database 
+- Fixed rare occasions where collections are not displayed until sorting order is manually changed
+</en-US>
+<fr-FR>
+- Correction d'erreurs potentielles de manque de mémoire lors de l'exportation de la base de données Arsenal 
+- Correction de cas rares où les collections ne sont pas affichées tant que l'ordre de tri n'est pas manuellement modifié
+</fr-FR>
+<it-IT>
+- Corretta la potenziale mancanza di memoria durante l'esportazione della banca dati Arsenal 
+- Corretta la rara situazione in cui le collezioni non vengono visualizzate finché l'ordine di ordinamento non viene cambiato manualmente
+</it-IT>
+
 V2.0.0
 <de-DE>
 Völlig überarbeitete interne Datenbankstruktur
