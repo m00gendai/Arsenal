@@ -4,6 +4,8 @@ import { SortingTypesGun } from "../interfaces";
 
 export default function sortGunCollection(ascending:boolean, sortBy:SortingTypesGun){
 
+    console.log(`sortGunBy: ${sortBy} - ${ascending}`)
+
     const parseDateColumn = (column) => sql`
         CAST(
             strftime('%s', 
@@ -63,11 +65,10 @@ export default function sortGunCollection(ascending:boolean, sortBy:SortingTypes
                 sql`${parseDateColumn(schema.gunCollection.lastCleanedAt)} DESC NULLS LAST`
         }
         
-        
-        return (sql`
-                    CASE
-                        WHEN NULLIF(${schema.gunCollection[sortBy]}, "") IS NULL THEN NULL
-                        ELSE strftime('%s', ${schema.gunCollection[sortBy]})
-                    END DESC NULLS LAST`)
+        // Default sorter
+        return ascending ?
+                asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
+                :
+                desc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
 
 }

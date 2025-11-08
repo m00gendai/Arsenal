@@ -19,6 +19,7 @@ import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray
 import FilterMenu from './FilterMenu';
 import BottomBar from './BottomBar';
 import sortGunCollection from '../functions/sortGunCollection';
+import BottomBar_Legacy from './BottomBar_Legacy';
 
 export default function GunCollection({navigation, route}){
 
@@ -57,7 +58,7 @@ export default function GunCollection({navigation, route}){
     setSortGunIcon(getIcon(type))
     setSortBy(type)
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortBy": type} : {...JSON.parse(preferences), "sortBy":type} 
+    const newPreferences:{[key:string] : string} = preferences ? {"sortBy": type} : {...JSON.parse(preferences), "sortBy":type} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
 
@@ -68,14 +69,14 @@ export default function GunCollection({navigation, route}){
   async function handleSortOrder(){
     toggleSortGunsAscending()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortOrderGuns": !sortGunsAscending} : {...JSON.parse(preferences), "sortOrderGuns": !sortGunsAscending} 
+    const newPreferences:{[key:string] : string} = preferences ? {"sortOrderGuns": !sortGunsAscending} : {...JSON.parse(preferences), "sortOrderGuns": !sortGunsAscending} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
         
   async function handleDisplaySwitch(){
     toggleDisplayAsGrid()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"displayAsGrid": !displayAsGrid} : {...JSON.parse(preferences), "displayAsGrid": !displayAsGrid} 
+    const newPreferences:{[key:string] : string} = preferences ? {"displayAsGrid": !displayAsGrid} : {...JSON.parse(preferences), "displayAsGrid": !displayAsGrid} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   } 
 
@@ -215,6 +216,7 @@ const listKey = isLandscape
     ListFooterComponent={<View style={{ width: "100%", height: 100 }} />}
     ListEmptyComponent={null}
   />
+  <BottomBar_Legacy screen={route.name}/>
 
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, gunData.length === 0 ? pulsate : null]}>
         <FAB
