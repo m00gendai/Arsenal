@@ -44,10 +44,10 @@ export default function sortAmmoCollection(sortBy:SortingTypesAmmo, ascending:bo
             :
             sql`${parseDateColumn(schema.ammoCollection.lastTopUpAt)} DESC NULLS LAST`
     }
-    
-    return (sql`
-                CASE
-                    WHEN NULLIF(${schema.ammoCollection[sortBy]}, "") IS NULL THEN NULL
-                    ELSE strftime('%s', ${schema.ammoCollection[sortBy]})
-                END DESC NULLS LAST`)
+
+    // Fallback sorter
+    return ascending ?
+            asc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
+            :
+            desc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
 }
