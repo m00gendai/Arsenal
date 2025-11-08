@@ -47,6 +47,7 @@ import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bo
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBar';
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding } from './configs';
+import BottomBar_Legacy from './components/BottomBar_Legacy';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -575,21 +576,7 @@ export default function App() {
             />
 
           </Stack.Navigator>
-          {mainMenuOpen ? null : hideBottomSheet ? null : <BottomSheet
-        ref={bottomSheetRef}
-        
-            snapPoints={[
-              defaultBottomBarHeight, 
-             Dimensions.get("window").height-defaultViewPadding
-            ]}
-            handleComponent={null}
-            backgroundStyle={{backgroundColor: theme.colors.background}}
-            maxDynamicContentSize={(defaultBottomBarHeight*3)+(defaultBottomBarTextHeight*2) + (defaultViewPadding*3)}
-      >
-        <BottomSheetView>
-          <BottomBar screen={currentCollectionScreen}/>
-        </BottomSheetView>
-      </BottomSheet>}
+          
         </SafeAreaView>
       </PaperProvider>
     </NavigationContainer>
