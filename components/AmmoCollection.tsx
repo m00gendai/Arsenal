@@ -21,6 +21,7 @@ import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray
 import FilterMenu from './FilterMenu';
 import BottomBar from './BottomBar';
 import sortAmmoCollection from '../functions/sortAmmoCollection';
+import BottomBar_Legacy from './BottomBar_Legacy';
 
 export default function AmmoCollection({navigation, route}){
 
@@ -58,7 +59,7 @@ export default function AmmoCollection({navigation, route}){
     setSortAmmoIcon(getIcon(type))
     setSortAmmoBy(type)
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortAmmoBy": type} : {...JSON.parse(preferences), "sortAmmoBy":type} 
+    const newPreferences:{[key:string] : string} = preferences ? {"sortAmmoBy": type} : {...JSON.parse(preferences), "sortAmmoBy":type} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
 
@@ -69,14 +70,14 @@ export default function AmmoCollection({navigation, route}){
   async function handleSortOrder(){
     toggleSortAmmoAscending()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"sortOrderAmmo": !sortAmmoAscending} : {...JSON.parse(preferences), "sortOrderAmmo": !sortAmmoAscending} 
+    const newPreferences:{[key:string] : string} = preferences ? {"sortOrderAmmo": !sortAmmoAscending} : {...JSON.parse(preferences), "sortOrderAmmo": !sortAmmoAscending} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   }
         
   async function handleDisplaySwitch(){
     toggleDisplayAmmoAsGrid()
     const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-    const newPreferences:{[key:string] : string} = preferences == null ? {"displayAmmoAsGrid": !displayAmmoAsGrid} : {...JSON.parse(preferences), "displayAmmoAsGrid": !displayAmmoAsGrid} 
+    const newPreferences:{[key:string] : string} = preferences ? {"displayAmmoAsGrid": !displayAmmoAsGrid} : {...JSON.parse(preferences), "displayAmmoAsGrid": !displayAmmoAsGrid} 
     await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
   } 
 
@@ -187,7 +188,7 @@ export default function AmmoCollection({navigation, route}){
           ListFooterComponent={<View style={{width: "100%", height: 100}} />}
           ListEmptyComponent={null}
         />
-      <BottomBar screen={route.name}/>
+      <BottomBar_Legacy screen={route.name}/>
       <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, ammoCollection.length === 0 ? pulsate : null]}>
         <FAB
           icon="plus"
