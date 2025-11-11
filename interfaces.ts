@@ -86,6 +86,9 @@ export interface AccessoryType_Silencer{
   currentlyMountedOnConversionKit?: string
 }
 
+export type ItemType = GunType | AmmoType
+export type CollectionType = "gunCollection" | "ammoCollection"
+
 
 interface DbId{
   db_id: number
