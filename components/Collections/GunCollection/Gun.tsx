@@ -1,7 +1,7 @@
-import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
 import { checkBoxes, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate"
-import { useState} from "react"
+import { useRef, useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
@@ -19,6 +19,8 @@ import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';
+import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
+import { useSharedValue } from 'react-native-reanimated';
 
 export default function Gun({navigation}){
 
@@ -109,6 +111,20 @@ export default function Gun({navigation}){
         return outputArray
     }
 
+    const ref = useRef<ICarouselInstance>(null);
+  const progress = useSharedValue<number>(0);
+  
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      /**
+       * Calculate the difference between the current index and the target index
+       * to ensure that the carousel scrolls to the nearest index
+       */
+      count: index - progress.value,
+      animated: true,
+    });
+  };
+
     return(
         <View style={{flex: 1}}>
             
@@ -121,30 +137,67 @@ export default function Gun({navigation}){
         
             <View style={styles.container}>   
                 <ScrollView style={{width: "100%"}}>
-                    <LinearGradient start={{x: 0.0, y:0.0}} end={{x: 1.0, y: 1.0}} colors={[currentGun.mainColor ? currentGun.mainColor : theme.colors.background, `${colord(currentGun.mainColor ? currentGun.mainColor : theme.colors.background).isDark() ? colord(currentGun.mainColor ? currentGun.mainColor : theme.colors.background).lighten(currentGun.mainColor ? 0.2: 0).toHex() : colord(currentGun.mainColor ? currentGun.mainColor : theme.colors.background).darken(currentGun.mainColor ? 0.2: 0).toHex()}`, currentGun.mainColor ? currentGun.mainColor : theme.colors.background]}>
-                        <ScrollView horizontal style={{width:"100%", aspectRatio: "21/10",}}>
-                            {Array.from(Array(5).keys()).map((_, index) =>{
-                            
-                                if(currentGun.images && index <= currentGun.images.length-1){
-                                    return(
-                                        <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
-                                            <View style={styles.imageContainer} >
-                                            <ImageViewer isLightBox={false} selectedImage={currentGun.images[index]} /> 
-                                            </View>
-                                        </TouchableNativeFeedback>
-                                    )
-                                }      
-                                if(!currentGun.images || currentGun.images.length === 0){
-                                    return(
-                                        <TouchableNativeFeedback key={`slides_${index}`}>
-                                            <View style={styles.imageContainer} >
-                                            <ImageViewer isLightBox={false} selectedImage={null} /> 
-                                            </View>
-                                        </TouchableNativeFeedback>
-                                    )
-                                }                   
-                            })}
-                        </ScrollView>
+                    <LinearGradient 
+                        start={{x: 0.0, y:0.0}} end={{x: 1.0, y: 1.0}} 
+                        colors={
+                            [currentGun.mainColor ? currentGun.mainColor : theme.colors.background, 
+                            `${colord(currentGun.mainColor ? 
+                                currentGun.mainColor : 
+                            theme.colors.background).isDark() ? 
+                                colord(currentGun.mainColor ? 
+                                    currentGun.mainColor : 
+                                theme.colors.background).lighten(currentGun.mainColor ? 
+                                    0.2 : 
+                                0).toHex() : 
+                            colord(currentGun.mainColor ? 
+                                currentGun.mainColor : 
+                            theme.colors.background).darken(currentGun.mainColor ? 
+                                0.2 : 
+                            0).toHex()}`, 
+                            currentGun.mainColor ? 
+                                currentGun.mainColor : 
+                            theme.colors.background]}>
+                        <View style={{width: "100%", aspectRatio: "21/10"}}>
+                        <Carousel
+				loop={false}
+				width={Dimensions.get("screen").width-(defaultViewPadding)}
+				snapEnabled={true}
+				pagingEnabled={true}
+                onProgressChange={progress}
+				data={Array.from(Array(currentGun.images ? currentGun.images.length : 1))}
+				onSnapToItem={(index) => console.log("current index:", index)}
+				renderItem={({ index }) => 
+                    {
+                        if(currentGun.images && index <= currentGun.images.length-1){
+                            return(
+                                <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
+                                    <View style={styles.imageContainer} >
+                                    <ImageViewer isLightBox={false} selectedImage={currentGun.images[index]} /> 
+                                    </View>
+                                </TouchableNativeFeedback>
+                            )
+                        }      
+                        if(!currentGun.images || currentGun.images.length === 0){
+                            return(
+                                <TouchableNativeFeedback key={`slides_${index}`}>
+                                    <View style={styles.imageContainer} >
+                                    <ImageViewer isLightBox={false} selectedImage={null} /> 
+                                    </View>
+                                </TouchableNativeFeedback>
+                            )
+                        }          
+                    }
+                }
+			/>
+</View>
+
+                    <Pagination.Basic
+        progress={progress}
+        data={Array.from(Array(currentGun.images ? currentGun.images.length : 1))}
+        dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50, height: 5, width: 5 }}
+        containerStyle={{ gap: 5, marginTop: 0, position: "absolute", bottom: 2.5 }}
+        onPress={onPressPagination}
+      />
                         </LinearGradient>
                     <View style={styles.data}>
                         <View style={{flex: 1, flexDirection: "row", flexWrap: "wrap", marginBottom: 10}}>
