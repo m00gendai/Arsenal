@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType} from "../interfaces"
 
 interface GeneralSettings{
   displayImagesInListViewGun: boolean
@@ -21,6 +21,12 @@ interface PreferenceStore {
     setGeneralSettings: (settings: GeneralSettings) => void
     caliberDisplayNameList: {name: string, displayName: string}[]
     setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
+
+    display_grid: CollectionType[]
+    display_list: CollectionType[]
+
+    setDisplay_grid: (data: CollectionType[]) => void
+    setDisplay_list: (data: CollectionType[]) => void
 
     displayAsGrid: boolean
     setDisplayAsGrid: (status: boolean) => void
@@ -82,7 +88,12 @@ interface PreferenceStore {
     setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
     caliberDisplayNameList: [],
     setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
-        
+    
+    display_grid: ["gunCollection", "ammoCollection"],
+    display_list: [],
+    setDisplay_grid: (data: CollectionType[]) => set((state) => ({display_grid: data})),
+    setDisplay_list: (data: CollectionType[]) => set((state) => ({display_list: data})),
+
     displayAsGrid: true,
     setDisplayAsGrid: (status: boolean) => set((state) => ({displayAsGrid: status})),
     displayAmmoAsGrid: true,
