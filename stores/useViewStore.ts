@@ -1,5 +1,4 @@
 import { create } from "zustand"
-import { ScreenNames } from "../configs"
 
 interface ViewStore {
     mainMenuOpen: boolean
@@ -33,8 +32,8 @@ interface ViewStore {
     toggleHideBottomSheet: () => void
     setHideBottomSheet: (status: boolean) => void
 
-    currentCollectionScreen: ScreenNames
-    setCurrentCollectionScreen: (screen: ScreenNames) => void
+    cardOptionsMenuVisible: boolean
+    setCardOptionsMenuVisible: (status: boolean) => void
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -44,6 +43,9 @@ interface ViewStore {
     hideBottomSheet: false,
     toggleHideBottomSheet: () => set((state) => ({hideBottomSheet: !state.hideBottomSheet})),
     setHideBottomSheet: (status: boolean) => set((state) => ({hideBottomSheet: status})),
+
+    cardOptionsMenuVisible: false,
+    setCardOptionsMenuVisible: (status: boolean) => set((state) => ({cardOptionsMenuVisible: status})),
     
     lightBoxOpen: false,
     setLightBoxOpen: () => set((state) => ({lightBoxOpen: !state.lightBoxOpen})),
@@ -68,7 +70,4 @@ interface ViewStore {
     
     exportModalVisible: false,
     toggleExportModalVisible: () => set((state) => ({exportModalVisible: !state.exportModalVisible})),
-    
-    currentCollectionScreen: "GunCollection",
-    setCurrentCollectionScreen: (screen: ScreenNames) => set((state) => ({currentCollectionScreen: screen}))
   }))
