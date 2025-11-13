@@ -87,14 +87,14 @@ interface Tooltips{
 }
 
 interface Sorting{
-    alphabetic: SimpleTranslation
-    lastModified: SimpleTranslation
-    lastAdded: SimpleTranslation
+    alphabetical: SimpleTranslation
+    lastModifiedAt: SimpleTranslation
+    createdAt: SimpleTranslation
     paidPrice: SimpleTranslation
     marketValue: SimpleTranslation
     acquisitionDate: SimpleTranslation
-    lastCleaned: SimpleTranslation
-    lastShot: SimpleTranslation
+    lastCleanedAt: SimpleTranslation
+    lastShotAt: SimpleTranslation
     currentStock: SimpleTranslation
     lastTopUpAt: SimpleTranslation
 }
@@ -1069,21 +1069,21 @@ export const tooltips:Tooltips = {
 }
 
 export const sorting:Sorting = {
-    alphabetic: {
+    alphabetical: {
         de: "Alphabetisch",
         en: "Alphabetical",
         fr: "Alphabétique",
         it: "Alfabetico",
         ch: "Alfabetic",
     },
-    lastModified: {
+    lastModifiedAt: {
         de: "Zuletzt geändert",
         en: "Last modified",
         fr: "Dernière modification",
         it: "Ultima modifica",
         ch: "L'ultima giada midà",
     },
-    lastAdded: {
+    createdAt: {
         de: "Zuletzt hinzugefügt",
         en: "Last added",
         fr: "Dernier ajout",
@@ -1111,14 +1111,14 @@ export const sorting:Sorting = {
         it: "Data di acquisizione",
         ch: "Data d'acquist",        
     },
-    lastCleaned:{
+    lastCleanedAt:{
         de: "Zuletzt gereinigt",     
         en: "Last cleaned",
         fr: "Dernier nettoyage",
         it: "Ultima pulizia",
         ch: "Ultima nettegiada",        
     },
-    lastShot:{
+    lastShotAt:{
         de: "Zuletzt geschossen",     
         en: "Last shot",
         fr: "Dernier coup de feu",
