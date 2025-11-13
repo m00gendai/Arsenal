@@ -88,14 +88,14 @@ export interface AccessoryType_Silencer{
 
 export type ItemType = GunType | AmmoType
 export type CollectionType = "gunCollection" | "ammoCollection"
+export type Screens = "itemCollection"
 
 
 interface DbId{
   db_id: number
 }
 
-export type GunTypeWithDbId = GunType & DbId
-export type AmmoTypeWithDbId = AmmoType & DbId
+export type ItemTypeWithDbId = ItemType & DbId
 
 export interface MenuVisibility{
   sortBy: boolean
@@ -197,6 +197,7 @@ export type SortingTypesAccessory_Silencer = "alphabetical" |
                                             "lastShotAt" |
                                             "decibelRating"
 
+export type SortingTypes = SortingTypesGun | SortingTypesAmmo | SortingTypesAccessory_Silencer
 
                             
 export type Languages = "de" | "en" | "fr" | "it" | "ch"
@@ -214,14 +215,10 @@ export type DBOperations = "save_arsenal_db" |
 export type StackParamList = {
   Home: undefined
   MainMenu: undefined
-  GunCollection: undefined
-  AmmoCollection: undefined
-  NewGun: undefined
-  NewAmmo: undefined
-  Gun: undefined
-  Ammo: undefined
-  EditGun: undefined
-  EditAmmo: undefined
+  itemCollection: {collectionType: CollectionType};
+  item: undefined
+  newItem: undefined
+  editItem: undefined
   QuickStock: undefined
   QuickShot: undefined
 }
