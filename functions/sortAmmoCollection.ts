@@ -2,7 +2,9 @@ import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { SortingTypesAmmo } from "../interfaces";
 
-export default function sortAmmoCollection(sortBy:SortingTypesAmmo, ascending:boolean){
+export default function sortAmmoCollection(direction: "asc" | "desc", sortBy:SortingTypesAmmo){
+
+    const ascending = direction === "asc"
 
     const parseDateColumn = (column) => sql`
             CAST(
