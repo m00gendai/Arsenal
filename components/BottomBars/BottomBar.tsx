@@ -4,7 +4,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tabBarLabels } from "lib/textTemplates";
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, ScreenNames } from "configs";
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs";
 import { useViewStore } from "stores/useViewStore";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -15,26 +15,15 @@ import { useRef } from "react";
 import BottomBar_AccessoryCollection from "./BottomBar_AccessoryCollection";
 import BottomBar_LiteratureCollection from "./BottomBar_LiteratureCollection";
 import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
-
-type RootStackParamList = {
-  GunCollection: undefined;
-  AmmoCollection: undefined;
-  // Add other routes here if needed
-};
-
-type BottomBarNavigationProp = StackNavigationProp<RootStackParamList>;
+import { CollectionType, Screens, StackParamList } from "interfaces";
+import { useItemStore } from "stores/useItemStore";
 
 interface Props{
   screen?: string
 }
 
 export default function BottomBar({screen}:Props){
-
-    type RootStackParamList = {
-        GunCollection: undefined;
-        AmmoCollection: undefined;
-        // Add other routes here if needed
-      };
+  const { setCurrentCollection } = useItemStore()
       const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
     const data = ["Accessories"] // ["Accessories", "Literature", "Reloading"];
@@ -51,14 +40,16 @@ const onPressPagination = (index: number) => {
     });
   };
 
-    const { displayAsGrid, toggleDisplayAsGrid, sortBy, setSortBy, language, setSortGunIcon, sortGunIcon, sortGunsAscending, toggleSortGunsAscending, theme } = usePreferenceStore()
-    const navigation = useNavigation<BottomBarNavigationProp>()
-    const { currentCollectionScreen, setCurrentCollectionScreen } = useViewStore()
+    const { language, theme } = usePreferenceStore()
+    const navigation = useNavigation<StackNavigationProp<StackParamList>>()
 
-    function handleNavigation(target:ScreenNames){
+    function handleNavigation(
+      target: Screens,
+      params: { collectionType: CollectionType }
+    ){
     console.log(`target: ${target}`)
-    setCurrentCollectionScreen(target)
-    navigation.navigate(target as any)
+    setCurrentCollection(params.collectionType)
+    navigation.navigate(target, params);
   }
 
     
@@ -76,18 +67,15 @@ const onPressPagination = (index: number) => {
               />
             </View>
           </View>
-
-          <TouchableOpacity onPress={()=>handleNavigation("GunCollection")} style={{ alignItems: 'center' }}>
-            <Icon source="pistol" size={24} color={screen === "GunCollection" ? theme.colors.primary : theme.colors.secondary} />
-            <Text style={{ color: screen === "GunCollection" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{tabBarLabels.gunCollection[language]}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>handleNavigation("AmmoCollection")} style={{ alignItems: 'center' }}>
-            <Icon source="ammunition" size={24} color={screen === "AmmoCollection" ? theme.colors.primary : theme.colors.secondary} />
-            <Text style={{ color: screen === "AmmoCollection" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{tabBarLabels.ammoCollection[language]}</Text>
-          </TouchableOpacity>
-
-        </View>
+          {screenNameParamsMain.map(screenName =>{
+            return(
+              <TouchableOpacity key={screenName} onPress={()=>handleNavigation("itemCollection", {collectionType: screenName})} style={{ alignItems: 'center' }}>
+                <Icon source={screenName === "gunCollection" ? "pistol" : "ammunition"} size={24} color={screen === screenName ? theme.colors.primary : theme.colors.secondary} />
+                <Text style={{ color: screen === screenName ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{tabBarLabels[screenName][language]}</Text>
+              </TouchableOpacity>
+            )
+          })}
+          </View>
 
         <View style={{flex: 1, backgroundColor: theme.colors.surface, paddingBottom: defaultBottomBarTextHeight*2}}>
           <Carousel
@@ -110,13 +98,13 @@ const onPressPagination = (index: number) => {
                   flexDirection: "column",
                 }}
               >
-              {index === 0 ? 
+              {null/*index === 0 ? 
                 <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> : 
-                /*index=== 1 ? 
+                index=== 1 ? 
                 <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
                 index=== 2 ? 
-                <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> : */
-                null}
+                <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> :
+                null*/}
               </Card>
             )}
           />

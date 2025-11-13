@@ -66,7 +66,7 @@ export const ammoTags = sqliteTable("ammoTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
-export const AccessoryCollection_ConversionKits = sqliteTable("accessories_conversionKits", {
+export const accessoryCollection_ConversionKit = sqliteTable("accessories_conversionKit", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
@@ -82,14 +82,14 @@ export const AccessoryCollection_ConversionKits = sqliteTable("accessories_conve
     currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
 })
 
-export const accessory_ConversionKitsTags = sqliteTable("accessories_ConversionKitsTags", {
+export const accessory_ConversionKitsTags = sqliteTable("accessories_conversionKitsTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("ammoTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
-export const accessoryCollection_Silencers = sqliteTable("accessories_silencers", {
+export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
@@ -116,10 +116,10 @@ export const accessoryCollection_Silencers = sqliteTable("accessories_silencers"
     mainColor: text("mainColor"),
     remarks: text("remarks"),
     currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
-    currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>AccessoryCollection_ConversionKits.id),
+    currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>accessoryCollection_ConversionKit.id),
 })
 
-export const accessory_SilencerTags = sqliteTable("accessories_SilencerTags", {
+export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("ammoTag_label"),
     color: text("color"),

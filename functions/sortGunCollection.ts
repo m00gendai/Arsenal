@@ -2,7 +2,9 @@ import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { SortingTypesGun } from "../interfaces";
 
-export default function sortGunCollection(ascending:boolean, sortBy:SortingTypesGun){
+export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesGun){
+    console.log(`sortGunCollection invoked with direction ${direction} and sorrtBy: ${sortBy}`)
+    const ascending = direction === "asc"
 
     const parseDateColumn = (column) => sql`
         CAST(

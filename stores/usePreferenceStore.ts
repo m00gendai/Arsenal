@@ -1,6 +1,8 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes} from "../interfaces"
+
+export type DisplayVariants = "grid" | "list" | "compactList"
 
 interface GeneralSettings{
   displayImagesInListViewGun: boolean
@@ -10,6 +12,24 @@ interface GeneralSettings{
   loginGuard: boolean
   emptyFields: boolean
   caliberDisplayName: boolean
+}
+
+interface DisplaySettings{
+  gunCollection: DisplayVariants
+  ammoCollection: DisplayVariants
+  accessoryCollection_Silencer: DisplayVariants
+}
+
+export interface SorterSettings{
+  gunCollection: {type: SortingTypesGun, direction: "asc" | "desc", icon: string}
+  ammoCollection: {type: SortingTypesAmmo, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Silencer: {type: SortingTypesAccessory_Silencer, direction: "asc" | "desc", icon: string}
+}
+
+interface FilterState{
+  gunCollection: boolean
+  ammoCollection: boolean
+  accessoryCollection_Silencer: boolean
 }
 
 interface PreferenceStore {
@@ -22,53 +42,14 @@ interface PreferenceStore {
     caliberDisplayNameList: {name: string, displayName: string}[]
     setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
 
-    display_grid: CollectionType[]
-    display_list: CollectionType[]
+    displaySettings: DisplaySettings
+    setDisplaySettings: (settings: DisplaySettings) => void
 
-    setDisplay_grid: (data: CollectionType[]) => void
-    setDisplay_list: (data: CollectionType[]) => void
+    sortBy: SorterSettings
+    setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
 
-    displayAsGrid: boolean
-    setDisplayAsGrid: (status: boolean) => void
-    displayAmmoAsGrid: boolean
-    setDisplayAmmoAsGrid: (status: boolean) => void
-    displayAccessory_SilencerAsGrid: boolean
-    setDisplayAccessory_SilencerAsGrid: (status: boolean) => void
-    
-    toggleDisplayAsGrid: () => void
-    toggleDisplayAmmoAsGrid: () => void
-    toggleDisplayAccessory_SilencerAsGrid: () => void
-
-    sortGunIcon: string
-    setSortGunIcon: (data: string) => void
-    sortAmmoIcon: string
-    setSortAmmoIcon: (data: string) => void
-    sortAccessory_SilencerIcon: string
-    setsortAccessory_SilencerIcon: (data: string) => void
-
-    sortBy: SortingTypesGun
-    setSortBy: (type: SortingTypesGun) => void
-    sortAmmoBy: SortingTypesAmmo
-    setSortAmmoBy: (type: SortingTypesAmmo) => void
-    sortAccessory_SilencerBy: SortingTypesAccessory_Silencer
-    setSortAccessory_SilencerBy: (type: SortingTypesAccessory_Silencer) => void
-
-    sortGunsAscending: boolean
-    toggleSortGunsAscending: () => void
-    setSortGunsAscending: (status: boolean) => void
-    sortAmmoAscending: boolean
-    toggleSortAmmoAscending: () => void
-    setSortAmmoAscending: (status: boolean) => void
-    sortAccessory_SilencerAscending: boolean
-    toggleSortAccessory_SilencerAscending: () => void
-    setSortAccessory_SilencerAscending: (status: boolean) => void
-
-    gunFilterOn: boolean
-    toggleGunFilterOn: () => void
-    ammoFilterOn: boolean
-    toggleAmmoFilterOn: () => void
-    accessory_SilencerFilterOn: boolean
-    toggleAccessory_SilencerFilterOn: () => void
+    filterOn: FilterState
+    setFilterOn: (status: FilterState) => void
   }
 
   export const usePreferenceStore = create<PreferenceStore>((set) => ({
@@ -86,53 +67,34 @@ interface PreferenceStore {
       caliberDisplayName: false,
     },
     setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
+
+    displaySettings: {
+      gunCollection: "grid",
+      ammoCollection: "grid",
+      accessoryCollection_Silencer: "grid"
+    },
+    setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
+
+
     caliberDisplayNameList: [],
     setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
+
+    sortBy: {
+      gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      ammoCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Silencer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+    },
+    setSortBy: (collection, settings) => set((state) => ({
+      sortBy: { 
+        ...state.sortBy, 
+        [collection]: settings 
+      }
+    })),
     
-    display_grid: ["gunCollection", "ammoCollection"],
-    display_list: [],
-    setDisplay_grid: (data: CollectionType[]) => set((state) => ({display_grid: data})),
-    setDisplay_list: (data: CollectionType[]) => set((state) => ({display_list: data})),
-
-    displayAsGrid: true,
-    setDisplayAsGrid: (status: boolean) => set((state) => ({displayAsGrid: status})),
-    displayAmmoAsGrid: true,
-    setDisplayAmmoAsGrid: (status: boolean) => set((state) => ({displayAmmoAsGrid: status})),
-    displayAccessory_SilencerAsGrid: true,
-    setDisplayAccessory_SilencerAsGrid: (status: boolean) => set((state) => ({displayAccessory_SilencerAsGrid: status})),
-        
-    toggleDisplayAsGrid: () => set((state) => ({displayAsGrid: !state.displayAsGrid})),
-    toggleDisplayAmmoAsGrid: () => set((state) => ({displayAmmoAsGrid: !state.displayAmmoAsGrid})),
-    toggleDisplayAccessory_SilencerAsGrid: () => set((state) => ({displayAccessory_SilencerAsGrid: !state.displayAccessory_SilencerAsGrid})),
-    
-    sortGunIcon: "alphabetical-variant",
-    setSortGunIcon: (data: string) => set((state) => ({sortGunIcon: data})),
-    sortAmmoIcon: "alphabetical-variant",
-    setSortAmmoIcon: (data: string) => set((state) => ({sortAmmoIcon: data})),
-    sortAccessory_SilencerIcon: "alphabetical-variant",
-    setsortAccessory_SilencerIcon: (data: string) => set((state) => ({sortAccessory_SilencerIcon: data})),
-
-    sortBy: "alphabetical",
-    setSortBy: (type: SortingTypesGun) => set((state) => ({sortBy: type})),
-    sortAmmoBy: "alphabetical",
-    setSortAmmoBy: (type: SortingTypesAmmo) => set((state) => ({sortAmmoBy: type})),
-    sortAccessory_SilencerBy: "alphabetical",
-    setSortAccessory_SilencerBy: (type: SortingTypesAccessory_Silencer) => set((state) => ({sortAccessory_SilencerBy: type})),
-
-    sortGunsAscending: true,
-    toggleSortGunsAscending: () => set((state) => ({sortGunsAscending: !state.sortGunsAscending})),
-    setSortGunsAscending: (status: boolean) => set((state) => ({sortGunsAscending: status})),
-    sortAmmoAscending: true,
-    toggleSortAmmoAscending: () => set((state) => ({sortAmmoAscending: !state.sortAmmoAscending})),
-    setSortAmmoAscending: (status: boolean) => set((state) => ({sortAmmoAscending: status})),
-    sortAccessory_SilencerAscending: true,
-    toggleSortAccessory_SilencerAscending: () => set((state) => ({sortAccessory_SilencerAscending: !state.sortAccessory_SilencerAscending})),
-    setSortAccessory_SilencerAscending: (status: boolean) => set((state) => ({sortAccessory_SilencerAscending: status})),
-
-    gunFilterOn: false,
-    toggleGunFilterOn: () => set((state) => ({gunFilterOn: !state.gunFilterOn})),
-    ammoFilterOn: false,
-    toggleAmmoFilterOn: () => set((state) => ({ammoFilterOn: !state.ammoFilterOn})),
-    accessory_SilencerFilterOn: false,
-    toggleAccessory_SilencerFilterOn: () => set((state) => ({accessory_SilencerFilterOn: !state.accessory_SilencerFilterOn}))
+    filterOn: {
+      gunCollection: false,
+      ammoCollection: false,
+      accessoryCollection_Silencer: false
+    },
+    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status}))
   }))

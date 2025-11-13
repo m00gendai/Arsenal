@@ -1,4 +1,4 @@
-import { Languages } from "./interfaces"
+import { CollectionType, Languages, SortingTypesAmmo, SortingTypesGun } from "./interfaces"
 import { SimpleTranslation } from "./lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -46,26 +46,15 @@ export const colorPickerTriggerFields: string[] = ["mainColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
 
+export const cardActionsGun: string[] = ["clone", "delete", "quickShot"]
+export const cardActionsAmmo: string[] = ["clone", "delete", "quickStock"]
+
 export const collectionExportDirectories: string[] = ["gun", "ammo"]
 
-export type ScreenNames = "GunCollection" | 
-                          "AmmoCollection" | 
-                          "AccessoryCollection_Optics" | 
-                          "AccessoryCollection_Silencers" |
-                          "AccessoryCollection_LightLaser" |
-                          "AccessoryCollection_ConversionKits" |
-                          "AccessoryCollection_Magazines" | 
-                          "AccessoryCollection_Misc" |
-                          "LiteratureCollection_Books" |
-                          "LiteratureCollection_Magazines" |
-                          "LiteratureCollection_Rulebooks" |
-                          "LiteratureCollection_Misc" |
-                          "ReloadingCollection_Dies" |
-                          "ReloadingCollection_Bullets" |
-                          "ReloadingCollection_Casings" |
-                          "ReloadingCollection_Primers" |
-                          "ReloadingCollection_Powder" |
-                          "ReloadingCollection_Misc"
-                          
-                          
+export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
+export const screenNameParamsAccessory:CollectionType[] = []
+export const screenNameParamsLiterature: CollectionType[] = []
+export const screenNameParamsReloading:CollectionType[] = []
 
+export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
