@@ -11,18 +11,21 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { useItemStore } from "stores/useItemStore";
 
 export default function QuickShot({navigation}){
 
  
 
-    const { ammoDbImport, displayAmmoAsGrid, setDisplayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon } = usePreferenceStore()
-    const { gunCollection, setGunCollection, currentGun, setCurrentGun } = useGunStore()
+    const { language, theme } = usePreferenceStore()
+    const { currentItem, setCurrentItem, currentCollection, setCurrentCollection } = useItemStore()
     const [shotCountFromStock, setShotCountFromStock] = useState<string[]>([])
     const [shotCountNonStock, setShotCountNonStock] = useState<string>("")
     const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
     const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
     const [negativeAmmoId, setNegativeAmmoId] = useState<string>("")
+
+  const currentGun = currentItem as GunType
 
     const { data } = useLiveQuery(
       db.select()
