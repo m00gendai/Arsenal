@@ -43,6 +43,11 @@ import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bo
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBars/BottomBar';
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding } from './configs';
+import ItemCollection from 'components/ItemCollection/ItemCollection';
+import Item from 'components/ItemCollection/Item';
+import NewItem from 'components/ItemCollection/NewItem';
+import EditItem from 'components/ItemCollection/EditItem';
+import { useItemStore } from 'stores/useItemStore';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -81,19 +86,10 @@ export default function App() {
     theme, 
     switchTheme, 
     setGeneralSettings, 
-    setDisplayAsGrid, 
-    setDisplayAmmoAsGrid, 
-    setSortBy, 
-    setSortAmmoBy, 
-    setSortAmmoIcon, 
-    setSortGunIcon, 
-    setSortGunsAscending, 
-    setSortAmmoAscending, 
     setCaliberDisplayNameList,
   } = usePreferenceStore();
-  const { mainMenuOpen, hideBottomSheet, currentCollectionScreen } = useViewStore()
-  const { ammoCollection, setAmmoCollection } = useAmmoStore()
- const { gunCollection, setGunCollection } = useGunStore()
+  const { mainMenuOpen, hideBottomSheet } = useViewStore()
+  const { currentCollection } = useItemStore()
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -422,10 +418,7 @@ export default function App() {
       try{
         const ammo_tagList: string = await AsyncStorage.getItem(A_TAGS)
         const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList ? JSON.parse(ammo_tagList) : null
-        setDisplayAmmoAsGrid(isPreferences?.displayAmmoAsGrid ?? true)
-        setSortAmmoBy(isPreferences?.sortAmmoBy ?? "alphabetical")
-        setSortAmmoIcon(getIcon(isPreferences?.sortAmmoBy ?? "alphabetical"))
-        setSortAmmoAscending(isPreferences?.sortOrderAmmo ?? true)
+        // TODO: Set display/sort settings
         if(isAmmoTagList){
           Object.values(isAmmoTagList).map(tag =>{
             setAmmoTags(tag)
@@ -439,10 +432,7 @@ export default function App() {
       try{
         const gun_tagList: string = await AsyncStorage.getItem(TAGS) 
         const isGunTagList:{label: string, status: boolean}[] = gun_tagList ? JSON.parse(gun_tagList) : null
-        setDisplayAsGrid(isPreferences?.displayAsGrid ?? true)
-        setSortBy(isPreferences?.sortBy ?? "alphabetical")
-        setSortGunIcon(getIcon(isPreferences?.sortBy ?? "alphabetical"))
-        setSortGunsAscending(isPreferences?.sortOrderGuns ?? true)
+        // TODO: Set display/sort settings
         if(isGunTagList){
           Object.values(isGunTagList).map(tag =>{
             setTags(tag)
@@ -505,50 +495,27 @@ export default function App() {
             <Stack.Navigator>
 
               <Stack.Screen
-                name="GunCollection"
-                component={GunCollection}
+                name="itemCollection"
+                component={ItemCollection}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter}} 
+                initialParams={{ collectionType: 'gunCollection' }}
               />
 
               <Stack.Screen
-                name="AmmoCollection"
-                component={AmmoCollection}
-                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter}} 
-              />
-    
-              <Stack.Screen
-                name="NewAmmo"
-                component={NewAmmo}
-                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
-              />
-
-              <Stack.Screen
-                name="NewGun"
-                component={NewGun}
-                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
-              />
-
-              <Stack.Screen
-                name="Gun"
-                component={Gun}
+                name="item"
+                component={Item}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid}} 
               />
-
+  
               <Stack.Screen
-              name="Ammo"
-              component={Ammo}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid}} 
-            />
+                name="newItem"
+                component={NewItem}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
 
             <Stack.Screen
-              name="EditGun"
-              component={EditGun}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
-            />
-
-            <Stack.Screen
-              name="EditAmmo"
-              component={EditAmmo}
+              name="editItem"
+              component={EditItem}
               options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
             />
 
@@ -580,7 +547,7 @@ export default function App() {
             handleComponent={null}            
       >
         <BottomSheetView style={{ flex: 1 }}>
-          <BottomBar screen={currentCollectionScreen}/>
+          <BottomBar screen={currentCollection}/>
         </BottomSheetView>
       </BottomSheet>}
         </SafeAreaView>
