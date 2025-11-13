@@ -1,4 +1,4 @@
-import { AmmoType, GunType, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
+import { AmmoType, CollectionType, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
 import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
 import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
@@ -7,8 +7,9 @@ import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
+import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
 
-export function getIcon(type:SortingTypesGun | SortingTypesAmmo | SortingTypesAccessory_Silencer){
+export function getIcon(type:SortingTypes){
     switch(type){
         case "alphabetical":
             return "alphabetical-variant"
@@ -37,22 +38,10 @@ export function getIcon(type:SortingTypesGun | SortingTypesAmmo | SortingTypesAc
     }
 }
 
-export function gunDataValidation(value:GunType, lang:string){
+export function itemDataValidation(collection: CollectionType, value:ItemType, lang:string){
     let validationResponse: {field: string, error: string}[] = []
-    const requiredFields: string[] = requiredFieldsGun
-    const x:{de: string, en: string, fr: string}[] = gunDataTemplate.filter(item => requiredFields.includes(item.name))
-    for(const entry of requiredFields){
-       if( !(entry in value) || value[entry].length == 0 ){
-        validationResponse = [...validationResponse, {field: x[0][lang], error: validationErros.requiredFieldEmpty[lang]}]
-       }
-    }
-    return validationResponse
-}
-
-export function ammoDataValidation(value:AmmoType, lang:string){
-    let validationResponse: {field: string, error: string}[] = []
-    const requiredFields: string[] = requiredFieldsAmmo
-    const x:{de: string, en: string, fr: string}[] = ammoDataTemplate.filter(item => requiredFields.includes(item.name))
+    const requiredFields: string[] = determineRequiredFields(collection)
+    const x:{de: string, en: string, fr: string}[] = determineDataTemplate(collection).filter(item => requiredFields.includes(item.name))
     for(const entry of requiredFields){
        if( !(entry in value) || value[entry].length == 0 ){
         validationResponse = [...validationResponse, {field: x[0][lang], error: validationErros.requiredFieldEmpty[lang]}]
@@ -133,31 +122,35 @@ function mapIntervals(interval){
     }
 }
 
-export function checkDate(gun:GunType){
-    if(gun === undefined){
+export function checkDate(item:ItemType){
+    if(item === undefined){
         return
     }
-    if(gun.lastCleanedAt === undefined){
+    if(!('lastCleanedAt' in item) || !('cleanInterval' in item)){
         return
     }
-    if(gun.lastCleanedAt === null){
+
+    if(item.lastCleanedAt === undefined){
         return
     }
-    if(gun.cleanInterval === undefined){
+    if(item.lastCleanedAt === null){
         return
     }
-    if(gun.cleanInterval === "none"){
+    if(item.cleanInterval === undefined){
+        return
+    }
+    if(item.cleanInterval === "none"){
         return
     }
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    let [day, month, year] = gun.lastCleanedAt.split('.')
+    let [day, month, year] = item.lastCleanedAt.split('.')
     const firstDate = new Date(Number(year), Number(month) - 1, Number(day)).getTime()
     const todayYear = new Date().getFullYear()
     const todayMonth = new Date().getMonth()
     const todayDay = new Date().getDate()
     const secondDate = new Date(todayYear, todayMonth, todayDay).getTime()
     const diffDays = Math.round(Math.abs((Number(firstDate) - Number(secondDate)) / oneDay));
-    if(diffDays > mapIntervals(gun.cleanInterval)){
+    if(diffDays > mapIntervals(item.cleanInterval)){
         return true
     }
     return false
