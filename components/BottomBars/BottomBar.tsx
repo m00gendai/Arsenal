@@ -98,8 +98,8 @@ const onPressPagination = (index: number) => {
                   flexDirection: "column",
                 }}
               >
-              {null/*index === 0 ? 
-                <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> : 
+              {index === 0 ? 
+                <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> : null /*
                 index=== 1 ? 
                 <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
                 index=== 2 ? 

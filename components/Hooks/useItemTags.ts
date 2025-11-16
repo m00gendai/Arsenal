@@ -13,10 +13,18 @@ export function useItemTags(type: CollectionType) {
         db.select()
         .from(schema.ammoTags)
     )
+
+    const { data: accessoryTags_Silencer } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection_Silencer)
+    )
+
     switch(type){
         case "gunCollection":
             return gunTags
         case "ammoCollection":
             return ammoTags
+        case "accessoryCollection_Silencer":
+            return accessoryTags_Silencer
     }
 }

@@ -6,7 +6,9 @@ import * as schema from "db/schema"
 import { and, or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAmmo, cardActionsGun, requiredFieldsAmmo, requiredFieldsGun, sortingOptionsAmmo, sortingOptionsGun } from "configs";
+import { cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun } from "configs";
+import sortAccessoryCollection_Silencer from "./sortAccessoryCollection_Silencer";
+import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -14,6 +16,8 @@ export function determineSchema(collection:CollectionType){
             return schema.gunCollection
         case "ammoCollection":
             return schema.ammoCollection
+        case "accessoryCollection_Silencer":
+            return schema.accessoryCollection_Silencer
     }
 }
 
@@ -23,6 +27,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.gunTags
         case "ammoCollection":
             return schema.ammoTags
+        case "accessoryCollection_Silencer":
+            return schema.accessory_SilencerTags
     }
 }
 
@@ -35,6 +41,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         case "ammoCollection":{
             return sortAmmoCollection(sortBy[collection].direction, sortBy[collection].type)
         }
+        case "accessoryCollection_Silencer":{
+            return sortAccessoryCollection_Silencer(sortBy[collection].direction, sortBy[collection].type)
+        };
     }
 }
 
@@ -48,6 +57,10 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
             return  or(like(sql`COALESCE(${schema[collection].designation}, '')`, `%${searchQuery}%`),
                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
         }
+        case "accessoryCollection_Silencer":{
+            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
+                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+        }
     }
 }
 
@@ -57,6 +70,8 @@ export function determineDataTemplate(collection: CollectionType){
             return gunDataTemplate
         case "ammoCollection":
             return ammoDataTemplate
+        case "accessoryCollection_Silencer":
+            return accessoryDataTemplate_Silencer
     }
 }
 
@@ -66,6 +81,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return gunRemarks
         case "ammoCollection":
             return ammoRemarks
+         case "accessoryCollection_Silencer":
+            return silencerRemarks
     }
 }
 
@@ -75,6 +92,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyGunObject
         case "ammoCollection":
             return emptyAmmoObject
+        case "accessoryCollection_Silencer":
+            return emptySilencerObject
     }
 }
 
@@ -84,6 +103,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsGun
         case "ammoCollection":
             return requiredFieldsAmmo
+        case "accessoryCollection_Silencer":
+            return requiredFieldsAccessory_Silencer
     }
 }
 
@@ -93,6 +114,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsGun
         case "ammoCollection":
             return sortingOptionsAmmo
+        case "accessoryCollection_Silencer":
+            return sortingOptionsAccessory_Silencer
     }
 }
 
@@ -102,5 +125,7 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsGun
         case "ammoCollection":
             return cardActionsAmmo
+        case "accessoryCollection_Silencer":
+            return cardActionsAccessory_Silencer
     }
 }

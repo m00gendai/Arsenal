@@ -1,53 +1,74 @@
 import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import { SortingTypesAccessory_Silencer, SortingTypesAmmo } from "../interfaces";
+import { asc, desc, sql } from 'drizzle-orm';
+import { SortingTypesAccessory_Silencer } from "../interfaces";
 
-export default function sortAccessoryCollection_Silencer(sortBy:SortingTypesAccessory_Silencer, ascending:boolean){
+export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
+    console.log(`sortGunCollection invoked with direction ${direction} and sorrtBy: ${sortBy}`)
+    const ascending = direction === "asc"
 
     const parseDateColumn = (column) => sql`
-            CAST(
-                strftime('%s', 
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
-                ) AS INTEGER
-            )
-        `
-    
-    if(sortBy === "alphabetical"){
+        CAST(
+            strftime('%s', 
+            substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
+            substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
+            substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
+            ) AS INTEGER
+        )
+    `
+
+        if(sortBy === "alphabetical"){
+            return ascending ?
+                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
+                :
+                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
+        }
+        if(sortBy === "createdAt"){
+            return ascending ?
+                asc(schema.accessoryCollection_Silencer.createdAt)
+                :
+                desc(schema.accessoryCollection_Silencer.createdAt)
+        }
+        if(sortBy === "lastModifiedAt"){
+            return ascending ?
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastModifiedAt}, "") ASC NULLS LAST`
+                :
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastModifiedAt}, "") DESC NULLS LAST`
+        }
+        if(sortBy === "paidPrice"){
+            return ascending ?
+                sql`NULLIF(NULLIF(${schema.accessoryCollection_Silencer.paidPrice}, ""), "0") ASC NULLS LAST`
+                :
+                sql`NULLIF(NULLIF(${schema.accessoryCollection_Silencer.paidPrice}, ""), "0") DESC NULLS LAST`
+        }
+        if(sortBy === "marketValue"){
+            return ascending ?
+                sql`NULLIF(NULLIF(${schema.accessoryCollection_Silencer.marketValue}, ""), "0") ASC NULLS LAST`
+                :
+                sql`NULLIF(NULLIF(${schema.accessoryCollection_Silencer.marketValue}, ""), "0") DESC NULLS LAST`
+        }
+        if(sortBy === "acquisitionDate"){
+            return ascending ?
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.acquisitionDate)} ASC NULLS LAST`
+                :
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.acquisitionDate)} DESC NULLS LAST`
+        }
+        if(sortBy === "lastShotAt"){
+            return ascending ?
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastShotAt)} ASC NULLS LAST`
+                :
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastShotAt)} DESC NULLS LAST`
+        }
+        if(sortBy === "lastCleanedAt"){
+            return ascending ?
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastCleanedAt)} ASC NULLS LAST`
+                :
+                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastCleanedAt)} DESC NULLS LAST`
+        }
+        
+        // Default sorter
         return ascending ?
-            asc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-            :
-            desc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-    }
-    if(sortBy === "createdAt"){
-        return ascending ?
-            asc(schema.ammoCollection.createdAt)
-            :
-            desc(schema.ammoCollection.createdAt)
-    }
-    if(sortBy === "lastModifiedAt"){
-        return ascending ?
-            sql`NULLIF(${schema.ammoCollection.lastModifiedAt}, "") ASC NULLS LAST`
-            :
-            sql`NULLIF(${schema.ammoCollection.lastModifiedAt}, "") DESC NULLS LAST`
-    }
-    if(sortBy === "currentStock"){
-        return ascending ?
-            sql`CAST(NULLIF(NULLIF(${schema.ammoCollection.currentStock}, ""), "0") AS INTEGER) ASC NULLS LAST`
-            :
-            sql`CAST(NULLIF(NULLIF(${schema.ammoCollection.currentStock}, ""), "0") AS INTEGER) DESC NULLS LAST`
-    }
-    if(sortBy === "lastTopUpAt"){
-        return ascending ?
-            sql`${parseDateColumn(schema.ammoCollection.lastTopUpAt)} ASC NULLS LAST`
-            :
-            sql`${parseDateColumn(schema.ammoCollection.lastTopUpAt)} DESC NULLS LAST`
-    }
-    
-    return (sql`
-                CASE
-                    WHEN NULLIF(${schema.ammoCollection[sortBy]}, "") IS NULL THEN NULL
-                    ELSE strftime('%s', ${schema.ammoCollection[sortBy]})
-                END DESC NULLS LAST`)
+                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
+                :
+                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
+
 }

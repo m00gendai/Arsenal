@@ -86,8 +86,8 @@ export interface AccessoryType_Silencer{
   currentlyMountedOnConversionKit?: string
 }
 
-export type ItemType = GunType | AmmoType
-export type CollectionType = "gunCollection" | "ammoCollection"
+export type ItemType = GunType | AmmoType | AccessoryType_Silencer
+export type CollectionType = "gunCollection" | "ammoCollection" | "accessoryCollection_Silencer"
 export type Screens = "itemCollection"
 
 
