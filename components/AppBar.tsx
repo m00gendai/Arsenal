@@ -5,7 +5,7 @@ import FilterMenu from './FilterMenu';
 import { useState } from 'react';
 import { MenuVisibility, SortingTypes, StackParamList } from 'interfaces';
 import { DisplayVariants, usePreferenceStore } from 'stores/usePreferenceStore';
-import { getIcon } from 'utils';
+import { getDisplaySwitchIcon, getIcon } from 'utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PREFERENCES } from 'configs_DB';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -85,6 +85,7 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
         
   async function handleDisplaySwitch(){
     const nextDisplayVariant:DisplayVariants = displaySettings[collection] === "grid" ? "list" : displaySettings[collection] === "list" ? "compactList" : "grid"
+    console.log(nextDisplayVariant)
     setDisplaySettings({
       ...displaySettings,
       [collection]: nextDisplayVariant,
@@ -148,7 +149,7 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
           >
             <FilterMenu collection={collection}/>
           </Menu>
-          <Appbar.Action icon={displaySettings[collection] === "grid" ? "view-grid" : "format-list-bulleted-type"} onPress={handleDisplaySwitch} />
+          <Appbar.Action icon={getDisplaySwitchIcon(displaySettings[collection])} onPress={handleDisplaySwitch} />
           <Menu
             visible={menuVisibility.sortBy}
             onDismiss={()=>handleMenu("sortBy", false)}
