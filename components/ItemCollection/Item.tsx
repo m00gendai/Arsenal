@@ -1,7 +1,7 @@
 import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions, ColorValue } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate"
-import { useRef, useState} from "react"
+import { useEffect, useRef, useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
@@ -149,6 +149,14 @@ export default function Item({navigation}){
         })
     );
 }
+
+useEffect(() => {
+  const unsubscribe = navigation.addListener('blur', () => {
+    setHideBottomSheet(false);
+  });
+  
+  return unsubscribe;
+}, [navigation]);
 
     return(
         <View style={{flex: 1}}>
