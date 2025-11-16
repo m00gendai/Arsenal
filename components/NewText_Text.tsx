@@ -1,5 +1,5 @@
 import { TextInput } from 'react-native-paper';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { GunType, AmmoType } from '../interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import { currencyPrefixFields, numberTextFields, requiredFieldsAmmo, requiredFieldsGun } from '../configs';
@@ -13,22 +13,25 @@ interface Props{
 
 export default function NewText({data, itemData, setItemData, label}: Props){
     console.log(`${data}: STRING TEXT`)
-    const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
 
-    const [charCount, setCharCount] = useState(0)
+    const input = useRef<string|string[]>(itemData && itemData[data] ? itemData[data] : "")
+
+    const [charCount, setCharCount] = useState(input.current?.length ?? 0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(input:string | string[]){
+    function updateItemData(text:string | string[]){
         if(charCount < MAX_CHAR_COUNT){
-            setCharCount(input !== undefined ? input.length : 0)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
+            setCharCount(text.length ?? 0)
+            input.current = text
+            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
         }
         if(charCount >= MAX_CHAR_COUNT && isBackspace){
-            setCharCount(input !== undefined ? input.length : 0)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
+            setCharCount(text.length ?? 0)
+            input.current = text
+            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
         }
     }
 
@@ -55,12 +58,13 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                     onFocus={()=>handleFocus()}
                     onBlur={()=>{
                         setFocus(false)
-                        updateItemData(input)
                     }}
-                    value={input ? input.toString() : ""}
+                    value={input.current ? input.current.toString() : ""}
                     editable={true}
                     showSoftInputOnFocus={true}
-                    onChangeText={input => setInput(input)}
+                    onChangeText={(text) => {
+                        updateItemData(text)
+                    }}
                     onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
                     left={currencyPrefixFields.includes(data) ? <TextInput.Affix text="CHF " /> : null}
                     inputMode={`${numberTextFields.includes(data) ? "decimal" : "text"}`}
