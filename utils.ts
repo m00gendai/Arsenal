@@ -175,3 +175,9 @@ export function cleanNullValues (obj: GunType | AmmoType){
     });
     return cleaned;
   };
+
+  export function intlNumberFormatOptions(input){
+    return {
+        minimumFractionDigits: input % 1 === 0 ? 0 : 2,
+        maximumFractionDigits: input % 1 === 0 ? 0 : 2,
+  }}
