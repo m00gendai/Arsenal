@@ -1,21 +1,15 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { Appbar, FAB, Menu, Searchbar } from 'react-native-paper';
-import { defaultBottomBarHeight, defaultGridGap, defaultSearchBarHeight, defaultViewPadding } from 'configs';
-import { PREFERENCES } from "configs_DB"
-import { GunType, ItemType, MenuVisibility, SortingTypes } from 'interfaces';
-import { getIcon } from 'utils';
+import { FAB } from 'react-native-paper';
+import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs';
+import { ItemType } from 'interfaces';
 import { useViewStore } from 'stores/useViewStore';
-import { DisplayVariants, usePreferenceStore } from 'stores/usePreferenceStore';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ItemCard from './ItemCard';
-import { search, sorting } from 'lib/textTemplates';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import * as schema from "db/schema"
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
-import { and, or } from 'drizzle-orm';
-import FilterMenu from 'components/FilterMenu';
+import { and } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
 import { determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
