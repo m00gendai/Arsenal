@@ -1,13 +1,13 @@
 import { Dimensions, Pressable, TouchableNativeFeedback, View } from 'react-native';
 import { AmmoType, CollectionType, GunType, ItemType, StackParamList } from 'interfaces';
 import { Badge, Button, Card, Dialog, Icon, IconButton, Modal, Portal, Text, TouchableRipple } from 'react-native-paper';
-import { usePreferenceStore } from 'stores/usePreferenceStore';
+import { DisplayVariants, usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
 import { useViewStore } from 'stores/useViewStore';
 import { useGunStore } from 'stores/useGunStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate } from 'utils';
+import { checkDate, intlNumberFormatOptions } from 'utils';
 import { useState } from 'react';
 import { gunDeleteAlert, longPressActions } from 'lib/textTemplates';
 import * as FileSystem from 'expo-file-system';
@@ -27,8 +27,6 @@ export default function GunCard({ item }:Props){
       const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
-    
-
     function handleCardPress(item:ItemType){
         setCurrentItem(item)
         navigation.navigate("item")
@@ -38,7 +36,6 @@ export default function GunCard({ item }:Props){
       
 
       function meloveyoulongtime(){
-        console.log("TWO DOLLA")
         setCardOptionsMenuVisible(true)
         setCurrentItem(item)
       }
@@ -57,6 +54,11 @@ export default function GunCard({ item }:Props){
         const ammo = item as AmmoType
         return ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(ammo.currentStock)) : "- - -" 
       }
+
+      function setCardWith(){
+        const divisor = displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
+        return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding))
+      }
       
 
     return(
@@ -66,34 +68,49 @@ export default function GunCard({ item }:Props){
                 onLongPress={()=>meloveyoulongtime()}
               >
         <Card 
-            style={{
-                width: (Dimensions.get("window").width / (displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1)) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding)),
+            mode={displaySettings[currentCollection] === "compactList" ? "contained" : "elevated"}
+            style={displaySettings[currentCollection] === "compactList" ? {
+                width: setCardWith(),
+                borderRadius: 0,
+                marginBottom: Number(`-${defaultViewPadding}`),
+                borderBottomWidth: 1,
+                backgroundColor: theme.colors.background
+
+            } : {
+                width: setCardWith(),
+                backgroundColor: theme.colors.surfaceVariant
             }}
+            
         >
             <Card.Title
+                style={displaySettings[currentCollection] === "compactList" ? {
+                    margin: Number(`-${defaultViewPadding}`)
+                } : {
+
+                }}
                 titleStyle={{
-                width: displaySettings[currentCollection] === "grid" ? "100%" : generalSettings.displayImagesInListViewGun ? "60%" : "80%",
-                color: checkDate(item) ? theme.colors.error : theme.colors.onSurfaceVariant
+                    width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                    color: checkDate(item) ? theme.colors.error : theme.colors.onSurfaceVariant
                 }}
                 subtitleStyle={{
-                width: displaySettings[currentCollection] === "grid" ? "100%" : generalSettings.displayImagesInListViewGun ? "60%" : "80%",
-                color: theme.colors.onSurfaceVariant
+                    width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                    color: theme.colors.onSurfaceVariant,
                 }}
                 title={`${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${"model" in item ? item.model : item.designation}`}
                 subtitle={"serial" in item ? item.serial && item.serial.length != 0 ? item.serial : " " : " "} 
-                subtitleVariant='bodySmall' 
-                titleVariant='titleSmall' 
-                titleNumberOfLines={2} 
-                subtitleNumberOfLines={2}
+                titleVariant={displaySettings[currentCollection] === "compactList" ? "bodySmall" : "titleSmall"}
+                subtitleVariant={displaySettings[currentCollection] === "compactList" ? "labelSmall" : "bodySmall"}
+                titleNumberOfLines={displaySettings[currentCollection] === "compactList" ? 1 : 2} 
+                subtitleNumberOfLines={displaySettings[currentCollection] === "compactList" ? 1 : 2}
             />
             {displaySettings[currentCollection] === "grid" ? 
             <View>
                 <Card.Cover 
                     source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
-                        height: 100
+                        height: 100,
                     }}
-                /> 
+                />
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
@@ -126,9 +143,7 @@ export default function GunCard({ item }:Props){
             </View>
             : 
             null}
-            {displaySettings[currentCollection] === "grid" ?
-            null 
-            :
+            {displaySettings[currentCollection] === "list" ?
             <View 
                 style={{
                     position: "absolute", 
@@ -181,7 +196,55 @@ export default function GunCard({ item }:Props){
                     }}
                     iconColor={theme.colors.onPrimary}
                 />}
-            </View>}
+            </View>
+            : null}
+            {displaySettings[currentCollection] === "compactList" ?
+            <View 
+                style={{
+                    position: "absolute", 
+                    top: 0, 
+                    left: 0, 
+                    bottom: 0, 
+                    right: 0, 
+                    display: "flex", 
+                    justifyContent: "flex-end", 
+                    alignItems: "center", 
+                    flexDirection: "row"
+                }}
+            >
+                {currentCollection === "ammoCollection" ? 
+                <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
+                    <Badge
+                        style={{
+                            backgroundColor: setAmmoBadgeBackgroundColor(item),
+                            color: setAmmoBadgeColor(item),
+                            aspectRatio: "1/1",
+                            fontSize: 10,
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            marginLeft: 10,
+                            marginRight: 6,
+                        }}
+                        size={36}
+                    >
+                        {setAmmoBadgeContent(item)}
+                    </Badge>
+                </TouchableRipple>      
+                                 :
+                <IconButton 
+                    mode="contained" 
+                    icon={"dots-vertical"} 
+                    onPress={()=>meloveyoulongtime()} 
+                    size={12}
+                    style={{
+                        backgroundColor: theme.colors.primary,
+                        marginLeft: 10,
+                        marginRight: 6
+                    }}
+                    iconColor={theme.colors.onPrimary}
+                />}
+            </View>
+            : null}
         </Card>
         </TouchableNativeFeedback> 
 
