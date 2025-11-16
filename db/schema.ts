@@ -84,7 +84,7 @@ export const accessoryCollection_ConversionKit = sqliteTable("accessories_conver
 
 export const accessory_ConversionKitsTags = sqliteTable("accessories_conversionKitsTags", {
     db_id: integer('id').primaryKey().notNull(),
-    label: text("label").notNull().unique("ammoTag_label"),
+    label: text("label").notNull().unique("conversionKitTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
 })
@@ -121,7 +121,7 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
     db_id: integer('id').primaryKey().notNull(),
-    label: text("label").notNull().unique("ammoTag_label"),
+    label: text("label").notNull().unique("silencerTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
 })
