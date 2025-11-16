@@ -8,6 +8,7 @@ import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
+import { DisplayVariants } from "stores/usePreferenceStore";
 
 export function getIcon(type:SortingTypes){
     switch(type){
@@ -35,6 +36,19 @@ export function getIcon(type:SortingTypes){
             return "volume-source"
         default:
             return "alphabetical-variant"
+    }
+}
+
+export function getDisplaySwitchIcon(type: DisplayVariants){
+    switch(type){
+        case "list":
+            return "format-list-bulleted-type"
+        case "grid":
+            return "view-grid"
+        case "compactList":
+            return "format-list-group"
+        default:
+            return "view-grid"
     }
 }
 
