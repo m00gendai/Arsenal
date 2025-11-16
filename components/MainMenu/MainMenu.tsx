@@ -10,10 +10,8 @@ import { colorThemes } from "lib/colorThemes"
 import { useEffect, useState } from "react"
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { DBOperations, GunType, Languages } from "interfaces"
-import { useGunStore } from "stores/useGunStore"
-import { printAmmoCollection, printGunCollection, printGunCollectionArt5 } from "functions/printToPDF"
-import { useAmmoStore } from "stores/useAmmoStore"
+import { DBOperations, Languages } from "interfaces"
+import { printGunCollection, printGunCollectionArt5 } from "functions/printToPDF"
 import { useTagStore } from "stores/useTagStore"
 import { manipulateAsync } from "expo-image-manipulator"
 import Papa from 'papaparse';
@@ -23,7 +21,6 @@ import CSVImportModal from "components/CSVImportModal"
 import { alarm } from "utils"
 import * as SystemUI from "expo-system-ui"
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Dirs, FileSystem as fs } from 'react-native-file-access';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import saveDatabase from "functions/saveDatabase"
@@ -56,9 +53,7 @@ export default function MainMenu({navigation}){
         exportModalVisible,
         toggleExportModalVisible 
     } = useViewStore()
-    const { language, switchLanguage, theme, switchTheme, setDbImport, setAmmoDbImport, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-    const { gunCollection, setGunCollection } = useGunStore()
-    const { ammoCollection, setAmmoCollection } = useAmmoStore()
+    const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const { overWriteAmmoTags, overWriteTags} = useTagStore()
     const { setCSVHeader, setCSVBody, importProgress, setImportProgress, resetImportProgress, importSize, setImportSize, resetImportSize, setDbCollectionType } = useImportExportStore()
 
@@ -128,9 +123,12 @@ export default function MainMenu({navigation}){
 
     async function handleDbOperation(data: DBOperations | ""){
         setDbModalVisible()
+        const gunCollectionSize = await db.select({ count: count() }).from(schema.gunCollection);
+        const ammoCollectionSize = await db.select({ count: count() }).from(schema.ammoCollection);
+        const collectionSize = gunCollectionSize[0].count + ammoCollectionSize[0].count
         if(data === "save_arsenal_db"){
-            const collectionSize = await db.select({ count: count() }).from(schema.gunCollection);
-            setImportSize(collectionSize[0].count)
+            
+            setImportSize(collectionSize)
             setDbModalText(databaseOperations.export[language])
             try{
                     await saveDatabase(setImportSize, setImportProgress, resetImportProgress).then(()=>{
@@ -143,7 +141,7 @@ export default function MainMenu({navigation}){
         }
         if(data === "save_arsenal_csv"){
             toggleExportModalVisible()
-            setImportSize(gunCollection.length)
+            setImportSize(collectionSize)
             setDbModalText(databaseOperations.export[language])
             try{
                     await exportArsenalCSV(exportOption).then(()=>{
@@ -211,45 +209,6 @@ export default function MainMenu({navigation}){
     async function handleDbExport(data:DBOperations | ""){
         setDbOperation(data)
         toggleExportModalVisible()
-    }
-
-    async function handleShareGunDb(){
-        const fileName = `gunDB_${new Date().getTime()}.json`
-        const collectionSize = gunCollection.length-1
-        const cache = Dirs.CacheDir
-        try{
-            await fs.writeFile(`${cache}/${fileName}`, "[")
-        }catch(e){
-            alarm("shareGunDb createTempFile", e)
-        }
-        await Promise.all(gunCollection.map(async (gun, index) =>{
-            if(gun.images !== null && gun.images.length !== 0){
-                const base64images:string[] = await Promise.all(gun.images?.map(async image =>{
-                    const base64string:string = await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-                    return base64string
-                }))
-                const exportableGun:GunType = {...gun, images: base64images}
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(exportableGun) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("shareGunDb appendExportableGun", e)
-                }
-            } else {
-                setImportProgress(importProgress+1)
-                try{
-                    await fs.appendFile(`${cache}/${fileName}`, JSON.stringify(gun) + (collectionSize !== index ? ", " : ""))
-                }catch(e){
-                    alarm("shareGunDb appendGun", e)
-                }
-            }
-        }))
-        try{
-            await fs.appendFile(`${cache}/${fileName}`, "]")
-        } catch(e){
-            alarm("shareGunDb finishTempFile", e)
-        }
-        return `${FileSystem.cacheDirectory}/${fileName}`
     }
 
     async function handleSwitchesAlert(setting:string){
@@ -361,7 +320,7 @@ export default function MainMenu({navigation}){
                     alarm("printGunCollectioNArt5 Error", e)
                 }
                 break
-            case "ammoCollection":
+           /* case "ammoCollection":
                 try{
                     console.log("Im printing ammo collection!")
                    await printAmmoCollection(ammoCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList);
@@ -369,7 +328,7 @@ export default function MainMenu({navigation}){
                 } catch(e){
                     alarm("printAmmoCollection Error", e)
                 }
-                break
+                break*/
 
         }
     }
