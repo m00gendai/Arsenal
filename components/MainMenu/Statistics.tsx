@@ -7,6 +7,7 @@ import { db } from "db/client";
 import { count } from "drizzle-orm";
 import * as schema from "db/schema"
 import { useEffect, useState } from "react";
+import { intlNumberFormatOptions } from "utils";
 
 
 export default function Statistics(){
@@ -28,7 +29,9 @@ export default function Statistics(){
             setStatistics(prev => ({...prev, gunCount: collectionSize[0].count}))
 
             const collectionValues = await db.select({value: schema.gunCollection.paidPrice}).from(schema.gunCollection)
-            const collectionValuesTotal = collectionValues.reduce((acc, curr) => acc + Number(curr.value), 0)
+            const collectionValuesTotal = collectionValues.reduce((acc, curr) => {
+                return acc + Number(curr.value ? curr.value.replace(",", ".") : 0)
+            }, 0);
             setStatistics(prev => ({...prev, gunPrice: collectionValuesTotal}))
             
             const collectionMarketValue = await db.select({value: schema.gunCollection.marketValue}).from(schema.gunCollection)
@@ -44,7 +47,6 @@ export default function Statistics(){
 
             const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection)
             const uniqueCalibers = Array.from(new Set(ammoCalibers.filter(caliber => caliber.value !== "" ).map(caliber => caliber.value)))
-            console.log(uniqueCalibers)
             setStatistics(prev => ({...prev, uniqueCalibers: uniqueCalibers.length}))
         }
         getStatistics()
@@ -57,7 +59,7 @@ export default function Statistics(){
                     return(
                         <View key={`statistic_${index}`}>
                             <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                                <Text>{`${statisticItems[statistic[0]][language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language]).format(statistics[statistic[0]])}`}</Text>
+                                <Text>{`${statisticItems[statistic[0]][language]}`}</Text><Text>{`${new Intl.NumberFormat(dateLocales[language], intlNumberFormatOptions(statistics[statistic[0]])).format(statistics[statistic[0]])}`}</Text>
                             </View>
                     
                             {Object.entries(statistics).length-1 === index ? 
