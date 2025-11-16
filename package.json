@@ -80,7 +80,7 @@
     "@babel/plugin-proposal-decorators": "^7.24.1",
     "@types/pdfmake": "^0.2.12",
     "@types/react-native-datepicker": "^1.7.6",
-    "drizzle-kit": "^0.18.1"
+    "drizzle-kit": "^0.31.7"
   },
   "private": true
 }
