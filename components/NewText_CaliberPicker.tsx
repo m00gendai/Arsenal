@@ -34,7 +34,6 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
         return [itemData[data]] // if its JUST a string, return an aray of it
     }
 
-    console.log(`${data}: CALIBERPICKER TEXT`)
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showModalCaliber, setShowModalCaliber] = useState<boolean>(false)
     const [activeCaliber, setActiveCaliber] = useState<string[]>(determineActiveCaliber(itemData))

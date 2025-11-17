@@ -17,7 +17,7 @@ interface Props{
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: DATEPICKER TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showDateTime, setShowDateTime] = useState<boolean>(false)
     const [date, setDate] = useState<(string | number | Date | dayjs.Dayjs)>(dayjs());
@@ -45,7 +45,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function updateDate(input){
-        console.log(input)
+
         setInput(new Date(input).toLocaleDateString("de-CH", dateTimeOptions))
         setDate(input)
     }

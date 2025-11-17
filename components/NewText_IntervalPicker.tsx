@@ -15,7 +15,7 @@ interface Props{
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: INTERVAL TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showCleanModal, setShowCleanModal] = useState<boolean>(false)
     const [checked, setChecked] = useState<string>("-")

@@ -33,7 +33,7 @@ export function determineTagSchema(collection:CollectionType){
 }
 
 export function determineSortingFunction(collection:CollectionType, sortBy: SorterSettings){
-    console.log(`determineSortingFunction for ${collection}`)
+
     switch(collection){
         case "gunCollection":{
             return sortGunCollection(sortBy[collection].direction, sortBy[collection].type)

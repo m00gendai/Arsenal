@@ -17,7 +17,7 @@ interface Props{
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: COLORPICKER TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showModal, setShowModal] = useState(false);
     const [color, setColor] = useState<string>(itemData && itemData[data] ? itemData[data] : "#000")
@@ -85,7 +85,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function checkColor(color:string){
-        console.log(color)
+
         if(color === undefined){
             return ""
         }
