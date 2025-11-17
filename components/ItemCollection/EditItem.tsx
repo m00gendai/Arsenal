@@ -15,7 +15,7 @@ import { imageHandling, itemDataValidation } from 'utils';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -23,6 +23,7 @@ import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
 import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
 import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
+import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
 
 
 export default function EditGun({navigation}){
@@ -386,6 +387,8 @@ export default function EditGun({navigation}){
                                         <NewText_CaliberPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} multiCaliber={true} /> :
                                     intervalPickerTriggerFields.includes(data.name) ? 
                                         <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                    mountedOnTriggerFields.includes(data.name) ?
+                                        <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
                                 </View>
                             )
