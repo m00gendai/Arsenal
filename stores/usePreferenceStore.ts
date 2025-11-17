@@ -18,6 +18,7 @@ interface DisplaySettings{
   gunCollection: DisplayVariants
   ammoCollection: DisplayVariants
   accessoryCollection_Silencer: DisplayVariants
+  accessoryView: DisplayVariants
 }
 
 export interface SorterSettings{
@@ -71,7 +72,8 @@ interface PreferenceStore {
     displaySettings: {
       gunCollection: "grid",
       ammoCollection: "grid",
-      accessoryCollection_Silencer: "grid"
+      accessoryCollection_Silencer: "grid",
+      accessoryView: "grid"
     },
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
 
