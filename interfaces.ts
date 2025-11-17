@@ -82,8 +82,7 @@ export interface AccessoryType_Silencer{
   cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
   mainColor?: string
   remarks?: string
-  currentlyMountedOnGun?: string
-  currentlyMountedOnConversionKit?: string
+  currentlyMountedOn?: string
 }
 
 export type ItemType = GunType | AmmoType | AccessoryType_Silencer
