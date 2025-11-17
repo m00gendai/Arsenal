@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions, ColorValue } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions, ColorValue, SectionList } from 'react-native';
 import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate"
 import { useEffect, useRef, useState} from "react"
@@ -23,11 +23,13 @@ import { useSharedValue } from 'react-native-reanimated';
 import { useItemStore } from 'stores/useItemStore';
 import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { StackActions } from '@react-navigation/native';
+import Item_Accessories from './Item_accessories';
 
 export default function Item({navigation}){
 
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
+    const [activeTab, setActiveTab] = useState<"details" | "accessories">("details")
 
     const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
@@ -158,6 +160,11 @@ useEffect(() => {
   return unsubscribe;
 }, [navigation]);
 
+
+    
+
+  
+
     return(
         <View style={{flex: 1}}>
             
@@ -173,56 +180,92 @@ useEffect(() => {
                     <LinearGradient 
                         start={{x: 0.0, y:0.0}} end={{x: 1.0, y: 1.0}} 
                         colors={generateGradient(currentItem) as [ColorValue, ColorValue, ...ColorValue[]]}
-                         >
+                    >
                         <View style={{width: "100%", aspectRatio: "21/10"}}>
-                        <Carousel
-				loop={false}
-				width={Dimensions.get("screen").width-(defaultViewPadding)}
-				snapEnabled={true}
-				pagingEnabled={true}
-                onProgressChange={progress}
-				data={Array.from(Array(currentItem.images ? currentItem.images.length : 1))}
-				onSnapToItem={(index) => console.log("current index:", index)}
-				renderItem={({ index }) => 
-                    {
-                        if(currentItem.images && index <= currentItem.images.length-1){
-                            return(
-                                <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
-                                    <View style={styles.imageContainer} >
-                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]} /> 
-                                    </View>
-                                </TouchableNativeFeedback>
-                            )
-                        }      
-                        if(!currentItem.images || currentItem.images.length === 0){
-                            return(
-                                <TouchableNativeFeedback key={`slides_${index}`}>
-                                    <View style={styles.imageContainer} >
-                                    <ImageViewer isLightBox={false} selectedImage={null} /> 
-                                    </View>
-                                </TouchableNativeFeedback>
-                            )
-                        }          
-                    }
-                }
-			/>
-</View>
+                            <Carousel
+                                loop={false}
+                                width={Dimensions.get("screen").width-(defaultViewPadding)}
+                                snapEnabled={true}
+                                pagingEnabled={true}
+                                onProgressChange={progress}
+                                data={Array.from(Array(currentItem.images ? currentItem.images.length : 1))}
+                                onSnapToItem={(index) => console.log("current index:", index)}
+                                renderItem={({ index }) => 
+                                    {
+                                        if(currentItem.images && index <= currentItem.images.length-1){
+                                            return(
+                                                <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
+                                                    <View style={styles.imageContainer} >
+                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]} /> 
+                                                    </View>
+                                                </TouchableNativeFeedback>
+                                            )
+                                        }      
+                                        if(!currentItem.images || currentItem.images.length === 0){
+                                            return(
+                                                <TouchableNativeFeedback key={`slides_${index}`}>
+                                                    <View style={styles.imageContainer} >
+                                                    <ImageViewer isLightBox={false} selectedImage={null} /> 
+                                                    </View>
+                                                </TouchableNativeFeedback>
+                                            )
+                                        }          
+                                    }
+                                }
+                            />
+                        </View>
+                        <Pagination.Basic
+                            progress={progress}
+                            data={Array.from(Array(currentItem.images ? currentItem.images.length : 1))}
+                            dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50, height: 5, width: 5 }}
+                            containerStyle={{ gap: 5, marginTop: 0, position: "absolute", bottom: 2.5 }}
+                            onPress={onPressPagination}
+                        />
+                    </LinearGradient>
 
-                    <Pagination.Basic
-        progress={progress}
-        data={Array.from(Array(currentItem.images ? currentItem.images.length : 1))}
-        dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50, height: 5, width: 5 }}
-        containerStyle={{ gap: 5, marginTop: 0, position: "absolute", bottom: 2.5 }}
-        onPress={onPressPagination}
-      />
-                        </LinearGradient>
                     <View style={styles.data}>
                         <View style={{flex: 1, flexDirection: "row", flexWrap: "wrap", marginBottom: 10}}>
                             {currentItem.tags?.map((tag, index) =>{
                                 return <View key={`${tag}_${index}`} style={{padding: 5}}><Chip >{tag}</Chip></View>
                             })}
                         </View>
+                    </View>
 
+{ /* Tab Bar */}
+
+                    <View style={{width: "100%", marginBottom: defaultViewPadding, gap: 5, display: "flex", justifyContent: "flex-start", flexDirection: "row", backgroundColor: theme.colors.tertiary, padding: defaultViewPadding/2}}>
+                        <Pressable 
+                            style={{
+                                display: "flex", 
+                                flexDirection: "row", 
+                                justifyContent: "center", 
+                                width: "30%", 
+                                height: "100%", 
+                                backgroundColor: activeTab === "details" ? theme.colors.tertiaryContainer :  theme.colors.onTertiary
+                            }} 
+                            onPress={() => setActiveTab("details")}
+                        >
+                            <Text style={{padding: defaultViewPadding}}>Details</Text>
+                        </Pressable>
+                        <Pressable 
+                            style={{
+                                display: "flex", 
+                                flexDirection: "row", 
+                                justifyContent: "center", 
+                                width: "30%", 
+                                height: "100%", 
+                                backgroundColor: activeTab === "accessories" ? theme.colors.tertiaryContainer :  theme.colors.onTertiary
+                            }} 
+                            onPress={() => setActiveTab("accessories")}
+                        >
+                            <Text style={{padding: defaultViewPadding}}>Accessories</Text>
+                        </Pressable>
+                    </View>
+
+
+{activeTab === "details" ? 
+                    // DETAILS PAGE
+                    <View>
                         {determineDataTemplate(currentCollection).map((dataItem, index)=>{
                             if(!generalSettings.emptyFields){
                                 return(
@@ -298,67 +341,69 @@ useEffect(() => {
                         })}
 
                         <View style={{flex: 1, flexDirection: "column"}} >
-                        {currentCollection === "gunCollection" ? checkBoxes.map(checkBox=>{
-                            return(
-                                <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
-                            )
-                        }) 
-                    : null}
+                            {currentCollection === "gunCollection" ? checkBoxes.map(checkBox=>{
+                                return(
+                                    <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
+                                )
+                            }) : null}
                         </View>
                         <View style={{flex: 1, flexDirection: "column"}} >
                             <Text style={{width: "100%", fontSize: 12,}}>{determineRemarkDataTemplate(currentCollection)[language]}</Text>
                             <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>{currentItem.remarks}</Text>
                         </View>
                     </View>
-                    
-                    <Portal>
-                        <Modal visible={lightBoxOpen} onDismiss={setLightBoxOpen}>
-                            <View style={{width: "100%", height: "100%", padding: 0, display: "flex", flexDirection: "row", flexWrap: "wrap", backgroundColor: "green"}}>
-                                <View style={{padding: 0, margin: 0, position: "absolute", top: defaultViewPadding, right: defaultViewPadding, left: defaultViewPadding, zIndex: 999, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                                    <Pressable onPress={()=>handleShareImage(currentItem.images[lightBoxIndex])}><Icon source="share-variant" size={40} color={theme.colors.inverseSurface}/></Pressable>
-                                    <Pressable onPress={setLightBoxOpen} ><Icon source="close-thick" size={40} color={theme.colors.inverseSurface}/></Pressable>
-                                </View>
-                                {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]}/> : null}
-                            </View>
-                        </Modal>    
-                    </Portal>   
-
-                    <Portal>
-                        <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
-                            <Dialog.Title>
-                            {`${"model" in currentItem ? currentItem.model : currentItem.designation} ${gunDeleteAlert.title[language]}`}
-                            </Dialog.Title>
-                            <Dialog.Content>
-                                <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
-                            </Dialog.Content>
-                            <Dialog.Actions>
-                                <Button onPress={()=>deleteItem(currentItem)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{gunDeleteAlert.yes[language]}</Button>
-                                <Button onPress={()=>toggleDialogVisible(!dialogVisible)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{gunDeleteAlert.no[language]}</Button>
-                            </Dialog.Actions>
-                        </Dialog>
-                    </Portal>                  
-                    
-                    <View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
-                        <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
-                            <Icon source="delete" color={theme.colors.onErrorContainer} size={20}/>
-                        </Button>
-                    </View>
+:
+                    // ACCESSORIES PAGE        
+                    <Item_Accessories currentItem={currentItem}/>
+}
+<View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
+                    <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
+                        <Icon source="delete" color={theme.colors.onErrorContainer} size={20}/>
+                    </Button>
+                </View>
                 </ScrollView>
+
+                <Portal>
+                    <Modal visible={lightBoxOpen} onDismiss={setLightBoxOpen}>
+                        <View style={{width: "100%", height: "100%", padding: 0, display: "flex", flexDirection: "row", flexWrap: "wrap", backgroundColor: "green"}}>
+                            <View style={{padding: 0, margin: 0, position: "absolute", top: defaultViewPadding, right: defaultViewPadding, left: defaultViewPadding, zIndex: 999, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                                <Pressable onPress={()=>handleShareImage(currentItem.images[lightBoxIndex])}><Icon source="share-variant" size={40} color={theme.colors.inverseSurface}/></Pressable>
+                                <Pressable onPress={setLightBoxOpen} ><Icon source="close-thick" size={40} color={theme.colors.inverseSurface}/></Pressable>
+                            </View>
+                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]}/> : null}
+                        </View>
+                    </Modal>    
+                </Portal>   
+
+                <Portal>
+                    <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
+                        <Dialog.Title>
+                        {`${"model" in currentItem ? currentItem.model : currentItem.designation} ${gunDeleteAlert.title[language]}`}
+                        </Dialog.Title>
+                        <Dialog.Content>
+                            <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <Button onPress={()=>deleteItem(currentItem)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{gunDeleteAlert.yes[language]}</Button>
+                            <Button onPress={()=>toggleDialogVisible(!dialogVisible)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{gunDeleteAlert.no[language]}</Button>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>                  
+        
             </View>
 
             <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
-                    <Dialog.Title>
-                    {iosWarningText.title[language]}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{iosWarningText.text[language]}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={()=>handlePrintPress()} icon="heart" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{iosWarningText.ok[language]}</Button>
-                        <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
-
+                <Dialog.Title>
+                {iosWarningText.title[language]}
+                </Dialog.Title>
+                <Dialog.Content>
+                    <Text>{iosWarningText.text[language]}</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={()=>handlePrintPress()} icon="heart" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{iosWarningText.ok[language]}</Button>
+                    <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
         </View>
     )
 }
