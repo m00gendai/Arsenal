@@ -1,19 +1,14 @@
-import { Dimensions, Pressable, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, CollectionType, GunType, ItemType, StackParamList } from 'interfaces';
-import { Badge, Button, Card, Dialog, Icon, IconButton, Modal, Portal, Text, TouchableRipple } from 'react-native-paper';
-import { DisplayVariants, usePreferenceStore } from 'stores/usePreferenceStore';
+import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
+import { AmmoType, ItemType, StackParamList } from 'interfaces';
+import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
 import { useViewStore } from 'stores/useViewStore';
-import { useGunStore } from 'stores/useGunStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate, intlNumberFormatOptions } from 'utils';
-import { useState } from 'react';
-import { gunDeleteAlert, longPressActions } from 'lib/textTemplates';
+import { checkDate } from 'utils';
 import * as FileSystem from 'expo-file-system';
-
 import { useItemStore } from 'stores/useItemStore';
-import CardOptionsMenu from 'components/CardOptionsMenu';
 
 interface Props{
     item: ItemType
@@ -59,7 +54,6 @@ export default function GunCard({ item }:Props){
         const divisor = displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
         return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding))
       }
-      
 
     return(
         <View>
@@ -111,6 +105,26 @@ export default function GunCard({ item }:Props){
                         height: 100,
                     }}
                 />
+                <View style={{
+                position: "absolute",
+                left: 0,
+                marginTop: 0,
+                marginBottom: 0,
+
+                width: 40,
+                height: "100%",
+                display: "flex", 
+                flexDirection: "column",
+                justifyContent: "flex-start", 
+                flexWrap: "wrap",
+                alignItems: "center",
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+                borderBottomLeftRadius: 5,
+                borderBottomRightRadius: 5
+            }}>
+               
+                  </View>
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
