@@ -46,6 +46,7 @@ export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastClean
 export const colorPickerTriggerFields: string[] = ["mainColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
+export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 
 export const cardActionsGun: string[] = ["clone", "delete", "quickShot"]
 export const cardActionsAccessory_Silencer: string[] = ["clone", "delete", "quickShot"]
