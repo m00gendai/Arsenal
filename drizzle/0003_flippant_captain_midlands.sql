@@ -1,0 +1,1 @@
+ALTER TABLE `accessories_conversionKitsTags` RENAME TO `accessories_conversionKitTags`;

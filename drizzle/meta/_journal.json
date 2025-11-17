@@ -15,6 +15,20 @@
       "when": 1763317919418,
       "tag": "0001_pretty_unicorn",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763376087773,
+      "tag": "0002_windy_scalphunter",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1763400199245,
+      "tag": "0003_flippant_captain_midlands",
+      "breakpoints": true
     }
   ]
 }
