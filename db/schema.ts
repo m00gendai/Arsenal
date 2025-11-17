@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 
 export const gunCollection = sqliteTable('guns', {
@@ -79,10 +80,10 @@ export const accessoryCollection_ConversionKit = sqliteTable("accessories_conver
     originCountry: text("originCountry"),
     caliber: text("caliber", {mode: "json"}),
     serial: text("serial"),
-    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
+    currentlyMountedOn: text("currentlyMountedOn")
 })
 
-export const accessory_ConversionKitsTags = sqliteTable("accessories_conversionKitsTags", {
+export const accessory_ConversionKitTags = sqliteTable("accessories_conversionKitTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("conversionKitTag_label"),
     color: text("color"),
@@ -115,8 +116,7 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
     cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
-    currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>accessoryCollection_ConversionKit.id),
+    currentlyMountedOn: text("currentlyMountedOn")
 })
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
@@ -133,3 +133,23 @@ export const gunReminders = sqliteTable("gunReminder",{
     gun_id: text('gun_id').references(() => gunCollection.id),
 })
 
+// RELATIONS
+
+export const gunRelations = relations(gunCollection, ({ many }) => ({
+  accessoryCollection_Silencer: many(accessoryCollection_Silencer),
+  accessoryCollection_ConversionKit: many(accessoryCollection_ConversionKit),  
+}));
+
+export const accessoryCollection_ConversionKitRelations = relations(accessoryCollection_ConversionKit, ({ one }) => ({
+  mountedOn: one(gunCollection, {
+    fields: [accessoryCollection_ConversionKit.currentlyMountedOn],
+    references: [gunCollection.id],
+  }),
+}));
+
+export const accessoryCollection_SilencerRelations = relations(accessoryCollection_Silencer, ({ one }) => ({
+  mountedOn: one(gunCollection, {
+    fields: [accessoryCollection_Silencer.currentlyMountedOn],
+    references: [gunCollection.id],
+  }),
+}));
