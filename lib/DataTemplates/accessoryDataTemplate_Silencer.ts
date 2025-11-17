@@ -148,20 +148,12 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             ch: "Da colur principala",
     },
     {
-            name: "currentlyMountedOn_Gun",
-            de: "Montiert auf Waffe",
-            en: "Mounted on Gun",
-            fr: "Morere sur gun",
-            it: "Montare sole gunno",
-            ch: "Va montaschier sur gunn",
-    },
-    {
-            name: "currentlyMountedOn_ConversionKit",
-            de: "Montiert auf Wechselsystem/Lauf",
-            en: "Mounted on Conversion Kit/Barrel",
-            fr: "Morere sur gun/barrele",
-            it: "Montare sole gunno/barilla",
-            ch: "Va montaschier sur gunn/barell",
+            name: "currentlyMountedOn",
+            de: "Montiert auf",
+            en: "Mounted on",
+            fr: "Morere sur",
+            it: "Montare sole",
+            ch: "Va montaschier sur",
     },
 ]
 
@@ -199,6 +191,5 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     cleanInterval: null,
     decibelRating: null,
     material: null,
-    currentlyMountedOnGun: null,
-    currentlyMountedOnConversionKit: null
+    currentlyMountedOn: null,
 }
