@@ -67,9 +67,25 @@ export const ammoTags = sqliteTable("ammoTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
-export const accessoryCollection_ConversionKit = sqliteTable("accessories_conversionKit", {
+export const accessoryCollection = sqliteTable("accessoryCollection", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
+    type: text("type").notNull()
+});
+
+export const accessoryMount = sqliteTable("accessoryMount", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    accessoryId: text("accessoryId").notNull().references(() => accessoryCollection.id),
+    parentGunId: text("parentGunId").references(() => gunCollection.id),
+    parentAccessoryId: text("parentAccessoryId").references(() => accessoryCollection.id),
+});
+
+
+
+export const accessoryCollection_ConversionKit = sqliteTable("accessories_conversionKit", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -92,7 +108,7 @@ export const accessory_ConversionKitTags = sqliteTable("accessories_conversionKi
 
 export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", {
     db_id: integer('id').primaryKey().notNull(),
-    id: text("uuid").notNull().unique(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -135,21 +151,21 @@ export const gunReminders = sqliteTable("gunReminder",{
 
 // RELATIONS
 
-export const gunRelations = relations(gunCollection, ({ many }) => ({
-  accessoryCollection_Silencer: many(accessoryCollection_Silencer),
-  accessoryCollection_ConversionKit: many(accessoryCollection_ConversionKit),  
+export const accessoryRelations = relations(accessoryCollection, ({ many }) => ({
+    mounts: many(accessoryMount),
 }));
 
-export const accessoryCollection_ConversionKitRelations = relations(accessoryCollection_ConversionKit, ({ one }) => ({
-  mountedOn: one(gunCollection, {
-    fields: [accessoryCollection_ConversionKit.currentlyMountedOn],
-    references: [gunCollection.id],
-  }),
-}));
-
-export const accessoryCollection_SilencerRelations = relations(accessoryCollection_Silencer, ({ one }) => ({
-  mountedOn: one(gunCollection, {
-    fields: [accessoryCollection_Silencer.currentlyMountedOn],
-    references: [gunCollection.id],
-  }),
+export const accessoryMountRelations = relations(accessoryMount, ({ one }) => ({
+    accessory: one(accessoryCollection, {
+        fields: [accessoryMount.accessoryId],
+        references: [accessoryCollection.id]
+    }),
+    parentGun: one(gunCollection, {
+        fields: [accessoryMount.parentGunId],
+        references: [gunCollection.id],
+    }),
+    parentAccessory: one(accessoryCollection, {
+        fields: [accessoryMount.parentAccessoryId],
+        references: [accessoryCollection.id],
+    }),
 }));
