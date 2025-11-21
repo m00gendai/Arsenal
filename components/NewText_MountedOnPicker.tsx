@@ -11,6 +11,8 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { db } from 'db/client';
 import * as schema from "db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { v4 as uuidv4 } from 'uuid';
+import { useItemStore } from 'stores/useItemStore';
 
 interface Props{
     data: string
@@ -22,7 +24,7 @@ interface Props{
 export default function NewText({data, itemData, setItemData, label}: Props){
 
     const [showModal, setShowModal] = useState<boolean>(false)
-
+    const { currentItem }= useItemStore()
     const { language, theme } = usePreferenceStore()
 
     const [isFocus, setFocus] = useState<boolean>(false)
@@ -34,9 +36,36 @@ export default function NewText({data, itemData, setItemData, label}: Props){
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`)))
     )
 
+    const { data: silencerData } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection_Silencer)
+        .where(
+            ne(schema.accessoryCollection_Silencer.id, currentItem.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`)))
+    )
 
-    function updateItemData(input: string){
+
+    async function updateItemData(input: string){
         setItemData({...itemData, [data]: input})
+        console.log(checked)
+        await db.insert(schema.accessoryMount)
+        .values(
+            {
+                id: uuidv4(),
+                accessoryId: itemData.id,
+                parentGunId: checked,
+                parentAccessoryId: null
+            }
+        )
+        .onConflictDoUpdate({
+            target: schema.accessoryMount.id,
+            set: { 
+                accessoryId: itemData.id,
+                parentGunId: checked,
+                parentAccessoryId: null 
+            },
+        });
     }
 
     function handleConfirm(){
@@ -92,20 +121,75 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                 setVisible={setShowModal}
                 content={
                     <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", height: "100%"}}>
-                                <ScrollView style={{display: "flex", flexDirection: "column", flexWrap: "wrap", width: "100%", height: "100%", padding: defaultViewPadding}}>
-                    {gunData.map(gun =>{
-                        return (
-                            <View key={gun.id} style={{width: "100%", display: "flex", flexDirection: "row"}}>
-                                <Text style={{width: "80%"}}>{`${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}`}</Text>
-                                <RadioButton 
-                                    value={gun.id}
-                                    status={ checked === gun.id ? 'checked' : 'unchecked' }
-                                    onPress={() => setChecked(gun.id)}
-                                />
-                            </View>
-                        )
-                    })
-                }</ScrollView>
+                                <ScrollView 
+                                    style={{width: "100%", height: "100%"}}
+                                    contentContainerStyle={{display: "flex", flexDirection: "column", flexWrap: "wrap", justifyContent: "center", alignItems: "center", width: "100%" }}
+                                >
+                                    <List.Section style={{width: "100%"}}>
+      <List.Accordion
+        title="Waffen"
+        left={props => <List.Icon {...props} icon="pistol" />}>
+        {gunData.map((item, index) =>{
+            return (
+                <TouchableNativeFeedback onPress={() => setChecked(item.id)} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: index % 2 === 0 ? "" : theme.colors.tertiaryContainer, 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === gunData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{width: "80%"}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+                            <RadioButton 
+                                value={item.id}
+                                status={ checked === item.id ? 'checked' : 'unchecked' }
+                            />
+                        </View>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion>
+
+      <List.Accordion
+        title="Schalldämpfer"
+        left={props => <List.Icon {...props} icon="volume-mute" />}>
+        {silencerData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => setChecked(item.id)} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: index % 2 === 0 ? "" : theme.colors.tertiaryContainer, 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === silencerData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{width: "80%"}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+                            <RadioButton 
+                                value={item.id}
+                                status={ checked === item.id ? 'checked' : 'unchecked' }
+                            />
+                        </View>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion>
+    </List.Section>
+                    
+                </ScrollView>
                             </View>}
                 buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
                 buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
