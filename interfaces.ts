@@ -216,8 +216,15 @@ export type StackParamList = {
   MainMenu: undefined
   itemCollection: {collectionType: CollectionType};
   item: undefined
-  newItem: undefined
+  newItem: { clone: boolean }
   editItem: undefined
   QuickStock: undefined
   QuickShot: undefined
+}
+
+export interface Tag {
+  db_id: number
+  label: string
+  color: string
+  active: boolean
 }
