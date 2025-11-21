@@ -51,6 +51,7 @@ export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const cardActionsGun: string[] = ["clone", "delete", "quickShot"]
 export const cardActionsAccessory_Silencer: string[] = ["clone", "delete", "quickShot"]
 export const cardActionsAmmo: string[] = ["clone", "delete", "quickStock"]
+export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
 export const collectionExportDirectories: string[] = ["gun", "ammo", "accessory_silencer"]
 
