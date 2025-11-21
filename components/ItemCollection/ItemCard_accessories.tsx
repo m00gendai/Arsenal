@@ -15,11 +15,11 @@ interface Props{
     index?: number
 }
 
-export default function GunCard({ item }:Props){
+export default function ItemCard_accessories({ item }:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
-      const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
+      const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
       function setCardWith(){
@@ -28,8 +28,8 @@ export default function GunCard({ item }:Props){
       }
 
       function meloveyoulongtime(){
-        setCardOptionsMenuVisible(true)
-      
+        setCardOptionsMenuVisible_accessories(true)
+        
       }
 
     return(
