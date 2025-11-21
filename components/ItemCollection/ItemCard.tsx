@@ -15,7 +15,7 @@ interface Props{
     index?: number
 }
 
-export default function GunCard({ item }:Props){
+export default function ItemCard({ item }:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
