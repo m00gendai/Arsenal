@@ -7,6 +7,9 @@ import ItemCard from "./ItemCard";
 import { defaultBottomBarHeight, defaultViewPadding } from "configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
+import { useLiveQuery } from "drizzle-orm/expo-sqlite";
+import * as schema from "db/schema"
+import { eq, inArray } from 'drizzle-orm';
 
 interface Props{
     currentItem: ItemType
@@ -14,32 +17,29 @@ interface Props{
 
 export default function Item_Accessories({ currentItem }: Props) {
 
-    const [silencers, setSilencers] = useState([]);
-    const [conversionKits, setConversionKits] = useState([]);
-    const [optics, setOptics] = useState([]);
-    const [lightLaser, setLightLaser] = useState([]);
-    const [barrels, setBarrels] = useState([]);
-
     const { theme, displaySettings, setDisplaySettings } = usePreferenceStore()
+    const [silencerData, setSilencerData] = useState([])
 
-    useEffect(() => {
-        async function fetchAccessories() {
-            const [silencersRes, conversionKitsRes] = await Promise.all([
-                db.query.accessoryCollection_Silencer.findMany({
-                    where: (a, { eq }) => eq(a.currentlyMountedOn, currentItem.id),
-                }),
-              
-                db.query.accessoryCollection_ConversionKit.findMany({
-                    where: (a, { eq }) => eq(a.currentlyMountedOn, currentItem.id),
-                })
-            ]);
+    useEffect(()=>{
+      async function getAccessoryData(){
+        const mountedData = await db.select()
+          .from(schema.accessoryMount)
+          .where(
+            eq(schema.accessoryMount.parentGunId, currentItem.id)
+          )
 
-            setSilencers(silencersRes);
-            setConversionKits(conversionKitsRes);
-        }
+        const mountedIds = mountedData.map(d => d.accessoryId);
 
-        fetchAccessories();
-    }, [currentItem.id]);
+        const silencerData = await db.select()
+          .from(schema.accessoryCollection_Silencer)
+          .where(
+            inArray(schema.accessoryCollection_Silencer.id, mountedIds)
+          )
+
+        setSilencerData(silencerData)
+      }
+      getAccessoryData()
+    },[])
 
     function handleDisplaySwitch(type:DisplayVariants){
 
@@ -57,23 +57,19 @@ type Section = {
       const DATA:Section[] = [
   {
     title: 'Silencers',
-    data: silencers,
+    data: silencerData,
   },
   {
     title: 'Conversion Kits',
-    data: conversionKits,
-  },
-  {
-    title: 'Barrels',
-    data: barrels,
+    data: null,
   },
   {
     title: 'Light&Laser',
-    data: lightLaser,
+    data: null,
   },
   {
     title: 'Optics',
-    data: optics,
+    data: null,
   },
   
 ];
@@ -88,20 +84,21 @@ const filteredSections = DATA.filter(section => section.data && section.data.len
   flexDirection: "row",
   justifyContent: "flex-end",
 }}>
-  <TouchableOpacity style={{ padding: 0, margin: defaultViewPadding }} onPress={()=>handleDisplaySwitch("grid")}>
+  <TouchableOpacity style={{ padding: 0, marginLeft: defaultViewPadding }} onPress={()=>handleDisplaySwitch("grid")}>
     <Icon source="view-grid" size={24} color={theme.colors.onBackground} />
   </TouchableOpacity>
 
-  <TouchableOpacity style={{ padding: 0, margin: defaultViewPadding }} onPress={()=>handleDisplaySwitch("list")}>
+  <TouchableOpacity style={{ padding: 0, marginLeft: defaultViewPadding }} onPress={()=>handleDisplaySwitch("list")}>
     <Icon source="format-list-bulleted-type" size={24} color={theme.colors.onBackground} />
   </TouchableOpacity>
 
-  <TouchableOpacity style={{ padding: 0, margin: defaultViewPadding}} onPress={()=>handleDisplaySwitch("compactList")}>
+  <TouchableOpacity style={{ padding: 0, marginLeft: defaultViewPadding}} onPress={()=>handleDisplaySwitch("compactList")}>
     <Icon source="format-list-group" size={24} color={theme.colors.onBackground} />
   </TouchableOpacity>
 </View>
 
         <SectionList
+        scrollEnabled={false} 
         sections={filteredSections}
         SectionSeparatorComponent={() => (<View style={{ height: defaultViewPadding}} />)}
         style={{width: "100%"}}
