@@ -3,7 +3,6 @@ import { asc, desc, sql } from 'drizzle-orm';
 import { SortingTypesAccessory_Silencer } from "../interfaces";
 
 export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
-    console.log(`sortGunCollection invoked with direction ${direction} and sorrtBy: ${sortBy}`)
     const ascending = direction === "asc"
 
     const parseDateColumn = (column) => sql`
