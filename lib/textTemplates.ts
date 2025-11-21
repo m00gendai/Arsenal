@@ -170,6 +170,9 @@ interface aboutThanksPersons{
 interface LongPressActions{
     clone: SimpleTranslation
     delete: SimpleTranslation
+    goto: SimpleTranslation
+    unmount: SimpleTranslation
+    remount: SimpleTranslation
 }
 
 interface iosWarning{
@@ -1490,6 +1493,27 @@ export const longPressActions:LongPressActions = {
         fr: "Supprimer",
         it: "Cancellare",
         ch: "Stizzar",
+    },
+    goto: {
+        de: "goto",
+        en: "goto",
+        fr: "goto",
+        it: "goto",
+        ch: "goto",
+    },
+    unmount: {
+        de: "unmount",
+        en: "unmount",
+        fr: "unmount",
+        it: "unmount",
+        ch: "unmount",
+    },
+    remount: {
+        de: "remount",
+        en: "remount",
+        fr: "remount",
+        it: "remount",
+        ch: "remount",
     }
 }
 
