@@ -26,7 +26,7 @@ export default function CardOptionsMenu(){
 
     function handleClone(){
         setCardOptionsMenuVisible(false)
-        navigation.navigate("newItem")
+        navigation.navigate("newItem", {clone: true})
       }
 
       function handleShotButtonPress(item:ItemType){
