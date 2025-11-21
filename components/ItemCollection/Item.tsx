@@ -12,7 +12,6 @@ import { alarm, checkDate } from 'utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
 import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs';
-import { GetColorName } from 'hex-color-to-color-name';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
@@ -21,9 +20,10 @@ import { eq } from 'drizzle-orm';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import { useSharedValue } from 'react-native-reanimated';
 import { useItemStore } from 'stores/useItemStore';
-import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
+import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
 import { StackActions } from '@react-navigation/native';
 import Item_Accessories from './Item_accessories';
+import Item_details from './Item_details';
 
 export default function Item({navigation}){
 
@@ -33,7 +33,7 @@ export default function Item({navigation}){
 
     const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
-    const { currentItem, currentCollection } = useItemStore()
+    const { currentItem, setCurrentItem, currentCollection } = useItemStore()
 
     const [iosWarning, toggleiosWarning] = useState<boolean>(false)
 
@@ -75,7 +75,17 @@ export default function Item({navigation}){
     })
 
     async function deleteItem(item:ItemType){
-        await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        if(currentCollection.startsWith("accessoryCollection")){
+            // Delete mount entry
+            await db.delete(schema.accessoryMount).where(eq(schema.accessoryMount.accessoryId, item.id));
+            // Delete master entry
+            await db.delete(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, item.id));
+            // Delete individual entry
+            await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        } else {
+            await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        }
+        
         toggleDialogVisible(false)
         navigation.navigate(currentCollection)
     }
@@ -98,12 +108,7 @@ export default function Item({navigation}){
         await Sharing.shareAsync(img.includes(FileSystem.documentDirectory) ? img: `${FileSystem.documentDirectory}${img}`)
     }
 
-    function checkColor(color:string){
-        if(color.length === 9){
-            return color.substring(0,8)
-        }
-        return color
-    }
+    
 
     function generateGradient(item: ItemType){
         if("mainColor" in item && item.mainColor){
@@ -119,15 +124,7 @@ export default function Item({navigation}){
         }
     }
 
-    function getShortCaliberName(calibers:string[]){
-        const outputArray = calibers.map(item => {
-            // Find an object where displayName matches the item
-            const match = caliberDisplayNameList.find(obj => obj.name === item)
-            // If a match is found, return the displayName, else return the original item
-            return match ? match.displayName : item;
-        });
-        return outputArray
-    }
+   
 
     const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -145,25 +142,23 @@ export default function Item({navigation}){
 
   function handleGoBack(){   
     setHideBottomSheet(false);
-    navigation.dispatch(
-        StackActions.replace('itemCollection', {
-            collectionType: 'gunCollection'
-        })
-    );
+    setCurrentItem(determineEmptyObject(currentCollection))
+    navigation.navigate("itemCollection")
 }
 
 useEffect(() => {
   const unsubscribe = navigation.addListener('blur', () => {
     setHideBottomSheet(false);
+    setCurrentItem(determineEmptyObject(currentCollection))
   });
   
   return unsubscribe;
 }, [navigation]);
 
 
-    
 
-  
+
+
 
     return(
         <View style={{flex: 1}}>
@@ -233,7 +228,7 @@ useEffect(() => {
 
 { /* Tab Bar */}
 
-                    <View style={{width: "100%", marginBottom: defaultViewPadding, gap: 5, display: "flex", justifyContent: "flex-start", flexDirection: "row", backgroundColor: theme.colors.tertiary, padding: defaultViewPadding/2}}>
+                    <View style={{width: "100%", marginBottom: defaultViewPadding, gap: 5, display: "flex", justifyContent: "flex-start", flexDirection: "row", backgroundColor: theme.colors.surfaceVariant, padding: 0}}>
                         <Pressable 
                             style={{
                                 display: "flex", 
@@ -241,11 +236,11 @@ useEffect(() => {
                                 justifyContent: "center", 
                                 width: "30%", 
                                 height: "100%", 
-                                backgroundColor: activeTab === "details" ? theme.colors.tertiaryContainer :  theme.colors.onTertiary
+                                backgroundColor: activeTab === "details" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
                             onPress={() => setActiveTab("details")}
                         >
-                            <Text style={{padding: defaultViewPadding}}>Details</Text>
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "details" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>Details</Text>
                         </Pressable>
                         <Pressable 
                             style={{
@@ -254,113 +249,27 @@ useEffect(() => {
                                 justifyContent: "center", 
                                 width: "30%", 
                                 height: "100%", 
-                                backgroundColor: activeTab === "accessories" ? theme.colors.tertiaryContainer :  theme.colors.onTertiary
+                                backgroundColor: activeTab === "accessories" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
                             onPress={() => setActiveTab("accessories")}
                         >
-                            <Text style={{padding: defaultViewPadding}}>Accessories</Text>
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>Accessories</Text>
                         </Pressable>
                     </View>
 
 
 {activeTab === "details" ? 
                     // DETAILS PAGE
-                    <View>
-                        {determineDataTemplate(currentCollection).map((dataItem, index)=>{
-                            if(!generalSettings.emptyFields){
-                                return(
-                                    <View key={`${dataItem.name}`} style={{flex: 1, flexDirection: "column"}} >
-{/* Textfield Label in selected language */}
-                                        <Text style={{width: "100%", fontSize: 12,}}>{`${dataItem[language]}:`}</Text>
-                {/* Textfield content */}
-                                        <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
-                                            {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? 
-                                                    getShortCaliberName(Array.isArray(currentItem[dataItem.name]) ? 
-                                                        currentItem[dataItem.name] : [currentItem[dataItem.name]]).join("\n") 
-                                                : Array.isArray(currentItem[dataItem.name]) ? 
-                                                    currentItem[dataItem.name].join("\n") : 
-                                                    [currentItem[dataItem.name]] 
-                                            : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
-                                            : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
-                                            : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
-                                            : currentItem[dataItem.name]}</Text>
-            {/* Interval Warning Icons */}
-                                        {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 
-                                            <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
-                                                <IconButton icon="spray-bottle" iconColor={theme.colors.error} /><IconButton icon="toothbrush" iconColor={theme.colors.error} />
-                                            </View> 
-                                        : 
-                                        null}
-                    {/* Color splotch */}
-                                        {colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                            <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
-                                                <View style={{height: "50%", aspectRatio: "5/1", borderRadius: 50, backgroundColor: `${currentItem[dataItem.name]}`, transform:[{translateY: -5}]}}>
-                                                </View>
-                                            </View> 
-                                        : 
-                                        null}
-                                    </View>
-                                )
-                            } else if(currentItem[dataItem.name]){
-                            return(
-                                <View key={`${dataItem.name}`} style={{flex: 1, flexDirection: "column"}} >
-                                    {/* Textfield Label in selected language */}
-                                        <Text style={{width: "100%", fontSize: 12,}}>{`${dataItem[language]}:`}</Text>
-                {/* Textfield content */}
-                                        <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
-                                            {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? 
-                                                    getShortCaliberName(Array.isArray(currentItem[dataItem.name]) ? 
-                                                        currentItem[dataItem.name] : [currentItem[dataItem.name]]).join("\n") 
-                                                : Array.isArray(currentItem[dataItem.name]) ? 
-                                                    currentItem[dataItem.name].join("\n") : 
-                                                    [currentItem[dataItem.name]] 
-                                            : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
-                                            : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
-                                            : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
-                                            : currentItem[dataItem.name]}</Text>
-            {/* Interval Warning Icons */}
-                                        {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 
-                                            <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
-                                                <IconButton icon="spray-bottle" iconColor={theme.colors.error} /><IconButton icon="toothbrush" iconColor={theme.colors.error} />
-                                            </View> 
-                                        : 
-                                        null}
-                    {/* Color splotch */}
-                                        {colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                            <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
-                                                <View style={{height: "50%", aspectRatio: "5/1", borderRadius: 50, backgroundColor: `${currentItem[dataItem.name]}`, transform:[{translateY: -5}]}}>
-                                                </View>
-                                            </View> 
-                                        : 
-                                        null}
-                                </View>
-                            )
-                                }
-                        })}
-
-                        <View style={{flex: 1, flexDirection: "column"}} >
-                            {currentCollection === "gunCollection" ? checkBoxes.map(checkBox=>{
-                                return(
-                                    <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
-                                )
-                            }) : null}
-                        </View>
-                        <View style={{flex: 1, flexDirection: "column"}} >
-                            <Text style={{width: "100%", fontSize: 12,}}>{determineRemarkDataTemplate(currentCollection)[language]}</Text>
-                            <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>{currentItem.remarks}</Text>
-                        </View>
-                    </View>
+                    <Item_details />
 :
                     // ACCESSORIES PAGE        
                     <Item_Accessories currentItem={currentItem}/>
 }
-<View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
+{activeTab === "details" ? <View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
                     <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
                         <Icon source="delete" color={theme.colors.onErrorContainer} size={20}/>
                     </Button>
-                </View>
+                </View> : null}
                 </ScrollView>
 
                 <Portal>
