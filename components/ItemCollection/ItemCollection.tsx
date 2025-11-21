@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs';
-import { ItemType } from 'interfaces';
+import { ItemType, Tag } from 'interfaces';
 import { useViewStore } from 'stores/useViewStore';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ItemCard from './ItemCard';
@@ -15,6 +15,7 @@ import { determineSchema, determineSearchQueryFields, determineSortingFunction }
 import AppBar from 'components/AppBar';
 import { useItemTags } from 'components/Hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
+import CardOptionsMenu_accessories from 'components/CardOptionsMenu_accessories';
 
 export default function ItemCollection({navigation, route}){
 
@@ -26,8 +27,6 @@ export default function ItemCollection({navigation, route}){
   const { currentCollection, setCurrentItem } = useItemStore()
   const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn } = usePreferenceStore()
   const { mainMenuOpen, setHideBottomSheet } = useViewStore()
-
-    console.log(`ItemCollection: ${currentCollection}`)
 
   const { data: itemData } = useLiveQuery(
     db.select()
@@ -41,7 +40,7 @@ export default function ItemCollection({navigation, route}){
     [searchQuery, sortBy, currentCollection]
   )
 
-  const itemTags = useItemTags(currentCollection)
+  const itemTags = useItemTags(currentCollection) as Tag[]
 
 
   const fabWidth = useSharedValue(1);
@@ -57,7 +56,7 @@ export default function ItemCollection({navigation, route}){
   function handleFAB(){
     setHideBottomSheet(true)
     setCurrentItem(null)
-    navigation.navigate("newItem")
+    navigation.navigate("newItem", {clone: false})
   }
 
   const { width, height } = Dimensions.get("window");
@@ -131,6 +130,7 @@ const listKey = isLandscape
         />
       </Animated.View>
       <CardOptionsMenu />
+      <CardOptionsMenu_accessories />
     </View>
   )
 }
