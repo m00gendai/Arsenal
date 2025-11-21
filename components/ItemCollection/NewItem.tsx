@@ -27,8 +27,8 @@ import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplat
 import { useViewStore } from 'stores/useViewStore';
 
 
-export default function NewGun({navigation}){
-
+export default function NewItem({navigation}){
+    
     const { language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentCollection } = useItemStore()
 
@@ -87,7 +87,15 @@ export default function NewGun({navigation}){
         }
         
     const {db_id, ...idless} = value
+    console.log(`Adding ${currentCollection} type item to DB`)
         await db.insert(schema[currentCollection]).values(idless)
+        if(currentCollection.startsWith("accessoryCollection_")){
+            console.log(`Adding ${currentCollection} type item to accessory DB`)
+            await db.insert(schema.accessoryCollection).values({
+                id: idless.id,
+                type: currentCollection
+            })
+        }
         console.log(`Saved item ${JSON.stringify(idless)} with key ${GUN_DATABASE}_${value.id}`)
         setSaveState(true)
         setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${"model" in value ? value.model : value.designation} ${toastMessages.saved[language]}`)
@@ -223,8 +231,8 @@ useEffect(() => {
     const handleCancel = () => {
       toggleUnsavedDialogVisible(false);
     };
- 
 
+    
     return(
         <KeyboardAvoidingView behavior='padding' style={{flex: 1}}>
             
