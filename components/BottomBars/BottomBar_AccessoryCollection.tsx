@@ -38,6 +38,10 @@ export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
               <Icon source="volume-off" size={48} color={currentCollection === "accessoryCollection_Silencer" ? theme.colors.primary : theme.colors.secondary} />
               <Text style={{textAlign: "center", color: currentCollection === "accessoryCollection_Silencer" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.silencerCollection[language]}`}</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={()=>handleNavigation("itemCollection", {collectionType: "accessoryCollection_Optic"})} style={{width: "30%", alignItems: 'center'}}>
+              <Icon source="toslink" size={48} color={currentCollection === "accessoryCollection_Optic" ? theme.colors.primary : theme.colors.secondary} />
+              <Text style={{textAlign: "center", color: currentCollection === "accessoryCollection_Optic" ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{`${tabBarLabels.opticCollection[language]}`}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
