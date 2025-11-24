@@ -88,7 +88,6 @@ export default function EditGun({navigation}){
             console.error(e)
         }
         
-        console.log(`Saved item ${JSON.stringify(item)}`)
         setSaveState(true)
         setSnackbarText(`${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation} ${toastMessages.changed[language]}`)
         onToggleSnackBar()
