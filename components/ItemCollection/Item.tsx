@@ -87,7 +87,7 @@ export default function Item({navigation}){
         }
         
         toggleDialogVisible(false)
-        navigation.navigate(currentCollection)
+        navigation.navigate("itemCollection")
     }
 
     function handleIosPrint(){
