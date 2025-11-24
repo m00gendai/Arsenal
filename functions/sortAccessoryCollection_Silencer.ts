@@ -2,7 +2,7 @@ import * as schema from "../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
 import { SortingTypesAccessory_Silencer } from "../interfaces";
 
-export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
+export default function sortAccessoryCollection_Silencer(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
     const ascending = direction === "asc"
 
     const parseDateColumn = (column) => sql`
