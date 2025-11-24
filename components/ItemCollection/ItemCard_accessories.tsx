@@ -18,7 +18,7 @@ interface Props{
 export default function ItemCard_accessories({ item }:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
-    const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
+    const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
@@ -28,6 +28,7 @@ export default function ItemCard_accessories({ item }:Props){
       }
 
       function meloveyoulongtime(){
+        setCurrentAccessory(item)
         setCardOptionsMenuVisible_accessories(true)
         
       }
