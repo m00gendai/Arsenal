@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic} from "../interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -8,6 +8,7 @@ interface GeneralSettings{
   displayImagesInListViewGun: boolean
   displayImagesInListViewAmmo: boolean
   displayImagesInListViewAccessory_Silencer: boolean
+  displayImagesInListViewAccessory_Optic: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -18,6 +19,7 @@ interface DisplaySettings{
   gunCollection: DisplayVariants
   ammoCollection: DisplayVariants
   accessoryCollection_Silencer: DisplayVariants
+  accessoryCollection_Optic: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -25,12 +27,14 @@ export interface SorterSettings{
   gunCollection: {type: SortingTypesGun, direction: "asc" | "desc", icon: string}
   ammoCollection: {type: SortingTypesAmmo, direction: "asc" | "desc", icon: string}
   accessoryCollection_Silencer: {type: SortingTypesAccessory_Silencer, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Optic: {type: SortingTypesAccessory_Optic, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
   gunCollection: boolean
   ammoCollection: boolean
   accessoryCollection_Silencer: boolean
+  accessoryCollection_Optic: boolean
 }
 
 interface PreferenceStore {
@@ -62,6 +66,7 @@ interface PreferenceStore {
       displayImagesInListViewGun: true,
       displayImagesInListViewAmmo: true,
       displayImagesInListViewAccessory_Silencer: true,
+      displayImagesInListViewAccessory_Optic: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -73,6 +78,7 @@ interface PreferenceStore {
       gunCollection: "grid",
       ammoCollection: "grid",
       accessoryCollection_Silencer: "grid",
+      accessoryCollection_Optic: "grid",
       accessoryView: "grid"
     },
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
@@ -85,6 +91,7 @@ interface PreferenceStore {
       gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       ammoCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       accessoryCollection_Silencer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Optic: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
     },
     setSortBy: (collection, settings) => set((state) => ({
       sortBy: { 
@@ -96,7 +103,8 @@ interface PreferenceStore {
     filterOn: {
       gunCollection: false,
       ammoCollection: false,
-      accessoryCollection_Silencer: false
+      accessoryCollection_Silencer: false,
+      accessoryCollection_Optic: false
     },
     setFilterOn: (status: FilterState) => set((state) => ({filterOn: status}))
   }))
