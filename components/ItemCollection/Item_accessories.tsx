@@ -10,6 +10,7 @@ import ItemCard_accessories from "./ItemCard_accessories";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import * as schema from "db/schema"
 import { eq, inArray } from 'drizzle-orm';
+import { useViewStore } from "stores/useViewStore";
 
 interface Props{
     currentItem: ItemType
@@ -18,7 +19,9 @@ interface Props{
 export default function Item_Accessories({ currentItem }: Props) {
 
     const { theme, displaySettings, setDisplaySettings } = usePreferenceStore()
+    const { cardOptionsMenuVisible_accessories } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
+    const [opticData, setOpticData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -29,7 +32,7 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         const mountedIds = mountedData.map(d => d.accessoryId);
-
+console.log(mountedIds)
         const silencerData = await db.select()
           .from(schema.accessoryCollection_Silencer)
           .where(
@@ -37,9 +40,18 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setSilencerData(silencerData)
+
+        const opticData = await db.select()
+          .from(schema.accessoryCollection_Optic)
+          .where(
+            inArray(schema.accessoryCollection_Optic.id, mountedIds)
+          )
+
+        setOpticData(opticData)
+
       }
       getAccessoryData()
-    },[])
+    },[cardOptionsMenuVisible_accessories])
 
     function handleDisplaySwitch(type:DisplayVariants){
 
@@ -69,7 +81,7 @@ type Section = {
   },
   {
     title: 'Optics',
-    data: null,
+    data: opticData,
   },
   
 ];
