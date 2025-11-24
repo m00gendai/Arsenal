@@ -1,4 +1,4 @@
-import { AccessoryType_Silencer, GunType, GunTypeStatus } from "interfaces"
+import { AccessoryType_Silencer } from "interfaces"
 
 export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
     {
