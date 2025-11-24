@@ -97,6 +97,7 @@ interface Sorting{
     lastShotAt: SimpleTranslation
     currentStock: SimpleTranslation
     lastTopUpAt: SimpleTranslation
+    lastBatteryChangeAt: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -1141,6 +1142,13 @@ export const sorting:Sorting = {
         fr: "Quantité actuelle",
         it: "Quantità attuale",
         ch: "Quantitad actuala",    
+    },
+    lastBatteryChangeAt:{
+        de: "Letzter Batteriewechsel",     
+        en: "Last Battery Change",
+        fr: "",
+        it: "",
+        ch: "",    
     }
 }
 
