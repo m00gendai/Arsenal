@@ -18,7 +18,7 @@ import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 export default function CardOptionsMenu_accessories(){
 
     const { language, theme } = usePreferenceStore()
-    const { cardOptionsMenuVisible_accessories, setCardOptionsMenuVisible_accessories } = useViewStore()
+    const { cardOptionsMenuVisible_accessories, setCardOptionsMenuVisible_accessories, setAlohaSnackbarVisible } = useViewStore()
     const { currentCollection, currentItem, setCurrentItem, currentAccessory } = useItemStore()  
 
     const [deleteDialogVisible, toggleDeleteDialogVisible] = useState<boolean>(false)
@@ -28,6 +28,9 @@ export default function CardOptionsMenu_accessories(){
     function handleRemount(){
         
         console.log("remount")
+        navigation.navigate("QuickMount", {item: currentAccessory})
+        setCardOptionsMenuVisible_accessories(false)
+        setAlohaSnackbarVisible(true)
       }
 
       async function handleUnmount(){
@@ -64,12 +67,12 @@ export default function CardOptionsMenu_accessories(){
                     <Text style={{marginTop: defaultViewPadding, color: theme.colors.error}}>{longPressActions.unmount[language]}</Text>
             </Pressable>
         }
-       /* if(action === "remount"){
+        if(action === "remount"){
             return <Pressable key={action} onPress={()=>handleRemount()} style={{ alignItems: 'center' }}>
                 <Icon source="wrench" size={48} />
                 <Text style={{marginTop: defaultViewPadding}}>{longPressActions.remount[language]}</Text>
             </Pressable>
-       } */
+       }
     })}
        </View>
 
