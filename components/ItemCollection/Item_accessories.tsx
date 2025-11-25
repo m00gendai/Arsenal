@@ -19,7 +19,7 @@ interface Props{
 export default function Item_Accessories({ currentItem }: Props) {
 
     const { theme, displaySettings, setDisplaySettings } = usePreferenceStore()
-    const { cardOptionsMenuVisible_accessories } = useViewStore()
+    const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
 
@@ -51,7 +51,7 @@ console.log(mountedIds)
 
       }
       getAccessoryData()
-    },[cardOptionsMenuVisible_accessories])
+    },[cardOptionsMenuVisible_accessories, alohaSnackbarVisible])
 
     function handleDisplaySwitch(type:DisplayVariants){
 
