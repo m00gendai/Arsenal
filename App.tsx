@@ -41,6 +41,7 @@ import NewItem from 'components/ItemCollection/NewItem';
 import EditItem from 'components/ItemCollection/EditItem';
 import { useItemStore } from 'stores/useItemStore';
 import QuickMount from 'components/QuickMount';
+import AlohaSnackbar from 'components/AlohaSnackbar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -537,6 +538,7 @@ export default function App() {
             />
 
           </Stack.Navigator>
+          <AlohaSnackbar/>
           {mainMenuOpen ? null : hideBottomSheet ? null : <BottomSheet
         ref={bottomSheetRef}
         
@@ -545,6 +547,7 @@ export default function App() {
             ]}
             handleComponent={null}            
       >
+        
         <BottomSheetView style={{ flex: 1 }}>
           <BottomBar screen={currentCollection}/>
         </BottomSheetView>
