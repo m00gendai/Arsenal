@@ -16,7 +16,7 @@ import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -25,18 +25,19 @@ import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
 import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
 import { useViewStore } from 'stores/useViewStore';
+import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
 
 
 export default function NewItem({navigation}){
     
     const { language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentCollection } = useItemStore()
-
+    const [uniqueId, setUniqueId] = useState(uuidv4())
     const [selectedImage, setSelectedImage] = useState<string[]>(currentItem ? currentItem.images : null)
     const [initCheck, setInitCheck] = useState<boolean>(true)
     const [granted, setGranted] = useState<boolean>(false)
-    const [itemData, setItemData] = useState<ItemType>(currentItem ? currentItem : determineEmptyObject(currentCollection))
-    const [itemDataCompare, setItemDataCompare] = useState<ItemType>(currentItem ? currentItem : determineEmptyObject(currentCollection))
+    const [itemData, setItemData] = useState<ItemType>(currentItem ? {...currentItem, id: uniqueId} : {...determineEmptyObject(currentCollection), id: uniqueId})
+    const [itemDataCompare, setItemDataCompare] = useState<ItemType>(currentItem ? {...currentItem, id: uniqueId} : determineEmptyObject(currentCollection))
     const [visible, setVisible] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string>("")
     const [saveState, setSaveState] = useState<boolean>(null)
@@ -87,16 +88,14 @@ export default function NewItem({navigation}){
         }
         
     const {db_id, ...idless} = value
-    console.log(`Adding ${currentCollection} type item to DB`)
+
         await db.insert(schema[currentCollection]).values(idless)
         if(currentCollection.startsWith("accessoryCollection_")){
-            console.log(`Adding ${currentCollection} type item to accessory DB`)
             await db.insert(schema.accessoryCollection).values({
                 id: idless.id,
                 type: currentCollection
             })
         }
-        console.log(`Saved item ${JSON.stringify(idless)} with key ${GUN_DATABASE}_${value.id}`)
         setSaveState(true)
         setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${"model" in value ? value.model : value.designation} ${toastMessages.saved[language]}`)
         onToggleSnackBar()
@@ -244,7 +243,7 @@ useEffect(() => {
                     onPress={() => save(
                         {...itemData, 
                             db_id: null, 
-                            id: uuidv4(), 
+                            id:uniqueId, 
                             images:selectedImage, 
                             createdAt: new Date().getTime(), 
                             lastModifiedAt: new Date().getTime()}
@@ -303,6 +302,8 @@ useEffect(() => {
                                         <NewText_CaliberPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} multiCaliber={true} /> :
                                     intervalPickerTriggerFields.includes(data.name) ? 
                                         <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                    mountedOnTriggerFields.includes(data.name) ?
+                                        <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
                                 </View>
                             )
