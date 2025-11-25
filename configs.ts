@@ -1,4 +1,4 @@
-import { CollectionType, Languages, SortingTypesAmmo, SortingTypesGun } from "./interfaces"
+import { CollectionType, Languages, SortingTypesAccessory_Optic, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces"
 import { SimpleTranslation } from "./lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -12,6 +12,9 @@ export const defaultBottomBarHeight:number = 60
 export const defaultSearchBarHeight:number = 56
 
 export const defaultBottomBarTextHeight: number = 30
+
+export const defaultCardOptionsMenuIconSize: number = 36
+export const defaultCardOptionsMenuFontSize: number = 12
 
 export const dateLocales:SimpleTranslation = {
     de: "de-CH",
@@ -38,28 +41,31 @@ export const languageSelection:{flag:string, code:Languages}[] = [
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
 export const requiredFieldsAccessory_Silencer:string[] = ["model"]
+export const requiredFieldsAccessory_Optic:string[] = ["model"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating"]
 
-export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
-export const colorPickerTriggerFields: string[] = ["mainColor"]
+export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt", "lastBatteryChangeAt"]
+export const colorPickerTriggerFields: string[] = ["mainColor", "reticleColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 
-export const cardActionsGun: string[] = ["clone", "delete", "quickShot"]
-export const cardActionsAccessory_Silencer: string[] = ["clone", "delete", "quickShot"]
-export const cardActionsAmmo: string[] = ["clone", "delete", "quickStock"]
+export const cardActionsGun: string[] = ["delete", "clone", "quickShot"]
+export const cardActionsAccessory_Silencer: string[] = ["delete", "clone", "quickMount"]
+export const cardActionsAccessory_Optic: string[] = ["delete", "clone", "quickMount"]
+export const cardActionsAmmo: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
-export const collectionExportDirectories: string[] = ["gun", "ammo", "accessory_silencer"]
+export const collectionExportDirectories: string[] = ["gun", "ammo", "accessory_silencer", "accessory_optic"]
 
 export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
-export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer"]
+export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic"]
 export const screenNameParamsLiterature: CollectionType[] = []
 export const screenNameParamsReloading:CollectionType[] = []
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
-export const sortingOptionsAccessory_Silencer:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsAccessory_Silencer:SortingTypesAccessory_Silencer[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsAccessory_Optic:SortingTypesAccessory_Optic[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastBatteryChangeAt", "lastCleanedAt"]
