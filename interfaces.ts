@@ -85,10 +85,49 @@ export interface AccessoryType_Silencer{
   currentlyMountedOn?: string
 }
 
-export type ItemType = GunType | AmmoType | AccessoryType_Silencer
-export type CollectionType = "gunCollection" | "ammoCollection" | "accessoryCollection_Silencer"
-export type Screens = "itemCollection"
+export interface AccessoryType_Optic{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string []
+  manufacturer?: string
+  model: string
+  manufacturingDate?: string
+  originCountry?: string
+  serial?: string
+  reticle?: string
+  reticleColor?: string
+  zoom?: string
+  unit?: string
+  clicksToUnitElevation?: string
+  clicksToUnitWindage?: string
+  material?: string
+  acquisitionDate?: string
+  paidPrice?: string
+  boughtFrom?: string
+  marketValue?: string
+  shotCount?: string
+  lastShotAt?: string
+  lastCleanedAt?: string
+  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  batteryLastChangedAt?: string
+  mainColor?: string
+  remarks?: string
+  currentlyMountedOn?: string
+}
 
+export type ItemType =  | GunType 
+                        | AmmoType 
+                        | AccessoryType_Silencer 
+                        | AccessoryType_Optic
+
+export type CollectionType =  | "gunCollection" 
+                              | "ammoCollection" 
+                              | "accessoryCollection_Silencer" 
+                              | "accessoryCollection_Optic"
+
+export type Screens = "itemCollection"
 
 interface DbId{
   db_id: number
@@ -170,47 +209,62 @@ export interface CommonStyles {
   tagContainerGap: string
 }
 
-export type SortingTypesGun =  "alphabetical" | 
-                            "createdAt" | 
-                            "lastModifiedAt" | 
-                            "caliber" | 
-                            "paidPrice" | 
-                            "marketValue" | 
-                            "acquisitionDate" | 
-                            "lastCleanedAt" |
-                            "lastShotAt"
+export type SortingTypesGun = | "alphabetical" 
+                              | "createdAt" 
+                              | "lastModifiedAt" 
+                              | "caliber" 
+                              | "paidPrice" 
+                              | "marketValue"
+                              | "acquisitionDate" 
+                              | "lastCleanedAt" 
+                              | "lastShotAt"
 
-export type SortingTypesAmmo = "alphabetical" |
-                            "createdAt" |
-                            "lastModifiedAt" |
-                            "currentStock" |
-                            "lastTopUpAt"
+export type SortingTypesAmmo =  | "alphabetical" 
+                                | "createdAt" 
+                                | "lastModifiedAt" 
+                                | "currentStock" 
+                                | "lastTopUpAt"
 
-export type SortingTypesAccessory_Silencer = "alphabetical" |
-                                            "createdAt" |
-                                            "lastModifiedAt" |
-                                            "paidPrice" |
-                                            "marketValue" |
-                                            "acquisitionDate" | 
-                                            "lastCleanedAt" |
-                                            "lastShotAt" |
-                                            "decibelRating"
+export type SortingTypesAccessory_Silencer =  | "alphabetical" 
+                                              | "createdAt" 
+                                              | "lastModifiedAt" 
+                                              | "paidPrice" 
+                                              | "marketValue" 
+                                              | "acquisitionDate" 
+                                              | "lastCleanedAt" 
+                                              | "lastShotAt" 
+                                              | "decibelRating"
 
-export type SortingTypes = SortingTypesGun | SortingTypesAmmo | SortingTypesAccessory_Silencer
+export type SortingTypesAccessory_Optic = | "alphabetical" 
+                                          | "createdAt" 
+                                          | "lastModifiedAt" 
+                                          | "paidPrice" 
+                                          | "marketValue" 
+                                          | "acquisitionDate" 
+                                          | "lastCleanedAt" 
+                                          | "lastBatteryChangeAt" 
+
+export type SortingTypes =  | SortingTypesGun 
+                            | SortingTypesAmmo 
+                            | SortingTypesAccessory_Silencer
+                            | SortingTypesAccessory_Optic
 
                             
-export type Languages = "de" | "en" | "fr" | "it" | "ch"
+export type Languages = | "de" 
+                        | "en" 
+                        | "fr" 
+                        | "it" 
+                        | "ch"
+
 export type CaliberArray = {id: string, amount: string }
-export type DBOperations = "save_arsenal_db" |
-                           "save_arsenal_csv" | 
-                           "import_arsenal_db" |
-                           "import_arsenal_csv" |
-                           "import_custom_csv" | 
-                           "import_legacy_db"
-                           
-                           
 
-
+export type DBOperations =  | "save_arsenal_db" 
+                            | "save_arsenal_csv" 
+                            | "import_arsenal_db" 
+                            | "import_arsenal_csv" 
+                            | "import_custom_csv" 
+                            | "import_legacy_db"
+                           
 export type StackParamList = {
   Home: undefined
   MainMenu: undefined
@@ -220,6 +274,7 @@ export type StackParamList = {
   editItem: undefined
   QuickStock: undefined
   QuickShot: undefined
+  QuickMount: {item: ItemType}
 }
 
 export interface Tag {
