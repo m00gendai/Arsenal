@@ -40,6 +40,7 @@ import Item from 'components/ItemCollection/Item';
 import NewItem from 'components/ItemCollection/NewItem';
 import EditItem from 'components/ItemCollection/EditItem';
 import { useItemStore } from 'stores/useItemStore';
+import QuickMount from 'components/QuickMount';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -520,6 +521,12 @@ export default function App() {
             <Stack.Screen
               name="QuickShot"
               component={QuickShot}
+              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
+            />
+
+            <Stack.Screen
+              name="QuickMount"
+              component={QuickMount}
               options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
             />
 
