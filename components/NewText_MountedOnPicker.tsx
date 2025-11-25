@@ -13,6 +13,7 @@ import * as schema from "db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { useItemStore } from 'stores/useItemStore';
+import AccessoryMountDialog from './Dialogs/AccessoryMountDialog';
 
 interface Props{
     data: string
@@ -24,58 +25,20 @@ interface Props{
 export default function NewText({data, itemData, setItemData, label}: Props){
 
     const [showModal, setShowModal] = useState<boolean>(false)
-    const { currentItem }= useItemStore()
+
     const { language, theme } = usePreferenceStore()
 
     const [isFocus, setFocus] = useState<boolean>(false)
-    const [checked, setChecked] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
-
-    const { data: gunData } = useLiveQuery(
-        db.select()
-        .from(schema.gunCollection)
-        .orderBy(asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`)))
-    )
-
-    const { data: silencerData } = useLiveQuery(
-        db.select()
-        .from(schema.accessoryCollection_Silencer)
-        .where(
-            ne(schema.accessoryCollection_Silencer.id, currentItem.id)
-        )
-        .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`)))
-    )
+    
+    const [itemName, setItemName] = useState<string>("")
+    
 
 
-    async function updateItemData(input: string){
-        setItemData({...itemData, [data]: input})
-        console.log(checked)
-        await db.insert(schema.accessoryMount)
-        .values(
-            {
-                id: uuidv4(),
-                accessoryId: itemData.id,
-                parentGunId: checked,
-                parentAccessoryId: null
-            }
-        )
-        .onConflictDoUpdate({
-            target: schema.accessoryMount.id,
-            set: { 
-                accessoryId: itemData.id,
-                parentGunId: checked,
-                parentAccessoryId: null 
-            },
-        });
-    }
+    
 
-    function handleConfirm(){
-        updateItemData(checked)
-        setShowModal(false)
-    }
+    
 
-    function handleCancel(){
-        setShowModal(false)
-    }
+    
 
     function handleFocus(){
         setFocus(true)
@@ -86,10 +49,9 @@ export default function NewText({data, itemData, setItemData, label}: Props){
         setShowModal(true)
     }
 
-    function getGunName(){
-        const selectedGun = gunData.find(gun => gun.id === checked)
-        return selectedGun ? `${selectedGun.manufacturer ? selectedGun.manufacturer : ""} ${selectedGun.model}` : ""
-    }
+    
+
+    
 
     return(
         <View style={{flex: 1}}>
@@ -101,7 +63,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                     }}
                     onFocus={()=>handleFocus()}
                     onBlur={()=>setFocus(false)}
-                    value={checked ? getGunName() : ""}
+                    value={itemName}
                     editable={false}
                     showSoftInputOnFocus={true}
                     left={null}
@@ -114,87 +76,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                 />
             </Pressable>
            
-            <ModalContainer
-                title={modalTexts.caliberPicker.title[language]}
-                subtitle={modalTexts.caliberPicker.text[language]}
-                visible={showModal}
-                setVisible={setShowModal}
-                content={
-                    <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", height: "100%"}}>
-                                <ScrollView 
-                                    style={{width: "100%", height: "100%"}}
-                                    contentContainerStyle={{display: "flex", flexDirection: "column", flexWrap: "wrap", justifyContent: "center", alignItems: "center", width: "100%" }}
-                                >
-                                    <List.Section style={{width: "100%"}}>
-      <List.Accordion
-        title="Waffen"
-        left={props => <List.Icon {...props} icon="pistol" />}>
-        {gunData.map((item, index) =>{
-            return (
-                <TouchableNativeFeedback onPress={() => setChecked(item.id)} key={item.id} >
-                    <View 
-                        style={{
-                            paddingLeft: defaultViewPadding, 
-                            paddingRight: defaultViewPadding, 
-                            backgroundColor: index % 2 === 0 ? "" : theme.colors.tertiaryContainer, 
-                            width: "100%", 
-                            display: "flex", 
-                            flexDirection: "row", 
-                            alignItems: "center", 
-                            marginBottom: index === gunData.length-1 ? 10 : 0
-                        }}
-                    >
-                        <Text style={{width: "80%"}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
-                        <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
-                            <RadioButton 
-                                value={item.id}
-                                status={ checked === item.id ? 'checked' : 'unchecked' }
-                            />
-                        </View>
-                    </View>
-                </TouchableNativeFeedback>
-            )
-        })}
-      </List.Accordion>
-
-      <List.Accordion
-        title="Schalldämpfer"
-        left={props => <List.Icon {...props} icon="volume-mute" />}>
-        {silencerData.map((item, index) =>{
-            return(
-                <TouchableNativeFeedback onPress={() => setChecked(item.id)} key={item.id} >
-                    <View 
-                        style={{
-                            paddingLeft: defaultViewPadding, 
-                            paddingRight: defaultViewPadding, 
-                            backgroundColor: index % 2 === 0 ? "" : theme.colors.tertiaryContainer, 
-                            width: "100%", 
-                            display: "flex", 
-                            flexDirection: "row", 
-                            alignItems: "center", 
-                            marginBottom: index === silencerData.length-1 ? 10 : 0
-                        }}
-                    >
-                        <Text style={{width: "80%"}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
-                        <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
-                            <RadioButton 
-                                value={item.id}
-                                status={ checked === item.id ? 'checked' : 'unchecked' }
-                            />
-                        </View>
-                    </View>
-                </TouchableNativeFeedback>
-            )
-        })}
-      </List.Accordion>
-    </List.Section>
-                    
-                </ScrollView>
-                            </View>}
-                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
-                buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
-                buttonDEL={null}
-            />
+            <AccessoryMountDialog data={data} itemData={itemData} setItemData={setItemData} showModal={showModal} setShowModal={setShowModal} setItemName={setItemName}/>
 
         </View>
     )
