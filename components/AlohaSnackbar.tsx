@@ -1,25 +1,29 @@
-import { useState } from 'react';
-import { Text, Snackbar } from 'react-native-paper';
+import { defaultBottomBarHeight, defaultViewPadding } from 'configs';
+import { Snackbar } from 'react-native-paper';
+import { useTextStore } from 'stores/useTextStore';
 import { useViewStore } from 'stores/useViewStore';
 
 export default function AlohaSnackbar(){
 
-  const { alohaSnackbarVisible, setAlohaSnackbarVisible } = useViewStore()
+  const { alohaSnackbarVisible, setAlohaSnackbarVisible, hideBottomSheet } = useViewStore()
+  const { alohaSnackbarText } = useTextStore()
   
   const onDismissSnackBar = () => setAlohaSnackbarVisible(false);
-console.log("ALOHA")
-console.log(alohaSnackbarVisible)
+
     return(
         <Snackbar
+        wrapperStyle={{
+          marginBottom: hideBottomSheet ? 0 : defaultBottomBarHeight,
+        }}
         visible={alohaSnackbarVisible}
         onDismiss={onDismissSnackBar}
         action={{
-          label: 'Undo',
+          label: 'OK',
           onPress: () => {
             onDismissSnackBar
           },
         }}>
-        Hey there! I'm a Snackbar.
+        {alohaSnackbarText}
       </Snackbar>
     )
 }
