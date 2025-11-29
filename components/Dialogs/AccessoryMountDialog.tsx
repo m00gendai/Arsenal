@@ -4,13 +4,18 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { modalTexts } from "lib/textTemplates"
+import { modalTexts, snackbarText } from "lib/textTemplates"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
 import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { ItemType } from "interfaces";
+import { useViewStore } from "stores/useViewStore";
+import { useItemStore } from "stores/useItemStore";
+import { useNavigation } from "@react-navigation/native";
+import { useTextStore } from "stores/useTextStore";
+import { access } from "fs";
 
 interface Props{
     data: string
@@ -24,9 +29,24 @@ interface Props{
 export default function AccessoryMountDialog({data, itemData, setItemData, showModal, setShowModal, setItemName}: Props){
 
     const { language, theme } = usePreferenceStore()
+    const { setAlohaSnackbarVisible } = useViewStore()
+    const { currentItem, setCurrentItem, currentCollection, currentAccessory } = useItemStore()
+    const { setAlohaSnackbarText } = useTextStore()
+
+    const navigation = useNavigation()
 
     const [checked, setChecked] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [collection, setCollection] = useState<"guns" | "accessories" | "">("")
+
+    const { data: accessoryData } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection)
+        .where(
+            eq(
+                schema.accessoryCollection.id, itemData.id
+            )
+        )
+    )
 
     const { data: gunData } = useLiveQuery(
         db.select()
@@ -63,12 +83,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getItemName(){
-        if(setItemName){
         const selectedItem = [...gunData, ...silencerData, ...opticData].find(item => item.id === checked)
 
-        setItemName(selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : "")
-        }
-    }
+        return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
+}
 
     async function updateItemData(input: string){
         // TODO: Update Item itself
@@ -77,11 +95,12 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         }
         await db.delete(schema.accessoryMount)
         .where(eq(schema.accessoryMount.accessoryId, itemData.id));
-
+        
         if(checked !== ""){
             await db.insert(schema.accessoryMount).values({
                 id: uuidv4(),
                 accessoryId: itemData.id,
+                accessoryType: accessoryData[0] ? accessoryData[0].type : currentCollection,
                 parentGunId: collection === "guns" ? checked : null,
                 parentAccessoryId: collection === "accessories" ? checked : null,
             })
@@ -90,8 +109,13 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
 
     function handleConfirm(){
         updateItemData(checked)
-        getItemName()
+        const itemName = getItemName()
+        if(setItemName){
+            setItemName(itemName)
+        }
         setShowModal(false)
+        setAlohaSnackbarVisible(true)
+        setAlohaSnackbarText(snackbarText.mountAccessory[language].replace("{{{A}}}", itemName))
     }
 
     function handleCancel(){
@@ -114,8 +138,8 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     
     return(
         <ModalContainer
-                title={modalTexts.caliberPicker.title[language]}
-                subtitle={modalTexts.caliberPicker.text[language]}
+                title={modalTexts.mountedOn.title[language]}
+                subtitle={modalTexts.mountedOn.text[language]}
                 visible={showModal}
                 setVisible={setShowModal}
                 content={
