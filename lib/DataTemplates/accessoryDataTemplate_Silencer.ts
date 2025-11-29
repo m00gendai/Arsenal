@@ -1,4 +1,5 @@
 import { AccessoryType_Silencer } from "interfaces"
+import { normalizeColor } from "react-native-reanimated/lib/typescript/Colors"
 
 export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
     {
@@ -41,6 +42,14 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             it: "Calibro",
             ch: "Caliber",
     },
+    {
+            name: "thread",
+            de: "Gewinde",
+            en: "Threading",
+            fr: "",
+            it: "",
+            ch: "",
+    },
     {   
             name: "serial",
             de: "Seriennummer",
@@ -61,9 +70,9 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             name: "decibelRating",
             de: "Dezibelwert",
             en: "Decibel Rating",
-            fr: "Le Rating de Decibel",
-            it: "Il Ratingi di Decibelo",
-            ch: "Va Ratingtscha dal Decibel",
+            fr: "",
+            it: "",
+            ch: "",
     },
     {
             name: "permit",
@@ -151,9 +160,9 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             name: "currentlyMountedOn",
             de: "Montiert auf",
             en: "Mounted on",
-            fr: "Morere sur",
-            it: "Montare sole",
-            ch: "Va montaschier sur",
+            fr: "",
+            it: "",
+            ch: "",
     },
 ]
 
@@ -173,6 +182,7 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     manufacturingDate: null,
     originCountry: null,
     caliber: [],
+    thread: null,
     serial: null,
     permit: null,
     acquisitionDate: null,
