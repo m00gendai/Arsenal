@@ -1,6 +1,6 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
 import { AmmoType, ItemType, StackParamList } from 'interfaces';
-import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
+import { Badge, Card, Icon, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
 import { useViewStore } from 'stores/useViewStore';
@@ -9,6 +9,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { checkDate } from 'utils';
 import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
+import MountedIconBar from './MountedIconBar';
+import { useDatabaseStore } from 'stores/useDatabaseStore';
 
 interface Props{
     item: ItemType
@@ -19,7 +21,12 @@ export default function ItemCard({ item }:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
-      const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
+    const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
+    const { accessoryMount } = useDatabaseStore()
+
+    const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id)
+
+
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
     function handleCardPress(item:ItemType){
@@ -72,7 +79,8 @@ export default function ItemCard({ item }:Props){
 
             } : {
                 width: setCardWith(),
-                backgroundColor: theme.colors.surfaceVariant
+                backgroundColor: theme.colors.surfaceVariant,
+                paddingBottom: displaySettings[currentCollection] === "list" ? 5 : 0
             }}
             
         >
@@ -99,32 +107,14 @@ export default function ItemCard({ item }:Props){
             />
             {displaySettings[currentCollection] === "grid" ? 
             <View>
+                
                 <Card.Cover 
                     source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
                         height: 100,
                     }}
                 />
-                <View style={{
-                position: "absolute",
-                left: 0,
-                marginTop: 0,
-                marginBottom: 0,
-
-                width: 40,
-                height: "100%",
-                display: "flex", 
-                flexDirection: "column",
-                justifyContent: "flex-start", 
-                flexWrap: "wrap",
-                alignItems: "center",
-                borderTopLeftRadius: 5,
-                borderTopRightRadius: 5,
-                borderBottomLeftRadius: 5,
-                borderBottomRightRadius: 5
-            }}>
-               
-                  </View>
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
@@ -178,7 +168,7 @@ export default function ItemCard({ item }:Props){
                         aspectRatio: "4/3"
                     }}
                 /> : null}
-                
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                     <Badge
