@@ -154,3 +154,12 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsAccessory_Optic
     }
 }
+
+export function determineAccessoryIcons(collection: CollectionType){
+    switch(collection){
+        case "accessoryCollection_Silencer":
+            return "volume-mute"
+        case "accessoryCollection_Optic":
+            return "toslink"
+    }
+}
