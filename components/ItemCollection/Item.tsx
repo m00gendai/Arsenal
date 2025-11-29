@@ -147,11 +147,14 @@ export default function Item({navigation}){
 }
 
 useEffect(() => {
-  const unsubscribe = navigation.addListener('blur', () => {
+  const unsubscribe = navigation.addListener("blur", () => {
+    const nextRoute = navigation.getState().routes[navigation.getState().index];
+    if (nextRoute.name === "QuickMount") return;
+
     setHideBottomSheet(false);
-    setCurrentItem(determineEmptyObject(currentCollection))
+    setCurrentItem(determineEmptyObject(currentCollection));
   });
-  
+
   return unsubscribe;
 }, [navigation]);
 
