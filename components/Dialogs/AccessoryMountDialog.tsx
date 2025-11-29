@@ -4,7 +4,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { modalTexts, snackbarText } from "lib/textTemplates"
+import { modalTexts, snackbarText, tabBarLabels } from "lib/textTemplates"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
 import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
@@ -200,7 +200,7 @@ updateItemData(itemName)
                                 >
                                     <List.Section style={{width: "100%"}}>
       <List.Accordion
-        title="Waffen"
+        title={tabBarLabels.gunCollection[language]}
         style={gunData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={gunData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
         left={props => <List.Icon {...props} icon="pistol" color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
@@ -226,8 +226,8 @@ updateItemData(itemName)
         })}
       </List.Accordion>
 
-      <List.Accordion
-        title="Schalldämpfer"
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.silencerCollection[language]}
         style={silencerData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={silencerData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
         left={props => <List.Icon {...props} icon="volume-mute" color={silencerData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
@@ -251,10 +251,10 @@ updateItemData(itemName)
                 </TouchableNativeFeedback>
             )
         })}
-      </List.Accordion>
+      </List.Accordion> : null}
 
-      <List.Accordion
-        title="Optiken"
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.opticCollection[language]}
         style={opticData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={opticData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
         left={props => <List.Icon {...props} icon="toslink" color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
@@ -278,10 +278,10 @@ updateItemData(itemName)
                 </TouchableNativeFeedback>
             )
         })}
-      </List.Accordion>
+      </List.Accordion> : null}
 
       <List.Accordion
-        title="Wechselsysteme"
+        title={tabBarLabels.conversionCollection[language]}
         style={conversionKitData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={conversionKitData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
         left={props => <List.Icon {...props} icon="cog-transfer-outline" color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
