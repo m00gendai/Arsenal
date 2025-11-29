@@ -11,7 +11,6 @@ interface Props{
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: TEXT AREA`)
     
     const input = useRef<string|string[]>(itemData && itemData[data] ? itemData[data] : "")
 

@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 
 export const gunCollection = sqliteTable('guns', {
@@ -66,9 +67,28 @@ export const ammoTags = sqliteTable("ammoTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
-export const accessoryCollection_ConversionKit = sqliteTable("accessories_conversionKit", {
+export const accessoryCollection = sqliteTable("accessoryCollection", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
+    type: text("type").notNull()
+});
+
+export const accessoryMount = sqliteTable("accessoryMount", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    accessoryId: text("accessoryId").notNull().references(() => accessoryCollection.id),
+    accessoryType: text("accessoryType").notNull(),
+    parentGunId: text("parentGunId").references(() => gunCollection.id),
+    parentGunType: text("parentGunType"),
+    parentAccessoryId: text("parentAccessoryId").references(() => accessoryCollection.id),
+    parentAccessoryType: text("parentAccessoryType")
+});
+
+
+
+export const accessoryCollection_ConversionKit = sqliteTable("accessories_conversionKit", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -79,10 +99,10 @@ export const accessoryCollection_ConversionKit = sqliteTable("accessories_conver
     originCountry: text("originCountry"),
     caliber: text("caliber", {mode: "json"}),
     serial: text("serial"),
-    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
+    currentlyMountedOn: text("currentlyMountedOn")
 })
 
-export const accessory_ConversionKitsTags = sqliteTable("accessories_conversionKitsTags", {
+export const accessory_ConversionKitTags = sqliteTable("accessories_conversionKitTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("conversionKitTag_label"),
     color: text("color"),
@@ -91,7 +111,7 @@ export const accessory_ConversionKitsTags = sqliteTable("accessories_conversionK
 
 export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", {
     db_id: integer('id').primaryKey().notNull(),
-    id: text("uuid").notNull().unique(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
     createdAt: integer("createdAt").notNull(),
     lastModifiedAt: integer("lastModifiedAt"),
     images: text("images", {mode: "json"}),
@@ -115,13 +135,52 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
     cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOnGun: text("gun_id").references(()=>gunCollection.id),
-    currentlyMountedOnConversionKit: text("conversionKit_id").references(()=>accessoryCollection_ConversionKit.id),
+    currentlyMountedOn: text("currentlyMountedOn")
 })
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
     db_id: integer('id').primaryKey().notNull(),
     label: text("label").notNull().unique("silencerTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
+export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    serial: text("serial"),
+    reticle: text("reticle"),
+    reticleColor: text("reticleColor"),
+    zoom: text("zoom"),
+    unit: text("unit"),
+    clicksToUnitElevation: text("clicksToUnitElevation"),
+    clicksToUnitWindage: text("clicksToUnitWindage"),
+    material: text("material"),
+    acquisitionDate: text("acquisitionDate"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt: text("lastShotAt"),
+    lastCleanedAt: text("lastCleanedAt"),
+    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    batteryLastChangedAt: text("batteryLastChangedAt"),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOn: text("currentlyMountedOn")
+})
+
+export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("opticTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
 })
@@ -133,3 +192,23 @@ export const gunReminders = sqliteTable("gunReminder",{
     gun_id: text('gun_id').references(() => gunCollection.id),
 })
 
+// RELATIONS
+
+export const accessoryRelations = relations(accessoryCollection, ({ many }) => ({
+    mounts: many(accessoryMount),
+}));
+
+export const accessoryMountRelations = relations(accessoryMount, ({ one }) => ({
+    accessory: one(accessoryCollection, {
+        fields: [accessoryMount.accessoryId],
+        references: [accessoryCollection.id]
+    }),
+    parentGun: one(gunCollection, {
+        fields: [accessoryMount.parentGunId],
+        references: [gunCollection.id],
+    }),
+    parentAccessory: one(accessoryCollection, {
+        fields: [accessoryMount.parentAccessoryId],
+        references: [accessoryCollection.id],
+    }),
+}));

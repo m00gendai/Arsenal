@@ -16,7 +16,12 @@ export function useItemTags(type: CollectionType) {
 
     const { data: accessoryTags_Silencer } = useLiveQuery(
         db.select()
-        .from(schema.accessoryCollection_Silencer)
+        .from(schema.accessory_SilencerTags)
+    )
+
+     const { data: accessoryTags_Optic } = useLiveQuery(
+        db.select()
+        .from(schema.accessory_OpticTags)
     )
 
     switch(type){
@@ -26,5 +31,7 @@ export function useItemTags(type: CollectionType) {
             return ammoTags
         case "accessoryCollection_Silencer":
             return accessoryTags_Silencer
+        case "accessoryCollection_Optic":
+            return accessoryTags_Optic
     }
 }

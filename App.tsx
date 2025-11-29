@@ -6,10 +6,8 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { usePreferenceStore } from './stores/usePreferenceStore';
 import { useViewStore } from './stores/useViewStore';
-import GunCollection from './components/Collections/GunCollection/GunCollection';
 import MainMenu from './components/MainMenu/MainMenu';
 import { NavigationContainer } from '@react-navigation/native';
-import AmmoCollection from './components/Collections/AmmoCollection/AmmoCollection';
 import { StatusBar } from 'expo-status-bar';
 import { AmmoType, GunType, StackParamList } from './interfaces';
 import * as SecureStore from "expo-secure-store"
@@ -19,15 +17,9 @@ import { useTagStore } from './stores/useTagStore';
 import { useGunStore } from './stores/useGunStore';
 import { DefaultTheme } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import NewAmmo from './components/Collections/AmmoCollection/NewAmmo';
-import NewGun from './components/Collections/GunCollection/NewGun';
-import Gun from './components/Collections/GunCollection/Gun';
-import Ammo from './components/Collections/AmmoCollection/Ammo';
 import QuickStock from './components/QuickStock';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import QuickShot from './components/QuickShot';
-import EditGun from './components/Collections/GunCollection/EditGun';
-import EditAmmo from './components/Collections/AmmoCollection/EditAmmo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Dimensions } from 'react-native';
@@ -48,6 +40,8 @@ import Item from 'components/ItemCollection/Item';
 import NewItem from 'components/ItemCollection/NewItem';
 import EditItem from 'components/ItemCollection/EditItem';
 import { useItemStore } from 'stores/useItemStore';
+import QuickMount from 'components/QuickMount';
+import AlohaSnackbar from 'components/AlohaSnackbar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -532,12 +526,19 @@ export default function App() {
             />
 
             <Stack.Screen
+              name="QuickMount"
+              component={QuickMount}
+              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
+            />
+
+            <Stack.Screen
               name="MainMenu"
               component={MainMenu}
               options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, gestureDirection: "horizontal-inverted", presentation: "transparentModal", cardStyle: { backgroundColor: Dimensions.get("window").width > Dimensions.get("window").height ? "transparent" : theme.colors.background}}} 
             />
 
           </Stack.Navigator>
+          <AlohaSnackbar/>
           {mainMenuOpen ? null : hideBottomSheet ? null : <BottomSheet
         ref={bottomSheetRef}
         
@@ -546,6 +547,7 @@ export default function App() {
             ]}
             handleComponent={null}            
       >
+        
         <BottomSheetView style={{ flex: 1 }}>
           <BottomBar screen={currentCollection}/>
         </BottomSheetView>

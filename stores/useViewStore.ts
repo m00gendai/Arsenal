@@ -34,6 +34,12 @@ interface ViewStore {
 
     cardOptionsMenuVisible: boolean
     setCardOptionsMenuVisible: (status: boolean) => void
+
+    cardOptionsMenuVisible_accessories: boolean
+    setCardOptionsMenuVisible_accessories: (status: boolean) => void
+
+    alohaSnackbarVisible: boolean
+    setAlohaSnackbarVisible: (status: boolean) => void
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -46,6 +52,9 @@ interface ViewStore {
 
     cardOptionsMenuVisible: false,
     setCardOptionsMenuVisible: (status: boolean) => set((state) => ({cardOptionsMenuVisible: status})),
+
+    cardOptionsMenuVisible_accessories: false,
+    setCardOptionsMenuVisible_accessories: (status: boolean) => set((state) => ({cardOptionsMenuVisible_accessories: status})),
     
     lightBoxOpen: false,
     setLightBoxOpen: () => set((state) => ({lightBoxOpen: !state.lightBoxOpen})),
@@ -70,4 +79,7 @@ interface ViewStore {
     
     exportModalVisible: false,
     toggleExportModalVisible: () => set((state) => ({exportModalVisible: !state.exportModalVisible})),
+
+    alohaSnackbarVisible: false,
+    setAlohaSnackbarVisible: () => set((state) => ({alohaSnackbarVisible: !state.alohaSnackbarVisible})),
   }))

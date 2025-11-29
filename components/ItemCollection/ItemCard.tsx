@@ -1,30 +1,32 @@
-import { Dimensions, Pressable, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, CollectionType, GunType, ItemType, StackParamList } from 'interfaces';
-import { Badge, Button, Card, Dialog, Icon, IconButton, Modal, Portal, Text, TouchableRipple } from 'react-native-paper';
-import { DisplayVariants, usePreferenceStore } from 'stores/usePreferenceStore';
+import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
+import { AmmoType, ItemType, StackParamList } from 'interfaces';
+import { Badge, Card, Icon, IconButton, TouchableRipple } from 'react-native-paper';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
 import { useViewStore } from 'stores/useViewStore';
-import { useGunStore } from 'stores/useGunStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate, intlNumberFormatOptions } from 'utils';
-import { useState } from 'react';
-import { gunDeleteAlert, longPressActions } from 'lib/textTemplates';
+import { checkDate } from 'utils';
 import * as FileSystem from 'expo-file-system';
-
 import { useItemStore } from 'stores/useItemStore';
-import CardOptionsMenu from 'components/CardOptionsMenu';
+import MountedIconBar from './MountedIconBar';
+import { useDatabaseStore } from 'stores/useDatabaseStore';
 
 interface Props{
     item: ItemType
     index?: number
 }
 
-export default function GunCard({ item }:Props){
+export default function ItemCard({ item }:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
-      const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
+    const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
+    const { accessoryMount } = useDatabaseStore()
+
+    const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id)
+
+
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
     function handleCardPress(item:ItemType){
@@ -59,7 +61,6 @@ export default function GunCard({ item }:Props){
         const divisor = displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
         return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding))
       }
-      
 
     return(
         <View>
@@ -78,7 +79,8 @@ export default function GunCard({ item }:Props){
 
             } : {
                 width: setCardWith(),
-                backgroundColor: theme.colors.surfaceVariant
+                backgroundColor: theme.colors.surfaceVariant,
+                paddingBottom: displaySettings[currentCollection] === "list" ? 5 : 0
             }}
             
         >
@@ -105,12 +107,14 @@ export default function GunCard({ item }:Props){
             />
             {displaySettings[currentCollection] === "grid" ? 
             <View>
+                
                 <Card.Cover 
                     source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
                         height: 100,
                     }}
                 />
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
@@ -164,7 +168,7 @@ export default function GunCard({ item }:Props){
                         aspectRatio: "4/3"
                     }}
                 /> : null}
-                
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                     <Badge

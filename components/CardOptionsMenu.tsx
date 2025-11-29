@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { defaultViewPadding } from "configs";
+import { defaultViewPadding, defaultCardOptionsMenuFontSize, defaultCardOptionsMenuIconSize } from "configs";
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';
@@ -26,7 +26,7 @@ export default function CardOptionsMenu(){
 
     function handleClone(){
         setCardOptionsMenuVisible(false)
-        navigation.navigate("newItem")
+        navigation.navigate("newItem", {clone: true})
       }
 
       function handleShotButtonPress(item:ItemType){
@@ -41,8 +41,22 @@ export default function CardOptionsMenu(){
               navigation.navigate("QuickStock")
           } 
 
+          function handleMountButtonPress(item:ItemType){
+            setCardOptionsMenuVisible(false)
+              navigation.navigate("QuickMount", {item: item})
+          }
+
       async function deleteItem(item:ItemType){
-        await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        if(currentCollection.startsWith("accessoryCollection")){
+            // Delete mount entry
+            await db.delete(schema.accessoryMount).where(eq(schema.accessoryMount.accessoryId, item.id));
+            // Delete master entry
+            await db.delete(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, item.id));
+            // Delete individual entry
+            await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        } else {
+            await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, item.id));
+        }
         toggleDeleteDialogVisible(false)
         setCardOptionsMenuVisible(false)
     }
@@ -53,29 +67,37 @@ export default function CardOptionsMenu(){
 <Portal>
         <Modal visible={cardOptionsMenuVisible} onDismiss={()=>setCardOptionsMenuVisible(false)}>
         <Card style={{width: "85%", alignSelf: "center", padding: defaultViewPadding, backgroundColor: theme.colors.surface}}>
-            <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+            <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap"}}>
+                
         {cardActions.map(action => {
-            if(action === "clone"){
-            return <Pressable key={action} onPress={()=>handleClone()} style={{ alignItems: 'center'}}>
-            <Icon source="content-duplicate" size={48} />
-            <Text style={{marginTop: defaultViewPadding}}>{longPressActions.clone[language]}</Text>
-       </Pressable>}
-       if(action === "delete"){
-       return <Pressable key={action} onPress={()=>toggleDeleteDialogVisible(true)} style={{ alignItems: 'center' }}>
-            <Icon source="delete" size={48} color={theme.colors.error}/>
-            <Text style={{marginTop: defaultViewPadding, color: theme.colors.error}}>{longPressActions.delete[language]}</Text>
+            if(action === "delete"){
+       return <Pressable key={action} onPress={()=>toggleDeleteDialogVisible(true)} style={{ alignItems: 'center', marginRight: 48 }}>
+            <Icon source="delete" size={defaultCardOptionsMenuIconSize} color={theme.colors.error}/>
+            <Text style={{marginTop: defaultViewPadding, color: theme.colors.error, fontSize: defaultCardOptionsMenuFontSize}}>{longPressActions.delete[language]}</Text>
        </Pressable>
        }
+            if(action === "clone"){
+            return <Pressable key={action} onPress={()=>handleClone()} style={{ alignItems: 'center'}}>
+            <Icon source="content-duplicate" size={defaultCardOptionsMenuIconSize} />
+            <Text style={{marginTop: defaultViewPadding, fontSize: defaultCardOptionsMenuFontSize}}>{longPressActions.clone[language]}</Text>
+       </Pressable>}
+       
        if(action === "quickShot"){
         return <Pressable key={action} onPress={()=>handleShotButtonPress(currentItem)} style={{ alignItems: 'center' }}>
-            <Icon source="bullet" size={48} />
-            <Text style={{marginTop: defaultViewPadding}}>{"QuickShot"}</Text>
+            <Icon source="bullet" size={defaultCardOptionsMenuIconSize} />
+            <Text style={{marginTop: defaultViewPadding, fontSize: defaultCardOptionsMenuFontSize}}>{"QuickShot"}</Text>
        </Pressable>
        }
        if(action === "quickStock"){
         return <Pressable key={action} onPress={()=>handleStockButtonPress(currentItem)} style={{ alignItems: 'center' }}>
-            <Icon source="cart-variant" size={48} />
-            <Text style={{marginTop: defaultViewPadding}}>{"QuickStock"}</Text>
+            <Icon source="cart-variant" size={defaultCardOptionsMenuIconSize} />
+            <Text style={{marginTop: defaultViewPadding, fontSize: defaultCardOptionsMenuFontSize}}>{"QuickStock"}</Text>
+       </Pressable>
+       }
+       if(action === "quickMount"){
+        return <Pressable key={action} onPress={()=>handleMountButtonPress(currentItem)} style={{ alignItems: 'center' }}>
+            <Icon source="wrench" size={defaultCardOptionsMenuIconSize} />
+            <Text style={{marginTop: defaultViewPadding, fontSize: defaultCardOptionsMenuFontSize}}>{"QuickMount"}</Text>
        </Pressable>
        }
     })}

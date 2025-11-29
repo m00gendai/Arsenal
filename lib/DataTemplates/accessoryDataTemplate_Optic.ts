@@ -1,6 +1,6 @@
-import { AccessoryType_Silencer } from "interfaces"
+import { AccessoryType_Optic, AccessoryType_Silencer } from "interfaces"
 
-export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
+export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
     {
             name: "manufacturer",
             de: "Hersteller",
@@ -33,14 +33,6 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             it: "Paese di origine",
             ch: "Pajais d'origin",
     },
-    {
-            name: "caliber",
-            de: "Kaliber",
-            en: "Caliber",
-            fr: "Calibre",
-            it: "Calibro",
-            ch: "Caliber",
-    },
     {   
             name: "serial",
             de: "Seriennummer",
@@ -49,6 +41,54 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             it: "Numero di serie",
             ch: "Numer da seria",
     },
+    {   
+            name: "reticle",
+            de: "Absehen",
+            en: "Reticle",
+            fr: "",
+            it: "",
+            ch: "",
+    },
+    {   
+            name: "reticleColor",
+            de: "Absehen Farbe",
+            en: "Reticle Color",
+            fr: "",
+            it: "",
+            ch: "",
+    },
+    {   
+            name: "zoom",
+            de: "Vergrösserung",
+            en: "Zoom",
+            fr: "",
+            it: "",
+            ch: "",
+    },
+    {   
+            name: "unit",
+            de: "Verstelleinheit",
+            en: "Click Unit",
+            fr: "",
+            it: "",
+            ch: "",
+    },
+    {   
+            name: "clicksToUnitElevation",
+            de: "Höhenverstellung pro Klick",
+            en: "Elevation Adjustment per Click",
+            fr: "",
+            it: "",
+            ch: "",
+    },
+    {   
+            name: "clicksToUnitWindage",
+            de: "Seitenverstellung pro Klick",
+            en: "Windage Adjustment per Click",
+            fr: "",
+            it: "",
+            ch: "",
+    },
     {
             name: "material",
             de: "Material",
@@ -56,22 +96,6 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             fr: "La Materiala",
             it: "Il Materiale",
             ch: "Va Materiala",
-    },
-    {
-            name: "decibelRating",
-            de: "Dezibelwert",
-            en: "Decibel Rating",
-            fr: "Le Rating de Decibel",
-            it: "Il Ratingi di Decibelo",
-            ch: "Va Ratingtscha dal Decibel",
-    },
-    {
-            name: "permit",
-            de: "Bewilligung",
-            en: "Permit",
-            fr: "Permis",
-            it: "Permesso",
-            ch: "Concessiun",
     },
     {
             name: "acquisitionDate",
@@ -140,6 +164,14 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
         ch: "Interval da nettegiar",
     },
     {
+        name: "batteryLastChangedAt",
+        de: "Zuletzt gereinigt",
+        en: "Last cleaned",
+        fr: "Nettoyé en dernier",
+        it: "Ultima pulizia",
+        ch: "Il davos purifitgà",
+    },
+    {
             name: "mainColor",
             de: "Hauptfarbe",
             en: "Main Color",
@@ -157,7 +189,7 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
     },
 ]
 
-export const silencerRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
+export const opticRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
     name: "remarks",
     de: "Bemerkungen",
     en: "Remarks",
@@ -166,15 +198,20 @@ export const silencerRemarks:{name:string, de:string, en:string, fr:string, it: 
     ch: "Remartgar",
 }
 
-export const emptySilencerObject:AccessoryType_Silencer= {
+export const emptyOpticObject:AccessoryType_Optic= {
     id: "",
     manufacturer: null,
     model: "",
     manufacturingDate: null,
     originCountry: null,
-    caliber: [],
     serial: null,
-    permit: null,
+    reticle: null,
+    reticleColor: null,
+    zoom: null,
+    unit: null,
+    clicksToUnitElevation: null,
+    clicksToUnitWindage: null,
+    material: null,
     acquisitionDate: null,
     boughtFrom: null,
     mainColor: null,
@@ -189,7 +226,6 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     paidPrice: null,
     marketValue: null,
     cleanInterval: null,
-    decibelRating: null,
-    material: null,
     currentlyMountedOn: null,
+    batteryLastChangedAt: null
 }

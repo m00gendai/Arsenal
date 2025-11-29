@@ -1,6 +1,6 @@
 import { IconButton, TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
@@ -11,13 +11,13 @@ import { modalTexts } from '../lib/textTemplates';
 
 interface Props{
     data: string
-    itemData?: GunType | AmmoType 
-    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    itemData?: ItemType
+    setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: DATEPICKER TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showDateTime, setShowDateTime] = useState<boolean>(false)
     const [date, setDate] = useState<(string | number | Date | dayjs.Dayjs)>(dayjs());
@@ -45,7 +45,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function updateDate(input){
-        console.log(input)
+
         setInput(new Date(input).toLocaleDateString("de-CH", dateTimeOptions))
         setDate(input)
     }

@@ -97,6 +97,7 @@ interface Sorting{
     lastShotAt: SimpleTranslation
     currentStock: SimpleTranslation
     lastTopUpAt: SimpleTranslation
+    lastBatteryChangeAt: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -130,6 +131,7 @@ interface ModalText{
     colorPicker: ModalTextItems
     caliberPicker: ModalTextItems
     cleanInterval: ModalTextItems
+    mountedOn: ModalTextItems
 }
 
 interface ModalTextItems{
@@ -170,6 +172,9 @@ interface aboutThanksPersons{
 interface LongPressActions{
     clone: SimpleTranslation
     delete: SimpleTranslation
+    goto: SimpleTranslation
+    unmount: SimpleTranslation
+    remount: SimpleTranslation
 }
 
 interface iosWarning{
@@ -862,7 +867,7 @@ export const tabBarLabels: TabBarLabels = {
         en: "Magazines",
         fr: "Magazines",
         it: "Riviste",
-        ch: "mMgasins",
+        ch: "Magasins",
     },
     silencerCollection: {
         de: "Schalldämpfer",
@@ -873,17 +878,17 @@ export const tabBarLabels: TabBarLabels = {
     },
     lightLaserCollection: {
         de: "Licht & Laser",
-        en: "Miscellaneous",
-        fr: "Divers",
-        it: "Varie",
-        ch: "Diverses",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
     },
     conversionCollection: {
         de: "Wechelsysteme & Läufe",
-        en: "Miscellaneous",
-        fr: "Divers",
-        it: "Varie",
-        ch: "Diverses",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
     },
     accessoriesMiscCollection: {
         de: "Diverses",
@@ -1138,6 +1143,13 @@ export const sorting:Sorting = {
         fr: "Quantité actuelle",
         it: "Quantità attuale",
         ch: "Quantitad actuala",    
+    },
+    lastBatteryChangeAt:{
+        de: "Letzter Batteriewechsel",     
+        en: "Last Battery Change",
+        fr: "",
+        it: "",
+        ch: "",    
     }
 }
 
@@ -1396,6 +1408,22 @@ export const modalTexts: ModalText = {
             ch: `Tscherni in interval da temp, cur che l'arma stuess puspè vegnir nettegiada.\n\nDies vegn quintà vi da la valur da "l'ultima nettegiada", premess che quella saja messa.\n\nBenenen surpassament da l'interval cumpara il num da l'arma en la survista cotschna.`,
         }
     },
+    mountedOn: {
+        title: {
+            de: "QuickMount",
+            en: "QuickMount",
+            fr: "QuickMount",
+            it: "QuickMount",
+            ch: "QuickMount",
+        },
+        text:{
+            de: `Wähle, auf welche Waffe/welches Zubehör das aktuelle Zubehör/Waffenteil montiert werden soll.`,
+            en: ``,
+            fr: ``,
+            it: ``,
+            ch: ``,
+        }
+    },
 }
 
 export const caliberPickerStrings:CaliberPickerStrings = {
@@ -1490,6 +1518,27 @@ export const longPressActions:LongPressActions = {
         fr: "Supprimer",
         it: "Cancellare",
         ch: "Stizzar",
+    },
+    goto: {
+        de: "goto",
+        en: "goto",
+        fr: "goto",
+        it: "goto",
+        ch: "goto",
+    },
+    unmount: {
+        de: "unmount",
+        en: "unmount",
+        fr: "unmount",
+        it: "unmount",
+        ch: "unmount",
+    },
+    remount: {
+        de: "remount",
+        en: "remount",
+        fr: "remount",
+        it: "remount",
+        ch: "remount",
     }
 }
 
@@ -1538,4 +1587,22 @@ export const importExportSelectionLabel: SimpleTranslation = {
     fr: "Base de données sélectionnée",
     it: "Database selezionato",
     ch: "Banca da datas tschernida",
+}
+
+export const snackbarText = {
+    mountAccessory: {
+        de: `Zubehör/Waffenteil auf {{{A}}} montiert.`,
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    },
+    removeAccessory: {
+        de: `{{{A}}} entfernt.`,
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    }
+
 }

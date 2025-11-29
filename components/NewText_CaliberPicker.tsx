@@ -1,6 +1,6 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip } from 'react-native-paper';
 import { act, useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
@@ -10,15 +10,15 @@ import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
 
 interface Props{
     data: string
-    itemData?: GunType | AmmoType 
-    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    itemData?: ItemType
+    setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
     multiCaliber: boolean
 }
 
 export default function NewText({data, itemData, setItemData, label, multiCaliber}: Props){
 
-    function determineActiveCaliber(itemData: GunType | AmmoType ){
+    function determineActiveCaliber(itemData: ItemType ){
         if(!itemData){
             return [] // if itemData is falsy, return an empty array. This shouldnt really happen but you never know
         }
@@ -34,7 +34,6 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
         return [itemData[data]] // if its JUST a string, return an aray of it
     }
 
-    console.log(`${data}: CALIBERPICKER TEXT`)
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showModalCaliber, setShowModalCaliber] = useState<boolean>(false)
     const [activeCaliber, setActiveCaliber] = useState<string[]>(determineActiveCaliber(itemData))
