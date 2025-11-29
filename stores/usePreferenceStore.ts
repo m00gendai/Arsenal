@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit} from "../interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -9,6 +9,7 @@ interface GeneralSettings{
   displayImagesInListViewAmmo: boolean
   displayImagesInListViewAccessory_Silencer: boolean
   displayImagesInListViewAccessory_Optic: boolean
+  displayImagesInListViewPart_ConversionKit: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -20,6 +21,7 @@ interface DisplaySettings{
   ammoCollection: DisplayVariants
   accessoryCollection_Silencer: DisplayVariants
   accessoryCollection_Optic: DisplayVariants
+  partCollection_ConversionKit: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -28,6 +30,7 @@ export interface SorterSettings{
   ammoCollection: {type: SortingTypesAmmo, direction: "asc" | "desc", icon: string}
   accessoryCollection_Silencer: {type: SortingTypesAccessory_Silencer, direction: "asc" | "desc", icon: string}
   accessoryCollection_Optic: {type: SortingTypesAccessory_Optic, direction: "asc" | "desc", icon: string}
+  partCollection_ConversionKit: {type: SortingTypesPart_ConversionKit, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
@@ -35,6 +38,7 @@ interface FilterState{
   ammoCollection: boolean
   accessoryCollection_Silencer: boolean
   accessoryCollection_Optic: boolean
+  partCollection_ConversionKit: boolean
 }
 
 interface PreferenceStore {
@@ -67,6 +71,7 @@ interface PreferenceStore {
       displayImagesInListViewAmmo: true,
       displayImagesInListViewAccessory_Silencer: true,
       displayImagesInListViewAccessory_Optic: true,
+      displayImagesInListViewPart_ConversionKit: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -79,6 +84,7 @@ interface PreferenceStore {
       ammoCollection: "grid",
       accessoryCollection_Silencer: "grid",
       accessoryCollection_Optic: "grid",
+      partCollection_ConversionKit: "grid",
       accessoryView: "grid"
     },
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
@@ -92,6 +98,7 @@ interface PreferenceStore {
       ammoCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       accessoryCollection_Silencer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       accessoryCollection_Optic: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
     },
     setSortBy: (collection, settings) => set((state) => ({
       sortBy: { 
@@ -104,7 +111,8 @@ interface PreferenceStore {
       gunCollection: false,
       ammoCollection: false,
       accessoryCollection_Silencer: false,
-      accessoryCollection_Optic: false
+      accessoryCollection_Optic: false,
+      partCollection_ConversionKit: false
     },
     setFilterOn: (status: FilterState) => set((state) => ({filterOn: status}))
   }))

@@ -975,7 +975,7 @@ interface MainCollectionCategories {
     accessoryCollection: SimpleTranslation
     literatureCollection: SimpleTranslation
     reloadingCollection: SimpleTranslation
-
+    partCollection: SimpleTranslation
 }
 
 export const mainCollectionCategories: MainCollectionCategories = {
@@ -1013,6 +1013,13 @@ export const mainCollectionCategories: MainCollectionCategories = {
         fr: "Recharger",
         it: "Ricaricare",
         ch: "Rechargiar",
+    },
+    partCollection: {
+        de: "Waffenteile",
+        en: "Weapon Parts", 
+        fr: "",
+        it: "",
+        ch: "",
     }
 }
 

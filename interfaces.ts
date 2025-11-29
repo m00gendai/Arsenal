@@ -68,6 +68,7 @@ export interface AccessoryType_Silencer{
   manufacturingDate?: string
   originCountry?: string
   caliber?: string[]
+  thread?: string
   serial?: string
   material?: string
   decibelRating?: string
@@ -117,15 +118,43 @@ export interface AccessoryType_Optic{
   currentlyMountedOn?: string
 }
 
+export interface PartType_ConversionKit{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string []
+  manufacturer?: string
+  model: string
+  manufacturingDate?: string
+  originCountry?: string
+  caliber?: string[]
+  serial?: string
+  permit?: string
+  acquisitionDate?: string
+  paidPrice?: string
+  boughtFrom?: string
+  marketValue?: string
+  shotCount?: string
+  lastShotAt?: string
+  lastCleanedAt?: string
+  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  mainColor?: string
+  remarks?: string
+  currentlyMountedOn?: string
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
                         | AccessoryType_Optic
+                        | PartType_ConversionKit
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
                               | "accessoryCollection_Silencer" 
                               | "accessoryCollection_Optic"
+                              | "partCollection_ConversionKit"
 
 export type Screens = "itemCollection"
 
@@ -244,10 +273,21 @@ export type SortingTypesAccessory_Optic = | "alphabetical"
                                           | "lastCleanedAt" 
                                           | "lastBatteryChangeAt" 
 
+export type SortingTypesPart_ConversionKit =  | "alphabetical" 
+                                              | "createdAt" 
+                                              | "lastModifiedAt" 
+                                              | "caliber" 
+                                              | "paidPrice" 
+                                              | "marketValue"
+                                              | "acquisitionDate" 
+                                              | "lastCleanedAt" 
+                                              | "lastShotAt"
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
                             | SortingTypesAccessory_Optic
+                            | SortingTypesPart_ConversionKit
 
                             
 export type Languages = | "de" 
@@ -293,4 +333,17 @@ export interface AccessoryMount{
     parentGunType: CollectionType
     parentAccessoryId: string
     parentAccessoryType: CollectionType
+    parentPartId: string
+    parentPartType: CollectionType
+}
+
+export interface PartMount{
+    db_id: number
+    id: string
+    partId: string
+    partType: CollectionType
+    parentGunId: string
+    parentGunType: CollectionType
+    parentPartId: string
+    parentPartType: CollectionType
 }
