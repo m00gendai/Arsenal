@@ -9,6 +9,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { checkDate } from 'utils';
 import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
+import { useDatabaseStore } from 'stores/useDatabaseStore';
+import MountedIconBar from './MountedIconBar';
 
 interface Props{
     item: ItemType
@@ -20,7 +22,9 @@ export default function ItemCard_accessories({ item }:Props){
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
-    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
+    const { accessoryMount } = useDatabaseStore()
+    
+        const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id)
 
       function setCardWith(){
         const divisor = displaySettings.accessoryView === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
@@ -46,7 +50,8 @@ export default function ItemCard_accessories({ item }:Props){
 
             } : {
                 width: setCardWith(),
-                backgroundColor: theme.colors.surfaceVariant
+                backgroundColor: theme.colors.surfaceVariant,
+                paddingBottom: displaySettings.accessoryView === "list" ? 5 : 0
             }}
             
         >
@@ -79,6 +84,7 @@ export default function ItemCard_accessories({ item }:Props){
                         height: 100,
                     }}
                 />
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={true}/> : null}
                 <View style={{
                 position: "absolute",
                 left: 0,
@@ -136,7 +142,7 @@ export default function ItemCard_accessories({ item }:Props){
                         aspectRatio: "4/3"
                     }}
                 /> : null}
-                
+                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={true}/> : null}
                 
                 <IconButton 
                     mode="contained" 
