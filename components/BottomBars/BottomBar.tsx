@@ -17,36 +17,38 @@ import BottomBar_LiteratureCollection from "./BottomBar_LiteratureCollection";
 import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
 import { CollectionType, Screens, StackParamList } from "interfaces";
 import { useItemStore } from "stores/useItemStore";
+import BottomBar_PartCollection from "./BottomBar_PartCollection";
 
 interface Props{
   screen?: string
 }
 
 export default function BottomBar({screen}:Props){
-  const { setCurrentCollection } = useItemStore()
-      const ref = useRef<ICarouselInstance>(null);
-  const progress = useSharedValue<number>(0);
-    const data = ["Accessories"] // ["Accessories", "Literature", "Reloading"];
-const width = Dimensions.get("window").width;
 
-const onPressPagination = (index: number) => {
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>()
+  
+  const { setCurrentCollection } = useItemStore()
+  const { language, theme } = usePreferenceStore()
+  
+  const ref = useRef<ICarouselInstance>(null);
+
+  const progress = useSharedValue<number>(0);
+  
+  const data = ["Accessories", "Parts"] // ["Accessories", "Literature", "Reloading"];
+  
+  const width = Dimensions.get("window").width;
+
+  const onPressPagination = (index: number) => {
     ref.current?.scrollTo({
-      /**
-       * Calculate the difference between the current index and the target index
-       * to ensure that the carousel scrolls to the nearest index
-       */
       count: index - progress.value,
       animated: true,
     });
   };
 
-    const { language, theme } = usePreferenceStore()
-    const navigation = useNavigation<StackNavigationProp<StackParamList>>()
-
-    function handleNavigation(
-      target: Screens,
-      params: { collectionType: CollectionType }
-    ){
+  function handleNavigation(
+    target: Screens,
+    params: { collectionType: CollectionType }
+  ){
     console.log(`target: ${target}`)
     setCurrentCollection(params.collectionType)
     navigation.navigate(target, params);
@@ -83,10 +85,10 @@ const onPressPagination = (index: number) => {
             width={width}
             height={400}
             data={data}
-            autoFillData={false}
+            autoFillData={true}
             onProgressChange={progress}
             mode={"parallax"}
-            enabled={false}
+            enabled={true}
             renderItem={({ index }) => (
               <Card
                 style={{
@@ -99,9 +101,9 @@ const onPressPagination = (index: number) => {
                 }}
               >
               {index === 0 ? 
-                <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> : null /*
+                <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> :
                 index=== 1 ? 
-                <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
+                <BottomBar_PartCollection handleNavigation={handleNavigation} /> : null /*
                 index=== 2 ? 
                 <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> :
                 null*/}
