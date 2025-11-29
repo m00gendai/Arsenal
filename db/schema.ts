@@ -77,8 +77,11 @@ export const accessoryMount = sqliteTable("accessoryMount", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
     accessoryId: text("accessoryId").notNull().references(() => accessoryCollection.id),
+    accessoryType: text("accessoryType").notNull(),
     parentGunId: text("parentGunId").references(() => gunCollection.id),
+    parentGunType: text("parentGunType"),
     parentAccessoryId: text("parentAccessoryId").references(() => accessoryCollection.id),
+    parentAccessoryType: text("parentAccessoryType")
 });
 
 
