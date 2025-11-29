@@ -884,7 +884,7 @@ export const tabBarLabels: TabBarLabels = {
         ch: "",
     },
     conversionCollection: {
-        de: "Wechelsysteme & Läufe",
+        de: "Wechelsysteme",
         en: "",
         fr: "",
         it: "",
