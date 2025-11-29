@@ -9,8 +9,9 @@ import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import * as schema from "db/schema"
-import { eq, inArray } from 'drizzle-orm';
+import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
+import { tabBarLabels } from "lib/textTemplates";
 
 interface Props{
     currentItem: ItemType
@@ -18,7 +19,7 @@ interface Props{
 
 export default function Item_Accessories({ currentItem }: Props) {
 
-    const { theme, displaySettings, setDisplaySettings } = usePreferenceStore()
+    const { theme, displaySettings, setDisplaySettings, language } = usePreferenceStore()
     const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
@@ -28,11 +29,15 @@ export default function Item_Accessories({ currentItem }: Props) {
         const mountedData = await db.select()
           .from(schema.accessoryMount)
           .where(
-            eq(schema.accessoryMount.parentGunId, currentItem.id)
+            or(
+              eq(schema.accessoryMount.parentGunId, currentItem.id),
+              eq(schema.accessoryMount.parentAccessoryId, currentItem.id)
+            )
+            
           )
 
         const mountedIds = mountedData.map(d => d.accessoryId);
-console.log(mountedIds)
+
         const silencerData = await db.select()
           .from(schema.accessoryCollection_Silencer)
           .where(
@@ -68,19 +73,19 @@ type Section = {
 
       const DATA:Section[] = [
   {
-    title: 'Silencers',
+    title: tabBarLabels.silencerCollection[language],
     data: silencerData,
   },
   {
-    title: 'Conversion Kits',
+    title: tabBarLabels.conversionCollection[language],
     data: null,
   },
   {
-    title: 'Light&Laser',
+    title: tabBarLabels.lightLaserCollection[language],
     data: null,
   },
   {
-    title: 'Optics',
+    title: tabBarLabels.opticCollection[language],
     data: opticData,
   },
   
