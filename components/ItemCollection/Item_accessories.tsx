@@ -23,6 +23,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
+    const [conversionKitData, setConversionKitData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -31,7 +32,8 @@ export default function Item_Accessories({ currentItem }: Props) {
           .where(
             or(
               eq(schema.accessoryMount.parentGunId, currentItem.id),
-              eq(schema.accessoryMount.parentAccessoryId, currentItem.id)
+              eq(schema.accessoryMount.parentAccessoryId, currentItem.id),
+              eq(schema.accessoryMount.parentPartId, currentItem.id)
             )
             
           )
@@ -55,7 +57,30 @@ export default function Item_Accessories({ currentItem }: Props) {
         setOpticData(opticData)
 
       }
+      async function getPartData(){
+        const mountedData = await db.select()
+          .from(schema.partMount)
+          .where(
+            or(
+              eq(schema.partMount.parentGunId, currentItem.id),
+              eq(schema.partMount.parentPartId, currentItem.id)
+            )
+            
+          )
+
+        const mountedIds = mountedData.map(d => d.partId);
+
+        const conversionKitData = await db.select()
+          .from(schema.partCollection_ConversionKit)
+          .where(
+            inArray(schema.partCollection_ConversionKit.id, mountedIds)
+          )
+
+        setConversionKitData(conversionKitData)
+
+      }
       getAccessoryData()
+      getPartData()
     },[cardOptionsMenuVisible_accessories, alohaSnackbarVisible])
 
     function handleDisplaySwitch(type:DisplayVariants){
@@ -72,6 +97,10 @@ type Section = {
 };
 
       const DATA:Section[] = [
+        {
+    title: tabBarLabels.conversionCollection[language],
+    data: conversionKitData,
+  },
   {
     title: tabBarLabels.silencerCollection[language],
     data: silencerData,

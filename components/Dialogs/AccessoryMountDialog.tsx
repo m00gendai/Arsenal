@@ -15,7 +15,6 @@ import { useViewStore } from "stores/useViewStore";
 import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";
 import { useTextStore } from "stores/useTextStore";
-import { access } from "fs";
 
 interface Props{
     data: string
@@ -36,7 +35,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     const navigation = useNavigation()
 
     const [checked, setChecked] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
-    const [collection, setCollection] = useState<"guns" | "accessories" | "">("")
+    const [collection, setCollection] = useState<"guns" | "accessories" | "parts" | "">("")
 
     const { data: accessoryData } = useLiveQuery(
         db.select()
@@ -44,6 +43,16 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .where(
             eq(
                 schema.accessoryCollection.id, itemData.id
+            )
+        )
+    )
+
+    const { data: partData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection)
+        .where(
+            eq(
+                schema.partCollection.id, itemData.id
             )
         )
     )
@@ -72,6 +81,15 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`)))
     )
 
+    const { data: conversionKitData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_ConversionKit)
+        .where(
+            ne(schema.partCollection_ConversionKit.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`)))
+    )
+
     function getListItemBackgroundColor(id, index){
         if(id === checked){
             return theme.colors.tertiary
@@ -83,33 +101,65 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...conversionKitData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
 }
 
     async function updateItemData(input: string){
-        // TODO: Update Item itself
+
+        //This is if set via QuickMount/Remount
+
+        if(accessoryData.length !== 0){
+            const type = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, currentAccessory.id))
+            await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+        }    
+        if(partData.length !== 0){
+            const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, currentAccessory.id))
+            await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+        }  
+        
+        //This is if set via NewItem or EditItem
         if(setItemData){
             setItemData({...itemData, [data]: input})
         }
+
         await db.delete(schema.accessoryMount)
-        .where(eq(schema.accessoryMount.accessoryId, itemData.id));
+            .where(eq(schema.accessoryMount.accessoryId, itemData.id));
+
+        await db.delete(schema.partMount)
+            .where(eq(schema.partMount.partId, itemData.id));
         
         if(checked !== ""){
-            await db.insert(schema.accessoryMount).values({
-                id: uuidv4(),
-                accessoryId: itemData.id,
-                accessoryType: accessoryData[0] ? accessoryData[0].type : currentCollection,
-                parentGunId: collection === "guns" ? checked : null,
-                parentAccessoryId: collection === "accessories" ? checked : null,
-            })
+            if(accessoryData.length !== 0){
+                await db.insert(schema.accessoryMount).values({
+                    id: uuidv4(),
+                    accessoryId: itemData.id,
+                    accessoryType: accessoryData[0] ? accessoryData[0].type : currentCollection,
+                    parentGunId: collection === "guns" ? checked : null,
+                    parentAccessoryId: collection === "accessories" ? checked : null,
+                    parentPartId: collection === "parts" ? checked : null,
+                })
+            }
+            if(partData.length !== 0){
+                await db.insert(schema.partMount).values({
+                    id: uuidv4(),
+                    partId: itemData.id,
+                    partType: partData[0] ? partData[0].type : currentCollection,
+                    parentGunId: collection === "guns" ? checked : null,
+                    parentPartId: collection === "parts" ? checked : null,
+                })
+            }
         }
     }
 
     function handleConfirm(){
-        updateItemData(checked)
+        
+
+
         const itemName = getItemName()
+
+updateItemData(itemName)
         if(setItemName){
             setItemName(itemName)
         }
@@ -131,7 +181,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .where(eq(schema.accessoryMount.accessoryId, itemData.id));
     }
 
-    function handleSelect(id:string, collection: "guns" | "accessories"){
+    function handleSelect(id:string, collection: "guns" | "accessories" | "parts"){
         setChecked(id)
         setCollection(collection)
     }
@@ -221,6 +271,33 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             flexDirection: "row", 
                             alignItems: "center", 
                             marginBottom: index === opticData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion>
+
+      <List.Accordion
+        title="Wechselsysteme"
+        style={conversionKitData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={conversionKitData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon="cog-transfer-outline" color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {conversionKitData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "parts")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === conversionKitData.length-1 ? 10 : 0
                         }}
                     >
                         <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
