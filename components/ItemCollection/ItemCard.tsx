@@ -22,9 +22,10 @@ export default function ItemCard({ item }:Props){
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
     const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
-    const { accessoryMount } = useDatabaseStore()
+    const { accessoryMount, partMount } = useDatabaseStore()
 
-    const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id)
+    const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id || accessory.parentPartId === item.id)
+    const attachedParts = partMount.filter(part => part.parentGunId === item.id || part.parentPartId === item.id)
 
 
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
@@ -114,7 +115,7 @@ export default function ItemCard({ item }:Props){
                         height: 100,
                     }}
                 />
-                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
+                {(attachedAccessories.length || attachedParts.length) ? <MountedIconBar accessories={attachedAccessories} parts={attachedParts} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
@@ -168,7 +169,7 @@ export default function ItemCard({ item }:Props){
                         aspectRatio: "4/3"
                     }}
                 /> : null}
-                {attachedAccessories.length !== 0 ? <MountedIconBar accessories={attachedAccessories} accessoryView={false}/> : null}
+                {(attachedAccessories.length || attachedParts.length) ? <MountedIconBar accessories={attachedAccessories} parts={attachedParts} accessoryView={false}/> : null}
                 {currentCollection === "ammoCollection" ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                     <Badge
