@@ -283,3 +283,14 @@ export interface Tag {
   color: string
   active: boolean
 }
+
+export interface AccessoryMount{
+    db_id: number
+    id: string
+    accessoryId: string
+    accessoryType: CollectionType
+    parentGunId: string
+    parentGunType: CollectionType
+    parentAccessoryId: string
+    parentAccessoryType: CollectionType
+}
