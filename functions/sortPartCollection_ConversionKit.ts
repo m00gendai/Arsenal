@@ -5,16 +5,6 @@ import { SortingTypesAccessory_Silencer, SortingTypesPart_ConversionKit } from "
 export default function sortPartCollection_ConversionKit(direction: "asc" | "desc", sortBy:SortingTypesPart_ConversionKit){
     const ascending = direction === "asc"
 
-    const parseDateColumn = (column) => sql`
-        CAST(
-            strftime('%s', 
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
-            ) AS INTEGER
-        )
-    `
-
         if(sortBy === "alphabetical"){
             return ascending ?
                 asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`))
@@ -47,21 +37,21 @@ export default function sortPartCollection_ConversionKit(direction: "asc" | "des
         }
         if(sortBy === "acquisitionDate"){
             return ascending ?
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.acquisitionDate)} ASC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.acquisitionDate_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.acquisitionDate)} DESC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.acquisitionDate_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastShotAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.lastShotAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.lastShotAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.lastShotAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.lastShotAt_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastCleanedAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.lastCleanedAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.lastCleanedAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.partCollection_ConversionKit.lastCleanedAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.partCollection_ConversionKit.lastCleanedAt_unix}, "") DESC NULLS LAST`
         }
         
         // Default sorter

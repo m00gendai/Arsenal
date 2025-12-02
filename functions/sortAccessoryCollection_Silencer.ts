@@ -5,16 +5,6 @@ import { SortingTypesAccessory_Silencer } from "../interfaces";
 export default function sortAccessoryCollection_Silencer(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
     const ascending = direction === "asc"
 
-    const parseDateColumn = (column) => sql`
-        CAST(
-            strftime('%s', 
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
-            ) AS INTEGER
-        )
-    `
-
         if(sortBy === "alphabetical"){
             return ascending ?
                 asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
@@ -47,21 +37,21 @@ export default function sortAccessoryCollection_Silencer(direction: "asc" | "des
         }
         if(sortBy === "acquisitionDate"){
             return ascending ?
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.acquisitionDate)} ASC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.acquisitionDate_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.acquisitionDate)} DESC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.acquisitionDate_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastShotAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastShotAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastShotAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastShotAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastShotAt_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastCleanedAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastCleanedAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastCleanedAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.accessoryCollection_Silencer.lastCleanedAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.accessoryCollection_Silencer.lastCleanedAt_unix}, "") DESC NULLS LAST`
         }
         
         // Default sorter

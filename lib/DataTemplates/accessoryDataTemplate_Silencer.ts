@@ -1,7 +1,13 @@
 import { AccessoryType_Silencer } from "interfaces"
-import { normalizeColor } from "react-native-reanimated/lib/typescript/Colors"
+import { SimpleTranslation } from "lib/textTemplates";
 
-export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
+type TemplateKeys = keyof Omit<AccessoryType_Silencer, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
+
+type TemplateItem = {
+    name: TemplateKeys
+} & SimpleTranslation;
+
+export const accessoryDataTemplate_Silencer:TemplateItem[] = [
     {
             name: "manufacturer",
             de: "Hersteller",
@@ -83,7 +89,7 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
             ch: "Concessiun",
     },
     {
-            name: "acquisitionDate",
+            name: "acquisitionDate_unix",
             de: "Erwerbsdatum",     
             en: "Acquision Date",
             fr: "Date d'acquisition",
@@ -125,7 +131,7 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
         ch: "Chargia da tir",
     },
     {
-        name: "lastShotAt",
+        name: "lastShotAt_unix",
         de: "Zuletzt geschossen",
         en: "Last shot",
         fr: "Derniers tirs",
@@ -133,7 +139,7 @@ export const accessoryDataTemplate_Silencer:{name:string, de:string, en:string, 
         ch: "L'ultim culp",
     },
     {
-        name: "lastCleanedAt",
+        name: "lastCleanedAt_unix",
         de: "Zuletzt gereinigt",
         en: "Last cleaned",
         fr: "Nettoyé en dernier",
@@ -185,7 +191,7 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     thread: null,
     serial: null,
     permit: null,
-    acquisitionDate: null,
+    acquisitionDate_unix: null,
     boughtFrom: null,
     mainColor: null,
     remarks : null,
@@ -194,8 +200,8 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     lastModifiedAt: 0,
     shotCount: null,
     tags: [],
-    lastShotAt: null,
-    lastCleanedAt: null,
+    lastShotAt_unix: null,
+    lastCleanedAt_unix: null,
     paidPrice: null,
     marketValue: null,
     cleanInterval: null,

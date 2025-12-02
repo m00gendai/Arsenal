@@ -1,6 +1,14 @@
-import { AccessoryType_Optic, AccessoryType_Silencer } from "interfaces"
+import { AccessoryType_Optic } from "interfaces"
+import { SimpleTranslation } from "lib/textTemplates";
 
-export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
+type TemplateKeys = keyof Omit<AccessoryType_Optic, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
+
+type TemplateItem = {
+    name: TemplateKeys
+} & SimpleTranslation;
+
+
+export const accessoryDataTemplate_Optic:TemplateItem[] = [
     {
             name: "manufacturer",
             de: "Hersteller",
@@ -98,7 +106,7 @@ export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:
             ch: "Va Materiala",
     },
     {
-            name: "acquisitionDate",
+            name: "acquisitionDate_unix",
             de: "Erwerbsdatum",     
             en: "Acquision Date",
             fr: "Date d'acquisition",
@@ -140,7 +148,7 @@ export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:
         ch: "Chargia da tir",
     },
     {
-        name: "lastShotAt",
+        name: "lastShotAt_unix",
         de: "Zuletzt geschossen",
         en: "Last shot",
         fr: "Derniers tirs",
@@ -148,7 +156,7 @@ export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:
         ch: "L'ultim culp",
     },
     {
-        name: "lastCleanedAt",
+        name: "lastCleanedAt_unix",
         de: "Zuletzt gereinigt",
         en: "Last cleaned",
         fr: "Nettoyé en dernier",
@@ -164,7 +172,7 @@ export const accessoryDataTemplate_Optic:{name:string, de:string, en:string, fr:
         ch: "Interval da nettegiar",
     },
     {
-        name: "batteryLastChangedAt",
+        name: "batteryLastChangedAt_unix",
         de: "Zuletzt gereinigt",
         en: "Last cleaned",
         fr: "Nettoyé en dernier",
@@ -212,7 +220,7 @@ export const emptyOpticObject:AccessoryType_Optic= {
     clicksToUnitElevation: null,
     clicksToUnitWindage: null,
     material: null,
-    acquisitionDate: null,
+    acquisitionDate_unix: null,
     boughtFrom: null,
     mainColor: null,
     remarks : null,
@@ -221,11 +229,11 @@ export const emptyOpticObject:AccessoryType_Optic= {
     lastModifiedAt: 0,
     shotCount: null,
     tags: [],
-    lastShotAt: null,
-    lastCleanedAt: null,
+    lastShotAt_unix: null,
+    lastCleanedAt_unix: null,
     paidPrice: null,
     marketValue: null,
     cleanInterval: null,
     currentlyMountedOn: null,
-    batteryLastChangedAt: null
+    batteryLastChangedAt_unix: null
 }

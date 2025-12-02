@@ -59,6 +59,9 @@ interface PreferenceStore {
 
     filterOn: FilterState
     setFilterOn: (status: FilterState) => void
+
+    hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => void
   }
 
   export const usePreferenceStore = create<PreferenceStore>((set) => ({
@@ -114,5 +117,8 @@ interface PreferenceStore {
       accessoryCollection_Optic: false,
       partCollection_ConversionKit: false
     },
-    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status}))
+    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status})),
+
+    hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status}))
   }))

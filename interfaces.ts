@@ -1,29 +1,29 @@
 export interface GunTypeDetails{
   id: string
-  manufacturer?: string | null
+  manufacturer: string | null
   model: string
-  manufacturingDate?: string | null
-  originCountry?: string | null
-  gunType?: string | null
-  functionType?: string | null
-  caliber?: string[] | null
-  serial?: string | null
-  permit?: string | null
-  acquisitionDate?: string | null
-  boughtFrom?: string | null
-  mainColor?: string | null
-  remarks? : string | null
+  manufacturingDate: string | null
+  originCountry: string | null
+  gunType: string | null
+  functionType: string | null
+  caliber: string[] | null
+  serial: string | null
+  permit: string | null
+  acquisitionDate_unix: number | null
+  boughtFrom: string | null
+  mainColor: string | null
+  remarks: string | null
   images: string[]
   createdAt: number
   lastModifiedAt: number
   status?: GunTypeStatus
-  shotCount?: string
+  shotCount: string
   tags: string[]
-  lastShotAt?: string
-  lastCleanedAt?: string
-  paidPrice?: string
-  marketValue?: string
-  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  paidPrice: string
+  marketValue: string
+  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
 }
 
 export interface GunTypeStatus{
@@ -41,20 +41,20 @@ export type GunType = GunTypeDetails & GunTypeStatus
 
 export interface AmmoType{
   id: string
-  manufacturer?: string | null
+  manufacturer: string | null
   caliber: string | null
   designation: string
-  originCountry?: string | null
+  originCountry: string | null
   createdAt: number,
   lastModifiedAt: number,
-  headstamp?: string | null
-  currentStock?: string
-  previousStock?: string
-  lastTopUpAt?: string
-  criticalStock?: string
+  headstamp: string | null
+  currentStock: string
+  previousStock: string
+  lastTopUpAt_unix: number | null
+  criticalStock: string
   tags: string[]
   images: string[]
-  remarks?: string
+  remarks: string
 }
 
 export interface AccessoryType_Silencer{
@@ -63,27 +63,27 @@ export interface AccessoryType_Silencer{
   lastModifiedAt: number
   images: string[]
   tags: string []
-  manufacturer?: string
+  manufacturer: string
   model: string
-  manufacturingDate?: string
-  originCountry?: string
-  caliber?: string[]
-  thread?: string
-  serial?: string
-  material?: string
-  decibelRating?: string
-  permit?: string
-  acquisitionDate?: string
-  paidPrice?: string
-  boughtFrom?: string
-  marketValue?: string
-  shotCount?: string
-  lastShotAt?: string
-  lastCleanedAt?: string
-  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
-  mainColor?: string
-  remarks?: string
-  currentlyMountedOn?: string
+  manufacturingDate: string
+  originCountry: string
+  caliber: string[]
+  thread: string
+  serial: string
+  material: string
+  decibelRating: string
+  permit: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  shotCount: string
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  mainColor: string
+  remarks: string
+  currentlyMountedOn: string
 }
 
 export interface AccessoryType_Optic{
@@ -92,30 +92,30 @@ export interface AccessoryType_Optic{
   lastModifiedAt: number
   images: string[]
   tags: string []
-  manufacturer?: string
+  manufacturer: string
   model: string
-  manufacturingDate?: string
-  originCountry?: string
-  serial?: string
-  reticle?: string
-  reticleColor?: string
-  zoom?: string
-  unit?: string
-  clicksToUnitElevation?: string
-  clicksToUnitWindage?: string
-  material?: string
-  acquisitionDate?: string
-  paidPrice?: string
-  boughtFrom?: string
-  marketValue?: string
-  shotCount?: string
-  lastShotAt?: string
-  lastCleanedAt?: string
-  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
-  batteryLastChangedAt?: string
-  mainColor?: string
-  remarks?: string
-  currentlyMountedOn?: string
+  manufacturingDate: string
+  originCountry: string
+  serial: string
+  reticle: string
+  reticleColor: string
+  zoom: string
+  unit: string
+  clicksToUnitElevation: string
+  clicksToUnitWindage: string
+  material: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  shotCount: string
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  batteryLastChangedAt_unix: number | null
+  mainColor: string
+  remarks: string
+  currentlyMountedOn: string
 }
 
 export interface PartType_ConversionKit{
@@ -124,24 +124,24 @@ export interface PartType_ConversionKit{
   lastModifiedAt: number
   images: string[]
   tags: string []
-  manufacturer?: string
+  manufacturer: string
   model: string
-  manufacturingDate?: string
-  originCountry?: string
-  caliber?: string[]
-  serial?: string
-  permit?: string
-  acquisitionDate?: string
-  paidPrice?: string
-  boughtFrom?: string
-  marketValue?: string
-  shotCount?: string
-  lastShotAt?: string
-  lastCleanedAt?: string
-  cleanInterval?: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
-  mainColor?: string
-  remarks?: string
-  currentlyMountedOn?: string
+  manufacturingDate: string
+  originCountry: string
+  caliber: string[]
+  serial: string
+  permit: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  shotCount: string
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  mainColor: string
+  remarks: string
+  currentlyMountedOn: string
 }
 
 export type ItemType =  | GunType 
