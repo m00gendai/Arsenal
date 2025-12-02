@@ -47,7 +47,9 @@ export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating"]
 
-export const datePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt", "lastBatteryChangeAt"]
+export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]
+export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
+
 export const colorPickerTriggerFields: string[] = ["mainColor", "reticleColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
@@ -67,6 +69,8 @@ export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_
 export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit"]
 export const screenNameParamsLiterature: CollectionType[] = []
 export const screenNameParamsReloading:CollectionType[] = []
+
+export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
