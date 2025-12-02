@@ -1,6 +1,13 @@
 import { AmmoType } from "interfaces"
+import { SimpleTranslation } from "lib/textTemplates";
 
-export const ammoDataTemplate:{name:string, de:string, en:string, fr:string, it: string, ch: string}[] = [
+type TemplateKeys = keyof Omit<AmmoType, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
+
+type TemplateItem = {
+    name: TemplateKeys
+} & SimpleTranslation;
+
+export const ammoDataTemplate:TemplateItem[] = [
         {
                 name: "manufacturer",
                 de: "Hersteller",
@@ -50,7 +57,7 @@ export const ammoDataTemplate:{name:string, de:string, en:string, fr:string, it:
             ch: "Quantitad actuala",
     },
     {
-        name: "lastTopUpAt",
+        name: "lastTopUpAt_unix",
         de: "Letzte Mengenänderung",
         en: "Last change of stock",
         fr: "Dernier changement de quantité",
@@ -86,8 +93,10 @@ export const emptyAmmoObject:AmmoType = {
     caliber: null,
     headstamp: null,
     currentStock: null,
-    lastTopUpAt: null,
+    lastTopUpAt_unix: null,
     criticalStock: null,
     tags: [],
-    images: []
+    images: [],
+    previousStock: null,
+    remarks: null,
 }
