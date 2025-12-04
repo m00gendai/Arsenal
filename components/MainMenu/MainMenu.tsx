@@ -10,7 +10,7 @@ import { colorThemes } from "lib/colorThemes"
 import { useEffect, useState } from "react"
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { DBOperations, Languages } from "interfaces"
+import { CollectionType, DBOperations, ItemType, Languages } from "interfaces"
 import { printGunCollection, printGunCollectionArt5 } from "functions/printToPDF"
 import { useTagStore } from "stores/useTagStore"
 import { manipulateAsync } from "expo-image-manipulator"
@@ -70,18 +70,18 @@ export default function MainMenu({navigation}){
     ];
 
     const importOptions = [
-        { label: tabBarLabels.gunCollection[language], value: 'gun' },
-        { label: tabBarLabels.ammoCollection[language], value: 'ammo' },
+        { label: tabBarLabels.gunCollection[language], value: 'gunCollection' },
+        { label: tabBarLabels.ammoCollection[language], value: 'ammoCollection' },
     ];
 
      const exportOptions = [
-        { label: tabBarLabels.gunCollection[language], value: 'gun' },
-        { label: tabBarLabels.ammoCollection[language], value: 'ammo' },
+        { label: tabBarLabels.gunCollection[language], value: 'gunCollection' },
+        { label: tabBarLabels.ammoCollection[language], value: 'ammoCollection' },
     ];
 
-    const [importOptionLegacyDB, setImportOptionLegacyDB] = useState<"gun"|"ammo">("gun")
-    const [importOption, setImportOption] = useState<"gun" | "ammo">("gun")
-    const [exportOption, setExportOption] = useState<"gun" | "ammo">("gun")
+    const [importOptionLegacyDB, setImportOptionLegacyDB] = useState<CollectionType>("gunCollection")
+    const [importOption, setImportOption] = useState<CollectionType>("gunCollection")
+    const [exportOption, setExportOption] = useState<CollectionType>("gunCollection")
 
     const onToggleSnackBar = () => setToastVisible(true);
     const onDismissSnackBar = () => {
@@ -534,7 +534,7 @@ export default function MainMenu({navigation}){
                             placeholder=""
                             options={dbOperation === "import_legacy_db" ? importOptionsLegacyDB : importOptions}
                             value={dbOperation === "import_legacy_db" ? importOptionLegacyDB : importOption  }
-                            onSelect={(value) => dbOperation === "import_legacy_db" ? setImportOptionLegacyDB(value as "gun" | "ammo") : setImportOption(value as "gun" | "ammo")}
+                            onSelect={(value) => dbOperation === "import_legacy_db" ? setImportOptionLegacyDB(value as CollectionType) : setImportOption(value as CollectionType)}
                         /> : null}
                         <Text>{`\n${databaseImportAlert.subtitle[language]}`}</Text>
                     </Dialog.Content>
@@ -554,7 +554,7 @@ export default function MainMenu({navigation}){
                             placeholder=""
                             options={exportOptions}
                             value={exportOption}
-                            onSelect={(value) => setExportOption(value as "gun" | "ammo")}
+                            onSelect={(value) => setExportOption(value as CollectionType)}
                         /> : null}
                         <Text>{`\n${databaseExportAlert.subtitle[language]}`}</Text>
                     </Dialog.Content>
