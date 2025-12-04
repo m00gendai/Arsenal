@@ -2,13 +2,15 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import Papa from 'papaparse';
 import { unflatten } from 'flat'
-import { AmmoType, GunType, GunTypeStatus } from 'interfaces';
+import { CollectionType, ItemType } from 'interfaces';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { emptyGunObject } from 'lib/DataTemplates/gunDataTemplate';
-import { emptyAmmoObject } from 'lib/DataTemplates/ammoDataTemplate';
 
-export default async function importArsenalCSV(data:"gun"|"ammo"){
+import { determineEmptyObject, determineEmptyObjectReturns } from './determinators';
+import { alarm } from 'utils';
+
+
+export default async function importArsenalCSV(data: CollectionType){
 
         const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
 
@@ -16,98 +18,45 @@ export default async function importArsenalCSV(data:"gun"|"ammo"){
             return
         }
 
-        const importableItem:GunType | AmmoType = data === "gun" ? emptyGunObject : emptyAmmoObject
+        if(!result.assets[0].name.startsWith("arsenal_") && !result.assets[0].name.endsWith("DB")){
+            alarm("Import Arsenal CSV Error", "No Arsenal CSV selected")
+        }
+
+        if(result.assets[0].mimeType !== "text/csv"){
+            alarm("Import Arsenal CSV Error", "No valid CSV format")
+        }
+
+        const importableItem:ItemType = determineEmptyObjectReturns(data)
 
         const content:string = await FileSystem.readAsStringAsync(result.assets[0].uri)
         
         const parsed = Papa.parse(content, {header: true, dynamicTyping: true})
 
-        // The errors are due to GunType expecting string[], but the parsed content is only a string. Maybe a type ImportableGunType[] should be created.
-        // Future me: What the hell dude, the caliber should, nay MUST be a string[], ffs, what were you THINKING past me
-        const unflat:(GunType&GunTypeStatus | AmmoType)[] = parsed.data.map(item => {
+        const unflat:ItemType[] = parsed.data.map(item => {
 
-            const unitem:GunType&GunTypeStatus | AmmoType = unflatten(item)
-            /* @ts-expect-error */
-            const filterEmptyTags:string[] = unitem.tags === undefined ? [] : unitem.tags === null ? [] : unitem.tags === "" ? [] : typeof unitem.tags === "string" ? unitem.tags.split(",") : unitem.tags
+            const unitem:ItemType = unflatten(item)
 
-            if(data === "gun"){
-                const item = unitem as GunType&GunTypeStatus
-                const multiCal:string[] = unitem.caliber === undefined ? [] : unitem.caliber === null ? [] : typeof unitem.caliber === "string" ? unitem.caliber.split(",") : unitem.caliber
-                
-                const readyItem:GunType&GunTypeStatus = {...importableItem as GunType&GunTypeStatus, 
-                    id: item.id,
-                    manufacturer: item.manufacturer,
-                    model: item.model,
-                    manufacturingDate: item.manufacturingDate,
-                    originCountry: item.originCountry,
-                    caliber: multiCal,
-                    serial: item.serial,
-                    permit: item.permit,
-                    acquisitionDate: item.acquisitionDate,
-                    boughtFrom: item.boughtFrom,
-                    mainColor: item.mainColor,
-                    remarks : item.remarks,
-                    images: [],
-                    createdAt: item.createdAt === null ? new Date().getTime() : item.createdAt,
-                    lastModifiedAt: item.lastModifiedAt,
-                    shotCount: item.shotCount,
-                    tags: filterEmptyTags,
-                    lastShotAt: item.lastShotAt,
-                    lastCleanedAt: item.lastCleanedAt,
-                    paidPrice: item.paidPrice,
-                    marketValue: item.marketValue,
-                    cleanInterval: item.cleanInterval,
-                    exFullAuto: item.exFullAuto,
-                    highCapacityMagazine: item.highCapacityMagazine,
-                    short: item.short,
-                    fullAuto: item.fullAuto,
-                    launcher: item.launcher,
-                    decepticon: item.decepticon,
-                    blooptoob: item.blooptoob,
-                    grandfather: item.grandfather,
-                }
-                return readyItem
+         
+            const filterEmptyTags: string[] = unitem.tags ? typeof unitem.tags === "string" ? (unitem.tags as string).split(",") : (unitem.tags as string[]) : [];
+            
+            const readyItem:ItemType = {
+                ...importableItem, 
+                ...unitem, 
+                createdAt: unitem.createdAt === null ? new Date().getTime() : unitem.createdAt,
+                images: [],
+                tags: filterEmptyTags
             }
-            if(data === "ammo"){
-                const item = unitem as AmmoType
-                const readyItem:AmmoType = {...importableItem as AmmoType, 
-                    id: item.id,
-                    createdAt: item.createdAt === null ? new Date().getTime() : item.createdAt,
-                    lastModifiedAt: item.lastModifiedAt,
-                    manufacturer: item.manufacturer,
-                    designation: item.designation,
-                    originCountry: item.originCountry,
-                    caliber: item.caliber,
-                    headstamp: item.headstamp,
-                    currentStock: item.currentStock,
-                    lastTopUpAt: item.lastTopUpAt,
-                    criticalStock: item.criticalStock,
-                    tags: item.tags,
-                    images: []
-                }
-                return readyItem
-            }
-            return null
+
+            return readyItem
         })
-        if(unflat == null){
-            return
-        }
 
-        if(data === "gun"){
-            await db.delete(schema.gunCollection);
-            for(const item of unflat){
-                try{
-                    await db.insert(schema.gunCollection).values(item as GunType&GunTypeStatus)
-                }catch(e){
-                    console.log(e)
-                }  
-            }
-        }
-        if(data === "ammo"){
-            await db.delete(schema.ammoCollection);
-            for(const item of unflat){
-                await db.insert(schema.ammoCollection).values(item as AmmoType)
-            }
+        await db.delete(schema[data]);
+        for(const item of unflat){
+            try{
+                await db.insert(schema[data]).values(item)
+            }catch(e){
+                console.log(e)
+            }  
         }
 
         return unflat.length
