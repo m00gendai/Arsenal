@@ -1,4 +1,4 @@
-import { DBOperations } from "../interfaces"
+import { CollectionType, DBOperations } from "../interfaces"
 import * as schema from "../db/schema"
 import { db } from "../db/client"
 import Papa from 'papaparse';
@@ -7,15 +7,10 @@ import * as FileSystem from "expo-file-system";
 import { Platform } from "react-native";
 import * as Sharing from 'expo-sharing';
 
-export default async function exportArsenalCSV(data:"gun"|"ammo"){
+export default async function exportArsenalCSV(data: CollectionType){
 
-    let collection
-    if(data === "gun"){
-        collection = db.select().from(schema.gunCollection).all()
-    }
-    if(data === "ammo"){
-        collection = db.select().from(schema.ammoCollection).all()
-    }
+    const collection = db.select().from(schema[data]).all()
+    
     const flattened = collection.map(item => {return flatten(item, {safe: true})})
 
     const csv = Papa.unparse(flattened)
