@@ -62,8 +62,6 @@ export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quic
 export const cardActionsAmmo: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
-export const collectionExportDirectories: string[] = ["gun", "ammo", "accessory_silencer", "accessory_optic", "part_conversionKit"]
-
 export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
 export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic"]
 export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit"]
@@ -71,6 +69,11 @@ export const screenNameParamsLiterature: CollectionType[] = []
 export const screenNameParamsReloading:CollectionType[] = []
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
+
+export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount"]
+
+export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
+export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
