@@ -45,7 +45,7 @@ export const gunTags = sqliteTable("gunTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
-export const ammoCollection = sqliteTable("ammo", {
+export const legacyAmmoCollection = sqliteTable("ammo", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
@@ -56,6 +56,25 @@ export const ammoCollection = sqliteTable("ammo", {
     designation: text("designation").notNull(),
     originCountry: text("originCountry"),
     caliber: text("caliber"),
+    headstamp: text("headstamp"),
+    currentStock: text("currentStock"),
+    lastTopUpAt: text("lastTopUpAt"),
+    lastTopUpAt_unix: integer("lastTopUpAt_unix"),
+    criticalStock: text("criticalStock"),
+    remarks: text("remarks"),
+})
+
+export const ammoCollection = sqliteTable("ammo", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    designation: text("designation").notNull(),
+    originCountry: text("originCountry"),
+    caliber: text("caliber", {mode: "json"}),
     headstamp: text("headstamp"),
     currentStock: text("currentStock"),
     lastTopUpAt: text("lastTopUpAt"),
