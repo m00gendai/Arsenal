@@ -137,6 +137,23 @@ export function determineEmptyObject(collection: CollectionType){
     }
 }
 
+export function determineEmptyObjectReturns(collection: CollectionType){
+    switch(collection){
+        case "gunCollection": 
+            return {...emptyGunObject}
+        case "ammoCollection":
+            return {...emptyAmmoObject}
+        case "accessoryCollection_Silencer":
+            return {...emptySilencerObject}
+        case "accessoryCollection_Optic":
+            return {...emptyOpticObject}
+        case "accessoryCollection_Optic":
+            return {...emptyOpticObject}
+        case "partCollection_ConversionKit":
+            return {...emptyConversionKitObject}
+    }
+}
+
 export function determineRequiredFields(collection: CollectionType){
     switch(collection){
         case "gunCollection": 
