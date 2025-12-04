@@ -34,7 +34,7 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
         return [itemData[data]] // if its JUST a string, return an aray of it
     }
 
-    const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
+    const [input, setInput] = useState<string[]>(itemData && itemData[data] ? itemData[data] : [])
     const [showModalCaliber, setShowModalCaliber] = useState<boolean>(false)
     const [activeCaliber, setActiveCaliber] = useState<string[]>(determineActiveCaliber(itemData))
     const [caliberView, setCaliberView] = useState<"search" | "list">("search")
@@ -48,26 +48,18 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
 
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(input: string | string[]){
+    function updateItemData(input: string[]){
     // Convert to appropriate format based on multiCaliber
-    let finalValue: string | string[];
-    
-    if (multiCaliber) {
-        // Keep as array for guns
-        finalValue = Array.isArray(input) ? input : [input];
-    } else {
-        // Convert to string for ammo
-        finalValue = Array.isArray(input) ? (input[0] || "") : input;
-    }
-    
+    let finalValue: string[] = input;
+
     if(charCount < MAX_CHAR_COUNT){
-        setCharCount(finalValue !== undefined ? (Array.isArray(finalValue) ? finalValue.join("\n").length : finalValue.length) : 0)
-        setInput(Array.isArray(finalValue) ? finalValue.join("\n") : finalValue)
+        setCharCount(0)
+        setInput(finalValue)
         setItemData({...itemData, [data]: finalValue})
     }
     if(charCount >= MAX_CHAR_COUNT && isBackspace){
-        setCharCount(finalValue !== undefined ? (Array.isArray(finalValue) ? finalValue.join("\n").length : finalValue.length) : 0)
-        setInput(Array.isArray(finalValue) ? finalValue.join("\n") : finalValue)
+        setCharCount(0)
+        setInput(finalValue)
         setItemData({...itemData, [data]: finalValue})
     }
 }
@@ -135,7 +127,6 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
                     value={input ? input.toString() : ""}
                     editable={false}
                     showSoftInputOnFocus={true}
-                    onChangeText={input => updateItemData(input)}
                     onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
                     left={null}
                     inputMode={"text"}
