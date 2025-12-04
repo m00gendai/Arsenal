@@ -110,15 +110,22 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
 
         //This is if set via QuickMount/Remount
 
-        if(accessoryData.length !== 0){
-            const type = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, currentAccessory.id))
-            await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+        if(!itemData && accessoryData.length !== 0){
+            try{
+                const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+                const type = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, mountableAccessory.id))
+
+                await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+            }catch(e){
+                console.error(e)
+            }
         }    
-        if(partData.length !== 0){
-            const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, currentAccessory.id))
+        if(!itemData && partData.length !== 0){
+            const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+            const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, mountableAccessory.id))
             await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
         }  
-        
+
         //This is if set via NewItem or EditItem
         if(setItemData){
             setItemData({...itemData, [data]: input})
@@ -131,7 +138,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
             .where(eq(schema.partMount.partId, itemData.id));
         
         if(checked !== ""){
-            if(accessoryData.length !== 0){
+            if(accessoryData.length !== 0 || currentCollection.startsWith("accessoryCollection_")){
                 await db.insert(schema.accessoryMount).values({
                     id: uuidv4(),
                     accessoryId: itemData.id,
@@ -141,7 +148,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                     parentPartId: collection === "parts" ? checked : null,
                 })
             }
-            if(partData.length !== 0){
+            if(partData.length !== 0 || currentCollection.startsWith("partCollection_")){
                 await db.insert(schema.partMount).values({
                     id: uuidv4(),
                     partId: itemData.id,
@@ -159,7 +166,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
 
         const itemName = getItemName()
 
-updateItemData(itemName)
+        updateItemData(itemName)
         if(setItemName){
             setItemName(itemName)
         }
