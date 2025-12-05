@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { and, or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Optic, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsPart_ConversionKit } from "configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Optic, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs";
 import sortAccessoryCollection_Silencer from "./sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sortAccessoryCollection_Optic";
@@ -15,6 +15,9 @@ import sortPartCollection_ConversionKit from "./sortPartCollection_ConversionKit
 import { conversionKitRemarks, emptyConversionKitObject, partDataTemplate_ConversionKit } from "lib/DataTemplates/partDataTemplate_ConversionKit";
 import sortAccessoryCollection_LightLaser from "./sortAccessoryCollection_LightLaser";
 import { accessoryDataTemplate_LightLaser, emptyLightLaserObject, lightLaserRemarks } from "lib/DataTemplates/accessoryDataTemplate_LightLaser";
+import sortPartCollection_Barrel from "./sortPartCollection_Barrel";
+import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/DataTemplates/partDataTemplate_Barrel";
+import { tabBarLabels } from "lib/textTemplates";
 
 export function determineSchema(collection:CollectionType){
     console.log(collection)
@@ -31,6 +34,8 @@ export function determineSchema(collection:CollectionType){
             return schema.accessoryCollection_LightLaser
         case "partCollection_ConversionKit":
             return schema.partCollection_ConversionKit
+        case "partCollection_Barrel":
+            return schema.partCollection_Barrel
     }
 }
 
@@ -48,6 +53,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.accessory_LightLaserTags
         case "partCollection_ConversionKit":
             return schema.part_ConversionKitTags
+        case "partCollection_Barrel":
+            return schema.part_BarrelTags
     }
 }
 
@@ -71,6 +78,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         };
         case "partCollection_ConversionKit":{
             return sortPartCollection_ConversionKit(sortBy[collection].direction, sortBy[collection].type)
+        };
+        case "partCollection_Barrel":{
+            return sortPartCollection_Barrel(sortBy[collection].direction, sortBy[collection].type)
         };
     }
 }
@@ -102,6 +112,10 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
             return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
                  like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
         }
+        case "partCollection_Barrel":{
+            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
+                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+        }
     }
 }
 
@@ -119,6 +133,8 @@ export function determineDataTemplate(collection: CollectionType){
             return accessoryDataTemplate_LightLaser
         case "partCollection_ConversionKit":
             return partDataTemplate_ConversionKit
+        case "partCollection_Barrel":
+            return partDataTemplate_Barrel
     }
 }
 
@@ -136,6 +152,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return lightLaserRemarks
         case "partCollection_ConversionKit":
             return conversionKitRemarks
+        case "partCollection_Barrel":
+            return barrelRemarks
     }
 }
 
@@ -153,6 +171,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyLightLaserObject
         case "partCollection_ConversionKit":
             return emptyConversionKitObject
+        case "partCollection_Barrel":
+            return emptyBarrelObject
     }
 }
 
@@ -170,6 +190,8 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyLightLaserObject}
         case "partCollection_ConversionKit":
             return {...emptyConversionKitObject}
+        case "partCollection_Barrel":
+            return {...emptyBarrelObject}
     }
 }
 
@@ -187,6 +209,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsAccessory_LightLaser
         case "partCollection_ConversionKit":
             return requiredFieldsPart_ConversionKit
+        case "partCollection_Barrel":
+            return requiredFieldsPart_Barrel
     }
 }
 
@@ -204,6 +228,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsAccessory_LightLaser
         case "partCollection_ConversionKit":
             return sortingOptionsPart_ConversionKit
+        case "partCollection_Barrel":
+            return sortingOptionsPart_Barrel
     }
 }
 
@@ -221,11 +247,17 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsAccessory_LightLaser
         case "partCollection_ConversionKit":
             return cardActionsPart_ConversionKit
+        case "partCollection_Barrel":
+            return cardActionsPart_Barrel
     }
 }
 
 export function determineAccessoryIcons(collection: CollectionType){
     switch(collection){
+        case "gunCollection":
+            return "pistol"
+        case "ammoCollection":
+            return "ammunition"
         case "accessoryCollection_Silencer":
             return "volume-mute"
         case "accessoryCollection_Optic":
@@ -234,13 +266,32 @@ export function determineAccessoryIcons(collection: CollectionType){
             return "spotlight-beam"
         case "partCollection_ConversionKit":
             return "cog-transfer-outline"
-    /*  case "partCollection_Barrel":
-            return "lightbulb-fluorescent-tube-outline" */
+        case "partCollection_Barrel":
+            return "lightbulb-fluorescent-tube-outline"
     /*  case "reloadingCollection_Die":
             return "lightbulb-cfl-spiral" */
     /*  case "reloadingCollection_Powder":
             return "sprinkler-fire" */
     /*  case "reloadingCollection_Primer":
             return "fire-circle" */
+    }
+}
+
+export function determineTabBarLabel(collection: CollectionType){
+    switch(collection){
+        case "gunCollection": 
+            return tabBarLabels.gunCollection
+        case "ammoCollection":
+            return tabBarLabels.ammoCollection
+        case "accessoryCollection_Silencer":
+            return tabBarLabels.silencerCollection
+        case "accessoryCollection_Optic":
+            return tabBarLabels.opticCollection
+        case "accessoryCollection_LightLaser":
+            return tabBarLabels.lightLaserCollection
+        case "partCollection_ConversionKit":
+            return tabBarLabels.conversionCollection
+        case "partCollection_Barrel":
+            return tabBarLabels.barrelCollection
     }
 }
