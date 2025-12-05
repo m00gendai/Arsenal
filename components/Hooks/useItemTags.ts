@@ -34,6 +34,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.part_ConversionKitTags)
     )
 
+    const { data: partTags_Barrel } = useLiveQuery(
+        db.select()
+        .from(schema.part_BarrelTags)
+    )
+
     switch(type){
         case "gunCollection":
             return gunTags
@@ -47,5 +52,7 @@ export function useItemTags(type: CollectionType) {
             return accessoryTags_LightLaser
         case "partCollection_ConversionKit":
             return partTags_ConversionKit
+        case "partCollection_Barrel":
+            return partTags_Barrel
     }
 }

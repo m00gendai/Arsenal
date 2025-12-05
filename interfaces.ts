@@ -171,12 +171,41 @@ export interface PartType_ConversionKit{
   currentlyMountedOn: string
 }
 
+export interface PartType_Barrel{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string []
+  manufacturer: string
+  model: string
+  manufacturingDate: string
+  originCountry: string
+  caliber: string[]
+  thread: string
+  length: string
+  serial: string
+  permit: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  shotCount: string
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  mainColor: string
+  remarks: string
+  currentlyMountedOn: string
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
                         | AccessoryType_Optic
                         | AccessoryType_LightLaser
                         | PartType_ConversionKit
+                        | PartType_Barrel
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -184,6 +213,7 @@ export type CollectionType =  | "gunCollection"
                               | "accessoryCollection_Optic"
                               | "accessoryCollection_LightLaser"
                               | "partCollection_ConversionKit"
+                              | "partCollection_Barrel"
 
 export type Screens = "itemCollection"
 
@@ -320,12 +350,22 @@ export type SortingTypesPart_ConversionKit =  | "alphabetical"
                                               | "lastCleanedAt" 
                                               | "lastShotAt"
 
+export type SortingTypesPart_Barrel = | "alphabetical" 
+                                      | "createdAt" 
+                                      | "lastModifiedAt" 
+                                      | "paidPrice" 
+                                      | "marketValue" 
+                                      | "acquisitionDate" 
+                                      | "lastCleanedAt" 
+                                      | "lastShotAt"
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
                             | SortingTypesAccessory_Optic
                             | SortingTypesAccessory_LightLaser
                             | SortingTypesPart_ConversionKit
+                            | SortingTypesPart_Barrel
 
                             
 export type Languages = | "de" 

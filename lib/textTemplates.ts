@@ -60,6 +60,7 @@ interface TabBarLabels{
     silencerCollection: SimpleTranslation
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
+    barrelCollection: SimpleTranslation
     gunMagazineCollection: SimpleTranslation
     accessoriesMiscCollection: SimpleTranslation
     bookCollection: SimpleTranslation
@@ -901,6 +902,13 @@ export const tabBarLabels: TabBarLabels = {
     },
     conversionCollection: {
         de: "Wechelsysteme",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    },
+    barrelCollection: {
+        de: "Läufe",
         en: "",
         fr: "",
         it: "",

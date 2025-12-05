@@ -2,12 +2,10 @@ import { db } from "db/client";
 import { ItemType } from "interfaces";
 import { useEffect, useState } from "react";
 import { SectionList, TouchableOpacity, View } from "react-native";
-import { Appbar, Icon, Text, ThemeProvider } from 'react-native-paper';
-import ItemCard from "./ItemCard";
-import { defaultBottomBarHeight, defaultViewPadding } from "configs";
+import { Icon, Text } from 'react-native-paper';
+import { defaultViewPadding } from "configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
-import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import * as schema from "db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
@@ -25,6 +23,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const [opticData, setOpticData] = useState([])
     const [lightLaserData, setLightLaserData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
+    const [barrelData, setBarrelData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -66,6 +65,7 @@ export default function Item_Accessories({ currentItem }: Props) {
         setLightLaserData(lightLaserData)
 
       }
+
       async function getPartData(){
         const mountedData = await db.select()
           .from(schema.partMount)
@@ -87,6 +87,14 @@ export default function Item_Accessories({ currentItem }: Props) {
 
         setConversionKitData(conversionKitData)
 
+        const barrelData = await db.select()
+          .from(schema.partCollection_Barrel)
+          .where(
+            inArray(schema.partCollection_Barrel.id, mountedIds)
+          )
+
+        setBarrelData(barrelData)
+
       }
       getAccessoryData()
       getPartData()
@@ -105,8 +113,12 @@ type Section = {
   data: ItemType[];
 };
 
-      const DATA:Section[] = [
-        {
+const DATA:Section[] = [
+  {
+    title: tabBarLabels.barrelCollection[language],
+    data: barrelData,
+  },
+  {
     title: tabBarLabels.conversionCollection[language],
     data: conversionKitData,
   },
@@ -126,7 +138,6 @@ type Section = {
     title: tabBarLabels.opticCollection[language],
     data: opticData,
   },
-  
 ];
 
 

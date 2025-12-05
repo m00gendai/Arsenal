@@ -168,6 +168,42 @@ export const part_ConversionKitTags = sqliteTable("parts_conversionKitTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const partCollection_Barrel = sqliteTable("parts_barrel", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => partCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    caliber: text("caliber", {mode: "json"}),
+    serial: text("serial"),
+    thread: text("thread"),
+    length: text("length"),
+    currentlyMountedOn: text("currentlyMountedOn"),
+    permit: text("permit"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt_unix: integer("lastShotAt_unix"),
+    lastCleanedAt_unix: integer("lastCleanedAt_unix"),
+    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+})
+
+export const part_BarrelTags = sqliteTable("parts_barrelTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("barrelTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().references(() => accessoryCollection.id),
