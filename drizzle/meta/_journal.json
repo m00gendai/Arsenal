@@ -71,6 +71,13 @@
       "when": 1764681835604,
       "tag": "0009_black_mordo",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1764947639435,
+      "tag": "0010_quick_scream",
+      "breakpoints": true
     }
   ]
 }

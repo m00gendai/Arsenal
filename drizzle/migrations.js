@@ -11,6 +11,7 @@ import m0006 from './0006_classy_golden_guardian.sql';
 import m0007 from './0007_late_susan_delgado.sql';
 import m0008 from './0008_swift_shape.sql';
 import m0009 from './0009_black_mordo.sql';
+import m0010 from './0010_quick_scream.sql';
 
   export default {
     journal,
@@ -24,7 +25,8 @@ m0005,
 m0006,
 m0007,
 m0008,
-m0009
+m0009,
+m0010
     }
   }
   
