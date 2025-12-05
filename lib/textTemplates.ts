@@ -296,6 +296,22 @@ export const newAmmoTitle:SimpleTranslation = {
     ch: "Nova muniziun",
 }
 
+export const newAccessoryTitle:SimpleTranslation = {
+    de: "Neues Zubehör",
+    en: "New Accessory",
+    fr: "",
+    it: "",
+    ch: "",
+}
+
+export const newPartTitle:SimpleTranslation = {
+    de: "Neues Waffenbestandteil",
+    en: "New Weapon Part",
+    fr: "",
+    it: "",
+    ch: "",
+}
+
 export const unsavedChangesAlert:Alert = {
     title: {
         de: "Es hat nicht gespeicherte Änderungen",
@@ -1527,25 +1543,25 @@ export const longPressActions:LongPressActions = {
         ch: "Stizzar",
     },
     goto: {
-        de: "goto",
-        en: "goto",
-        fr: "goto",
-        it: "goto",
-        ch: "goto",
+        de: "",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
     },
     unmount: {
-        de: "unmount",
-        en: "unmount",
-        fr: "unmount",
-        it: "unmount",
-        ch: "unmount",
+        de: "Abmontieren",
+        en: "Unmount",
+        fr: "",
+        it: "",
+        ch: "",
     },
     remount: {
-        de: "remount",
-        en: "remount",
-        fr: "remount",
-        it: "remount",
-        ch: "remount",
+        de: "Woanders montieren",
+        en: "Remount",
+        fr: "",
+        it: "",
+        ch: "",
     }
 }
 

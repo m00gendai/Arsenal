@@ -24,6 +24,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.accessory_OpticTags)
     )
 
+    const { data: accessoryTags_LightLaser } = useLiveQuery(
+        db.select()
+        .from(schema.accessory_LightLaserTags)
+    )
+
     const { data: partTags_ConversionKit } = useLiveQuery(
         db.select()
         .from(schema.part_ConversionKitTags)
@@ -38,6 +43,8 @@ export function useItemTags(type: CollectionType) {
             return accessoryTags_Silencer
         case "accessoryCollection_Optic":
             return accessoryTags_Optic
+        case "accessoryCollection_LightLaser":
+            return accessoryTags_LightLaser
         case "partCollection_ConversionKit":
             return partTags_ConversionKit
     }

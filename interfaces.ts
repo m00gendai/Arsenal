@@ -118,6 +118,33 @@ export interface AccessoryType_Optic{
   currentlyMountedOn: string
 }
 
+export interface AccessoryType_LightLaser{
+  id: string;
+  createdAt: number;
+  lastModifiedAt: number
+  images: string[]
+  tags: string[]             
+  manufacturer: string
+  model: string
+  manufacturingDate: string
+  originCountry: string
+  serial: string
+  permit: string
+  lumen: string
+  wavelength: string
+  laserPower: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  shotCount: string
+  lastShotAt_unix: number | null
+  batteryLastChangedAt_unix: number | null
+  mainColor: string
+  remarks: string
+  currentlyMountedOn: string
+}
+
 export interface PartType_ConversionKit{
   id: string
   createdAt: number
@@ -148,12 +175,14 @@ export type ItemType =  | GunType
                         | AmmoType 
                         | AccessoryType_Silencer 
                         | AccessoryType_Optic
+                        | AccessoryType_LightLaser
                         | PartType_ConversionKit
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
                               | "accessoryCollection_Silencer" 
                               | "accessoryCollection_Optic"
+                              | "accessoryCollection_LightLaser"
                               | "partCollection_ConversionKit"
 
 export type Screens = "itemCollection"
@@ -273,6 +302,14 @@ export type SortingTypesAccessory_Optic = | "alphabetical"
                                           | "lastCleanedAt" 
                                           | "lastBatteryChangeAt" 
 
+export type SortingTypesAccessory_LightLaser =  | "alphabetical" 
+                                                | "createdAt" 
+                                                | "lastModifiedAt" 
+                                                | "paidPrice" 
+                                                | "marketValue" 
+                                                | "acquisitionDate" 
+                                                | "lastBatteryChangeAt" 
+
 export type SortingTypesPart_ConversionKit =  | "alphabetical" 
                                               | "createdAt" 
                                               | "lastModifiedAt" 
@@ -287,6 +324,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
                             | SortingTypesAccessory_Optic
+                            | SortingTypesAccessory_LightLaser
                             | SortingTypesPart_ConversionKit
 
                             

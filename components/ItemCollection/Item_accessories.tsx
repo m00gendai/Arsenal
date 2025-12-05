@@ -23,6 +23,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
+    const [lightLaserData, setLightLaserData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
 
     useEffect(()=>{
@@ -55,6 +56,14 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setOpticData(opticData)
+
+        const lightLaserData = await db.select()
+          .from(schema.accessoryCollection_LightLaser)
+          .where(
+            inArray(schema.accessoryCollection_LightLaser.id, mountedIds)
+          )
+
+        setLightLaserData(lightLaserData)
 
       }
       async function getPartData(){
@@ -111,7 +120,7 @@ type Section = {
   },
   {
     title: tabBarLabels.lightLaserCollection[language],
-    data: null,
+    data: lightLaserData,
   },
   {
     title: tabBarLabels.opticCollection[language],

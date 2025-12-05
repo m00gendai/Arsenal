@@ -245,6 +245,41 @@ export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLaser", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    serial: text("serial"),
+    permit: text("permit"),
+    lumen: text("lumen"),
+    wavelength: text("wavelength"),
+    laserPower: text("laserPower"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt_unix: integer("lastShotAt_unix"),
+    batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOn: text("currentlyMountedOn")
+})
+
+export const accessory_LightLaserTags = sqliteTable("accessories_lightLaserTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("lightLaserTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const gunReminders = sqliteTable("gunReminder",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),
