@@ -4,20 +4,11 @@ import { Directory, Paths } from 'expo-file-system/next';
 import { FileSystem } from 'react-native-file-access';
 import { zip } from 'react-native-zip-archive'
 import * as schema from "../db/schema";
-import { GunType } from "../interfaces";
+import { GunType, ItemType } from "../interfaces";
 import * as ExpoFS from "expo-file-system";
 import { collectionExportDirectories } from "../configs";
 import * as Sharing from 'expo-sharing';
 import { Platform } from "react-native";
-
-function getSchema(item:string){
-  switch(item){
-    case "gun":
-      return schema.gunCollection
-  case "ammo":
-    return schema.ammoCollection
-  }
-}
 
 export default async function saveDatabase(
   setImportSize:(num:number)=>void, 
@@ -62,7 +53,7 @@ export default async function saveDatabase(
           collectionImagesFolder.create()
         }
 
-        const itemsWithImages = await db.select().from(getSchema(item)) as GunType[]
+        const itemsWithImages = await db.select().from(schema[item]) as ItemType[]
         
         for (const entry of itemsWithImages) {
           if (entry.images?.length) {

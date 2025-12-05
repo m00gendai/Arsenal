@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { AmmoType, DBOperations, GunType } from "../interfaces"
+import { AmmoType, CollectionType, DBOperations, GunType, ItemType } from "../interfaces"
 import { emptyAmmoObject } from "../lib/DataTemplates/ammoDataTemplate"
 import { emptyGunObject } from "../lib/DataTemplates/gunDataTemplate"
 
@@ -18,7 +18,9 @@ export interface ImportExportStore {
     setMapCSVAmmo: (data: AmmoType) => void
     mapCSVGun: GunType
     setMapCSVGun: (data: GunType) => void
-    dbCollectionType: "gun" | "ammo"
+    mapCSVItem: ItemType
+    setMapCSVItem: (data: ItemType) => void
+    dbCollectionType: CollectionType
     setDbCollectionType: (data: string) => void
   }
 
@@ -37,6 +39,8 @@ export interface ImportExportStore {
     setMapCSVAmmo: (data: AmmoType | null) => set((state => ({mapCSVAmmo: data}))),
     mapCSVGun: emptyGunObject,
     setMapCSVGun: (data: GunType | null) => set((state => ({mapCSVGun: data}))),
-    dbCollectionType: "gun",
-    setDbCollectionType: (data: "gun" | "ammo") => set((state) => ({dbCollectionType: data}))
+    mapCSVItem: emptyGunObject,
+    setMapCSVItem: (data: ItemType | null) => set((state => ({mapCSVItem: data}))),
+    dbCollectionType: "gunCollection",
+    setDbCollectionType: (data: CollectionType) => set((state) => ({dbCollectionType: data}))
   }))

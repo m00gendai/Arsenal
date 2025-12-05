@@ -198,10 +198,17 @@ export default function App() {
     if(ammunition.length !== 0){
       await Promise.all(ammunition.map(async ammo =>{
         if(ammo !== null){
-          ammo.createdAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
-          ammo.lastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
+          const newCreatedAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
+          const newLastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
+          const newCaliber = [ammo.caliber]
+          const parsedAmmo = {
+            ...ammo,
+            createdat: newCreatedAt,
+            lastModifiedAt: newLastModifiedAt,
+            caliber: newCaliber
+        }
           try{
-            await db.insert(schema.ammoCollection).values(ammo)
+            await db.insert(schema.ammoCollection).values(parsedAmmo)
           }catch(e){
             throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
           }
@@ -225,11 +232,8 @@ export default function App() {
   }
 
   function prepareDateParse(dateString:string){
-    console.log(dateString)
     const [day, month, year] = dateString.split(".").map(Number);
-    console.log([day, month, year])
       const date = new Date(year, month - 1, day);
-      console.log(date)
       return date.getTime()
   }
 
@@ -249,7 +253,7 @@ export default function App() {
       }
       
       try{
-    if(isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+    if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
       console.log("Legacy Date Fields already parsed")
       return
     }
@@ -273,12 +277,44 @@ export default function App() {
         })
         .where(eq(schema.ammoCollection.id, ammo.id));
     }))
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp(true)
-    await AsyncStorage.setItem(PREFERENCES, JSON.stringify({...isPreferences, hasConvertedLegacyDateFieldsToUnixTimeStamp: true}))
   } catch(e){
     alarm("Migrate Date Fields Final Error", e)
   }
 }
+
+async function migrateLegacyAmmoCaliber(){
+    let preferences:string
+      try{
+        preferences = await AsyncStorage.getItem(PREFERENCES)
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Preference DB Error", e)
+      }
+
+      let isPreferences
+      try{
+       isPreferences = preferences === null ? null : JSON.parse(preferences)
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Preference Parse Error", e)
+      }
+      
+      try{
+        if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+          console.log("Legacy Date & Ammo Fields already parsed")
+          return
+        }
+        const ammunition = await db.select().from(schema.legacyAmmoCollection)
+        await Promise.all(ammunition.map(async ammo =>{
+          const parsedCaliberField = [JSON.parse(ammo.caliber)]
+          await db.update(schema.ammoCollection).set({caliber: parsedCaliberField}).where(eq(schema.ammoCollection.id, ammo.id))
+        }))
+
+        // This was initially for migrateLegacyDateFields() but I am too lazy to add another flag
+        setHasConvertedLegacyDateFieldsToUnixTimeStamp(true)
+        await AsyncStorage.setItem(PREFERENCES, JSON.stringify({...isPreferences, hasConvertedLegacyDateFieldsToUnixTimeStamp: true}))
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Final Error", e)
+      }
+    }
 
 
   // INIT PREPARE FUNCTION - THIS ESSENTAILLY SETS UP THE APP
@@ -321,6 +357,7 @@ export default function App() {
           console.log("Parsing Legacy Date Fields")
           try{
             await migrateLegacyDateFields()
+            await migrateLegacyAmmoCaliber()
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
           }
@@ -354,6 +391,7 @@ export default function App() {
           console.log("Parsing Legacy Date Fields")
           try{
             await migrateLegacyDateFields()
+            await migrateLegacyAmmoCaliber()
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
@@ -393,6 +431,7 @@ export default function App() {
             console.log("Parsing Legacy Date Fields")
             try{
               await migrateLegacyDateFields()
+              await migrateLegacyAmmoCaliber()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
             }
@@ -423,6 +462,7 @@ export default function App() {
             console.log("Parsing Legacy Date Fields")
             try{
               await migrateLegacyDateFields()
+              await migrateLegacyAmmoCaliber()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)
             }
