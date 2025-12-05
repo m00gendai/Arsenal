@@ -1,18 +1,17 @@
 import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
-import { defaultViewPadding } from "configs";
-import { useViewStore } from "stores/useViewStore";
+import { defaultViewPadding, screenNameParamsAccessory } from "configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { mainCollectionCategories, tabBarLabels } from "lib/textTemplates";
+import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "interfaces";
 import { useItemStore } from "stores/useItemStore";
+import { determineAccessoryIcons, determineTabBarLabel } from "functions/determinators";
 
 interface Props{
     handleNavigation:(target: "itemCollection", params:{ collectionType: CollectionType })=>void
 }
 
 export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
-
 
     const { language, theme } = usePreferenceStore()
     const { currentCollection } = useItemStore()
@@ -37,81 +36,32 @@ export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
             
             <Divider style={{height: 2, width: "100%", backgroundColor: theme.colors.primary}} />
             
-            <TouchableOpacity 
-                onPress={()=>
-                    // change collection type value
-                    handleNavigation("itemCollection", {collectionType: "accessoryCollection_Silencer"})} 
-                style={{
-                    width: "30%", 
-                    alignItems: 'center'}}
-            >
-                <Icon 
-                    // change icon
-                    source="volume-off" 
-                    size={48} 
-                    color={currentCollection === "accessoryCollection_Silencer" ? theme.colors.primary : theme.colors.secondary} 
-                />
-                <Text 
-                    style={{
-                        textAlign: "center", 
-                        color: currentCollection === "accessoryCollection_Silencer" ? theme.colors.primary : theme.colors.secondary, 
-                        marginTop: 4 }}
-                >
-                    {`${tabBarLabels.silencerCollection[language]}`}
-                </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                onPress={()=>
-                    // change collection type value
-                    handleNavigation("itemCollection", {collectionType: "accessoryCollection_Optic"})} 
-                style={{
-                    width: "30%", 
-                    alignItems: 'center'}}
-            >
-                <Icon 
-                    // change icon
-                    source="toslink" 
-                    size={48} 
-                    // change collection type
-                    color={currentCollection === "accessoryCollection_Optic" ? theme.colors.primary : theme.colors.secondary} 
-                />
-                <Text 
-                    style={{
-                        textAlign: "center", 
-                        // change collection type
-                        color: currentCollection === "accessoryCollection_Optic" ? theme.colors.primary : theme.colors.secondary, 
-                        marginTop: 4 }}
-                >
-                    {`${tabBarLabels.opticCollection[language]}`}
-                </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                onPress={()=>
-                    // change collection type value
-                    handleNavigation("itemCollection", {collectionType: "accessoryCollection_LightLaser"})} 
-                style={{
-                    width: "30%", 
-                    alignItems: 'center'}}
-            >
-                <Icon 
-                    // change icon
-                    source="spotlight-beam" 
-                    size={48} 
-                    // change collection type
-                    color={currentCollection === "accessoryCollection_LightLaser" ? theme.colors.primary : theme.colors.secondary} 
-                />
-                <Text 
-                    style={{
-                        textAlign: "center", 
-                        // change collection type
-                        color: currentCollection === "accessoryCollection_LightLaser" ? theme.colors.primary : theme.colors.secondary, 
-                        marginTop: 4 }}
-                >
-                    {`${tabBarLabels.lightLaserCollection[language]}`}
-                </Text>
-            </TouchableOpacity>
+            {screenNameParamsAccessory.map((collection, index) => {
+                return(
+                    <TouchableOpacity 
+                    key={`${collection}_${index}`}
+                        onPress={()=>
+                            handleNavigation("itemCollection", {collectionType: collection})} 
+                        style={{
+                            width: "30%", 
+                            alignItems: 'center'}}
+                    >
+                        <Icon 
+                            source={determineAccessoryIcons(collection)}
+                            size={48} 
+                            color={currentCollection === collection ? theme.colors.primary : theme.colors.secondary} 
+                        />
+                        <Text 
+                            style={{
+                                textAlign: "center", 
+                                color: currentCollection === collection ? theme.colors.primary : theme.colors.secondary, 
+                                marginTop: 4 }}
+                        >
+                            {`${determineTabBarLabel(collection)[language]}`}
+                        </Text>
+                    </TouchableOpacity>
+                )
+            })}
 
         </View>
     )
