@@ -10,6 +10,8 @@ import * as schema from "db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
 import { tabBarLabels } from "lib/textTemplates";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { PREFERENCES } from "configs_DB";
 
 interface Props{
     currentItem: ItemType
@@ -127,12 +129,25 @@ export default function Item_Accessories({ currentItem }: Props) {
       getPartData()
     },[cardOptionsMenuVisible_accessories, alohaSnackbarVisible])
 
-    function handleDisplaySwitch(type:DisplayVariants){
+    async function handleDisplaySwitch(type:DisplayVariants){
 
     setDisplaySettings({
       ...displaySettings,
       accessoryView: type,
     });
+
+    const preferences: string | null = await AsyncStorage.getItem(PREFERENCES)
+    const parsedPreferences = preferences ? JSON.parse(preferences) : {}
+    
+    const newPreferences = {
+      ...parsedPreferences,
+      displaySettings: {
+        ...(parsedPreferences.displaySettings || {}),
+        accessoryView: type,
+      }
+    }
+    
+    await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
 }
 
 type Section = {
