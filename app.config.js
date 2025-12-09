@@ -62,9 +62,9 @@ export default {
         "expo-splash-screen",
         {
           "backgroundColor": "#000000",
-          "image": "/assets/appIconC.png",
+          "image": "./assets/appIconC.png",
           "dark": {
-            "image": "/assets/appIconC.png",
+            "image": "./assets/appIconC.png",
             "backgroundColor": "#000000"
           },
           "imageWidth": 512
