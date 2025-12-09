@@ -4,7 +4,7 @@ import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { modalTexts, snackbarText } from "lib/textTemplates"
+import { modalTexts, snackbarText, tabBarLabels } from "lib/textTemplates"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
 import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
@@ -15,7 +15,7 @@ import { useViewStore } from "stores/useViewStore";
 import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";
 import { useTextStore } from "stores/useTextStore";
-import { access } from "fs";
+import { determineAccessoryIcons } from "functions/determinators";
 
 interface Props{
     data: string
@@ -36,7 +36,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     const navigation = useNavigation()
 
     const [checked, setChecked] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
-    const [collection, setCollection] = useState<"guns" | "accessories" | "">("")
+    const [collection, setCollection] = useState<"guns" | "accessories" | "parts" | "">("")
 
     const { data: accessoryData } = useLiveQuery(
         db.select()
@@ -44,6 +44,16 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .where(
             eq(
                 schema.accessoryCollection.id, itemData.id
+            )
+        )
+    )
+
+    const { data: partData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection)
+        .where(
+            eq(
+                schema.partCollection.id, itemData.id
             )
         )
     )
@@ -72,6 +82,33 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`)))
     )
 
+    const { data: lightLaserData } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection_LightLaser)
+        .where(
+            ne(schema.accessoryCollection_LightLaser.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`)))
+    )
+
+    const { data: conversionKitData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_ConversionKit)
+        .where(
+            ne(schema.partCollection_ConversionKit.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`)))
+    )
+
+    const { data: barrelData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_Barrel)
+        .where(
+            ne(schema.partCollection_Barrel.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_Barrel.manufacturer}, ""), ${schema.partCollection_Barrel.model})`)))
+    )
+
     function getListItemBackgroundColor(id, index){
         if(id === checked){
             return theme.colors.tertiary
@@ -83,33 +120,72 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...lightLaserData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
 }
 
     async function updateItemData(input: string){
-        // TODO: Update Item itself
+
+        //This is if set via QuickMount/Remount
+
+        if(!itemData && accessoryData.length !== 0){
+            try{
+                const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+                const type = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, mountableAccessory.id))
+
+                await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+            }catch(e){
+                console.error(e)
+            }
+        }    
+        if(!itemData && partData.length !== 0){
+            const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+            const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, mountableAccessory.id))
+            await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+        }  
+
+        //This is if set via NewItem or EditItem
         if(setItemData){
             setItemData({...itemData, [data]: input})
         }
+
         await db.delete(schema.accessoryMount)
-        .where(eq(schema.accessoryMount.accessoryId, itemData.id));
+            .where(eq(schema.accessoryMount.accessoryId, itemData.id));
+
+        await db.delete(schema.partMount)
+            .where(eq(schema.partMount.partId, itemData.id));
         
         if(checked !== ""){
-            await db.insert(schema.accessoryMount).values({
-                id: uuidv4(),
-                accessoryId: itemData.id,
-                accessoryType: accessoryData[0] ? accessoryData[0].type : currentCollection,
-                parentGunId: collection === "guns" ? checked : null,
-                parentAccessoryId: collection === "accessories" ? checked : null,
-            })
+            if(accessoryData.length !== 0 || currentCollection.startsWith("accessoryCollection_")){
+                await db.insert(schema.accessoryMount).values({
+                    id: uuidv4(),
+                    accessoryId: itemData.id,
+                    accessoryType: accessoryData[0] ? accessoryData[0].type : currentCollection,
+                    parentGunId: collection === "guns" ? checked : null,
+                    parentAccessoryId: collection === "accessories" ? checked : null,
+                    parentPartId: collection === "parts" ? checked : null,
+                })
+            }
+            if(partData.length !== 0 || currentCollection.startsWith("partCollection_")){
+                await db.insert(schema.partMount).values({
+                    id: uuidv4(),
+                    partId: itemData.id,
+                    partType: partData[0] ? partData[0].type : currentCollection,
+                    parentGunId: collection === "guns" ? checked : null,
+                    parentPartId: collection === "parts" ? checked : null,
+                })
+            }
         }
     }
 
     function handleConfirm(){
-        updateItemData(checked)
+        
+
+
         const itemName = getItemName()
+
+        updateItemData(itemName)
         if(setItemName){
             setItemName(itemName)
         }
@@ -131,7 +207,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .where(eq(schema.accessoryMount.accessoryId, itemData.id));
     }
 
-    function handleSelect(id:string, collection: "guns" | "accessories"){
+    function handleSelect(id:string, collection: "guns" | "accessories" | "parts"){
         setChecked(id)
         setCollection(collection)
     }
@@ -150,10 +226,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                                 >
                                     <List.Section style={{width: "100%"}}>
       <List.Accordion
-        title="Waffen"
+        title={tabBarLabels.gunCollection[language]}
         style={gunData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={gunData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
-        left={props => <List.Icon {...props} icon="pistol" color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("gunCollection")} color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
         {gunData.map((item, index) =>{
             return (
                 <TouchableNativeFeedback onPress={() => handleSelect(item.id, "guns")} key={item.id} >
@@ -176,11 +252,11 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         })}
       </List.Accordion>
 
-      <List.Accordion
-        title="Schalldämpfer"
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.silencerCollection[language]}
         style={silencerData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={silencerData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
-        left={props => <List.Icon {...props} icon="volume-mute" color={silencerData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("accessoryCollection_Silencer")} color={silencerData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
         {silencerData.map((item, index) =>{
             return(
                 <TouchableNativeFeedback onPress={() => handleSelect(item.id, "accessories")} key={item.id} >
@@ -201,13 +277,13 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                 </TouchableNativeFeedback>
             )
         })}
-      </List.Accordion>
+      </List.Accordion> : null}
 
-      <List.Accordion
-        title="Optiken"
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.opticCollection[language]}
         style={opticData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={opticData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
-        left={props => <List.Icon {...props} icon="toslink" color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("accessoryCollection_Optic")} color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
         {opticData.map((item, index) =>{
             return(
                 <TouchableNativeFeedback onPress={() => handleSelect(item.id, "accessories")} key={item.id} >
@@ -221,6 +297,88 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             flexDirection: "row", 
                             alignItems: "center", 
                             marginBottom: index === opticData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion> : null}
+
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.lightLaserCollection[language]}
+        style={lightLaserData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={lightLaserData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("accessoryCollection_LightLaser")} color={lightLaserData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {lightLaserData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "accessories")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === lightLaserData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion> : null}
+
+      <List.Accordion
+        title={tabBarLabels.barrelCollection[language]}
+        style={barrelData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={barrelData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("partCollection_Barrel")} color={barrelData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {barrelData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "parts")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === barrelData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion>
+
+
+      <List.Accordion
+        title={tabBarLabels.conversionCollection[language]}
+        style={conversionKitData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={conversionKitData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("partCollection_ConversionKit")} color={opticData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {conversionKitData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "parts")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === conversionKitData.length-1 ? 10 : 0
                         }}
                     >
                         <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>

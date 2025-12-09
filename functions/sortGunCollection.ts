@@ -6,16 +6,6 @@ export default function sortGunCollection(direction: "asc" | "desc", sortBy:Sort
 
     const ascending = direction === "asc"
 
-    const parseDateColumn = (column) => sql`
-        CAST(
-            strftime('%s', 
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
-            substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
-            ) AS INTEGER
-        )
-    `
-
         if(sortBy === "alphabetical"){
             return ascending ?
                 asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
@@ -48,21 +38,21 @@ export default function sortGunCollection(direction: "asc" | "desc", sortBy:Sort
         }
         if(sortBy === "acquisitionDate"){
             return ascending ?
-                sql`${parseDateColumn(schema.gunCollection.acquisitionDate)} ASC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.acquisitionDate_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.gunCollection.acquisitionDate)} DESC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.acquisitionDate_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastShotAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.gunCollection.lastShotAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.lastShotAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.gunCollection.lastShotAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.lastShotAt_unix}, "") DESC NULLS LAST`
         }
         if(sortBy === "lastCleanedAt"){
             return ascending ?
-                sql`${parseDateColumn(schema.gunCollection.lastCleanedAt)} ASC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.lastCleanedAt_unix}, "") ASC NULLS LAST`
                 :
-                sql`${parseDateColumn(schema.gunCollection.lastCleanedAt)} DESC NULLS LAST`
+                sql`NULLIF(${schema.gunCollection.lastCleanedAt_unix}, "") DESC NULLS LAST`
         }
         
         // Default sorter

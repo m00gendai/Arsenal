@@ -88,10 +88,20 @@ export default function NewItem({navigation}){
         }
         
     const {db_id, ...idless} = value
-
-        await db.insert(schema[currentCollection]).values(idless)
+        try{
+await db.insert(schema[currentCollection]).values(idless)
+        } catch(e){
+            console.error(e)
+        }
+        
         if(currentCollection.startsWith("accessoryCollection_")){
             await db.insert(schema.accessoryCollection).values({
+                id: idless.id,
+                type: currentCollection
+            })
+        }
+        if(currentCollection.startsWith("partCollection_")){
+            await db.insert(schema.partCollection).values({
                 id: idless.id,
                 type: currentCollection
             })

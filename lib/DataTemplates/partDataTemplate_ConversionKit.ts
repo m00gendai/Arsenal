@@ -1,14 +1,13 @@
-import { AccessoryType_Optic } from "interfaces"
+import { PartType_ConversionKit } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 
-type TemplateKeys = keyof Omit<AccessoryType_Optic, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
+type TemplateKeys = keyof Omit<PartType_ConversionKit, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
 type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
 
-
-export const accessoryDataTemplate_Optic:TemplateItem[] = [
+export const partDataTemplate_ConversionKit:TemplateItem[] = [
     {
             name: "manufacturer",
             de: "Hersteller",
@@ -41,6 +40,14 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
             it: "Paese di origine",
             ch: "Pajais d'origin",
     },
+    {
+            name: "caliber",
+            de: "Kaliber",
+            en: "Caliber",
+            fr: "Calibre",
+            it: "Calibro",
+            ch: "Caliber",
+    },
     {   
             name: "serial",
             de: "Seriennummer",
@@ -49,61 +56,13 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
             it: "Numero di serie",
             ch: "Numer da seria",
     },
-    {   
-            name: "reticle",
-            de: "Absehen",
-            en: "Reticle",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "reticleColor",
-            de: "Absehen Farbe",
-            en: "Reticle Color",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "zoom",
-            de: "Vergrösserung",
-            en: "Zoom",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "unit",
-            de: "Verstelleinheit",
-            en: "Click Unit",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "clicksToUnitElevation",
-            de: "Höhenverstellung pro Klick",
-            en: "Elevation Adjustment per Click",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "clicksToUnitWindage",
-            de: "Seitenverstellung pro Klick",
-            en: "Windage Adjustment per Click",
-            fr: "",
-            it: "",
-            ch: "",
-    },
     {
-            name: "material",
-            de: "Material",
-            en: "Material",
-            fr: "La Materiala",
-            it: "Il Materiale",
-            ch: "Va Materiala",
+            name: "permit",
+            de: "Bewilligung",
+            en: "Permit",
+            fr: "Permis",
+            it: "Permesso",
+            ch: "Concessiun",
     },
     {
             name: "acquisitionDate_unix",
@@ -172,14 +131,6 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
         ch: "Interval da nettegiar",
     },
     {
-        name: "batteryLastChangedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
-    },
-    {
             name: "mainColor",
             de: "Hauptfarbe",
             en: "Main Color",
@@ -191,13 +142,13 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
             name: "currentlyMountedOn",
             de: "Montiert auf",
             en: "Mounted on",
-            fr: "Morere sur",
-            it: "Montare sole",
-            ch: "Va montaschier sur",
+            fr: "",
+            it: "",
+            ch: "",
     },
 ]
 
-export const opticRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
+export const conversionKitRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
     name: "remarks",
     de: "Bemerkungen",
     en: "Remarks",
@@ -206,20 +157,15 @@ export const opticRemarks:{name:string, de:string, en:string, fr:string, it: str
     ch: "Remartgar",
 }
 
-export const emptyOpticObject:AccessoryType_Optic= {
+export const emptyConversionKitObject:PartType_ConversionKit= {
     id: "",
     manufacturer: null,
     model: "",
     manufacturingDate: null,
     originCountry: null,
+    caliber: [],
     serial: null,
-    reticle: null,
-    reticleColor: null,
-    zoom: null,
-    unit: null,
-    clicksToUnitElevation: null,
-    clicksToUnitWindage: null,
-    material: null,
+    permit: null,
     acquisitionDate_unix: null,
     boughtFrom: null,
     mainColor: null,
@@ -235,5 +181,4 @@ export const emptyOpticObject:AccessoryType_Optic= {
     marketValue: null,
     cleanInterval: null,
     currentlyMountedOn: null,
-    batteryLastChangedAt_unix: null
 }

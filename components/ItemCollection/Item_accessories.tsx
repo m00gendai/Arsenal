@@ -2,12 +2,10 @@ import { db } from "db/client";
 import { ItemType } from "interfaces";
 import { useEffect, useState } from "react";
 import { SectionList, TouchableOpacity, View } from "react-native";
-import { Appbar, Icon, Text, ThemeProvider } from 'react-native-paper';
-import ItemCard from "./ItemCard";
-import { defaultBottomBarHeight, defaultViewPadding } from "configs";
+import { Icon, Text } from 'react-native-paper';
+import { defaultViewPadding } from "configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
-import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import * as schema from "db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
@@ -23,6 +21,9 @@ export default function Item_Accessories({ currentItem }: Props) {
     const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
+    const [lightLaserData, setLightLaserData] = useState([])
+    const [conversionKitData, setConversionKitData] = useState([])
+    const [barrelData, setBarrelData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -31,7 +32,8 @@ export default function Item_Accessories({ currentItem }: Props) {
           .where(
             or(
               eq(schema.accessoryMount.parentGunId, currentItem.id),
-              eq(schema.accessoryMount.parentAccessoryId, currentItem.id)
+              eq(schema.accessoryMount.parentAccessoryId, currentItem.id),
+              eq(schema.accessoryMount.parentPartId, currentItem.id)
             )
             
           )
@@ -54,8 +56,48 @@ export default function Item_Accessories({ currentItem }: Props) {
 
         setOpticData(opticData)
 
+        const lightLaserData = await db.select()
+          .from(schema.accessoryCollection_LightLaser)
+          .where(
+            inArray(schema.accessoryCollection_LightLaser.id, mountedIds)
+          )
+
+        setLightLaserData(lightLaserData)
+
+      }
+
+      async function getPartData(){
+        const mountedData = await db.select()
+          .from(schema.partMount)
+          .where(
+            or(
+              eq(schema.partMount.parentGunId, currentItem.id),
+              eq(schema.partMount.parentPartId, currentItem.id)
+            )
+            
+          )
+
+        const mountedIds = mountedData.map(d => d.partId);
+
+        const conversionKitData = await db.select()
+          .from(schema.partCollection_ConversionKit)
+          .where(
+            inArray(schema.partCollection_ConversionKit.id, mountedIds)
+          )
+
+        setConversionKitData(conversionKitData)
+
+        const barrelData = await db.select()
+          .from(schema.partCollection_Barrel)
+          .where(
+            inArray(schema.partCollection_Barrel.id, mountedIds)
+          )
+
+        setBarrelData(barrelData)
+
       }
       getAccessoryData()
+      getPartData()
     },[cardOptionsMenuVisible_accessories, alohaSnackbarVisible])
 
     function handleDisplaySwitch(type:DisplayVariants){
@@ -71,7 +113,15 @@ type Section = {
   data: ItemType[];
 };
 
-      const DATA:Section[] = [
+const DATA:Section[] = [
+  {
+    title: tabBarLabels.barrelCollection[language],
+    data: barrelData,
+  },
+  {
+    title: tabBarLabels.conversionCollection[language],
+    data: conversionKitData,
+  },
   {
     title: tabBarLabels.silencerCollection[language],
     data: silencerData,
@@ -82,13 +132,12 @@ type Section = {
   },
   {
     title: tabBarLabels.lightLaserCollection[language],
-    data: null,
+    data: lightLaserData,
   },
   {
     title: tabBarLabels.opticCollection[language],
     data: opticData,
   },
-  
 ];
 
 

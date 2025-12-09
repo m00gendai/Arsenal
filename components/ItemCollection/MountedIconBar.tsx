@@ -1,7 +1,7 @@
 import { defaultViewPadding } from "configs";
 import { db } from "db/client";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
-import { AccessoryMount, CollectionType, ItemType } from "interfaces";
+import { AccessoryMount, CollectionType, ItemType, PartMount } from "interfaces";
 import { View } from "react-native";
 import { Icon } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
@@ -13,10 +13,11 @@ import { useItemStore } from "stores/useItemStore";
 
 interface Props{
     accessories: AccessoryMount[]
+    parts: PartMount[]
     accessoryView: boolean
 }
 
-export default function MountedIconBar({accessories, accessoryView}:Props){
+export default function MountedIconBar({accessories, parts, accessoryView}:Props){
 
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
@@ -47,7 +48,9 @@ export default function MountedIconBar({accessories, accessoryView}:Props){
                     {accessories.map((accessory, index) =>{
                         return <Icon key={`accessoryBarIcon_${index}`} size={12} source={determineAccessoryIcons(accessory.accessoryType)} />
                     })}
-                    
+                    {parts.map((part, index) =>{
+                        return <Icon key={`partBarIcon_${index}`} size={12} source={determineAccessoryIcons(part.partType)} />
+                    })}
                 </View>
                   </View>
     )

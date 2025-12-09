@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs';
-import { AccessoryMount, ItemType, Tag } from 'interfaces';
+import { AccessoryMount, ItemType, PartMount, Tag } from 'interfaces';
 import { useViewStore } from 'stores/useViewStore';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ItemCard from './ItemCard';
@@ -29,7 +29,7 @@ export default function ItemCollection({navigation, route}){
   const { currentCollection, setCurrentItem } = useItemStore()
   const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn } = usePreferenceStore()
   const { mainMenuOpen, setHideBottomSheet } = useViewStore()
-  const { setAccessoryMount } = useDatabaseStore()
+  const { setAccessoryMount, setPartMount } = useDatabaseStore()
 
   const { data: itemData } = useLiveQuery(
     db.select()
@@ -48,12 +48,21 @@ export default function ItemCollection({navigation, route}){
             .from(schema.accessoryMount)
         )
 
+        const { data: partData } = useLiveQuery(
+            db.select()
+            .from(schema.partMount)
+        )
+
 useEffect(() => {
   if (accessoryData) {
     const data = accessoryData as AccessoryMount[]
     setAccessoryMount(data);
   }
-}, [accessoryData]);
+  if(partData){
+    const data = partData as PartMount[]
+    setPartMount(data);
+  }
+}, [accessoryData, partData]);
 
   const itemTags = useItemTags(currentCollection) as Tag[]
 

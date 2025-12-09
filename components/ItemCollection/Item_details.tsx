@@ -3,7 +3,7 @@ import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, Icon
 import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields } from "configs";
+import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
 import { cleanIntervals } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate } from "utils";
@@ -29,8 +29,15 @@ export default function Item_details(){
             return color.substring(0,8)
         }
         return color
+    }    
+determineDataTemplate(currentCollection).map((dataItem, index)=>{
+    if(caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name]){
+        console.log(currentItem)
+        console.log(typeof currentItem[dataItem.name])
     }
-    
+})
+
+
     return(
         <View>
                         {determineDataTemplate(currentCollection).map((dataItem, index)=>{
@@ -42,15 +49,12 @@ export default function Item_details(){
                 {/* Textfield content */}
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? 
-                                                    getShortCaliberName(Array.isArray(currentItem[dataItem.name]) ? 
-                                                        currentItem[dataItem.name] : [currentItem[dataItem.name]]).join("\n") 
-                                                : Array.isArray(currentItem[dataItem.name]) ? 
-                                                    currentItem[dataItem.name].join("\n") : 
-                                                    [currentItem[dataItem.name]] 
+                                                generalSettings.caliberDisplayName ? // TODO: Make array display in ammo item vanish (its displayed as [.17 whatever])
+                                                    getShortCaliberName(currentItem[dataItem.name]).join("\n") : currentItem[dataItem.name]
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
+                                            : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
             {/* Interval Warning Icons */}
                                         {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 
@@ -77,15 +81,11 @@ export default function Item_details(){
                 {/* Textfield content */}
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? 
-                                                    getShortCaliberName(Array.isArray(currentItem[dataItem.name]) ? 
-                                                        currentItem[dataItem.name] : [currentItem[dataItem.name]]).join("\n") 
-                                                : Array.isArray(currentItem[dataItem.name]) ? 
-                                                    currentItem[dataItem.name].join("\n") : 
-                                                    [currentItem[dataItem.name]] 
+                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name]).join("\n") : currentItem[dataItem.name]
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
+                                            : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
             {/* Interval Warning Icons */}
                                         {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 

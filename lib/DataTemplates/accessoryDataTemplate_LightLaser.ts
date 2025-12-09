@@ -1,14 +1,14 @@
-import { AccessoryType_Optic } from "interfaces"
+import { AccessoryType_LightLaser } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 
-type TemplateKeys = keyof Omit<AccessoryType_Optic, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
+type TemplateKeys = keyof Omit<AccessoryType_LightLaser, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
 type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
 
 
-export const accessoryDataTemplate_Optic:TemplateItem[] = [
+export const accessoryDataTemplate_LightLaser:TemplateItem[] = [
     {
             name: "manufacturer",
             de: "Hersteller",
@@ -50,60 +50,36 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
             ch: "Numer da seria",
     },
     {   
-            name: "reticle",
-            de: "Absehen",
-            en: "Reticle",
+            name: "permit",
+            de: "Bewilligung",
+            en: "Permit",
             fr: "",
             it: "",
             ch: "",
     },
     {   
-            name: "reticleColor",
-            de: "Absehen Farbe",
-            en: "Reticle Color",
+            name: "lumen",
+            de: "Lumen",
+            en: "Lumen",
             fr: "",
             it: "",
             ch: "",
     },
     {   
-            name: "zoom",
-            de: "Vergrösserung",
-            en: "Zoom",
+            name: "wavelength",
+            de: "Wellenlänge Laser",
+            en: "Laser Wavelength",
             fr: "",
             it: "",
             ch: "",
     },
     {   
-            name: "unit",
-            de: "Verstelleinheit",
-            en: "Click Unit",
+            name: "laserPower",
+            de: "Laserstärke",
+            en: "Laser Power",
             fr: "",
             it: "",
             ch: "",
-    },
-    {   
-            name: "clicksToUnitElevation",
-            de: "Höhenverstellung pro Klick",
-            en: "Elevation Adjustment per Click",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "clicksToUnitWindage",
-            de: "Seitenverstellung pro Klick",
-            en: "Windage Adjustment per Click",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {
-            name: "material",
-            de: "Material",
-            en: "Material",
-            fr: "La Materiala",
-            it: "Il Materiale",
-            ch: "Va Materiala",
     },
     {
             name: "acquisitionDate_unix",
@@ -156,22 +132,6 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
         ch: "L'ultim culp",
     },
     {
-        name: "lastCleanedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
-    },
-    {
-        name: "cleanInterval",
-        de: "Reinigungsintervall",
-        en: "Cleaning interval",
-        fr: "Intervalle de nettoyage",
-        it: "Intervallo di pulizia",
-        ch: "Interval da nettegiar",
-    },
-    {
         name: "batteryLastChangedAt_unix",
         de: "Zuletzt gereinigt",
         en: "Last cleaned",
@@ -197,7 +157,7 @@ export const accessoryDataTemplate_Optic:TemplateItem[] = [
     },
 ]
 
-export const opticRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
+export const lightLaserRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
     name: "remarks",
     de: "Bemerkungen",
     en: "Remarks",
@@ -206,23 +166,20 @@ export const opticRemarks:{name:string, de:string, en:string, fr:string, it: str
     ch: "Remartgar",
 }
 
-export const emptyOpticObject:AccessoryType_Optic= {
+export const emptyLightLaserObject:AccessoryType_LightLaser = {
     id: "",
     manufacturer: null,
     model: "",
     manufacturingDate: null,
     originCountry: null,
     serial: null,
-    reticle: null,
-    reticleColor: null,
-    zoom: null,
-    unit: null,
-    clicksToUnitElevation: null,
-    clicksToUnitWindage: null,
-    material: null,
     acquisitionDate_unix: null,
     boughtFrom: null,
     mainColor: null,
+    permit: null,
+    lumen: null,
+    wavelength: null,
+    laserPower: null,
     remarks : null,
     images: [],
     createdAt: 0,
@@ -230,10 +187,8 @@ export const emptyOpticObject:AccessoryType_Optic= {
     shotCount: null,
     tags: [],
     lastShotAt_unix: null,
-    lastCleanedAt_unix: null,
     paidPrice: null,
     marketValue: null,
-    cleanInterval: null,
     currentlyMountedOn: null,
     batteryLastChangedAt_unix: null
 }

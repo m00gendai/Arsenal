@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
-import { defaultViewPadding, screenNameParamsAccessory } from "configs";
+import { defaultViewPadding, screenNameParamsPart } from "configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "interfaces";
@@ -11,7 +11,8 @@ interface Props{
     handleNavigation:(target: "itemCollection", params:{ collectionType: CollectionType })=>void
 }
 
-export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
+export default function BottomBar_PartCollection({handleNavigation}:Props){
+
 
     const { language, theme } = usePreferenceStore()
     const { currentCollection } = useItemStore()
@@ -20,6 +21,7 @@ export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
         <View 
             style={{
                 width: "100%",
+
                 display: "flex", 
                 justifyContent: "center", 
                 alignItems: "flex-start", 
@@ -31,12 +33,12 @@ export default function BottomBar_AccessoryCollection({handleNavigation}:Props){
             }}
         >
             <Text variant={"headlineSmall"} style={{width: "100%", textAlign: "center"}}>
-                {mainCollectionCategories.accessoryCollection[language]}
+                {mainCollectionCategories.partCollection[language]}
             </Text>
-            
+
             <Divider style={{height: 2, width: "100%", backgroundColor: theme.colors.primary}} />
-            
-            {screenNameParamsAccessory.map((collection, index) => {
+
+            {screenNameParamsPart.map((collection, index) => {
                 return(
                     <TouchableOpacity 
                     key={`${collection}_${index}`}

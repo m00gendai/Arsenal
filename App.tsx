@@ -1,7 +1,7 @@
 import { PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AMMO_DATABASE, A_KEY_DATABASE, A_TAGS, GUN_DATABASE, KEY_DATABASE, PREFERENCES, TAGS } from "./configs_DB"
+import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "./configs_DB"
 import 'react-native-gesture-handler';
 import React from 'react';
 import { usePreferenceStore } from './stores/usePreferenceStore';
@@ -34,7 +34,7 @@ import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-rean
 import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBars/BottomBar';
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding } from './configs';
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs';
 import ItemCollection from 'components/ItemCollection/ItemCollection';
 import Item from 'components/ItemCollection/Item';
 import NewItem from 'components/ItemCollection/NewItem';
@@ -42,6 +42,7 @@ import EditItem from 'components/ItemCollection/EditItem';
 import { useItemStore } from 'stores/useItemStore';
 import QuickMount from 'components/QuickMount';
 import AlohaSnackbar from 'components/AlohaSnackbar';
+import { eq } from 'drizzle-orm';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -79,8 +80,15 @@ export default function App() {
     switchLanguage, 
     theme, 
     switchTheme, 
+    generalSettings,
     setGeneralSettings, 
+    displaySettings,
+    setDisplaySettings,
+    sortBy,
+    setSortBy,
     setCaliberDisplayNameList,
+    hasConvertedLegacyDateFieldsToUnixTimeStamp,
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet } = useViewStore()
   const { currentCollection } = useItemStore()
@@ -190,10 +198,17 @@ export default function App() {
     if(ammunition.length !== 0){
       await Promise.all(ammunition.map(async ammo =>{
         if(ammo !== null){
-          ammo.createdAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
-          ammo.lastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
+          const newCreatedAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
+          const newLastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
+          const newCaliber = [ammo.caliber]
+          const parsedAmmo = {
+            ...ammo,
+            createdat: newCreatedAt,
+            lastModifiedAt: newLastModifiedAt,
+            caliber: newCaliber
+        }
           try{
-            await db.insert(schema.ammoCollection).values(ammo)
+            await db.insert(schema.ammoCollection).values(parsedAmmo)
           }catch(e){
             throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
           }
@@ -215,6 +230,91 @@ export default function App() {
       await AsyncStorage.removeItem(A_KEY_DATABASE)
     }
   }
+
+  function prepareDateParse(dateString:string){
+    const [day, month, year] = dateString.split(".").map(Number);
+      const date = new Date(year, month - 1, day);
+      return date.getTime()
+  }
+
+  async function migrateLegacyDateFields(){
+    let preferences:string
+      try{
+        preferences = await AsyncStorage.getItem(PREFERENCES)
+      } catch(e){
+        alarm("Migrate Date Fields Preference DB Error", e)
+      }
+
+      let isPreferences
+      try{
+       isPreferences = preferences === null ? null : JSON.parse(preferences)
+      } catch(e){
+        alarm("Migrate Date Fields Preference Parse Error", e)
+      }
+      
+      try{
+    if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+      console.log("Legacy Date Fields already parsed")
+      return
+    }
+    const guns = await db.select().from(schema.gunCollection)
+    const ammunition = await db.select().from(schema.ammoCollection)
+    await Promise.all(guns.map(async gun =>{
+      // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
+      await db.update(schema.gunCollection)
+        .set({ 
+          acquisitionDate_unix: gun.acquisitionDate ? prepareDateParse(gun.acquisitionDate) : null,
+          lastCleanedAt_unix: gun.lastCleanedAt ? prepareDateParse(gun.lastCleanedAt) : null,
+          lastShotAt_unix: gun.lastShotAt ? prepareDateParse(gun.lastShotAt) : null
+        })
+        .where(eq(schema.gunCollection.id, gun.id));
+    }))
+    await Promise.all(ammunition.map(async ammo =>{
+      // legacy date fields Ammo: "lastTopUpAt"
+      await db.update(schema.ammoCollection)
+        .set({ 
+          lastTopUpAt_unix: ammo.lastTopUpAt ? prepareDateParse(ammo.lastTopUpAt) : null
+        })
+        .where(eq(schema.ammoCollection.id, ammo.id));
+    }))
+  } catch(e){
+    alarm("Migrate Date Fields Final Error", e)
+  }
+}
+
+async function migrateLegacyAmmoCaliber(){
+    let preferences:string
+      try{
+        preferences = await AsyncStorage.getItem(PREFERENCES)
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Preference DB Error", e)
+      }
+
+      let isPreferences
+      try{
+       isPreferences = preferences === null ? null : JSON.parse(preferences)
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Preference Parse Error", e)
+      }
+      
+      try{
+        if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+          console.log("Legacy Date & Ammo Fields already parsed")
+          return
+        }
+        const ammunition = await db.select().from(schema.legacyAmmoCollection)
+        await Promise.all(ammunition.map(async ammo =>{
+          const parsedCaliberField = [JSON.parse(ammo.caliber)]
+          await db.update(schema.ammoCollection).set({caliber: parsedCaliberField}).where(eq(schema.ammoCollection.id, ammo.id))
+        }))
+
+        // This was initially for migrateLegacyDateFields() but I am too lazy to add another flag
+        setHasConvertedLegacyDateFieldsToUnixTimeStamp(true)
+        await AsyncStorage.setItem(PREFERENCES, JSON.stringify({...isPreferences, hasConvertedLegacyDateFieldsToUnixTimeStamp: true}))
+      } catch(e){
+        alarm("Migrate Ammo Caliber Field Final Error", e)
+      }
+    }
 
 
   // INIT PREPARE FUNCTION - THIS ESSENTAILLY SETS UP THE APP
@@ -254,6 +354,14 @@ export default function App() {
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
           }
 
+          console.log("Parsing Legacy Date Fields")
+          try{
+            await migrateLegacyDateFields()
+            await migrateLegacyAmmoCaliber()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
+          }
+
           console.log("Successfully checked for legacy data")
           console.log("Setting App to Ready")
           setAppIsReady(true)
@@ -278,6 +386,14 @@ export default function App() {
             await checkLegacyAmmoData()
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
+          }
+
+          console.log("Parsing Legacy Date Fields")
+          try{
+            await migrateLegacyDateFields()
+            await migrateLegacyAmmoCaliber()
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
 
           console.log("Successfully checked for legacy data")
@@ -312,6 +428,14 @@ export default function App() {
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Ammo Data: ${e}`)
             }
 
+            console.log("Parsing Legacy Date Fields")
+            try{
+              await migrateLegacyDateFields()
+              await migrateLegacyAmmoCaliber()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
+            }
+
             console.log("Successfully checked for legacy data")
             console.log("Setting App to Ready")
             setAppIsReady(true)
@@ -333,6 +457,14 @@ export default function App() {
               await checkLegacyAmmoData()
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Ammo Data: ${e}`)
+            }
+
+            console.log("Parsing Legacy Date Fields")
+            try{
+              await migrateLegacyDateFields()
+              await migrateLegacyAmmoCaliber()
+            }catch(e){
+              throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)
             }
 
             console.log("Successfully checked for legacy data")
@@ -387,12 +519,21 @@ export default function App() {
       try{
         switchLanguage(isPreferences?.language ?? "de")
         switchTheme(isPreferences?.theme ?? "default")
-        setGeneralSettings(isPreferences?.generalSettings ?? {
-          displayImagesInListViewAmmo: true, 
-          displayImagesInListViewGun: true,
-          resizeImages: true,
+        setGeneralSettings({
+          ...generalSettings, 
+          ...isPreferences?.generalSettings
+        });
+        setDisplaySettings({
+          ...displaySettings,
+          ...isPreferences?.displaySettings
         })
-
+        screenNameParamsAll.forEach(screen =>{
+          setSortBy(screen, {
+            ...sortBy[screen],
+            ...isPreferences?.sortBy?.[screen]
+          }); 
+        })
+        
         let shortCalibers:{name: string, displayName?: string}[] = []
         if(isPreferences?.generalSettings?.caliberDisplayName){
           calibers.map(variant =>{
@@ -406,34 +547,6 @@ export default function App() {
         setCaliberDisplayNameList(shortCalibers)
       }catch(e){
         alarm("General Preferences Error", e)
-      }
-
-      /* AMMO PREFERENCES */
-      try{
-        const ammo_tagList: string = await AsyncStorage.getItem(A_TAGS)
-        const isAmmoTagList:{label: string, status: boolean}[] = ammo_tagList ? JSON.parse(ammo_tagList) : null
-        // TODO: Set display/sort settings
-        if(isAmmoTagList){
-          Object.values(isAmmoTagList).map(tag =>{
-            setAmmoTags(tag)
-          }) 
-        }
-      } catch(e){
-        alarm("Ammo Preferences Error", e)
-      }
-
-      /* GUN PREFERENCE */
-      try{
-        const gun_tagList: string = await AsyncStorage.getItem(TAGS) 
-        const isGunTagList:{label: string, status: boolean}[] = gun_tagList ? JSON.parse(gun_tagList) : null
-        // TODO: Set display/sort settings
-        if(isGunTagList){
-          Object.values(isGunTagList).map(tag =>{
-            setTags(tag)
-          }) 
-        }
-      } catch(e){
-        alarm("Gun Preferences Error", e)
       }
     }
 

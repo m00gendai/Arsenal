@@ -60,6 +60,7 @@ interface TabBarLabels{
     silencerCollection: SimpleTranslation
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
+    barrelCollection: SimpleTranslation
     gunMagazineCollection: SimpleTranslation
     accessoriesMiscCollection: SimpleTranslation
     bookCollection: SimpleTranslation
@@ -294,6 +295,22 @@ export const newAmmoTitle:SimpleTranslation = {
     fr: "Nouvelles munitions",
     it: "Nuove munizioni",
     ch: "Nova muniziun",
+}
+
+export const newAccessoryTitle:SimpleTranslation = {
+    de: "Neues Zubehör",
+    en: "New Accessory",
+    fr: "",
+    it: "",
+    ch: "",
+}
+
+export const newPartTitle:SimpleTranslation = {
+    de: "Neues Waffenbestandteil",
+    en: "New Weapon Part",
+    fr: "",
+    it: "",
+    ch: "",
 }
 
 export const unsavedChangesAlert:Alert = {
@@ -884,7 +901,14 @@ export const tabBarLabels: TabBarLabels = {
         ch: "",
     },
     conversionCollection: {
-        de: "Wechelsysteme & Läufe",
+        de: "Wechelsysteme",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    },
+    barrelCollection: {
+        de: "Läufe",
         en: "",
         fr: "",
         it: "",
@@ -975,7 +999,7 @@ interface MainCollectionCategories {
     accessoryCollection: SimpleTranslation
     literatureCollection: SimpleTranslation
     reloadingCollection: SimpleTranslation
-
+    partCollection: SimpleTranslation
 }
 
 export const mainCollectionCategories: MainCollectionCategories = {
@@ -1013,6 +1037,13 @@ export const mainCollectionCategories: MainCollectionCategories = {
         fr: "Recharger",
         it: "Ricaricare",
         ch: "Rechargiar",
+    },
+    partCollection: {
+        de: "Waffenteile",
+        en: "Weapon Parts", 
+        fr: "",
+        it: "",
+        ch: "",
     }
 }
 
@@ -1520,25 +1551,25 @@ export const longPressActions:LongPressActions = {
         ch: "Stizzar",
     },
     goto: {
-        de: "goto",
-        en: "goto",
-        fr: "goto",
-        it: "goto",
-        ch: "goto",
+        de: "",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
     },
     unmount: {
-        de: "unmount",
-        en: "unmount",
-        fr: "unmount",
-        it: "unmount",
-        ch: "unmount",
+        de: "Abmontieren",
+        en: "Unmount",
+        fr: "",
+        it: "",
+        ch: "",
     },
     remount: {
-        de: "remount",
-        en: "remount",
-        fr: "remount",
-        it: "remount",
-        ch: "remount",
+        de: "Woanders montieren",
+        en: "Remount",
+        fr: "",
+        it: "",
+        ch: "",
     }
 }
 
