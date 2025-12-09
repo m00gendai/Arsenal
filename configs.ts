@@ -1,4 +1,4 @@
-import { CollectionType, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit } from "./interfaces"
+import { CollectionType, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit } from "./interfaces"
 import { SimpleTranslation } from "./lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -44,11 +44,12 @@ export const requiredFieldsAccessory_Silencer:string[] = ["model"]
 export const requiredFieldsAccessory_Optic:string[] = ["model"]
 export const requiredFieldsAccessory_Scope:string[] = ["model"]
 export const requiredFieldsAccessory_LightLaser:string[] = ["model"]
+export const requiredFieldsAccessory_Magazine:string[] = ["model"]
 export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const requiredFieldsPart_Barrel:string[] = ["model"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
-export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen"]
+export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "capacity"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]
 export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
@@ -63,13 +64,14 @@ export const cardActionsAccessory_Silencer: string[] = ["delete", "clone", "quic
 export const cardActionsAccessory_Optic: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAccessory_Scope: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAccessory_LightLaser: string[] = ["delete", "clone", "quickMount"]
+export const cardActionsAccessory_Magazine: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsPart_Barrel: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAmmo: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
 export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
-export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic", "accessoryCollection_Scope", "accessoryCollection_LightLaser"]
+export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic", "accessoryCollection_Scope", "accessoryCollection_LightLaser", "accessoryCollection_Magazine"]
 export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel"]
 export const screenNameParamsLiterature: CollectionType[] = []
 export const screenNameParamsReloading:CollectionType[] = []
@@ -87,5 +89,6 @@ export const sortingOptionsAccessory_Silencer:SortingTypesAccessory_Silencer[] =
 export const sortingOptionsAccessory_Optic:SortingTypesAccessory_Optic[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastBatteryChangeAt", "lastCleanedAt"]
 export const sortingOptionsAccessory_Scope:SortingTypesAccessory_Scope[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastBatteryChangeAt", "lastCleanedAt"]
 export const sortingOptionsAccessory_LightLaser:SortingTypesAccessory_LightLaser[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastBatteryChangeAt"]
+export const sortingOptionsAccessory_Magazine:SortingTypesAccessory_Magazine[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt", "capacity"]
 export const sortingOptionsPart_ConversionKit:SortingTypesPart_ConversionKit[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsPart_Barrel:SortingTypesPart_Barrel[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]

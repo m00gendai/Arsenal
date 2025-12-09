@@ -100,6 +100,16 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`)))
     )
 
+    const { data: magazineData } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection_Magazine)
+        .where(
+            ne(schema.accessoryCollection_Magazine.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`)))
+    )
+
+
     const { data: conversionKitData } = useLiveQuery(
         db.select()
         .from(schema.partCollection_ConversionKit)
@@ -129,7 +139,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
 }
@@ -360,6 +370,33 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             flexDirection: "row", 
                             alignItems: "center", 
                             marginBottom: index === lightLaserData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion> : null}
+
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.magazineCollection[language]}
+        style={magazineData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={magazineData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("accessoryCollection_Magazine")} color={magazineData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {magazineData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "accessories")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === magazineData.length-1 ? 10 : 0
                         }}
                     >
                         <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>

@@ -62,7 +62,7 @@ interface TabBarLabels{
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
     barrelCollection: SimpleTranslation
-    gunMagazineCollection: SimpleTranslation
+    magazineCollection: SimpleTranslation
     accessoriesMiscCollection: SimpleTranslation
     bookCollection: SimpleTranslation
     printMagazineCollection: SimpleTranslation
@@ -100,6 +100,7 @@ interface Sorting{
     currentStock: SimpleTranslation
     lastTopUpAt: SimpleTranslation
     lastBatteryChangeAt: SimpleTranslation
+    capacity: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -887,7 +888,7 @@ export const tabBarLabels: TabBarLabels = {
         it: "",
         ch: "",
     },
-    gunMagazineCollection: {
+    magazineCollection: {
         de: "Magazine",
         en: "Magazines",
         fr: "Magazines",
@@ -1186,6 +1187,13 @@ export const sorting:Sorting = {
     lastBatteryChangeAt:{
         de: "Letzter Batteriewechsel",     
         en: "Last Battery Change",
+        fr: "",
+        it: "",
+        ch: "",    
+    },
+    capacity:{
+        de: "Kapazität",     
+        en: "Capacity",
         fr: "",
         it: "",
         ch: "",    

@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { and, or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs";
 import sortAccessoryCollection_Silencer from "./sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sortAccessoryCollection_Optic";
@@ -20,6 +20,8 @@ import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/D
 import { tabBarLabels } from "lib/textTemplates";
 import sortAccessoryCollection_Scope from "./sortAccessoryCollection_Scope";
 import { accessoryDataTemplate_Scope, emptyScopeObject, scopeRemarks } from "lib/DataTemplates/accessoryDataTemplate_Scope";
+import sortAccessoryCollection_Magazine from "./sortAccessoryCollection_Magazine";
+import { accessoryDataTemplate_Magazine, emptyMagazineObject, magazineRemarks } from "lib/DataTemplates/accessoryDataTemplate_Magazine";
 
 export function determineSchema(collection:CollectionType){
     console.log(collection)
@@ -36,6 +38,8 @@ export function determineSchema(collection:CollectionType){
             return schema.accessoryCollection_Scope
         case "accessoryCollection_LightLaser":
             return schema.accessoryCollection_LightLaser
+        case "accessoryCollection_Magazine":
+            return schema.accessoryCollection_Magazine
         case "partCollection_ConversionKit":
             return schema.partCollection_ConversionKit
         case "partCollection_Barrel":
@@ -57,6 +61,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.accessory_ScopeTags
         case "accessoryCollection_LightLaser":
             return schema.accessory_LightLaserTags
+        case "accessoryCollection_Magazine":
+            return schema.accessory_MagazineTags
         case "partCollection_ConversionKit":
             return schema.part_ConversionKitTags
         case "partCollection_Barrel":
@@ -84,6 +90,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         };
         case "accessoryCollection_LightLaser":{
             return sortAccessoryCollection_LightLaser(sortBy[collection].direction, sortBy[collection].type)
+        };
+        case "accessoryCollection_Magazine":{
+            return sortAccessoryCollection_Magazine(sortBy[collection].direction, sortBy[collection].type)
         };
         case "partCollection_ConversionKit":{
             return sortPartCollection_ConversionKit(sortBy[collection].direction, sortBy[collection].type)
@@ -121,6 +130,10 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
             return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
                  like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
         }
+        case "accessoryCollection_Magazine":{
+            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
+                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+        }
         case "partCollection_ConversionKit":{
             return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
                  like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
@@ -146,6 +159,8 @@ export function determineDataTemplate(collection: CollectionType){
             return accessoryDataTemplate_Scope
         case "accessoryCollection_LightLaser":
             return accessoryDataTemplate_LightLaser
+        case "accessoryCollection_Magazine":
+            return accessoryDataTemplate_Magazine
         case "partCollection_ConversionKit":
             return partDataTemplate_ConversionKit
         case "partCollection_Barrel":
@@ -167,6 +182,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return scopeRemarks
         case "accessoryCollection_LightLaser":
             return lightLaserRemarks
+        case "accessoryCollection_Magazine":
+            return magazineRemarks
         case "partCollection_ConversionKit":
             return conversionKitRemarks
         case "partCollection_Barrel":
@@ -188,6 +205,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyScopeObject
         case "accessoryCollection_LightLaser":
             return emptyLightLaserObject
+        case "accessoryCollection_Magazine":
+            return emptyMagazineObject
         case "partCollection_ConversionKit":
             return emptyConversionKitObject
         case "partCollection_Barrel":
@@ -209,6 +228,8 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyScopeObject}
         case "accessoryCollection_LightLaser":
             return {...emptyLightLaserObject}
+        case "accessoryCollection_Magazine":
+            return {...emptyMagazineObject}
         case "partCollection_ConversionKit":
             return {...emptyConversionKitObject}
         case "partCollection_Barrel":
@@ -230,6 +251,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsAccessory_Scope
         case "accessoryCollection_LightLaser":
             return requiredFieldsAccessory_LightLaser
+        case "accessoryCollection_Magazine":
+            return requiredFieldsAccessory_Magazine
         case "partCollection_ConversionKit":
             return requiredFieldsPart_ConversionKit
         case "partCollection_Barrel":
@@ -251,6 +274,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsAccessory_Scope
         case "accessoryCollection_LightLaser":
             return sortingOptionsAccessory_LightLaser
+        case "accessoryCollection_Magazine":
+            return sortingOptionsAccessory_Magazine
         case "partCollection_ConversionKit":
             return sortingOptionsPart_ConversionKit
         case "partCollection_Barrel":
@@ -272,6 +297,8 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsAccessory_Scope
         case "accessoryCollection_LightLaser":
             return cardActionsAccessory_LightLaser
+        case "accessoryCollection_Magazine":
+            return cardActionsAccessory_Magazine
         case "partCollection_ConversionKit":
             return cardActionsPart_ConversionKit
         case "partCollection_Barrel":
@@ -293,6 +320,8 @@ export function determineAccessoryIcons(collection: CollectionType){
             return "crosshairs"
         case "accessoryCollection_LightLaser":
             return "spotlight-beam"
+        case "accessoryCollection_Magazine":
+            return "magazine-pistol"
         case "partCollection_ConversionKit":
             return "cog-transfer-outline"
         case "partCollection_Barrel":
@@ -320,6 +349,8 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.scopeCollection
         case "accessoryCollection_LightLaser":
             return tabBarLabels.lightLaserCollection
+        case "accessoryCollection_Magazine":
+            return tabBarLabels.magazineCollection
         case "partCollection_ConversionKit":
             return tabBarLabels.conversionCollection
         case "partCollection_Barrel":

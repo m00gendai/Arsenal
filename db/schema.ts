@@ -356,6 +356,43 @@ export const accessory_LightLaserTags = sqliteTable("accessories_lightLaserTags"
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const accessoryCollection_Magazine = sqliteTable("accessories_magazine", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    caliber: text("caliber", {mode: "json"}),
+    material: text("material"),
+    serial: text("serial"),
+    permit: text("permit"),
+    capacity: text("capacity"),
+    platform: text("platform"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt_unix: integer("lastShotAt_unix"),
+    lastCleanedAt_unix: integer("lastCleanedAt_unix"),
+    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOn: text("currentlyMountedOn")
+})
+
+export const accessory_MagazineTags = sqliteTable("accessories_magazineTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("magazineTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const gunReminders = sqliteTable("gunReminder",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),
