@@ -6,15 +6,10 @@ export default {
   "expo": {
     "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/appIconC.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -61,6 +56,18 @@ export default {
           "ios": {
             "deploymentTarget": "15.5"
           }
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#000000",
+          "image": "/assets/appIconC.png",
+          "dark": {
+            "image": "/assets/appIconC.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 512
         }
       ]
     ],
