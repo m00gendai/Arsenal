@@ -14,6 +14,7 @@ import m0009 from './0009_black_mordo.sql';
 import m0010 from './0010_quick_scream.sql';
 import m0011 from './0011_deep_owl.sql';
 import m0012 from './0012_outgoing_gravity.sql';
+import m0013 from './0013_yielding_manta.sql';
 
   export default {
     journal,
@@ -30,7 +31,8 @@ m0008,
 m0009,
 m0010,
 m0011,
-m0012
+m0012,
+m0013
     }
   }
   

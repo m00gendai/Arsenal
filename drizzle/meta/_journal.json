@@ -92,6 +92,13 @@
       "when": 1765286268639,
       "tag": "0012_outgoing_gravity",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1765288397226,
+      "tag": "0013_yielding_manta",
+      "breakpoints": true
     }
   ]
 }
