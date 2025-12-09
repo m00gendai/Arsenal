@@ -2,41 +2,69 @@
 
 React Native Application to manage a gun collection
 
-## Features
+# Create a new Collection
 
-- Create, Remove, Update, Delete guns
-- Display collection with or without cover images
-- Sort guns
-- Filter guns based on tag system
-- Multilanguage (German, English, French)
-- Save database to device (as backup or to export)
-- Import database to application
-- Different color themes
+Creating a new collection (category or category item) is done by updating the below relevant files or creating new ones.
+The Screens themselves are agnostic to input, database queries are determined by screen params. This allows new collections to be added relatively comfortable
+avoiding duplicate code, but it still requires carefulness to not forget an update.
 
-### Your Collection
+@db/schema.ts
+- define {collection}Collection schema -> use singular, e.g. gunCollection, accessoryCollection_silencer, reloadingCollection_casing etc
+- define {collection}Tags tag schema -> use singular, e.g. gunTags, accessory_silencerTags, reloading_casingTags etc
+- run migrations
 
-The collection can be displayed as a grid of cards with the manufacturer (if set), model name and a cover image of your gun.
-Or, it can be a simple list, without the cover image.
-You can sort the collection alphabetically and chronologically (last created), ascending and descending.
-You can also filter the collection based on a tag system (see "Your Gun").
+@interfaces.ts
+- set up new {collection}Type
+- append to ItemType 
+- append to CollectionType -> use schema name, e.g. gunCollection, accessoryCollection_silencer, reloadingCollection_casing etc
+- set up new SortingTypes{Collection}
+- append to SortingTypes
 
-### Your Gun
+@configs.ts
+- define requiredFields{Collection} -> use singular, e.g requiredFieldsGun, requiredFieldsAccessory_silencer, requiredFieldsReloading_casing etx
+- append to currencyPrefixFields if necessary
+- append to numberTextFields if necessary
+- append to datePickerTriggerFields if necessary
+- append to colorPickerTriggerFields if necessary
+- append to caliberPickerTriggerFields if necessary
+- append to intervalPickerTriggerFields if necessary
+- add collection to collectionExportDirectories
+- append to respective screenNameParams{Collection} -> use schema name, e.g. gunCollection, accessoryCollection_silencer, reloadingCollection_casing etc
+- create new sortingOptions{Collection} -> use singular, e.g. sortingOptionsGun, sortingOptionsAccessory_silencer, sortingOptionsReloading_casing
 
-A Gun is a collection of data. Currently, the following entries are supported:
+@usePreferenceStore()
+- append to genralSettings
+- append to displaySettings
+- append to sorterSettings
+- append to filterState
 
-- Images
-- Tags
-- Manufacturer name
-- Model name
-- Manufacturing date (or approximate range)
-- Country of Origin
-- Caliber
-- Serial
-- Permit
-- Acquisition date
-- Paid price
-- Shot count
-- Main color
-- Checklist of properties pertaining to swiss weapons law article 5
-- Remark field
+@DataTemplates
+- create new {collection}DataTemplate -> use singular, e.g. gunDataTemplate, accessoryDataTemplate_silencer, reloadingDataTemplate_casing
+- create an empty{Collection}Object -> use singular, e.g. emptyGunObject, emptyAccessoryObject_silencer, emptyReloadingObject_casing
 
+@Hooks
+- append to useItemTags()
+
+@functions
+- create new sort{Collection}Collection -> use singular, e.g. sirtGunCollection sortAccessoryCollection_silencer, sortReloadingCollection_casing
+- append to determinators
+- @saveDatabase.ts
+-- append to getSchema()
+- @exportArsenalCSV.ts
+-- append to conditional
+- @importDatabase.ts
+-- handle item import
+- @importArsenalCSV.ts
+-- handle item import
+
+@CSVImportModal.tsx
+- handle item import
+
+@FilterMenu.tsx
+- append filters
+
+@BottomBars
+- create new BottomBar_{Collection}Collection.tsx -> use singular, e.g BottomBar_GunCollection, BottomBar_AccessoryCollection, BottomBar_ReloadingCollection
+
+@App.tsx
+- Handle new preferences in prepare()

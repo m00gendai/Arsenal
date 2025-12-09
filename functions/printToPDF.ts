@@ -2,18 +2,15 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
-import { AmmoType, CommonStyles, GunType } from '../interfaces';
-import { checkBoxes, gunDataTemplate, gunRemarks } from '../lib/gunDataTemplate';
-import { newTags, pdfTitleAmmo, pdfTitleArt5 } from '../lib/textTemplates';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { pdfFooter, pdfTitle } from '../lib/textTemplates';
-import { dateLocales } from '../configs';
-import { ammoDataTemplate, ammoRemarks } from '../lib/ammoDataTemplate';
+import { AmmoType, CommonStyles, GunType, ItemType } from 'interfaces';
+import { checkBoxes, gunDataTemplate, gunRemarks } from 'lib/DataTemplates/gunDataTemplate';
+import { newTags, pdfTitleAmmo, pdfTitleArt5 } from 'lib/textTemplates';
+import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { dateLocales } from 'configs';
+import { ammoDataTemplate, ammoRemarks } from 'lib/DataTemplates/ammoDataTemplate';
 import { Platform } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import { db } from '../db/client';
-import * as schema from "../db/schema"
-import GunCollection from '../components/GunCollection';
+import { db } from 'db/client';
+import * as schema from "db/schema"
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 
@@ -124,11 +121,11 @@ function getShortCaliberNameFromString(calibers:string, displayNames:{name:strin
   }
   
 
-export async function printSingleGun(gun:GunType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printSingleItem(item:ItemType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
 
     let imgs: null | string[] = null
-    if(gun.images && gun.images.length !== 0){
-        imgs = await Promise.all(gun.images.map(async image =>{
+    if(item.images && item.images.length !== 0){
+        imgs = await Promise.all(item.images.map(async image =>{
             return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
         }))
     }
@@ -145,7 +142,7 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
     const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
     
     const excludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", ...art5Keys];
-    const gunHasArt5Key = art5Keys.filter(art5 => {return gun[art5] === true})
+    const gunHasArt5Key = art5Keys.filter(art5 => {return item[art5] === true})
 
     const html = `
     <html>
@@ -154,23 +151,23 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
       </head>
       <body>
       <div class="bodyContent">
-        <h1>${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}</h1>
-        ${gun.images && gun.images.length !== 0 ? `<div class="imageContainer">${imgs.map(img => {return `<div class="imageDiv"><img class="image" src="data:image/jpeg;base64,${img}" /></div>`}).join("")}</div>`: ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<div class="tagContainer">${gun.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<hr />` : ""}
+        <h1>${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation}</h1>
+        ${item.images && item.images.length !== 0 ? `<div class="imageContainer">${imgs.map(img => {return `<div class="imageDiv"><img class="image" src="data:image/jpeg;base64,${img}" /></div>`}).join("")}</div>`: ""}
+        ${item.tags && item.tags.length !== 0 ? `<div class="tagContainer">${item.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
+        ${item.tags && item.tags.length !== 0 ? `<hr />` : ""}
         ${gunHasArt5Key.length !== 0 ? `<div class="tagContainer">${gunHasArt5Key.map(art5 => {return `<div class="tag">${getTranslation(art5, language)}</div>`}).join("")}</div>` : ""}
         <table>
             <tbody>
-                ${Object.entries(gun).map(entry =>{
+                ${Object.entries(item).map(entry =>{
                     return excludedKeys.includes(entry[0]) ? null :`<tr><td><strong>${getTranslation(entry[0], language)}</strong></td><td class=${entry[0] === "caliber" ? "whitespace" : ""}>${entry[0] === "caliber" ? getShortCaliberNameFromArray(entry[1], caliberDisplayNameList, shortCaliber).join("\n") : entry[1] === null ? "" : entry[1]}</td></tr>`
                 }).join("")}
             </tbody>
         </table>
-        ${gun.remarks && gun.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${gunRemarks[language]}</strong></div><div class="remarkContainerContent">${gun.remarks}</div></div>`: ""}
+        ${item.remarks && item.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${gunRemarks[language]}</strong></div><div class="remarkContainerContent">${item.remarks}</div></div>`: ""}
       </div>
         
      </body>
-     <div class="footer">${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}: ${pdfFooter[language]}, ${generatedDate}</div>
+     <div class="footer">${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation}: ${pdfFooter[language]}, ${generatedDate}</div>
       <style>
       @page {
         size: A4;

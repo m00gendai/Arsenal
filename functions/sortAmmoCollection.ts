@@ -2,19 +2,9 @@ import * as schema from "../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { SortingTypesAmmo } from "../interfaces";
 
-export default function sortAmmoCollection(sortBy:SortingTypesAmmo, ascending:boolean){
+export default function sortAmmoCollection(direction: "asc" | "desc", sortBy:SortingTypesAmmo){
 
-    console.log(`sortAmmoBy: ${sortBy} - ${ascending}`)
-
-    const parseDateColumn = (column) => sql`
-            CAST(
-                strftime('%s', 
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 7, 4) || '-' ||
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 4, 2) || '-' ||
-                substr(NULLIF(NULLIF(${column}, ''), '0'), 1, 2)
-                ) AS INTEGER
-            )
-        `
+    const ascending = direction === "asc"
     
     if(sortBy === "alphabetical"){
         return ascending ?
@@ -42,9 +32,9 @@ export default function sortAmmoCollection(sortBy:SortingTypesAmmo, ascending:bo
     }
     if(sortBy === "lastTopUpAt"){
         return ascending ?
-            sql`${parseDateColumn(schema.ammoCollection.lastTopUpAt)} ASC NULLS LAST`
+            sql`NULLIF(${schema.ammoCollection.lastTopUpAt_unix}, "") ASC NULLS LAST`
             :
-            sql`${parseDateColumn(schema.ammoCollection.lastTopUpAt)} DESC NULLS LAST`
+            sql`NULLIF(${schema.ammoCollection.lastTopUpAt_unix}, "") DESC NULLS LAST`
     }
 
     // Fallback sorter

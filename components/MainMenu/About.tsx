@@ -1,0 +1,37 @@
+import { View } from "react-native";
+import { Divider, List, Text } from "react-native-paper";
+import { aboutText, aboutThanks, aboutThanksPersons, preferenceTitles } from "lib/textTemplates";
+import { defaultViewPadding } from "configs";
+import { usePreferenceStore } from "stores/usePreferenceStore";
+import * as Application from 'expo-application';
+
+export default function About(){
+
+    const { language, theme } = usePreferenceStore()
+    const currentYear = new Date().getFullYear()
+    
+    return(
+        <List.Accordion left={props => <><List.Icon {...props} icon="application-brackets-outline" /><List.Icon {...props} icon="cellphone-information" /></>} title={preferenceTitles.about[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
+            <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                <Text>{aboutText[language]}</Text>
+                
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                
+                <Text style={{color: theme.colors.onBackground}} >{`Version ${Application.nativeApplicationVersion}`}</Text>
+                <Text style={{color: theme.colors.onBackground}} >{`© ${currentYear === 2024 ? currentYear : `2024 - ${currentYear}`} Marcel Weber`} </Text>
+                
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                
+                <Text style={{color: theme.colors.onBackground}} >{aboutThanks[language]}</Text>
+                <Text>{`- ${aboutThanksPersons.michelle[language]}`}</Text>
+                <Text>{`- ${aboutThanksPersons.jonas[language]}`}</Text>
+                <Text>{`- ${aboutThanksPersons.waffenforum[language]}`}</Text>
+                <Text>{`- ${aboutThanksPersons.others[language]}`}</Text>
+                
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                
+                <Text>Splash & Icon: Designed by dgim-studio / Freepik</Text>
+            </View>
+        </List.Accordion>
+    )
+}
