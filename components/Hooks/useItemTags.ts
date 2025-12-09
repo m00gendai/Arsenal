@@ -39,6 +39,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.accessory_MagazineTags)
     )
 
+    const { data: accessoryTags_Misc } = useLiveQuery(
+        db.select()
+        .from(schema.accessory_MiscTags)
+    )
+
     const { data: partTags_ConversionKit } = useLiveQuery(
         db.select()
         .from(schema.part_ConversionKitTags)
@@ -64,6 +69,8 @@ export function useItemTags(type: CollectionType) {
             return accessoryTags_LightLaser
         case "accessoryCollection_Magazine":
             return accessoryTags_Magazine
+        case "accessoryCollection_Misc":
+            return accessoryTags_Misc
         case "partCollection_ConversionKit":
             return partTags_ConversionKit
         case "partCollection_Barrel":

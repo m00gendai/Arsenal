@@ -24,6 +24,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const [scopeData, setScopeData] = useState([])
     const [lightLaserData, setLightLaserData] = useState([])
     const [magazineData, setMagazineData] = useState([])
+    const [miscAccessoryData, setMiscAccessoryData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
     const [barrelData, setBarrelData] = useState([])
 
@@ -81,6 +82,14 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setMagazineData(magazineData)
+
+        const miscAccessoryData = await db.select()
+          .from(schema.accessoryCollection_Misc)
+          .where(
+            inArray(schema.accessoryCollection_Misc.id, mountedIds)
+          )
+
+        setMiscAccessoryData(miscAccessoryData)
 
       }
 
@@ -163,6 +172,10 @@ const DATA:Section[] = [
   {
     title: tabBarLabels.magazineCollection[language],
     data: magazineData,
+  },
+  {
+    title: tabBarLabels.miscAccessoryCollection[language],
+    data: miscAccessoryData,
   },
 ];
 

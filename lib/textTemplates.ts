@@ -63,7 +63,7 @@ interface TabBarLabels{
     conversionCollection: SimpleTranslation
     barrelCollection: SimpleTranslation
     magazineCollection: SimpleTranslation
-    accessoriesMiscCollection: SimpleTranslation
+    miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
     printMagazineCollection: SimpleTranslation
     swissMilitaryRegulationCollection: SimpleTranslation
@@ -923,7 +923,7 @@ export const tabBarLabels: TabBarLabels = {
         it: "",
         ch: "",
     },
-    accessoriesMiscCollection: {
+    miscAccessoryCollection: {
         de: "Diverses",
         en: "Miscellaneous",
         fr: "Divers",

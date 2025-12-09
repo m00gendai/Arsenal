@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc} from "../interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -12,6 +12,7 @@ interface GeneralSettings{
   displayImagesInListViewAccessory_Scope: boolean
   displayImagesInListViewAccessory_LightLaser: boolean
   displayImagesInListViewAccessory_Magazine: boolean
+  displayImagesInListViewAccessory_Misc: boolean
   displayImagesInListViewPart_ConversionKit: boolean
   displayImagesInListViewPart_Barrel: boolean
   resizeImages: boolean
@@ -28,6 +29,7 @@ interface DisplaySettings{
   accessoryCollection_Scope: DisplayVariants
   accessoryCollection_LightLaser: DisplayVariants
   accessoryCollection_Magazine: DisplayVariants
+  accessoryCollection_Misc: DisplayVariants
   partCollection_ConversionKit: DisplayVariants
   partCollection_Barrel: DisplayVariants
   accessoryView: DisplayVariants
@@ -41,6 +43,7 @@ export interface SorterSettings{
   accessoryCollection_Scope: {type: SortingTypesAccessory_Scope, direction: "asc" | "desc", icon: string}
   accessoryCollection_LightLaser: {type: SortingTypesAccessory_LightLaser, direction: "asc" | "desc", icon: string}
   accessoryCollection_Magazine: {type: SortingTypesAccessory_Magazine, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Misc: {type: SortingTypesAccessory_Misc, direction: "asc" | "desc", icon: string}
   partCollection_ConversionKit: {type: SortingTypesPart_ConversionKit, direction: "asc" | "desc", icon: string}
   partCollection_Barrel: {type: SortingTypesPart_Barrel, direction: "asc" | "desc", icon: string}
 }
@@ -53,6 +56,7 @@ interface FilterState{
   accessoryCollection_Scope: boolean
   accessoryCollection_LightLaser: boolean
   accessoryCollection_Magazine: boolean
+  accessoryCollection_Misc: boolean
   partCollection_ConversionKit: boolean
   partCollection_Barrel: boolean
 }
@@ -93,6 +97,7 @@ interface PreferenceStore {
       displayImagesInListViewAccessory_Scope: true,
       displayImagesInListViewAccessory_LightLaser: true,
       displayImagesInListViewAccessory_Magazine: true,
+      displayImagesInListViewAccessory_Misc: true,
       displayImagesInListViewPart_ConversionKit: true,
       displayImagesInListViewPart_Barrel: true,
       resizeImages: true,
@@ -110,6 +115,7 @@ interface PreferenceStore {
       accessoryCollection_Scope: "grid",
       accessoryCollection_LightLaser: "grid",
       accessoryCollection_Magazine: "grid",
+      accessoryCollection_Misc: "grid",
       partCollection_ConversionKit: "grid",
       partCollection_Barrel: "grid",
       accessoryView: "grid"
@@ -128,6 +134,7 @@ interface PreferenceStore {
       accessoryCollection_Scope: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       accessoryCollection_LightLaser: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       accessoryCollection_Magazine: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Misc: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_Barrel: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
     },
@@ -146,6 +153,7 @@ interface PreferenceStore {
       accessoryCollection_Scope: false,
       accessoryCollection_LightLaser: false,
       accessoryCollection_Magazine: false,
+      accessoryCollection_Misc: false,
       partCollection_ConversionKit: false,
       partCollection_Barrel: false
     },

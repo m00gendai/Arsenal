@@ -393,6 +393,33 @@ export const accessory_MagazineTags = sqliteTable("accessories_magazineTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const accessoryCollection_Misc = sqliteTable("accessories_misc", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOn: text("currentlyMountedOn")
+})
+
+export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("miscAccessoryTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const gunReminders = sqliteTable("gunReminder",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),
