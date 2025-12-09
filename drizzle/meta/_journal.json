@@ -85,6 +85,13 @@
       "when": 1764956730672,
       "tag": "0011_deep_owl",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1765286268639,
+      "tag": "0012_outgoing_gravity",
+      "breakpoints": true
     }
   ]
 }
