@@ -57,6 +57,7 @@ interface TabBarLabels{
     gunCollection: SimpleTranslation
     ammoCollection: SimpleTranslation
     opticCollection: SimpleTranslation
+    scopeCollection: SimpleTranslation
     silencerCollection: SimpleTranslation
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
@@ -878,6 +879,13 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Optiques",
         it: "Ottici",
         ch: "Opticas",
+    },
+    scopeCollection: {
+        de: "Zielfernrohre",
+        en: "Scopes",
+        fr: "",
+        it: "",
+        ch: "",
     },
     gunMagazineCollection: {
         de: "Magazine",

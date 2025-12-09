@@ -82,6 +82,15 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`)))
     )
 
+    const { data: scopeData } = useLiveQuery(
+        db.select()
+        .from(schema.accessoryCollection_Scope)
+        .where(
+            ne(schema.accessoryCollection_Scope.id, itemData.id)
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`)))
+    )
+
     const { data: lightLaserData } = useLiveQuery(
         db.select()
         .from(schema.accessoryCollection_LightLaser)
@@ -120,7 +129,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData, ...lightLaserData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
 }
@@ -297,6 +306,33 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             flexDirection: "row", 
                             alignItems: "center", 
                             marginBottom: index === opticData.length-1 ? 10 : 0
+                        }}
+                    >
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            )
+        })}
+      </List.Accordion> : null}
+
+      {partData.length  === 0 ? <List.Accordion
+        title={tabBarLabels.scopeCollection[language]}
+        style={scopeData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
+        titleStyle={scopeData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
+        left={props => <List.Icon {...props} icon={determineAccessoryIcons("accessoryCollection_Scope")} color={scopeData.some(item => item.id === checked) ? theme.colors.onTertiary : ""} />}>
+        {scopeData.map((item, index) =>{
+            return(
+                <TouchableNativeFeedback onPress={() => handleSelect(item.id, "accessories")} key={item.id} >
+                    <View 
+                        style={{
+                            paddingLeft: defaultViewPadding, 
+                            paddingRight: defaultViewPadding, 
+                            backgroundColor: getListItemBackgroundColor(item.id, index), 
+                            width: "100%", 
+                            display: "flex", 
+                            flexDirection: "row", 
+                            alignItems: "center", 
+                            marginBottom: index === scopeData.length-1 ? 10 : 0
                         }}
                     >
                         <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>

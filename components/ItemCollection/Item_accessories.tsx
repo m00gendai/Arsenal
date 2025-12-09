@@ -21,6 +21,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const { cardOptionsMenuVisible_accessories, alohaSnackbarVisible } = useViewStore()
     const [silencerData, setSilencerData] = useState([])
     const [opticData, setOpticData] = useState([])
+    const [scopeData, setScopeData] = useState([])
     const [lightLaserData, setLightLaserData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
     const [barrelData, setBarrelData] = useState([])
@@ -55,6 +56,14 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setOpticData(opticData)
+
+        const scopeData = await db.select()
+          .from(schema.accessoryCollection_Scope)
+          .where(
+            inArray(schema.accessoryCollection_Scope.id, mountedIds)
+          )
+
+        setScopeData(scopeData)
 
         const lightLaserData = await db.select()
           .from(schema.accessoryCollection_LightLaser)
@@ -137,6 +146,10 @@ const DATA:Section[] = [
   {
     title: tabBarLabels.opticCollection[language],
     data: opticData,
+  },
+  {
+    title: tabBarLabels.scopeCollection[language],
+    data: scopeData,
   },
 ];
 

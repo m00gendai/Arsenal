@@ -281,6 +281,46 @@ export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().references(() => accessoryCollection.id),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    manufacturingDate: text("manufacturinDdate"),
+    originCountry: text("originCountry"),
+    serial: text("serial"),
+    reticle: text("reticle"),
+    reticleColor: text("reticleColor"),
+    zoom: text("zoom"),
+    unit: text("unit"),
+    clicksToUnitElevation: text("clicksToUnitElevation"),
+    clicksToUnitWindage: text("clicksToUnitWindage"),
+    material: text("material"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    shotCount: text("shotCount"),
+    lastShotAt_unix: integer("lastShotAt_unix"),
+    lastCleanedAt_unix: integer("lastCleanedAt_unix"),
+    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
+    mainColor: text("mainColor"),
+    remarks: text("remarks"),
+    currentlyMountedOn: text("currentlyMountedOn")
+})
+
+export const accessory_ScopeTags = sqliteTable("accessories_scopeTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("scopeTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLaser", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().references(() => accessoryCollection.id),
