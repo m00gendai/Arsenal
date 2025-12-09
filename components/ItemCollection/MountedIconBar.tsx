@@ -22,6 +22,12 @@ export default function MountedIconBar({accessories, parts, accessoryView}:Props
     const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()  
 
+    const accessoryTypes:CollectionType[] = accessories.map(item => item.accessoryType)
+    const partTypes:CollectionType[] = parts.map(item => item.partType)
+    const accessorySet: CollectionType[] = Array.from(new Set(accessoryTypes))
+    const partSet: CollectionType[] = Array.from(new Set(partTypes))
+    const mountedStuff: CollectionType[] = [...accessorySet, ...partSet]
+
     const display = accessoryView ? displaySettings.accessoryView : displaySettings[currentCollection]
 
     return(
@@ -45,11 +51,8 @@ export default function MountedIconBar({accessories, parts, accessoryView}:Props
                 borderBottomRightRadius: 0
             }}>
                <View style={{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-                    {accessories.map((accessory, index) =>{
-                        return <Icon key={`accessoryBarIcon_${index}`} size={12} source={determineAccessoryIcons(accessory.accessoryType)} />
-                    })}
-                    {parts.map((part, index) =>{
-                        return <Icon key={`partBarIcon_${index}`} size={12} source={determineAccessoryIcons(part.partType)} />
+                    {mountedStuff.map((item, index) =>{
+                        return <Icon key={`mountedBarIcon_${index}`} size={12} source={determineAccessoryIcons(item)} />
                     })}
                 </View>
                   </View>
