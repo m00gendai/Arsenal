@@ -61,34 +61,23 @@ interface FilterState{
   partCollection_Barrel: boolean
 }
 
-interface PreferenceStore {
-    language: string
-    switchLanguage: (lang: string) => void
-    theme: {name: string, colors: Color},
-    switchTheme: (name: string) => void,
-    generalSettings: GeneralSettings
-    setGeneralSettings: (settings: GeneralSettings) => void
-    caliberDisplayNameList: {name: string, displayName: string}[]
-    setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
+interface InitialStoreState {
+  language: Languages
+  theme: {name: string, colors: Color}
+  generalSettings: GeneralSettings
+  displaySettings: DisplaySettings
+  sortBy: SorterSettings
+  caliberDisplayNameList: { name: string; displayName?: string }[]
+  filterOn: FilterState
+  hasCheckedForLegacyGunData: boolean
+  hasCheckedForLegacyAmmoData: boolean
+  hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
+  hasConvertedLegacyAmmoCaliberFieldToStringArray: boolean
+}
 
-    displaySettings: DisplaySettings
-    setDisplaySettings: (settings: DisplaySettings) => void
-
-    sortBy: SorterSettings
-    setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
-
-    filterOn: FilterState
-    setFilterOn: (status: FilterState) => void
-
-    hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => void
-  }
-
-  export const usePreferenceStore = create<PreferenceStore>((set) => ({
+const initialState:InitialStoreState = {
     language: "de",
-    switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
     theme: { name: "default", colors: colorThemes.default },
-    switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
     generalSettings: {
       displayImagesInListViewGun: true,
       displayImagesInListViewAmmo: true,
@@ -105,8 +94,6 @@ interface PreferenceStore {
       emptyFields: false,
       caliberDisplayName: false,
     },
-    setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
-
     displaySettings: {
       gunCollection: "grid",
       ammoCollection: "grid",
@@ -120,12 +107,6 @@ interface PreferenceStore {
       partCollection_Barrel: "grid",
       accessoryView: "grid"
     },
-    setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
-
-
-    caliberDisplayNameList: [],
-    setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
-
     sortBy: {
       gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       ammoCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
@@ -138,13 +119,7 @@ interface PreferenceStore {
       partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_Barrel: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
     },
-    setSortBy: (collection, settings) => set((state) => ({
-      sortBy: { 
-        ...state.sortBy, 
-        [collection]: settings 
-      }
-    })),
-    
+    caliberDisplayNameList: [],
     filterOn: {
       gunCollection: false,
       ammoCollection: false,
@@ -157,8 +132,48 @@ interface PreferenceStore {
       partCollection_ConversionKit: false,
       partCollection_Barrel: false
     },
-    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status})),
-
+    hasCheckedForLegacyGunData: false,
+    hasCheckedForLegacyAmmoData: false,
     hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status}))
-  }))
+    hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
+  }
+
+
+interface StoreFunctions {
+    switchLanguage: (lang: string) => void
+    switchTheme: (name: string) => void,
+    setGeneralSettings: (settings: GeneralSettings) => void
+    setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
+    setDisplaySettings: (settings: DisplaySettings) => void
+    setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
+    setFilterOn: (status: FilterState) => void
+    setHasCheckedForLegacyGunData: (status: boolean) => void
+    setHasCheckedForLegacyAmmoData: (status: boolean) => void
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => void
+    setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => void
+    resetPreferenceStore: () => void
+  }
+
+  
+  export const usePreferenceStore = create<InitialStoreState & StoreFunctions>((set, store) => ({
+    ...initialState,
+    
+    switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
+    switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
+    setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
+    setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
+    setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
+    setSortBy: (collection, settings) => set((state) => ({
+      sortBy: { 
+        ...state.sortBy, 
+        [collection]: settings 
+      }
+    })),
+    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status})),
+    setHasCheckedForLegacyGunData: (status: boolean) => set((state) => ({hasCheckedForLegacyGunData: status})),
+    setHasCheckedForLegacyAmmoData: (status: boolean) => set((state) => ({hasCheckedForLegacyAmmoData: status})),
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
+    setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
+    resetPreferenceStore: () => {set(initialState);
+  },
+}))
