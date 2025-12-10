@@ -1,12 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { datePickerTriggerFields } from "configs"
+import { legacyDatePickerTriggerFields } from "configs"
 import { A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
 import * as SecureStore from "expo-secure-store"
 import { GunType } from "interfaces"
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate"
-import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
 
 // This checks for legacy gun data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy gun data from SecureStore
@@ -77,9 +76,9 @@ export default async function checkLegacyGunData(setHasCheckedForLegacyGunData){
           }))
           gun.createdAt = gun.createdAt ? (isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt) : Date.now() 
           gun.lastModifiedAt = gun.lastModifiedAt ? (isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt) : Date.now() 
-          datePickerTriggerFields.forEach(dateField =>{
+          legacyDatePickerTriggerFields.forEach(dateField =>{
             if(dateField in gun){
-                gun[dateField] = gun[dateField] ? (isNaN(gun[dateField]) ? parseDate(gun[dateField]) : gun[dateField]) : null
+                gun[`${dateField}_unix`] = gun[dateField] ? (isNaN(gun[dateField]) ? parseDate(gun[dateField]) : gun[dateField]) : null
             }
           })
           try{

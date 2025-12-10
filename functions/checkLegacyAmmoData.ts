@@ -2,12 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { A_KEY_DATABASE, AMMO_DATABASE, KEY_DATABASE, PREFERENCES } from "configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { eq } from "drizzle-orm/sql"
 import { AmmoType } from "interfaces"
 import * as SecureStore from "expo-secure-store"
 import { alarm } from "utils"
-import { datePickerTriggerFields } from "configs"
-import { usePreferenceStore } from "stores/usePreferenceStore"
+import { legacyDatePickerTriggerFields } from "configs"
 
 // This checks for legacy ammo data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy ammo data from SecureStore
 // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no
@@ -81,9 +79,9 @@ export default async function checkLegacyAmmoData(setHasCheckedForLegacyAmmoData
             lastModifiedAt: newLastModifiedAt,
             caliber: newCaliber
         }
-        datePickerTriggerFields.forEach(dateField =>{
+        legacyDatePickerTriggerFields.forEach(dateField =>{
             if(dateField in parsedAmmo){
-                parsedAmmo[dateField] = parsedAmmo[dateField] ? (isNaN(parsedAmmo[dateField]) ? parseDate(parsedAmmo[dateField]) : parsedAmmo[dateField]) : null
+                parsedAmmo[`${dateField}_unix`] = parsedAmmo[dateField] ? (isNaN(parsedAmmo[dateField]) ? parseDate(parsedAmmo[dateField]) : parsedAmmo[dateField]) : null
             }
         })
           try{

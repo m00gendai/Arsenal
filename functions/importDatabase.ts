@@ -6,13 +6,12 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
 import { DB_NAME } from "../configs_DB";
-import { collectionImportTables, datePickerTriggerFields, nonCollectionTables } from "configs";
+import { collectionImportTables, legacyDatePickerTriggerFields, nonCollectionTables } from "configs";
 import { determineTagSchema } from "./determinators";
 import { AmmoType, CollectionType, ItemType, LegacyAmmoType } from "interfaces";
 
 function parseDate(inDate: string | number) {
-  console.log(inDate)
-  
+ 
   if (typeof inDate === "number") {
     return inDate
   }
@@ -21,7 +20,9 @@ function parseDate(inDate: string | number) {
     console.log("parseable ecma extended date detected")
     return new Date(inDate).getTime()
   }
-
+if(!inDate){
+  return null
+}
   const splitDate = (inDate as string).split(".")
   const day = Number(splitDate[0])
   const month = Number(splitDate[1])
@@ -32,9 +33,21 @@ function parseDate(inDate: string | number) {
 
 function checkDates(item: ItemType){
   const parsedItem = {...item}
-  datePickerTriggerFields.forEach(dateField =>{
+  legacyDatePickerTriggerFields.forEach(dateField => {
     if(dateField in parsedItem){
-        parsedItem[dateField] = parsedItem[dateField] ? (isNaN(parsedItem[dateField]) ? parseDate(parsedItem[dateField]) : parsedItem[dateField]) : null
+      const value = parsedItem[dateField]
+      // Check if value exists and needs parsing
+      if(value !== null && value !== undefined){
+        // If it's already a number, use it
+        if(typeof value === 'number'){
+          parsedItem[`${dateField}_unix`] = value
+        } else {
+          // Otherwise, parse the date string
+          parsedItem[`${dateField}_unix`] = parseDate(value)
+        }
+      } else {
+        parsedItem[`${dateField}_unix`] = null
+      }
     }
   })
   return parsedItem
@@ -79,14 +92,42 @@ export default async function importDatabase() {
       const cacheDBopen = drizzle(cachedDB, { schema })
       
       // Handle Collections
-      collectionImportTables.forEach(async directory =>{
-        try{
-          const collection = cacheDBopen.select().from(schema[directory]).all()
+      for (const directory of collectionImportTables) {
+        console.log(`outer directory loop - ${directory}`)
+        let collection
+        try {
+  if (directory === "ammoCollection") {
+    try {
+
+      collection = cacheDBopen.select().from(schema.ammoCollection).all()
+      console.log("Loaded ammo using NEW schema")
+    } catch (e) {
+      console.warn("New ammo schema failed — falling back to LEGACY schema")
+      collection = cacheDBopen.select().from(schema.legacyAmmoCollection).all()
+      console.log("Loaded ammo using LEGACY schema")
+    }
+  } else {
+    collection = cacheDBopen.select().from(schema[directory]).all()
+  }
+} catch (e) {
+  const message = String(e?.message ?? e)
+
+  if (message.includes("no such table")) {
+    console.warn(`Skipping missing table: ${directory}`)
+    continue 
+  }
+
+  throw new Error(`itemCollection ${directory}: Cache DB open failed ${message}`)
+}
           let tags
-          if(!nonCollectionTables.includes(directory)){
-            const tagDirectory = directory as CollectionType
-            tags = cacheDBopen.select().from(determineTagSchema(tagDirectory)).all()
-          }
+          try{
+            if(!nonCollectionTables.includes(directory)){
+              const tagDirectory = directory as CollectionType
+              tags = cacheDBopen.select().from(determineTagSchema(tagDirectory)).all()
+            }
+          }catch(e){
+              throw new Error(`itemCollection ${directory}: Tag DB open failed ${e}`)
+            }
           
           try{
             await db.delete(schema[directory])
@@ -97,18 +138,28 @@ export default async function importDatabase() {
           }catch(e){
             throw new Error(`itemCollection ${directory}: DB Delete failed ${e}`)
           }
-          
+          try{
           for(const item of collection){
+            console.log(`inner directory loop - ${directory}`)
             const newItem = checkDates(item)
+            
             if(directory === "ammoCollection"){
               // LegacyAmmoType has caliber as string
+              console.log(newItem)
               const newItemAmmo = newItem as unknown as LegacyAmmoType
+              console.log(newItemAmmo)
               // AmmoType as haliber as string[]
               const newAmmo: AmmoType = {
                 ...newItemAmmo, 
                 caliber: [newItemAmmo.caliber]
               }
-              await db.insert(schema[directory]).values(newAmmo);
+              console.log(newAmmo)
+              try{
+                await db.insert(schema[directory]).values(newAmmo);
+              }catch(e){
+                console.error(`Ammo Import failed for ${item.designation}`, e)
+              }
+              
             } else {
               await db.insert(schema[directory]).values(newItem);
             }
@@ -122,7 +173,7 @@ export default async function importDatabase() {
         }catch(e){
           throw new Error(`itemCollection ${directory}: ${e}`)
         }
-      })
+      }
       
       // Close and cleanup temp database
       cacheDB.closeSync()
