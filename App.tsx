@@ -43,6 +43,10 @@ import { useItemStore } from 'stores/useItemStore';
 import QuickMount from 'components/QuickMount';
 import AlohaSnackbar from 'components/AlohaSnackbar';
 import { eq } from 'drizzle-orm';
+import migrateLegacyDateFields from 'functions/migrateLegacyDateFields';
+import { migrateLegacyAmmoCaliber } from 'functions/migrateLegacyAmmoCaliber';
+import checkLegacyGunData from 'functions/checkLegacyGunData';
+import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -87,235 +91,12 @@ export default function App() {
     sortBy,
     setSortBy,
     setCaliberDisplayNameList,
-    hasConvertedLegacyDateFieldsToUnixTimeStamp,
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet } = useViewStore()
   const { currentCollection } = useItemStore()
   const { setAmmoTags, setTags } = useTagStore()
   const [gunsLoaded, setGunsLoaded] = useState(false)
   const bottomSheetRef = useRef<BottomSheet>(null);
-
-
-  // This checks for legacy DB keys
-
-  async function getKeys(data: "guns" | "ammo"){
-    const keys:string = await AsyncStorage.getItem(data === "guns" ? KEY_DATABASE : A_KEY_DATABASE)
-    if(keys == null){
-      return []
-    }
-    return JSON.parse(keys)
-  }
-
-
-  // This checks for legacy gun data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy gun data from SecureStore
-  // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no
-  // gun data should be checked
-
-  async function checkLegacyGunData(){
-    let keys:string[]
-    try{
-      keys = await getKeys("guns")
-    } catch(e){
-      alarm("Legacy Gun Key Error", e)
-    }
-    console.log("Checked Gun Keys:")
-    console.log(keys)
-    if(keys.length === 0){
-      return
-    }
-    let guns:GunType[]
-    try{
-      guns = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${GUN_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-    } catch(e){
-      alarm("Legacy Gun DB Error", e)
-    }
-    console.log("Checked Guns:")
-    console.log(guns)
-    if(guns.length !== 0){
-      await Promise.all(guns.map(async gun =>{
-        if(gun !== null){
-          await Promise.all(checkBoxes.map(checkbox =>{
-            gun[checkbox.name] = gun !== undefined && gun !== null && gun.status !== undefined && gun.status !== null ? gun.status[checkbox.name] : false
-          }))
-          gun.createdAt = gun.createdAt ? (isNaN(gun.createdAt) ? new Date(gun.createdAt).getTime() : gun.createdAt) : Date.now() 
-          gun.lastModifiedAt = gun.lastModifiedAt ? (isNaN(gun.lastModifiedAt) ? new Date(gun.lastModifiedAt).getTime() : gun.lastModifiedAt) : Date.now() 
-          try{
-            await db.insert(schema.gunCollection).values(gun)
-          }catch(e){
-            throw new Error(`Check Legacy Gun Data: Insert gun ${gun.model} into DB: ${e}`)
-          }
-          if(gun.tags !== undefined && gun.tags !== null && gun.tags.length !== 0){
-            await Promise.all(gun.tags.map(async tag =>{
-              try{
-                await db.insert(schema.gunTags).values({label: tag}).onConflictDoNothing()
-              }catch(e){
-                throw new Error(`Check Legacy Gun Data: Insert tag ${tag} into DB: ${e}`)
-              }
-              
-            }))
-          }
-        }
-      }))
-      await Promise.all(keys.map(async key =>{
-        await SecureStore.deleteItemAsync(`${GUN_DATABASE}_${key}`)
-      }))
-      await AsyncStorage.removeItem(KEY_DATABASE)
-    }
-  }
-
-
-  // This checks for legacy ammo data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy ammo data from SecureStore
-  // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no
-  // ammo data should be checked
-
-  async function checkLegacyAmmoData(){
-    let keys:string[]
-    try{
-      keys = await getKeys("ammo")
-    } catch(e){
-      alarm("Legacy Ammo Key Error", e)
-    }
-    console.log("Checked Ammo Keys:")
-    console.log(keys)
-    if(keys.length === 0){
-      return
-    }
-    let ammunition:AmmoType[]
-    try{
-      ammunition = await Promise.all(keys.map(async key =>{
-        const item:string = await SecureStore.getItemAsync(`${AMMO_DATABASE}_${key}`)
-        return JSON.parse(item)
-      }))
-    } catch(e){
-      alarm("Legacy Ammo DB Error", e)
-    }
-    console.log("Checked Ammo:")
-    console.log(ammunition)
-    if(ammunition.length !== 0){
-      await Promise.all(ammunition.map(async ammo =>{
-        if(ammo !== null){
-          const newCreatedAt = ammo.createdAt ? (isNaN(ammo.createdAt) ? new Date(ammo.createdAt).getTime() : ammo.createdAt) : Date.now() 
-          const newLastModifiedAt = ammo.lastModifiedAt ? (isNaN(ammo.lastModifiedAt) ? new Date(ammo.lastModifiedAt).getTime() : ammo.lastModifiedAt) : Date.now() 
-          const newCaliber = [ammo.caliber]
-          const parsedAmmo = {
-            ...ammo,
-            createdat: newCreatedAt,
-            lastModifiedAt: newLastModifiedAt,
-            caliber: newCaliber
-        }
-          try{
-            await db.insert(schema.ammoCollection).values(parsedAmmo)
-          }catch(e){
-            throw new Error(`Check Legacy Ammo Data: Insert ammo ${ammo.designation} into DB: ${e}`)
-          }
-          if(ammo.tags !== undefined && ammo.tags !== null && ammo.tags.length !== 0){
-              await Promise.all(ammo.tags.map(async tag =>{
-                try{
-                  await db.insert(schema.ammoTags).values({label: tag}).onConflictDoNothing()
-                }catch(e){
-                  throw new Error(`Check Legacy Ammo Data: Insert tag ${tag} into DB: ${e}`)
-                }
-
-              }))
-            }
-          }
-        }))
-      await Promise.all(keys.map(async key =>{
-        await SecureStore.deleteItemAsync(`${AMMO_DATABASE}_${key}`)
-      }))
-      await AsyncStorage.removeItem(A_KEY_DATABASE)
-    }
-  }
-
-  function prepareDateParse(dateString:string){
-    const [day, month, year] = dateString.split(".").map(Number);
-      const date = new Date(year, month - 1, day);
-      return date.getTime()
-  }
-
-  async function migrateLegacyDateFields(){
-    let preferences:string
-      try{
-        preferences = await AsyncStorage.getItem(PREFERENCES)
-      } catch(e){
-        alarm("Migrate Date Fields Preference DB Error", e)
-      }
-
-      let isPreferences
-      try{
-       isPreferences = preferences === null ? null : JSON.parse(preferences)
-      } catch(e){
-        alarm("Migrate Date Fields Preference Parse Error", e)
-      }
-      
-      try{
-    if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-      console.log("Legacy Date Fields already parsed")
-      return
-    }
-    const guns = await db.select().from(schema.gunCollection)
-    const ammunition = await db.select().from(schema.ammoCollection)
-    await Promise.all(guns.map(async gun =>{
-      // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
-      await db.update(schema.gunCollection)
-        .set({ 
-          acquisitionDate_unix: gun.acquisitionDate ? prepareDateParse(gun.acquisitionDate) : null,
-          lastCleanedAt_unix: gun.lastCleanedAt ? prepareDateParse(gun.lastCleanedAt) : null,
-          lastShotAt_unix: gun.lastShotAt ? prepareDateParse(gun.lastShotAt) : null
-        })
-        .where(eq(schema.gunCollection.id, gun.id));
-    }))
-    await Promise.all(ammunition.map(async ammo =>{
-      // legacy date fields Ammo: "lastTopUpAt"
-      await db.update(schema.ammoCollection)
-        .set({ 
-          lastTopUpAt_unix: ammo.lastTopUpAt ? prepareDateParse(ammo.lastTopUpAt) : null
-        })
-        .where(eq(schema.ammoCollection.id, ammo.id));
-    }))
-  } catch(e){
-    alarm("Migrate Date Fields Final Error", e)
-  }
-}
-
-async function migrateLegacyAmmoCaliber(){
-    let preferences:string
-      try{
-        preferences = await AsyncStorage.getItem(PREFERENCES)
-      } catch(e){
-        alarm("Migrate Ammo Caliber Field Preference DB Error", e)
-      }
-
-      let isPreferences
-      try{
-       isPreferences = preferences === null ? null : JSON.parse(preferences)
-      } catch(e){
-        alarm("Migrate Ammo Caliber Field Preference Parse Error", e)
-      }
-      
-      try{
-        if(isPreferences && isPreferences.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-          console.log("Legacy Date & Ammo Fields already parsed")
-          return
-        }
-        const ammunition = await db.select().from(schema.legacyAmmoCollection)
-        await Promise.all(ammunition.map(async ammo =>{
-          const parsedCaliberField = [JSON.parse(ammo.caliber)]
-          await db.update(schema.ammoCollection).set({caliber: parsedCaliberField}).where(eq(schema.ammoCollection.id, ammo.id))
-        }))
-
-        // This was initially for migrateLegacyDateFields() but I am too lazy to add another flag
-        setHasConvertedLegacyDateFieldsToUnixTimeStamp(true)
-        await AsyncStorage.setItem(PREFERENCES, JSON.stringify({...isPreferences, hasConvertedLegacyDateFieldsToUnixTimeStamp: true}))
-      } catch(e){
-        alarm("Migrate Ammo Caliber Field Final Error", e)
-      }
-    }
-
 
   // INIT PREPARE FUNCTION - THIS ESSENTAILLY SETS UP THE APP
   
@@ -356,8 +137,12 @@ async function migrateLegacyAmmoCaliber(){
 
           console.log("Parsing Legacy Date Fields")
           try{
-            await migrateLegacyDateFields()
-            await migrateLegacyAmmoCaliber()
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+                await migrateLegacyDateFields()
+              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+                await migrateLegacyAmmoCaliber()
+              }
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
           }
@@ -386,14 +171,6 @@ async function migrateLegacyAmmoCaliber(){
             await checkLegacyAmmoData()
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
-          }
-
-          console.log("Parsing Legacy Date Fields")
-          try{
-            await migrateLegacyDateFields()
-            await migrateLegacyAmmoCaliber()
-          }catch(e){
-            throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
 
           console.log("Successfully checked for legacy data")
@@ -430,8 +207,12 @@ async function migrateLegacyAmmoCaliber(){
 
             console.log("Parsing Legacy Date Fields")
             try{
-              await migrateLegacyDateFields()
-              await migrateLegacyAmmoCaliber()
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+                await migrateLegacyDateFields()
+              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+                await migrateLegacyAmmoCaliber()
+              }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
             }
@@ -461,8 +242,12 @@ async function migrateLegacyAmmoCaliber(){
 
             console.log("Parsing Legacy Date Fields")
             try{
-              await migrateLegacyDateFields()
-              await migrateLegacyAmmoCaliber()
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+                await migrateLegacyDateFields()
+              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+                await migrateLegacyAmmoCaliber()
+              }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)
             }
