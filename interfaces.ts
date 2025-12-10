@@ -39,10 +39,28 @@ export interface GunTypeStatus{
 
 export type GunType = GunTypeDetails & GunTypeStatus
 
-export interface AmmoType{
+export interface LegacyAmmoType{
   id: string
   manufacturer: string | null
   caliber: string | null
+  designation: string
+  originCountry: string | null
+  createdAt: number,
+  lastModifiedAt: number,
+  headstamp: string | null
+  currentStock: string
+  previousStock: string
+  lastTopUpAt_unix: number | null
+  criticalStock: string
+  tags: string[]
+  images: string[]
+  remarks: string
+}
+
+export interface AmmoType{
+  id: string
+  manufacturer: string | null
+  caliber: string[] | null
   designation: string
   originCountry: string | null
   createdAt: number,
