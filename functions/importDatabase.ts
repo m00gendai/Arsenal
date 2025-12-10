@@ -6,9 +6,39 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 import * as schema from "../db/schema"
 import { db } from "../db/client"
 import { DB_NAME } from "../configs_DB";
-import { collectionExportDirectories, collectionImportTables, nonCollectionTables } from "configs";
+import { collectionImportTables, datePickerTriggerFields, nonCollectionTables } from "configs";
 import { determineTagSchema } from "./determinators";
-import { CollectionType } from "interfaces";
+import { AmmoType, CollectionType, ItemType, LegacyAmmoType } from "interfaces";
+
+function parseDate(inDate: string | number) {
+  console.log(inDate)
+  
+  if (typeof inDate === "number") {
+    return inDate
+  }
+
+  if (!isNaN(new Date(inDate).getTime())) {
+    console.log("parseable ecma extended date detected")
+    return new Date(inDate).getTime()
+  }
+
+  const splitDate = (inDate as string).split(".")
+  const day = Number(splitDate[0])
+  const month = Number(splitDate[1])
+  const year = Number(splitDate[2])
+
+  return new Date(year, month - 1, day).getTime()
+}
+
+function checkDates(item: ItemType){
+  const parsedItem = {...item}
+  datePickerTriggerFields.forEach(dateField =>{
+    if(dateField in parsedItem){
+        parsedItem[dateField] = parsedItem[dateField] ? (isNaN(parsedItem[dateField]) ? parseDate(parsedItem[dateField]) : parsedItem[dateField]) : null
+    }
+  })
+  return parsedItem
+}
 
 export default async function importDatabase() {
   try {
@@ -69,7 +99,19 @@ export default async function importDatabase() {
           }
           
           for(const item of collection){
-            await db.insert(schema[directory]).values(item);
+            const newItem = checkDates(item)
+            if(directory === "ammoCollection"){
+              // LegacyAmmoType has caliber as string
+              const newItemAmmo = newItem as unknown as LegacyAmmoType
+              // AmmoType as haliber as string[]
+              const newAmmo: AmmoType = {
+                ...newItemAmmo, 
+                caliber: [newItemAmmo.caliber]
+              }
+              await db.insert(schema[directory]).values(newAmmo);
+            } else {
+              await db.insert(schema[directory]).values(newItem);
+            }
           }
           for(const item of tags){
             if(!nonCollectionTables.includes(directory)){
