@@ -6,12 +6,7 @@ import { eq } from "drizzle-orm/sql"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
 
-export async function migrateLegacyAmmoCaliber(){
-
-
-    const { 
-        setHasConvertedLegacyAmmoCaliberFieldToStringArray
-      } = usePreferenceStore();
+export async function migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray){
       
     let preferences:string
       try{

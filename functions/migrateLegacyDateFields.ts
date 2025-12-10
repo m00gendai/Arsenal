@@ -15,9 +15,7 @@ function prepareDateParse(dateString: string){
   return date.getTime()
 }
 
-export default async function migrateLegacyDateFields(){
-
-  const { setHasConvertedLegacyDateFieldsToUnixTimeStamp } = usePreferenceStore()
+export default async function migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp){
 
     let preferences:string
       try{

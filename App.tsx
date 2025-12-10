@@ -91,6 +91,10 @@ export default function App() {
     sortBy,
     setSortBy,
     setCaliberDisplayNameList,
+    setHasCheckedForLegacyAmmoData,
+    setHasCheckedForLegacyGunData,
+    setHasConvertedLegacyAmmoCaliberFieldToStringArray,
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet } = useViewStore()
   const { currentCollection } = useItemStore()
@@ -123,14 +127,14 @@ export default function App() {
 
           console.log("Checking for Legacy Gun Data")
           try{
-            await checkLegacyGunData()
+            await checkLegacyGunData(setHasCheckedForLegacyGunData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Gun Data: ${e}`)
           }
 
           console.log("Checking for Legacy Ammo Data")
           try{
-            await checkLegacyAmmoData()
+            await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
           }
@@ -138,10 +142,10 @@ export default function App() {
           console.log("Parsing Legacy Date Fields")
           try{
             if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields()
+                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
               }
               if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber()
+                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
               }
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
@@ -161,16 +165,28 @@ export default function App() {
         if(!isPreferences?.generalSettings){ 
           console.log("Checking for Legacy Gun Data")
           try{
-            await checkLegacyGunData()
+            await checkLegacyGunData(setHasCheckedForLegacyGunData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Gun Data: ${e}`)
           }
 
           console.log("Checking for Legacy Ammo Data")
           try{
-            await checkLegacyAmmoData()
+            await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
+          }
+          
+          console.log("Parsing Legacy Date Fields")
+          try{
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
+                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
+              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
+              }
+          }catch(e){
+            throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
 
           console.log("Successfully checked for legacy data")
@@ -193,14 +209,14 @@ export default function App() {
 
             console.log("Checking for Legacy Gun Data")
             try{
-              await checkLegacyGunData()
+              await checkLegacyGunData(setHasCheckedForLegacyGunData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Gun Data: ${e}`)
             }
 
             console.log("Checking for Legacy Ammo Data")
             try{
-              await checkLegacyAmmoData()
+              await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Ammo Data: ${e}`)
             }
@@ -208,10 +224,10 @@ export default function App() {
             console.log("Parsing Legacy Date Fields")
             try{
               if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields()
+                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
               }
               if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber()
+                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
               }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
@@ -228,14 +244,14 @@ export default function App() {
             console.log("Login Guard inactive")
             console.log("Checking for Legacy Gun Data")
             try{
-              await checkLegacyGunData()
+              await checkLegacyGunData(setHasCheckedForLegacyGunData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Gun Data: ${e}`)
             }
 
             console.log("Checking for Legacy Ammo Data")
             try{
-              await checkLegacyAmmoData()
+              await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Ammo Data: ${e}`)
             }
@@ -243,10 +259,10 @@ export default function App() {
             console.log("Parsing Legacy Date Fields")
             try{
               if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields()
+                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
               }
               if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber()
+                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
               }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)

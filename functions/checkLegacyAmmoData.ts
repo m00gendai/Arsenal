@@ -39,9 +39,7 @@ function parseDate(csvDate:string){
     return unixTime
 }
 
-export default async function checkLegacyAmmoData(){
-
-  const { setHasCheckedForLegacyAmmoData } = usePreferenceStore()
+export default async function checkLegacyAmmoData(setHasCheckedForLegacyAmmoData){
 
     let keys:string[]
     try{
