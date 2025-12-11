@@ -13,6 +13,52 @@ Enter or paste your release notes for fr-FR here
 Enter or paste your release notes for it-IT here
 </it-IT>
 
+V2.1.0
+<de-DE>
+Neu:
+- Neue Sammlungskategorie: Zubehör
+- Neue Sammlungskategorie: Waffenbestandteile
+- Zubehör und Bestandteile lassen sich untereinander oder zu einer Waffe zuweisen
+- Kompakte Listenansicht
+Behoben:
+- Speichern nur möglich, nachdem ein anderes Eingabefeld ausgewählt wurde
+- Zahlenwerte mit Kommas führten zu kaputten Statistiken
+- Suchfeld in Munitionssamllung nicht sichtbar
+</de-DE>
+<en-US>
+New:
+- New collection category: Accessories
+- New collection category: Weapon parts
+- Accessories and parts can be linked with each other and to guns
+- Compact list view
+Fixed:
+- Saving only possible when another input field has been selected first
+- Number values with commas broke statistics
+- Searchfield in ammunition collection not visible
+</en-US>
+<fr-FR>
+Nouveau:
+- Nouvelle catégorie de collection: Accessoires
+- Nouvelle catégorie de collection: Pièces d’armes
+- Les accessoires et les pièces peuvent être liés entre eux et aux armes
+- Affichage de liste compact
+Correctif:
+- Enregistrement possible uniquement après avoir sélectionné un autre champ de saisie
+- Les valeurs numériques avec des virgules ont perturbé les statistiques
+- Le champ de recherche dans la collection de munitions n’était pas visible
+</fr-FR>
+<it-IT>
+Novità:
+- Nuova categoria di collezioni: Accessori
+- Nuova categoria di collezioni: Parti di armi
+- Accessori e parti possono essere collegati tra loro e alle armi
+- Visualizzazione compatta delle liste
+Risolti:
+- Salvataggio possibile solo dopo aver selezionato un altro campo di input
+- Valori numerici con virgole che causavano problemi con le statistiche
+- Campo di ricerca nella collezione di munizioni non visibi
+</it-IT>
+
 V2.0.1
 <de-DE>
 - Potentielle Out of Memory Fehler beim Export der Arsenal-Datenbank behoben
