@@ -22,7 +22,7 @@ export default function DeveloperSettings(){
     const dropTableOptions = collectionImportTables.map(table => {return {label: `${table}`, value: `${table}`}})
 
     async function purgePreferences(){
-        console.log("Purge Preferences")
+        console.info("Purge Preferences")
         await AsyncStorage.setItem(PREFERENCES, JSON.stringify({}))
         resetPreferenceStore()
         setAlohaSnackbarText("Purged Preferences")
@@ -30,7 +30,7 @@ export default function DeveloperSettings(){
     }
 
     function purgeDatabase(){
-        console.log("Purge Database")
+        console.info("Purge Database")
         collectionImportTables.forEach(async table => {
             await db.delete(schema[table])
         })
@@ -39,6 +39,7 @@ export default function DeveloperSettings(){
     }
 
     async function purgeTable(){
+        console.info("Purge Table")
         await db.delete(schema[dropTable])
         setAlohaSnackbarText(`Purged Table ${dropTable}`)
         setAlohaSnackbarVisible(true)

@@ -49,7 +49,6 @@ export default function BottomBar({screen}:Props){
     target: Screens,
     params: { collectionType: CollectionType }
   ){
-    console.log(`target: ${target}`)
     setCurrentCollection(params.collectionType)
     navigation.navigate(target, params);
   }

@@ -17,7 +17,7 @@ function parseDate(inDate: string | number) {
   }
 
   if (!isNaN(new Date(inDate).getTime())) {
-    console.log("parseable ecma extended date detected")
+    console.info("parseable ecma extended date detected")
     return new Date(inDate).getTime()
   }
 if(!inDate){

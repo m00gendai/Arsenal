@@ -57,8 +57,8 @@ export default function App() {
   const { success, error } = useMigrations(db, migrations);
   
   if(error){
-    console.log("Database Migration Error:")
-    console.log(error)
+    console.error("Database Migration Error:")
+    console.error(error)
     alarm("Database Migration Error", `Error Name: ${error.name} --- Error Cause: ${error.cause} --- Error Message: ${error.message} --- Error Stack: ${error.stack}`)
   }
 
@@ -113,7 +113,7 @@ export default function App() {
       try{
         let isPreferences 
         try{
-          console.log("Get Preferences")
+          console.info("Get Preferences")
           const preferences:string = await AsyncStorage.getItem(PREFERENCES)
           isPreferences = preferences ? JSON.parse(preferences) : null;
         } catch(e){
@@ -121,25 +121,25 @@ export default function App() {
         }
 
       try{
-        console.log("Preferences Nullcheck:")
+        console.info("Preferences Nullcheck:")
         if(isPreferences === null){
-          console.log("Preferences are Null")
+          console.info("Preferences are Null")
 
-          console.log("Checking for Legacy Gun Data")
+          console.info("Checking for Legacy Gun Data")
           try{
             await checkLegacyGunData(setHasCheckedForLegacyGunData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Gun Data: ${e}`)
           }
 
-          console.log("Checking for Legacy Ammo Data")
+          console.info("Checking for Legacy Ammo Data")
           try{
             await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Ammo Data: ${e}`)
           }
 
-          console.log("Parsing Legacy Date Fields")
+          console.info("Parsing Legacy Date Fields")
           try{
             if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
                 await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
@@ -151,8 +151,8 @@ export default function App() {
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
           }
 
-          console.log("Successfully checked for legacy data")
-          console.log("Setting App to Ready")
+          console.info("Successfully checked for legacy data")
+          console.info("Setting App to Ready")
           setAppIsReady(true)
           return
         }
@@ -161,23 +161,23 @@ export default function App() {
       }
 
       try{
-        console.log("Preferences Nullcheck: General Settings:")
+        console.info("Preferences Nullcheck: General Settings:")
         if(!isPreferences?.generalSettings){ 
-          console.log("Checking for Legacy Gun Data")
+          console.info("Checking for Legacy Gun Data")
           try{
             await checkLegacyGunData(setHasCheckedForLegacyGunData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Gun Data: ${e}`)
           }
 
-          console.log("Checking for Legacy Ammo Data")
+          console.info("Checking for Legacy Ammo Data")
           try{
             await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Ammo Data: ${e}`)
           }
           
-          console.log("Parsing Legacy Date Fields")
+          console.info("Parsing Legacy Date Fields")
           try{
             if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
                 await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
@@ -189,8 +189,8 @@ export default function App() {
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
 
-          console.log("Successfully checked for legacy data")
-          console.log("Setting App to Ready")
+          console.info("Successfully checked for legacy data")
+          console.info("Setting App to Ready")
           setAppIsReady(true)
           return
         }
@@ -199,29 +199,29 @@ export default function App() {
       }
 
       try{
-        console.log("Preferences Nullcheck: General Settings: Login Guard (null or false):")
+        console.info("Preferences Nullcheck: General Settings: Login Guard (null or false):")
         if(isPreferences?.generalSettings?.loginGuard){
 
           const authSuccess = await LocalAuthentication.authenticateAsync()
 
           if(authSuccess.success){
-            console.log("Login Guard active")
+            console.info("Login Guard active")
 
-            console.log("Checking for Legacy Gun Data")
+            console.info("Checking for Legacy Gun Data")
             try{
               await checkLegacyGunData(setHasCheckedForLegacyGunData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Gun Data: ${e}`)
             }
 
-            console.log("Checking for Legacy Ammo Data")
+            console.info("Checking for Legacy Ammo Data")
             try{
               await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Ammo Data: ${e}`)
             }
 
-            console.log("Parsing Legacy Date Fields")
+            console.info("Parsing Legacy Date Fields")
             try{
               if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
                 await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
@@ -233,30 +233,30 @@ export default function App() {
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
             }
 
-            console.log("Successfully checked for legacy data")
-            console.log("Setting App to Ready")
+            console.info("Successfully checked for legacy data")
+            console.info("Setting App to Ready")
             setAppIsReady(true)
             return
           } else{
             return
           }  
         } else {
-            console.log("Login Guard inactive")
-            console.log("Checking for Legacy Gun Data")
+            console.info("Login Guard inactive")
+            console.info("Checking for Legacy Gun Data")
             try{
               await checkLegacyGunData(setHasCheckedForLegacyGunData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Gun Data: ${e}`)
             }
 
-            console.log("Checking for Legacy Ammo Data")
+            console.info("Checking for Legacy Ammo Data")
             try{
               await checkLegacyAmmoData(setHasCheckedForLegacyAmmoData)
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Ammo Data: ${e}`)
             }
 
-            console.log("Parsing Legacy Date Fields")
+            console.info("Parsing Legacy Date Fields")
             try{
               if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
                 await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
@@ -268,8 +268,8 @@ export default function App() {
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)
             }
 
-            console.log("Successfully checked for legacy data")
-            console.log("Setting App to Ready")
+            console.info("Successfully checked for legacy data")
+            console.info("Setting App to Ready")
             setAppIsReady(true)
             return
           }

@@ -30,13 +30,6 @@ export default function Item_details(){
         }
         return color
     }    
-determineDataTemplate(currentCollection).map((dataItem, index)=>{
-    if(caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name]){
-        console.log(currentItem)
-        console.log(typeof currentItem[dataItem.name])
-    }
-})
-
 
     return(
         <View>

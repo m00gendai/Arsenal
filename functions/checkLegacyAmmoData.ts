@@ -20,9 +20,8 @@ async function getKeys(data: "guns" | "ammo"){
 }
 
 function parseDate(csvDate:string){
-    console.log(csvDate)
     if(!isNaN(new Date(csvDate).getTime())){
-        console.log("parseable ecma extended date detected")
+        console.info("parseable ecma extended date detected")
         return new Date(csvDate).getTime()
     }
 
@@ -45,8 +44,8 @@ export default async function checkLegacyAmmoData(setHasCheckedForLegacyAmmoData
     } catch(e){
       alarm("Legacy Ammo Key Error", e)
     }
-    console.log("Checked Ammo Keys:")
-    console.log(keys)
+    console.info("Checked Ammo Keys:")
+    console.info(keys)
     if(keys.length === 0){
       setHasCheckedForLegacyAmmoData(true)
     let preferences = await AsyncStorage.getItem(PREFERENCES)
@@ -65,8 +64,8 @@ export default async function checkLegacyAmmoData(setHasCheckedForLegacyAmmoData
     } catch(e){
       alarm("Legacy Ammo DB Error", e)
     }
-    console.log("Checked Ammo:")
-    console.log(ammunition)
+    console.info("Checked Ammo:")
+    console.info(ammunition)
     if(ammunition.length !== 0){
       await Promise.all(ammunition.map(async ammo =>{
         if(ammo !== null){

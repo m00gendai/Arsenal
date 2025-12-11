@@ -43,7 +43,6 @@ export default async function saveDatabase(
     return;
   }
 
-  console.log("Handling Collections")
     try{
 
       for(const item of collectionExportDirectories){
@@ -83,7 +82,7 @@ export default async function saveDatabase(
     try {
       const zipPath = `${Paths.document.uri}/${ZIP_NAME}.zip`;
       await FileSystem.cpExternal(zipPath, `${ZIP_NAME}.zip`, "downloads")
-      console.log('Database backup successful!')
+      console.info('Database backup successful!')
     } catch(e) {
       console.error(`ANDROID failed to copy external: ${e}`)
       return;

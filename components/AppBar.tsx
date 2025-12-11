@@ -85,7 +85,6 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
         
   async function handleDisplaySwitch(){
     const nextDisplayVariant:DisplayVariants = displaySettings[collection] === "grid" ? "list" : displaySettings[collection] === "list" ? "compactList" : "grid"
-    console.log(nextDisplayVariant)
     setDisplaySettings({
       ...displaySettings,
       [collection]: nextDisplayVariant,

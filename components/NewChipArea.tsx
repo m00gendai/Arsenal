@@ -34,11 +34,7 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
     const [tagDeleteDialogVisible, toggleTagDeleteDialogVisible] = useState<boolean>(false)
 
     async function saveNewTag(tag: string | null){
-        console.log("new tag")
-        console.log(tag)
         const tagText:string = tag !== null ? tag : text
-        console.log("new tag text")
-        console.log(tagText)
 
         if(tag === null && text === ""){
             return

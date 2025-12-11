@@ -104,7 +104,6 @@ export default function Item({navigation}){
     }
 
     async function handleShareImage(img:string){
-        console.log(img)
         await Sharing.shareAsync(img.includes(FileSystem.documentDirectory) ? img: `${FileSystem.documentDirectory}${img}`)
     }
 
@@ -187,7 +186,6 @@ useEffect(() => {
                                 pagingEnabled={true}
                                 onProgressChange={progress}
                                 data={Array.from(Array(currentItem.images ? currentItem.images.length : 1))}
-                                onSnapToItem={(index) => console.log("current index:", index)}
                                 renderItem={({ index }) => 
                                     {
                                         if(currentItem.images && index <= currentItem.images.length-1){
