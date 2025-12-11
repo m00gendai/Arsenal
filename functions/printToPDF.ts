@@ -65,7 +65,7 @@ const getTranslation = (key: string, language: string): string => {
     return data ? data[language] : remarks ? remarks : boxes ? boxes[language] : tags ? tags : key;
   };
 
-  function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
+  function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName?:string}[], shortCaliber: boolean){
     if(!shortCaliber){
       return Array.isArray(calibers) ? calibers : [calibers]
     }
@@ -92,7 +92,7 @@ const getTranslation = (key: string, language: string): string => {
       return outputArray
     }
 
-function getShortCaliberNameFromString(calibers:string, displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
+function getShortCaliberNameFromString(calibers:string, displayNames:{name:string, displayName?:string}[], shortCaliber: boolean){
   if(!shortCaliber){
     return calibers
   }
@@ -121,7 +121,7 @@ function getShortCaliberNameFromString(calibers:string, displayNames:{name:strin
   }
   
 
-export async function printSingleItem(item:ItemType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printSingleItem(item:ItemType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 
     let imgs: null | string[] = null
     if(item.images && item.images.length !== 0){
@@ -320,7 +320,7 @@ export async function printSingleItem(item:ItemType, language: string, shortCali
       
 }
 
-export async function printSingleAmmo(ammo:AmmoType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printSingleAmmo(ammo:AmmoType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 
   let imgs: null | string[] = null
   if(ammo.images && ammo.images.length !== 0){
@@ -701,7 +701,7 @@ return(
     
 }
 
-export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS GUN COLLECTION")
 
 const gunCollection = db.select().from(schema.gunCollection).all()
@@ -851,7 +851,7 @@ const guns = gunCollection.sort((a, b) =>{
   }    
 }
 
-export async function printGunCollectionArt5(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printGunCollectionArt5(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS GUN COLLECTION ART 5")
 
 const gunCollection = db.select().from(schema.gunCollection).all()
@@ -1207,7 +1207,7 @@ export async function printGunGallery(guns:GunType[], language: string){
       });
 }
 
-export async function printAmmoCollection(ammunition:AmmoType[], language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printAmmoCollection(ammunition:AmmoType[], language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS AMMO COLLECTION")
   const date:Date = new Date()
   const dateOptions:Intl.DateTimeFormatOptions = {
@@ -1236,7 +1236,7 @@ console.log("HELLO THIS IS AMMO COLLECTION")
         </thead>
           <tbody>
               ${ammunition.map(ammo =>{
-                return `<tr>${ammoDataTemplate.map(data=>{return data.name in ammo && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromString(ammo[data.name], caliberDisplayNameList, shortCaliber) : ammo[data.name]}` : !(data.name in ammo) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
+                return `<tr>${ammoDataTemplate.map(data=>{return data.name in ammo && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(ammo[data.name], caliberDisplayNameList, shortCaliber) : ammo[data.name]}` : !(data.name in ammo) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
           </tbody>
       </table>
     </div>
