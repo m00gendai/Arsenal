@@ -22,7 +22,7 @@ import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
 import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
 import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
-import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
+import { determineDataTemplate, determineEditItemTitle, determineRemarkDataTemplate } from 'functions/determinators';
 import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
 
 
@@ -304,7 +304,7 @@ export default function EditGun({navigation}){
             
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
-                <Appbar.Content title={editGunTitle[language]} />
+                <Appbar.Content title={determineEditItemTitle(currentCollection)[language]} />
                 <Appbar.Action icon="delete" onPress={()=>toggleDialogVisible(!dialogVisible)} color='red'/>
                 <Appbar.Action icon="floppy" onPress={() => save({...itemData, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
             </Appbar>

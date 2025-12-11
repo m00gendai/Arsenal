@@ -23,7 +23,7 @@ import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
 import NewText_IntervalPicker from 'components/NewText_IntervalPicker';
 import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
-import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
+import { determineDataTemplate, determineEmptyObject, determineNewItemTitle, determineRemarkDataTemplate } from 'functions/determinators';
 import { useViewStore } from 'stores/useViewStore';
 import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
 
@@ -247,7 +247,7 @@ useEffect(() => {
             
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
-                <Appbar.Content title={newGunTitle[language]} />
+                <Appbar.Content title={determineNewItemTitle(currentCollection)[language]} />
                 <Appbar.Action 
                     icon="floppy" 
                     onPress={() => save(
