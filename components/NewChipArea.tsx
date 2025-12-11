@@ -13,7 +13,7 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore"
-import { useItemTags } from "./Hooks/useItemTags"
+import { useItemTags } from "../hooks/useItemTags"
 import { determineTagSchema } from "functions/determinators"
 
 interface Props{

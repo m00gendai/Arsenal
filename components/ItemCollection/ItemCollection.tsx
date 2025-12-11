@@ -14,7 +14,7 @@ import { and, eq } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
 import { determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
-import { useItemTags } from 'components/Hooks/useItemTags';
+import { useItemTags } from 'hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
 import CardOptionsMenu_accessories from 'components/CardOptionsMenu_accessories';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
