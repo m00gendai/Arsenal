@@ -299,20 +299,36 @@ export const newAmmoTitle:SimpleTranslation = {
     ch: "Nova muniziun",
 }
 
+export const editAccessoryTitle:SimpleTranslation = {
+    de: "Zubehör bearbeiten",
+    en: "Edit Accessory",
+    fr: "Modifier l’accessoire",
+    it: "Modificare accessorio",
+    ch: "Modifitgar accessoris",
+}
+
 export const newAccessoryTitle:SimpleTranslation = {
     de: "Neues Zubehör",
     en: "New Accessory",
-    fr: "",
-    it: "",
-    ch: "",
+    fr: "Nouvel accessoire",
+    it: "Nuovo accessorio",
+    ch: "Nov accessori",
+}
+
+export const editPartTitle:SimpleTranslation = {
+    de: "Waffenbestandteil bearbeiten",
+    en: "Edit Weapon Part",
+    fr: "Modifier la partie d’une arme",
+    it: "Modifica parte arma",
+    ch: "Modifitgar ina part da l’arma",
 }
 
 export const newPartTitle:SimpleTranslation = {
     de: "Neues Waffenbestandteil",
     en: "New Weapon Part",
-    fr: "",
-    it: "",
-    ch: "",
+    fr: "Pièce de nouvelle arme",
+    it: "Nuova parte di arma",
+    ch: "Nova part da las armas",
 }
 
 export const unsavedChangesAlert:Alert = {
@@ -740,10 +756,10 @@ export const preferenceTitles:PreferenceTitle = {
     },
     importCSV_ammo: {
         de: "Eigene CSV Datenbank importieren",
-        en: "",
-        fr: "", 
-        it: "", 
-        ch: "",
+        en: "Import custom CSV Database",
+        fr: "Importer une base de données CSV personnalisée", 
+        it: "Importazione di una propria banca dati CSV", 
+        ch: "Importar l’atgna banca da datas CSV",
     },
     gunList: {
         de: "Verzeichnisse",
@@ -884,9 +900,9 @@ export const tabBarLabels: TabBarLabels = {
     scopeCollection: {
         de: "Zielfernrohre",
         en: "Scopes",
-        fr: "",
-        it: "",
-        ch: "",
+        fr: "Télémètres",
+        it: "Telecamere",
+        ch: "Portaperspectiv",
     },
     magazineCollection: {
         de: "Magazine",
@@ -904,24 +920,24 @@ export const tabBarLabels: TabBarLabels = {
     },
     lightLaserCollection: {
         de: "Licht & Laser",
-        en: "",
-        fr: "",
-        it: "",
-        ch: "",
+        en: "Light & Laser",
+        fr: "Lumière & Laser",
+        it: "Luce & Laser",
+        ch: "Glisch & Laser",
     },
     conversionCollection: {
         de: "Wechelsysteme",
-        en: "",
-        fr: "",
-        it: "",
-        ch: "",
+        en: "Conversion System",
+        fr: "Système de conversion",
+        it: "Sistema di conversione",
+        ch: "Sistem da midada",
     },
     barrelCollection: {
         de: "Läufe",
-        en: "",
-        fr: "",
-        it: "",
-        ch: "",
+        en: "Barrels",
+        fr: "Canons ",
+        it: "Canne",
+        ch: "Channa",
     },
     miscAccessoryCollection: {
         de: "Diverses",
@@ -1050,9 +1066,9 @@ export const mainCollectionCategories: MainCollectionCategories = {
     partCollection: {
         de: "Waffenteile",
         en: "Weapon Parts", 
-        fr: "",
-        it: "",
-        ch: "",
+        fr: "Pièces d’armes",
+        it: "Pezzi di arma",
+        ch: "Parts d’armas",
     }
 }
 
@@ -1187,16 +1203,16 @@ export const sorting:Sorting = {
     lastBatteryChangeAt:{
         de: "Letzter Batteriewechsel",     
         en: "Last Battery Change",
-        fr: "",
-        it: "",
-        ch: "",    
+        fr: "Dernier changement de batterie",
+        it: "Ultimo cambio di batteria",
+        ch: "Ultima midada da battaria",    
     },
     capacity:{
         de: "Kapazität",     
         en: "Capacity",
-        fr: "",
-        it: "",
-        ch: "",    
+        fr: "Capacité",
+        it: "Capacità",
+        ch: "Capacitad",    
     }
 }
 
@@ -1576,16 +1592,16 @@ export const longPressActions:LongPressActions = {
     unmount: {
         de: "Abmontieren",
         en: "Unmount",
-        fr: "",
-        it: "",
-        ch: "",
+        fr: "Démonter",
+        it: "Smontare",
+        ch: "Demontar",
     },
     remount: {
         de: "Woanders montieren",
         en: "Remount",
-        fr: "",
-        it: "",
-        ch: "",
+        fr: "Monter ailleurs",
+        it: "Montare altrove",
+        ch: "Montar insanua auter",
     }
 }
 
@@ -1639,17 +1655,25 @@ export const importExportSelectionLabel: SimpleTranslation = {
 export const snackbarText = {
     mountAccessory: {
         de: `Zubehör/Waffenteil auf {{{A}}} montiert.`,
-        en: "",
-        fr: "",
-        it: "",
-        ch: "",
+        en: "Accessory/Weapon Part mounted on {{{A}}}",
+        fr: "Accessoire/pièce d’arme montée sur {{{A}}}",
+        it: "Accessorio/parte dell’arma montata su {{{A}}}",
+        ch: "Accessoris/part da las armas montads sin {{{A}}}",
     },
     removeAccessory: {
         de: `{{{A}}} entfernt.`,
-        en: "",
-        fr: "",
-        it: "",
-        ch: "",
+        en: "{{{A}}} removed.",
+        fr: "{{{A}}} éloigné.",
+        it: "{{{{A}}} lontano.",
+        ch: "{{{A}}} davent.",
     }
 
+}
+
+export const developerSettingsWarning: SimpleTranslation = {
+    de: "",
+    en: "These Settings are IRREVERSIBLE. There are no translations and no explanations provided. USE AT YOUR OWN RISK! Use only if you know what you are doing and if you are sure of what you are doing. There are no confirmation prompts. Press the button and the function runs WITHOUT CONFIRMATION!",
+    fr: "Ces paramètres SONT IRRÉVERSIBLES. Il n’y a pas de traductions et pas d’explications. UTILISEZ-LES À VOS PROPRES RISQUES ET PÉNALITÉS! Utilisez-les uniquement si vous savez ce que vous faites et si vous êtes sûr de ce que vous faites. Il n’y a pas de demande de confirmation. Appuyez sur le bouton et la fonction s’EXÉCUTERA SANS CONFIRMATION!",
+    it: "Queste impostazioni SONO IRREVERSIBILI. Non ci sono traduzioni e non ci sono spiegazioni. USATE A VOSTRA PROPRIA RESPONSABILITÀ! Usate solo se sapete cosa state facendo e se siete sicuri di quello che state facendo. Non ci sono richieste di conferma. Premete il pulsante e la funzione viene ESEGUITA SENZA CONFERMA!",
+    ch: "Questas preferenzas èn IRREVOCABLES. I na dat naginas translaziuns e naginas decleraziuns. UTILISAI QUAI SIN ATGNA RISTGA! Duvrai quai mo sche Vus savais, tge che Vus faschais e sche Vus essas segirs, tge che Vus faschais. I na dat naginas pretensiuns da conferma. Smatgai la tasta e la funcziun vegn exequida SENZA CONFERMAR!",
 }
