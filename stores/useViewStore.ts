@@ -40,6 +40,9 @@ interface ViewStore {
 
     alohaSnackbarVisible: boolean
     setAlohaSnackbarVisible: (status: boolean) => void
+
+    developerSettingsVisible: boolean
+    setDeveloperSettingsVisible: (status: boolean) => void
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -82,4 +85,7 @@ interface ViewStore {
 
     alohaSnackbarVisible: false,
     setAlohaSnackbarVisible: () => set((state) => ({alohaSnackbarVisible: !state.alohaSnackbarVisible})),
+
+    developerSettingsVisible: false,
+    setDeveloperSettingsVisible: () => set((state) => ({developerSettingsVisible: !state.developerSettingsVisible})),
   }))

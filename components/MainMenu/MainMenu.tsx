@@ -217,11 +217,11 @@ export default function MainMenu({navigation}){
         }
         if(setting === "loginGuard"){
             const compatible = await LocalAuthentication.hasHardwareAsync();
-            console.log(`compatible: ${compatible}`)
+            console.info(`compatible: ${compatible}`)
             const isEnrolled = await LocalAuthentication.isEnrolledAsync()
-            console.log(`isEnrolled: ${isEnrolled}`)
+            console.info(`isEnrolled: ${isEnrolled}`)
             const getEnrolledLevel = await LocalAuthentication.getEnrolledLevelAsync()
-            console.log(`getEnrolledLevel: ${getEnrolledLevel}`)
+            console.info(`getEnrolledLevel: ${getEnrolledLevel}`)
             if(!compatible){
                 toggleLoginGuardVisible()
             }
@@ -237,7 +237,6 @@ export default function MainMenu({navigation}){
     async function handleSwitches(setting: string){
         const newSettings = {...generalSettings, [setting]: !generalSettings[setting]}
             setGeneralSettings(newSettings)
-            console.log(newSettings)
             const preferences:string = await AsyncStorage.getItem(PREFERENCES)
             const newPreferences:{[key:string] : string} = preferences == null ? {"generalSettings": newSettings} : {...JSON.parse(preferences), "generalSettings": newSettings} 
             await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
@@ -299,12 +298,9 @@ export default function MainMenu({navigation}){
             return
         }
         toggleiosWarning(false)
-        console.log(printer)
-        console.log("Im printing tables!")
         switch(printer){
             case "gunCollection":
                 try{
-                    console.log("Im printing gun collection!")
                 await printGunCollection(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
                
                 } catch(e){
@@ -313,7 +309,6 @@ export default function MainMenu({navigation}){
                 break
             case "gunCollectionArt5":
                 try{
-                    console.log("Im printing gun collection art 5!")
                    await printGunCollectionArt5(language, generalSettings.caliberDisplayName, caliberDisplayNameList);
                  
                 } catch(e){
@@ -322,7 +317,6 @@ export default function MainMenu({navigation}){
                 break
            /* case "ammoCollection":
                 try{
-                    console.log("Im printing ammo collection!")
                    await printAmmoCollection(ammoCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList);
                  
                 } catch(e){

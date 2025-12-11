@@ -13,7 +13,7 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import {db} from "../db/client"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore"
-import { useItemTags } from "./Hooks/useItemTags"
+import { useItemTags } from "../hooks/useItemTags"
 import { determineTagSchema } from "functions/determinators"
 
 interface Props{
@@ -34,11 +34,7 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
     const [tagDeleteDialogVisible, toggleTagDeleteDialogVisible] = useState<boolean>(false)
 
     async function saveNewTag(tag: string | null){
-        console.log("new tag")
-        console.log(tag)
         const tagText:string = tag !== null ? tag : text
-        console.log("new tag text")
-        console.log(tagText)
 
         if(tag === null && text === ""){
             return

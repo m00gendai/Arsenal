@@ -49,7 +49,9 @@ export default {
           "android:hardwareAccelerated": true
         }
       ],
-      "expo-sqlite",
+      ["expo-sqlite", {
+        "useSQLCipher": true,
+      }],
       [
         "expo-build-properties",
         {
@@ -67,7 +69,7 @@ export default {
             "image": "./assets/appIconC.png",
             "backgroundColor": "#000000"
           },
-          "imageWidth": 512
+          "imageWidth": 200
         }
       ]
     ],

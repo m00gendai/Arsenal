@@ -129,7 +129,7 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
 
         let parsedCaliber = null
         if("caliber" in importableType && !Array.isArray(importableType.caliber)){
-            parsedCaliber = importableType.caliber.split("\n")
+            parsedCaliber = (importableType.caliber as string).split("\n")
         } 
         if("caliber" in importableType && Array.isArray(importableType.caliber)){
             parsedCaliber = importableType.caliber

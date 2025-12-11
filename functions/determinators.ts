@@ -26,7 +26,6 @@ import sortAccessoryCollection_Misc from "./sortAccessoryCollection_Misc";
 import { accessoryDataTemplate_Misc, emptyMiscAccessoryObject, miscAccessoryRemarks } from "lib/DataTemplates/accessoryDataTemplate_Misc";
 
 export function determineSchema(collection:CollectionType){
-    console.log(collection)
     switch(collection){
         case "gunCollection":
             return schema.gunCollection

@@ -39,13 +39,12 @@ export default function CSVImportModal(){
     ];
 
     function parseDate(csvDate:string){
-        console.log(csvDate)
         if(dateFormat === "unix"){
-            console.log("unix date detected")
+            console.info("unix date detected")
             return Number(csvDate)
         }
         if(!isNaN(new Date(csvDate).getTime())){
-            console.log("parseable ecma extended date detected")
+            console.info("parseable ecma extended date detected")
             return new Date(csvDate).getTime()
         }
         const dateTemplate = dateFormat.split("-")

@@ -55,7 +55,7 @@ export default async function importArsenalCSV(data: CollectionType){
             try{
                 await db.insert(schema[data]).values(item)
             }catch(e){
-                console.log(e)
+                console.error(e)
             }  
         }
 

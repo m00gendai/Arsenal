@@ -13,7 +13,6 @@ interface Props{
 }
 
 export default function FilterMenu({collection}:Props){
-console.log(`Filter: ${collection}`)
     const { filterOn, setFilterOn } = usePreferenceStore()
 
     const { data: tagData } = useLiveQuery(
