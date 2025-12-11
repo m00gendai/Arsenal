@@ -17,7 +17,7 @@ import sortAccessoryCollection_LightLaser from "./sortAccessoryCollection_LightL
 import { accessoryDataTemplate_LightLaser, emptyLightLaserObject, lightLaserRemarks } from "lib/DataTemplates/accessoryDataTemplate_LightLaser";
 import sortPartCollection_Barrel from "./sortPartCollection_Barrel";
 import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/DataTemplates/partDataTemplate_Barrel";
-import { tabBarLabels } from "lib/textTemplates";
+import { editAccessoryTitle, editAmmoTitle, editGunTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newPartTitle, tabBarLabels } from "lib/textTemplates";
 import sortAccessoryCollection_Scope from "./sortAccessoryCollection_Scope";
 import { accessoryDataTemplate_Scope, emptyScopeObject, scopeRemarks } from "lib/DataTemplates/accessoryDataTemplate_Scope";
 import sortAccessoryCollection_Magazine from "./sortAccessoryCollection_Magazine";
@@ -385,5 +385,35 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.conversionCollection
         case "partCollection_Barrel":
             return tabBarLabels.barrelCollection
+    }
+}
+
+export function determineNewItemTitle(collection: CollectionType){
+    if(collection.startsWith("gun")){
+        return newGunTitle
+    }
+    if(collection.startsWith("ammo")){
+        return newAmmoTitle
+    }
+    if(collection.startsWith("accessoryCollection_")){
+        return newAccessoryTitle
+    }
+    if(collection.startsWith("partCollection_")){
+        return newPartTitle
+    }
+}
+
+export function determineEditItemTitle(collection: CollectionType){
+    if(collection.startsWith("gun")){
+        return editGunTitle
+    }
+    if(collection.startsWith("ammo")){
+        return editAmmoTitle
+    }
+    if(collection.startsWith("accessoryCollection_")){
+        return editAccessoryTitle
+    }
+    if(collection.startsWith("partCollection_")){
+        return editPartTitle
     }
 }
