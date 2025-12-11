@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { FAB, Icon, ThemeProvider } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs';
 import { AccessoryMount, ItemType, PartMount, Tag } from 'interfaces';
 import { useViewStore } from 'stores/useViewStore';
@@ -12,7 +12,7 @@ import { db } from "db/client"
 import * as schema from "db/schema"
 import { and, eq } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
-import { determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
+import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
 import { useItemTags } from 'hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
@@ -27,7 +27,7 @@ export default function ItemCollection({navigation, route}){
   
   const [searchQuery, setSearchQuery] = useState<string>("")
   const { currentCollection, setCurrentItem } = useItemStore()
-  const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn } = usePreferenceStore()
+  const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn, theme } = usePreferenceStore()
   const { mainMenuOpen, setHideBottomSheet } = useViewStore()
   const { setAccessoryMount, setPartMount } = useDatabaseStore()
 
@@ -124,6 +124,11 @@ const listKey = isLandscape
   return(
     <View style={{flex: 1, backgroundColor: "transparent"}}>
       <AppBar collection={currentCollection} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      {itemData.length === 0 ? 
+        <View style={{position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
+          <Icon source={determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
+        </View> : 
+      null}
       <FlatList<ItemType>
     numColumns={numColumns}
     initialNumToRender={10}
