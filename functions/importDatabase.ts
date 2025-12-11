@@ -141,7 +141,13 @@ export default async function importDatabase() {
           try{
           for(const item of collection){
             console.log(`inner directory loop - ${directory}`)
-            const newItem = checkDates(item)
+            let newItem 
+            if(nonCollectionTables.includes(directory)){
+              console.log("itemize nonCollection Table")
+              newItem = item
+            } else {
+              newItem = checkDates(item)
+            }
             
             if(directory === "ammoCollection"){
               // LegacyAmmoType has caliber as string
@@ -162,13 +168,16 @@ export default async function importDatabase() {
               
             } else {
               await db.insert(schema[directory]).values(newItem);
+              console.log("successfully imported item")
             }
           }
-          for(const item of tags){
-            if(!nonCollectionTables.includes(directory)){
-              const tagDirectory = directory as CollectionType
-              await db.insert(determineTagSchema(tagDirectory)).values(item);
-            }
+          if(!nonCollectionTables.includes(directory)){
+            for(const item of tags){
+              console.log("trying tags")
+              
+                const tagDirectory = directory as CollectionType
+                await db.insert(determineTagSchema(tagDirectory)).values(item);
+              }
           }
         }catch(e){
           throw new Error(`itemCollection ${directory}: ${e}`)
