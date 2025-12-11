@@ -93,18 +93,18 @@ export default async function importDatabase() {
       
       // Handle Collections
       for (const directory of collectionImportTables) {
-        console.log(`outer directory loop - ${directory}`)
+        console.info(`outer directory loop - ${directory}`)
         let collection
         try {
   if (directory === "ammoCollection") {
     try {
 
       collection = cacheDBopen.select().from(schema.ammoCollection).all()
-      console.log("Loaded ammo using NEW schema")
+
     } catch (e) {
       console.warn("New ammo schema failed — falling back to LEGACY schema")
       collection = cacheDBopen.select().from(schema.legacyAmmoCollection).all()
-      console.log("Loaded ammo using LEGACY schema")
+
     }
   } else {
     collection = cacheDBopen.select().from(schema[directory]).all()
@@ -140,10 +140,9 @@ export default async function importDatabase() {
           }
           try{
           for(const item of collection){
-            console.log(`inner directory loop - ${directory}`)
+            console.info(`inner directory loop - ${directory}`)
             let newItem 
             if(nonCollectionTables.includes(directory)){
-              console.log("itemize nonCollection Table")
               newItem = item
             } else {
               newItem = checkDates(item)
@@ -151,15 +150,12 @@ export default async function importDatabase() {
             
             if(directory === "ammoCollection"){
               // LegacyAmmoType has caliber as string
-              console.log(newItem)
               const newItemAmmo = newItem as unknown as LegacyAmmoType
-              console.log(newItemAmmo)
               // AmmoType as haliber as string[]
               const newAmmo: AmmoType = {
                 ...newItemAmmo, 
                 caliber: [newItemAmmo.caliber]
               }
-              console.log(newAmmo)
               try{
                 await db.insert(schema[directory]).values(newAmmo);
               }catch(e){
@@ -168,13 +164,11 @@ export default async function importDatabase() {
               
             } else {
               await db.insert(schema[directory]).values(newItem);
-              console.log("successfully imported item")
+              console.info("successfully imported item")
             }
           }
           if(!nonCollectionTables.includes(directory)){
             for(const item of tags){
-              console.log("trying tags")
-              
                 const tagDirectory = directory as CollectionType
                 await db.insert(determineTagSchema(tagDirectory)).values(item);
               }
