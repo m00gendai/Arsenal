@@ -77,81 +77,79 @@ function checkDatesAmmo(itemIn: any){
 
 
 export default async function migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp){
-
-    let preferences:string
     try{
-        preferences = await AsyncStorage.getItem(PREFERENCES)
-    } catch(e){
-        throw new Error(`Migrate Date Fields Preference DB Error: ${e}`)
-    }
-
-    let isPreferences
-    try{
-        isPreferences = preferences === null ? null : JSON.parse(preferences)
-    } catch(e){
-        throw new Error(`Migrate Date Fields Preference Parse Error: ${e}`)
-    }
-
-    try{
-        const guns = await db.select().from(schema.gunCollection)
-        await Promise.all(guns.map(async gun =>{
-            // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
-            let newGun: ItemType
-            try{
-                newGun = checkDatesGun(gun)
-            } catch(e){
-                throw new Error(`Migrating Gun Date failed: ${e}`)
-            }
         
-            await db.update(schema.gunCollection)
-            .set({ 
-                acquisitionDate_unix: gun.acquisitionDate ? newGun.acquisitionDate_unix : null,
-                lastCleanedAt_unix: gun.lastCleanedAt ? newGun.lastCleanedAt_unix : null,
-                lastShotAt_unix: gun.lastShotAt ? newGun.lastShotAt_unix : null
-            })
-            .where(eq(schema.gunCollection.id, gun.id));
-        }))
-    } catch(e){
-        throw new Error(`Updating migrated Gun Dates failed: ${e}`)
-    }
+        let preferences:string
+        try{
+            preferences = await AsyncStorage.getItem(PREFERENCES)
+        } catch(e){
+            throw new Error(`Migrate Date Fields Preference DB Error: ${e}`)
+        }
 
-    const ammunition = await db.select().from(schema.legacyAmmoCollection)
+        let isPreferences
+        try{
+            isPreferences = preferences === null ? null : JSON.parse(preferences)
+        } catch(e){
+            throw new Error(`Migrate Date Fields Preference Parse Error: ${e}`)
+        }
 
-    try{
-        await Promise.all(ammunition.map(async ammo =>{
-
-            let newAmmo: ItemType 
-            try{
-                newAmmo = checkDatesAmmo(ammo)
-            } catch(e){
-                throw new Error(`Migrating Ammo Date failed: ${e}`)
-            }
-
-            let parsedCaliberField
-            try{
-                if(newAmmo.caliber && !Array.isArray(newAmmo.caliber)){
-                    parsedCaliberField = [newAmmo.caliber]
-                } else if(newAmmo.caliber && Array.isArray(newAmmo.caliber)){
-                    parsedCaliberField = newAmmo.caliber
-                } else {
-                    parsedCaliberField = null
+        try{
+            const guns = await db.select().from(schema.gunCollection)
+            await Promise.all(guns.map(async gun =>{
+                // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
+                let newGun: ItemType
+                try{
+                    newGun = checkDatesGun(gun)
+                } catch(e){
+                    throw new Error(`Migrating Gun Date failed: ${e}`)
                 }
-            } catch(e){
-                throw new Error(`Migrating Ammo Caliber failed: ${e}`)
-            }
             
-            try{
-                await db.update(schema.ammoCollection)
+                await db.update(schema.gunCollection)
+                .set({ 
+                    acquisitionDate_unix: gun.acquisitionDate ? newGun.acquisitionDate_unix : null,
+                    lastCleanedAt_unix: gun.lastCleanedAt ? newGun.lastCleanedAt_unix : null,
+                    lastShotAt_unix: gun.lastShotAt ? newGun.lastShotAt_unix : null
+                })
+                .where(eq(schema.gunCollection.id, gun.id));
+            }))
+        } catch(e){
+            throw new Error(`Updating migrated Gun Dates failed: ${e}`)
+        }
+
+        try{
+            const ammunition = await db.select().from(schema.legacyAmmoCollection)
+            await Promise.all(ammunition.map(async ammo =>{
+
+                let newAmmo: ItemType 
+                try{
+                    newAmmo = checkDatesAmmo(ammo)
+                } catch(e){
+                    throw new Error(`Migrating Ammo Date failed: ${e}`)
+                }
+
+                let parsedCaliberField
+                try{
+                    if(newAmmo.caliber && !Array.isArray(newAmmo.caliber)){
+                        parsedCaliberField = [newAmmo.caliber]
+                    } else if(newAmmo.caliber && Array.isArray(newAmmo.caliber)){
+                        parsedCaliberField = newAmmo.caliber
+                    } else {
+                        parsedCaliberField = null
+                    }
+                } catch(e){
+                    throw new Error(`Migrating Ammo Caliber failed: ${e}`)
+                }
+                
+                await db.update(schema.legacyAmmoCollection)
                 .set({
-                    caliber: parsedCaliberField,
+                    caliber: JSON.stringify(parsedCaliberField),
                     lastTopUpAt_unix: ammo.lastTopUpAt ? newAmmo.lastTopUpAt_unix : null
                 })
-                .where(eq(schema.ammoCollection.id, ammo.id))
-            } catch(e){
-                throw new Error(`Updating migrated Ammo Dates and Caliber failed: ${e}`)
-            }
-        }))
-
+                .where(eq(schema.legacyAmmoCollection.id, ammo.id))
+            }))
+        } catch(e){
+            throw new Error(`Updating migrated Ammo Dates and Caliber failed: ${e}`)
+        }
         setHasConvertedLegacyAmmoCaliberFieldToStringArray(true)
         setHasConvertedLegacyDateFieldsToUnixTimeStamp(true)
 
@@ -159,9 +157,10 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
             {
                 ...isPreferences, 
                 hasConvertedLegacyAmmoCaliberFieldToStringArray: true,
-                hasConvertedLegacyDateFieldsToUnixTimeStamp: true}))
+                hasConvertedLegacyDateFieldsToUnixTimeStamp: true
+        }))
+    
     } catch(e){
-
         alarm("Migrating Date and Caliber final error:", e)
     }
 }
