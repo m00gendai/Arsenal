@@ -6,13 +6,25 @@ import { eq } from "drizzle-orm/sql"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
 
-function prepareDateParse(dateString: string){
-  if(!isNaN(new Date(dateString).getTime())){
-    return Number(dateString)
+function parseDate(inDate: string | number) {
+ 
+  if (typeof inDate === "number") {
+    return inDate
   }
-  const [day, month, year] = dateString.split(".").map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.getTime()
+
+  if (!isNaN(new Date(inDate).getTime())) {
+    console.info("parseable ecma extended date detected")
+    return new Date(inDate).getTime()
+  }
+if(!inDate){
+  return null
+}
+  const splitDate = (inDate as string).split(".")
+  const day = Number(splitDate[0])
+  const month = Number(splitDate[1])
+  const year = Number(splitDate[2])
+
+  return new Date(year, month - 1, day).getTime()
 }
 
 export default async function migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp){
@@ -40,9 +52,9 @@ await Promise.all(guns.map(async gun =>{
       // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
       await db.update(schema.gunCollection)
         .set({ 
-          acquisitionDate_unix: gun.acquisitionDate ? prepareDateParse(gun.acquisitionDate) : null,
-          lastCleanedAt_unix: gun.lastCleanedAt ? prepareDateParse(gun.lastCleanedAt) : null,
-          lastShotAt_unix: gun.lastShotAt ? prepareDateParse(gun.lastShotAt) : null
+          acquisitionDate_unix: gun.acquisitionDate ? parseDate(gun.acquisitionDate) : null,
+          lastCleanedAt_unix: gun.lastCleanedAt ? parseDate(gun.lastCleanedAt) : null,
+          lastShotAt_unix: gun.lastShotAt ? parseDate(gun.lastShotAt) : null
         })
         .where(eq(schema.gunCollection.id, gun.id));
     }))
@@ -52,7 +64,7 @@ await Promise.all(guns.map(async gun =>{
       // caliber field needs to be converted from string to string[]
       await db.update(schema.ammoCollection)
         .set({ 
-          lastTopUpAt_unix: ammo.lastTopUpAt ? prepareDateParse(ammo.lastTopUpAt) : null,
+          lastTopUpAt_unix: ammo.lastTopUpAt ? parseDate(ammo.lastTopUpAt) : null,
           caliber: ammo.caliber ? [ammo.caliber] : null
         })
         .where(eq(schema.ammoCollection.id, ammo.id));
