@@ -1,0 +1,96 @@
+V2.1.0
+
+Die Schweizer Waffen-Verwaltungs-App: Von Waffensammlern für Waffensammler made in Switzerland!
+
+Legen Sie eine Sammlung Ihrer Waffen an, mit Fotos und vielen Parametern, unter anderem:
+- Bis zu 5 Fotos mit Galeriemodus
+- Kaliber (unterstützt mehrere pro Waffe, zB .357 Magnum, .38 Special) mit einfach zu handhabender Auswahlliste
+- Erwerbsdatum mit Kalenderauswahl
+- Farbe mit Farbauswahl
+- Merkmale für Waffen gemäss Schweizer Waffengesetz Artikel 5
+- Freie Bemerkungen
+Fügen Sie auch individuelle Schlagworte hinzu!
+
+Verwalten Sie Ihren Munitionsbestand, mit Fotos und vielen Parametern, unter anderem:
+- Bis zu 5 Fotos, mit Galeriemodus
+- Kaliber mit einfach zu handhabender Auswahlliste
+- Letzte Mengenänderung mit Kalenderauswahl oder automatisch mit QuickShot/QuickStock
+- Kritische Menge 
+- Freie Bemerkungen
+Fügen Sie auch individuelle Schlagworte hinzu!
+
+Behalten Sie auch ihr Zubehör und einzelne Waffenbestandteile unter Kontrolle:
+- Mehrere Unterkategorien von Zubehör und Waffenbestandteilen wie Schalldämpfer, Wechselläufe, Optiken, etc
+- Jede Unterkategorie hat ihre eigenen Merkmale
+- Weisen Sie ein Zubehör einem anderen Zubehör, einem Waffenbestandteil oder eine Waffe zu, mit optischem Merkmal in der Sammlungsübersicht!
+- Weisen Sie ein Waffenbestandteil einem anderen Waffenbestanteil oder eine Waffe zu, mit optischem Merkmal in der Sammlungsübersicht!
+- Ein erneutes Zuweisen auf etwas anderes oder ein Abmontieren ist mittels Schnellauswahl komfortabel erledigt
+
+Erstellen Sie mit einem Knopfdruck PDF-Dateien von:
+- Der kompletten Waffen- und/oder Munitionssammlung als tabellarische Übersicht
+- Der Waffensammlung gemäss Artikel 5 als tabellarische Übersicht
+- Einer einzelnen Waffe oder eines einzelnen Munitionspostens schön präsentiert (zum Beispiel für ans Schwarze Brett im Verein)
+
+QuickShot: Haben Sie mit einer Waffe geschossen? Mit einem Klick aus der Waffensammlung heraus können Sie die Schussbelastung anpassen - es werden automatisch die kompatiblen Munitionssorten aus dem Munitonsbestand angezeigt, somit wird mit Erhöhung der Schussbelastung automatisch auch der Munitonsbestand des ausgewählten Kalibers angepasst. Natürlich kann auch ohne den Bestand zu beeinflussen die Schussbelastung angepasst werden.
+
+QuickStock: Hat sich Ihr Munitionsbestand geändert? Mit einem Klick aus der Munitionsübersicht heraus können Sie den Bestand anpassen, egal ob zu- oder abnehmend.
+
+QuickMount: Ein Zubehör oder Waffenbestandteil schnell etwas anderem zuordnen, ohne den betreffenden Eintrag direkt editieren zu müssen.
+
+Bestandswarnung: Haben Sie eine kritische Menge bei einer Munitionssorte angegeben, so warnt Sie die Munitionsübersicht optisch, wenn Ihr Bestand unter diese Menge fällt.
+
+Speichern und Importieren Sie Ihre Datenbanken - als komplette ZIP-Datei mit Datenbank und Bildern oder separat für jede Sammlung im CSV-Format (dann aber ohne Bilder)! Importieren Sie auch Ihre bestehenden Excel-Dateien (CSV)!
+
+Weitere Funktionen: Schlagwort-Filter, Suchfunktion, verschiedene Farbpaletten (hell und dunkel), Sortierfunktion, Kachel-, Listen- und Kompaktansicht.
+
+Alles ist zu 100% offline und benötigt keinen Internetzugang. Alle Daten werden lokal auf dem Gerät gespeichert und können bei Bedarf exportiert werden. Keine Server, keine Telemetrie (abgesehen vom Playstore selbst).
+
+Die App ist in fünf Sprachen verfügbar: Deutsch, Französisch, Italienisch, 
+Englisch und... Rumantsch Grischun! Sie wurde in der Schweiz entwickelt und richtet sich an Bedürfnisse von Schweizer Waffensammlern, kann aber selbstverständlich auf der ganzen Welt genutzt werden.
+
+Einmal kaufen, immer nutzen!
+Für en Schnägg gibts Updates, so lange die App existiert. Keine monatlichen Raten, keine In-App-Käufe, keine Werbung!
+
+V1.0.0 - V2.0.1
+
+Die Schweizer Waffen-Verwaltungs-App: Von Waffensammlern für Waffensammler made in Switzerland!
+
+Legen Sie eine Sammlung Ihrer Waffen an, mit Fotos und vielen Parametern, unter anderem:
+- Bis zu 5 Fotos mit Galeriemodus
+- Kaliber (unterstützt mehrere pro Waffe, zB .357 Magnum, .38 Special) mit einfach zu handhabender Auswahlliste
+- Erwerbsdatum mit Kalenderauswahl
+- Farbe mit Farbauswahl
+- Merkmale für Waffen gemäss Schweizer Waffengesetz Artikel 5
+- Freie Bemerkungen
+Fügen Sie auch individuelle Schlagworte hinzu!
+
+Verwalten Sie Ihren Munitionsbestand, mit Fotos und vielen Parametern, unter anderem:
+- Bis zu 5 Fotos, mit Galeriemodus
+- Kaliber mit einfach zu handhabender Auswahlliste
+- Letzte Mengenänderung mit Kalenderauswahl oder automatisch mit QuickShot/QuickStock
+- Kritische Menge 
+- Freie Bemerkungen
+Fügen Sie auch individuelle Schlagworte hinzu!
+
+Erstellen Sie mit einem Knopfdruck PDF-Dateien von:
+- Der kompletten Waffen- und/oder Munitionssammlung als tabellarische Übersicht
+- Der Waffensammlung gemäss Artikel 5 als tabellarische Übersicht
+- Einer einzelnen Waffe oder eines einzelnen Munitionspostens schön präsentiert (zum Beispiel für ans Schwarze Brett im Verein)
+
+QuickShot: Haben Sie mit einer Waffe geschossen? Mit einem Klick aus der Waffensammlung heraus können Sie die Schussbelastung anpassen - es werden automatisch die kompatiblen Munitionssorten aus dem Munitonsbestand angezeigt, somit wird mit Erhöhung der Schussbelastung automatisch auch der Munitonsbestand des ausgewählten Kalibers angepasst. Natürlich kann auch ohne den Bestand zu beeinflussen die Schussbelastung angepasst werden.
+
+QuickStock: Hat sich Ihr Munitionsbestand geändert? Mit einem Klick aus der Munitionsübersicht heraus können Sie den Bestand anpassen, egal ob zu- oder abnehmend.
+
+Bestandswarnung: Haben Sie eine kritische Menge bei einer Munitionssorte angegeben, so warnt Sie die Munitionsübersicht optisch, wenn Ihr Bestand unter diese Menge fällt.
+
+Speichern und Importieren Sie Ihre Datenbanken - separat für Waffen und Munition entweder im Arsenal- oder im CSV-Format! Importieren Sie auch Ihre bestehenden Excel-Dateien (CSV)!
+
+Weitere Funktionen: Schlagwort-Filter, Suchfunktion, verschiedene Farbpaletten (hell und dunkel), Sortierfunktion, Kachel- oder Listenansicht
+
+Alles ist zu 100% offline und benötigt keinen Internetzugang. Alle Daten werden lokal auf dem Gerät gespeichert und können bei Bedarf exportiert werden. Keine Server, keine Telemetrie (abgesehen vom Playstore selbst).
+
+Die App ist in fünf Sprachen verfügbar: Deutsch, Französisch, Italienisch, 
+Englisch und... Rumantsch Grischun! Sie wurde in der Schweiz entwickelt und richtet sich an Bedürfnisse von Schweizer Waffensammlern, kann aber selbstverständlich auf der ganzen Welt genutzt werden.
+
+Einmal kaufen, immer nutzen!
+Für en Schnägg gibts Updates, so lange die App existiert. Keine monatlichen Raten,  keine In-App-Käufe, keine Werbung!
