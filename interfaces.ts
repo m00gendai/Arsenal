@@ -49,7 +49,6 @@ export interface LegacyAmmoType{
   lastModifiedAt: number,
   headstamp: string | null
   currentStock: string
-  previousStock: string
   lastTopUpAt_unix: number | null
   criticalStock: string
   tags: string[]
@@ -67,7 +66,6 @@ export interface AmmoType{
   lastModifiedAt: number,
   headstamp: string | null
   currentStock: string
-  previousStock: string
   lastTopUpAt_unix: number | null
   criticalStock: string
   tags: string[]
