@@ -61,11 +61,9 @@ await Promise.all(guns.map(async gun =>{
 
       await Promise.all(ammunition.map(async ammo =>{
       // legacy date fields Ammo: "lastTopUpAt"
-      // caliber field needs to be converted from string to string[]
       await db.update(schema.ammoCollection)
         .set({ 
           lastTopUpAt_unix: ammo.lastTopUpAt ? parseDate(ammo.lastTopUpAt) : null,
-          caliber: ammo.caliber ? [ammo.caliber] : null
         })
         .where(eq(schema.ammoCollection.id, ammo.id));
     }))
