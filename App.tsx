@@ -43,10 +43,9 @@ import { useItemStore } from 'stores/useItemStore';
 import QuickMount from 'components/QuickMount';
 import AlohaSnackbar from 'components/AlohaSnackbar';
 import { eq } from 'drizzle-orm';
-import migrateLegacyDateFields from 'functions/migrateLegacyDateFields';
-import { migrateLegacyAmmoCaliber } from 'functions/migrateLegacyAmmoCaliber';
 import checkLegacyGunData from 'functions/checkLegacyGunData';
 import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
+import migrateLegacyDateAndCaliberFields from 'functions/migrateLegacyDateAndCaliberFields';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -141,12 +140,9 @@ export default function App() {
 
           console.info("Parsing Legacy Date Fields")
           try{
-            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
-              }
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
-              }
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
+            }
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: Legacy Date Fields: ${e}`)
           }
@@ -179,12 +175,9 @@ export default function App() {
           
           console.info("Parsing Legacy Date Fields")
           try{
-            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
-              }
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
-              }
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
+            }
           }catch(e){
             throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Legacy Date Fields: ${e}`)
           }
@@ -223,12 +216,9 @@ export default function App() {
 
             console.info("Parsing Legacy Date Fields")
             try{
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
-              }
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
-              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
+            }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Active: Legacy Date Fields: ${e}`)
             }
@@ -258,12 +248,9 @@ export default function App() {
 
             console.info("Parsing Legacy Date Fields")
             try{
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp){
-                await migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp)
-              }
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
-                await migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberFieldToStringArray)
-              }
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
+            }
             }catch(e){
               throw new Error(`Init: Get Preferences: Nullcheck: General Settings: Login Guard Inactive: Legacy Date Fields: ${e}`)
             }
