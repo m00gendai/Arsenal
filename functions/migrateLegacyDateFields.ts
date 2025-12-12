@@ -3,7 +3,7 @@ import { legacyDatePickerTriggerFields } from "configs"
 import { PREFERENCES } from "configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { eq } from "drizzle-orm/sql"
+import { eq } from "drizzle-orm"
 import { AmmoType, GunType, ItemType } from "interfaces"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
@@ -110,15 +110,13 @@ await Promise.all(guns.map(async gun =>{
         .where(eq(schema.gunCollection.id, gun.id));
     }))
 
+    await db.delete(schema.legacyAmmoCollection)
       await Promise.all(ammunition.map(async ammo =>{
       // legacy date fields Ammo: "lastTopUpAt"
       const newAmmo = checkDatesAmmo(ammo)
 
-      await db.update(schema.ammoCollection)
-        .set({ 
-          lastTopUpAt_unix: ammo.lastTopUpAt ? newAmmo.lastTopUpAt_unix : null,
-        })
-        .where(eq(schema.ammoCollection.id, ammo.id));
+      await db.insert(schema.ammoCollection).values(newAmmo)
+        
     }))
   } catch(e){
     alarm("Migrate Date Fields Final Error", e)

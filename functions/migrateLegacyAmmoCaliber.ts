@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { PREFERENCES } from "configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { eq } from "drizzle-orm/sql"
+import { eq } from "drizzle-orm"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
 
