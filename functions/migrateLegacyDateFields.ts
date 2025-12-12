@@ -1,10 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { legacyDatePickerTriggerFields } from "configs"
 import { PREFERENCES } from "configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from "drizzle-orm/sql"
+import { AmmoType, GunType, ItemType } from "interfaces"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "utils"
+
 
 function parseDate(inDate: string | number) {
  
@@ -27,6 +30,52 @@ if(!inDate){
   return new Date(year, month - 1, day).getTime()
 }
 
+function checkDatesGun(itemIn: any){
+  const item = itemIn as GunType
+  const parsedItem = {...item}
+  legacyDatePickerTriggerFields.forEach(dateField => {
+    if(dateField in parsedItem){
+      const value = parsedItem[dateField]
+      // Check if value exists and needs parsing
+      if(value !== null && value !== undefined){
+        // If it's already a number, use it
+        if(typeof value === 'number'){
+          parsedItem[`${dateField}_unix`] = value
+        } else {
+          // Otherwise, parse the date string
+          parsedItem[`${dateField}_unix`] = parseDate(value)
+        }
+      } else {
+        parsedItem[`${dateField}_unix`] = null
+      }
+    }
+  })
+  return parsedItem
+}
+
+function checkDatesAmmo(itemIn: any){
+  const item = itemIn as AmmoType
+  const parsedItem = {...item}
+  legacyDatePickerTriggerFields.forEach(dateField => {
+    if(dateField in parsedItem){
+      const value = parsedItem[dateField]
+      // Check if value exists and needs parsing
+      if(value !== null && value !== undefined){
+        // If it's already a number, use it
+        if(typeof value === 'number'){
+          parsedItem[`${dateField}_unix`] = value
+        } else {
+          // Otherwise, parse the date string
+          parsedItem[`${dateField}_unix`] = parseDate(value)
+        }
+      } else {
+        parsedItem[`${dateField}_unix`] = null
+      }
+    }
+  })
+  return parsedItem
+}
+
 export default async function migrateLegacyDateFields(setHasConvertedLegacyDateFieldsToUnixTimeStamp){
 
     let preferences:string
@@ -46,24 +95,28 @@ export default async function migrateLegacyDateFields(setHasConvertedLegacyDateF
       try{
     
     const guns = await db.select().from(schema.gunCollection)
-    const ammunition = await db.select().from(schema.ammoCollection)
+    const ammunition = await db.select().from(schema.legacyAmmoCollection)
 
 await Promise.all(guns.map(async gun =>{
       // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
+      const newGun: ItemType = checkDatesGun(gun)
+
       await db.update(schema.gunCollection)
         .set({ 
-          acquisitionDate_unix: gun.acquisitionDate ? parseDate(gun.acquisitionDate) : null,
-          lastCleanedAt_unix: gun.lastCleanedAt ? parseDate(gun.lastCleanedAt) : null,
-          lastShotAt_unix: gun.lastShotAt ? parseDate(gun.lastShotAt) : null
+          acquisitionDate_unix: gun.acquisitionDate ? newGun.acquisitionDate_unix : null,
+          lastCleanedAt_unix: gun.lastCleanedAt ? newGun.lastCleanedAt_unix : null,
+          lastShotAt_unix: gun.lastShotAt ? newGun.lastShotAt_unix : null
         })
         .where(eq(schema.gunCollection.id, gun.id));
     }))
 
       await Promise.all(ammunition.map(async ammo =>{
       // legacy date fields Ammo: "lastTopUpAt"
+      const newAmmo = checkDatesAmmo(ammo)
+
       await db.update(schema.ammoCollection)
         .set({ 
-          lastTopUpAt_unix: ammo.lastTopUpAt ? parseDate(ammo.lastTopUpAt) : null,
+          lastTopUpAt_unix: ammo.lastTopUpAt ? newAmmo.lastTopUpAt_unix : null,
         })
         .where(eq(schema.ammoCollection.id, ammo.id));
     }))
