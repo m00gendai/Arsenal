@@ -25,7 +25,12 @@ export async function migrateLegacyAmmoCaliber(setHasConvertedLegacyAmmoCaliberF
       try{
         const ammunition = await db.select().from(schema.legacyAmmoCollection)
         await Promise.all(ammunition.map(async ammo =>{
-          const parsedCaliberField = [JSON.parse(ammo.caliber)]
+          let parsedCaliberField
+          if(ammo.caliber){
+            parsedCaliberField = [ammo.caliber]
+          } else {
+            parsedCaliberField = null
+          }
           await db.update(schema.ammoCollection).set({caliber: parsedCaliberField}).where(eq(schema.ammoCollection.id, ammo.id))
         }))
 

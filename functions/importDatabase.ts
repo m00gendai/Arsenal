@@ -154,7 +154,7 @@ export default async function importDatabase() {
               // AmmoType as haliber as string[]
               const newAmmo: AmmoType = {
                 ...newItemAmmo, 
-                caliber: [newItemAmmo.caliber]
+                caliber: newItemAmmo.caliber ? [newItemAmmo.caliber] : null
               }
               try{
                 await db.insert(schema[directory]).values(newAmmo);
