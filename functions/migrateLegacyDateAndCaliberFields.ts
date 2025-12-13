@@ -30,7 +30,7 @@ if(!inDate){
 }
 
 function checkDatesGun(itemIn: any){
-  const item = itemIn as GunType
+  const item = itemIn
   const parsedItem = {...item}
   legacyDatePickerTriggerFields.forEach(dateField => {
     if(dateField in parsedItem){
@@ -53,7 +53,7 @@ function checkDatesGun(itemIn: any){
 }
 
 function checkDatesAmmo(itemIn: any){
-  const item = itemIn as AmmoType
+  const item = itemIn
   const parsedItem = {...item}
   legacyDatePickerTriggerFields.forEach(dateField => {
     if(dateField in parsedItem){
@@ -99,17 +99,13 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
                 // legacy date fields Gun: "acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"
                 let newGun: ItemType
                 try{
-                    newGun = checkDatesGun(gun)
+                    newGun = checkDatesGun(gun) as GunType
                 } catch(e){
                     throw new Error(`Migrating Gun Date failed: ${e}`)
                 }
             
                 await db.update(schema.gunCollection)
-                .set({ 
-                    acquisitionDate_unix: gun.acquisitionDate ? newGun.acquisitionDate_unix : null,
-                    lastCleanedAt_unix: gun.lastCleanedAt ? newGun.lastCleanedAt_unix : null,
-                    lastShotAt_unix: gun.lastShotAt ? newGun.lastShotAt_unix : null
-                })
+                .set(newGun)
                 .where(eq(schema.gunCollection.id, gun.id));
             }))
         } catch(e){
@@ -122,12 +118,12 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
 
                 let newAmmo: ItemType 
                 try{
-                    newAmmo = checkDatesAmmo(ammo)
+                    newAmmo = checkDatesAmmo(ammo) as AmmoType
                 } catch(e){
                     throw new Error(`Migrating Ammo Date failed: ${e}`)
                 }
 
-                let parsedCaliberField
+                let parsedCaliberField: string[]
                 try{
                     if(newAmmo.caliber && !Array.isArray(newAmmo.caliber)){
                         parsedCaliberField = [newAmmo.caliber]
@@ -139,13 +135,13 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
                 } catch(e){
                     throw new Error(`Migrating Ammo Caliber failed: ${e}`)
                 }
+
+                const parsedAmmo: ItemType = {
+                  ...newAmmo,
+                  caliber: parsedCaliberField
+                }
                 
-                await db.update(schema.legacyAmmoCollection)
-                .set({
-                    caliber: JSON.stringify(parsedCaliberField),
-                    lastTopUpAt_unix: ammo.lastTopUpAt ? newAmmo.lastTopUpAt_unix : null
-                })
-                .where(eq(schema.legacyAmmoCollection.id, ammo.id))
+                await db.insert(schema.ammoCollection).values(parsedAmmo)
             }))
         } catch(e){
             throw new Error(`Updating migrated Ammo Dates and Caliber failed: ${e}`)
