@@ -141,7 +141,9 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
                   caliber: parsedCaliberField
                 }
                 
-                await db.insert(schema.ammoCollection).values(parsedAmmo)
+                await db.update(schema.ammoCollection)
+                  .set(parsedAmmo)
+                  .where(eq(schema.ammoCollection.id, ammo.id));
             }))
         } catch(e){
             throw new Error(`Updating migrated Ammo Dates and Caliber failed: ${e}`)
