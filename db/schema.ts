@@ -64,7 +64,7 @@ export const legacyAmmoCollection = sqliteTable("ammo", {
     remarks: text("remarks"),
 })
 
-export const ammoCollection = sqliteTable("ammo", {
+export const ammoCollection = sqliteTable("ammunition", {
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull().unique(),
     createdAt: integer("createdAt").notNull(),
