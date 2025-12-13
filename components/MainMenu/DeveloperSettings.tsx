@@ -3,6 +3,7 @@ import { collectionImportTables, defaultViewPadding } from "configs";
 import { PREFERENCES } from "configs_DB";
 import { db } from "db/client";
 import * as schema from "db/schema"
+import { developerSettingsWarning } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";
 import { Divider, IconButton, List, Text } from "react-native-paper";
@@ -13,7 +14,7 @@ import { useViewStore } from "stores/useViewStore";
 
 export default function DeveloperSettings(){
 
-    const { theme, resetPreferenceStore } = usePreferenceStore()
+    const { theme, language, resetPreferenceStore } = usePreferenceStore()
     const { setAlohaSnackbarVisible } = useViewStore()
     const { setAlohaSnackbarText } = useTextStore()
 
@@ -60,17 +61,7 @@ export default function DeveloperSettings(){
             <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.errorContainer, borderColor: theme.colors.error, borderLeftWidth: 5}}>
                 
                 <Text style={{display: "flex", flexWrap: "wrap", flexDirection: "row", justifyContent: "flex-start"}}>
-                    {`These Settings are IRREVERSIBLE.
-
-There are no translations and no explanations provided.
-
-USE AT YOUR OWN RISK!
-
-Use only if you know what you are doing and if you are sure of what you are doing.
-
-There are no confirmation prompts.
-
-Press the button and the function runs WITHOUT CONFIRMATION`}
+                   {`${developerSettingsWarning[language]}`}
                 </Text>
 
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
