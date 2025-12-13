@@ -140,7 +140,7 @@ export default function App() {
 
           console.info("Parsing Legacy Date Fields")
           try{
-            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && !isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
               await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
             }
           }catch(e){
@@ -175,7 +175,7 @@ export default function App() {
           
           console.info("Parsing Legacy Date Fields")
           try{
-            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+            if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && !isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
               await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
             }
           }catch(e){
@@ -216,7 +216,7 @@ export default function App() {
 
             console.info("Parsing Legacy Date Fields")
             try{
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && !isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
               await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
             }
             }catch(e){
@@ -248,7 +248,7 @@ export default function App() {
 
             console.info("Parsing Legacy Date Fields")
             try{
-              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
+              if(!isPreferences?.generalSettings?.hasConvertedLegacyDateFieldsToUnixTimeStamp && !isPreferences?.generalSettings?.hasConvertedLegacyAmmoCaliberFieldToStringArray){
               await migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp)
             }
             }catch(e){
