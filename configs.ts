@@ -1,4 +1,4 @@
-import { CollectionType, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit } from "./interfaces"
+import { CollectionType, CommonStyles, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit } from "./interfaces"
 import { SimpleTranslation } from "./lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -37,6 +37,37 @@ export const languageSelection:{flag:string, code:Languages}[] = [
     {flag: "🇮🇹", code: "it"},
     {flag: "🇬🇧", code: "en"},
 ]
+
+export const pdfCommonStyles:CommonStyles = {
+    allPageMargin: "15mm",
+    allPageMarginIOS: Math.ceil(15*2.83465),
+    allTitleFontSize: "30px",
+    allSubtitleFontSize: "12px",
+    allTableFontSize: "15px",
+    imageGap: "20px",
+    tableVerticalMargin: "20px",
+    tableRowVerticalPadding: "5px",
+    tableCellPadding: "5px",
+    footerWidth: "calc(100% - 30mm)",
+    footerFontSize: "8px",
+    footerTopBorder: "1px solid grey",
+    footerPaddingTop: "5px",
+    footerMarginTop: "5mm",
+    tagPadding: "5px",
+    tagFontSize: "10px",
+    tagContainerGap: "10px"
+}
+
+export const pdfDateOptions:Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: "2-digit",
+    minute: "2-digit"
+};
+
+export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval"]
 
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
