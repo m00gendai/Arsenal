@@ -97,7 +97,7 @@ export default function Item({navigation}){
     function handlePrintPress(){
         toggleiosWarning(false)
         try{
-            printSingleItem(currentItem, language, generalSettings.caliberDisplayName, caliberDisplayNameList)
+            printSingleItem(currentItem, currentCollection, language, generalSettings.caliberDisplayName, caliberDisplayNameList)
         }catch(e){
             alarm("Print Single Item Error", e)
         }
