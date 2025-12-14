@@ -6,8 +6,11 @@ import { flatten } from 'flat'
 import * as FileSystem from "expo-file-system";
 import { Platform } from "react-native";
 import * as Sharing from 'expo-sharing';
+import * as Application from 'expo-application';
 
 export default async function exportArsenalCSV(data: CollectionType){
+
+    const fileName = `arsenal_${Application.nativeApplicationVersion.replaceAll(".", "-")}_${data}_CSV`
 
     const collection = db.select().from(schema[data]).all()
     
@@ -20,11 +23,11 @@ export default async function exportArsenalCSV(data: CollectionType){
 
         if(permissions.granted){
             let directoryUri = permissions.directoryUri
-            const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(directoryUri, `arsenal_${data}DB.csv`, "text/csv")
+            const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(directoryUri, `${fileName}.csv`, "text/csv")
             await FileSystem.writeAsStringAsync(fileUri, csv, {encoding: FileSystem.EncodingType.UTF8})
         }
     } else if(Platform.OS === "ios"){
-        const tempPath = `${FileSystem.cacheDirectory}arsenal_${data}DB.csv`;
+        const tempPath = `${FileSystem.cacheDirectory}${fileName}.csv`;
               
         await FileSystem.writeAsStringAsync(tempPath, csv, {encoding: FileSystem.EncodingType.UTF8})
         
