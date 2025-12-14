@@ -75,6 +75,21 @@ function checkDatesAmmo(itemIn: any){
   return parsedItem
 }
 
+function checkLegacyAmmoCaliber(ammo: any){
+  if(!ammo.caliber){
+    return null
+  }
+  console.log(typeof ammo.caliber)
+  if(Array.isArray(ammo.caliber)){
+    return ammo.caliber
+  }
+  try{
+    const parsed = JSON.parse(ammo.caliber)
+    return Array.isArray(parsed) ? parsed : [parsed]
+  } catch{
+    return [ammo.caliber]
+  }
+}
 
 export default async function migrateLegacyDateAndCaliberFields(setHasConvertedLegacyAmmoCaliberFieldToStringArray, setHasConvertedLegacyDateFieldsToUnixTimeStamp){
     try{
@@ -123,18 +138,7 @@ export default async function migrateLegacyDateAndCaliberFields(setHasConvertedL
                     throw new Error(`Migrating Ammo Date failed: ${e}`)
                 }
 
-                let parsedCaliberField: string[]
-                try{
-                    if(newAmmo.caliber && !Array.isArray(newAmmo.caliber)){
-                        parsedCaliberField = [newAmmo.caliber]
-                    } else if(newAmmo.caliber && Array.isArray(newAmmo.caliber)){
-                        parsedCaliberField = newAmmo.caliber
-                    } else {
-                        parsedCaliberField = null
-                    }
-                } catch(e){
-                    throw new Error(`Migrating Ammo Caliber failed: ${e}`)
-                }
+                const parsedCaliberField = checkLegacyAmmoCaliber(newAmmo)
 
                 const parsedAmmo: ItemType = {
                   ...newAmmo,

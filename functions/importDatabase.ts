@@ -53,6 +53,19 @@ function checkDates(item: ItemType){
   return parsedItem
 }
 
+function checkLegacyAmmoCaliber(caliber:any){
+  if(Array.isArray(caliber)){
+    return caliber
+  }
+  try{
+    const parsed = JSON.parse(caliber)
+    return Array.isArray(parsed) ? parsed : [parsed]
+  } catch{
+    return [caliber]
+  
+  }
+}
+
 export default async function importDatabase() {
   try {
     const importableZip = await DocumentPicker.getDocumentAsync()
@@ -154,7 +167,7 @@ export default async function importDatabase() {
               // AmmoType as haliber as string[]
               const newAmmo: AmmoType = {
                 ...newItemAmmo, 
-                caliber: newItemAmmo.caliber ? [newItemAmmo.caliber] : null
+                caliber: newItemAmmo.caliber ? checkLegacyAmmoCaliber(newItemAmmo.caliber) : null
               }
               try{
                 await db.insert(schema[directory]).values(newAmmo);
