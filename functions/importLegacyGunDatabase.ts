@@ -9,15 +9,17 @@ import { ImportExportStore } from '../stores/useImportExportStore';
 import { determineTagSchema } from './determinators';
 
 export async function importLegacyGunDatabase(resizeImages:boolean, importOptionLegacyDB: CollectionType){
-       
+
+    const legacyPrefix = importOptionLegacyDB.startsWith("gun") ? "gun" : "ammo"
+
     const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
-    
+ 
     if(result.assets === null){
         return
     }
     
-    if(!result.assets[0].name.startsWith(`${importOptionLegacyDB}DB_`)){
-        throw new Error(`Legacy DB Prefix not ${importOptionLegacyDB}DB_`)
+    if(!result.assets[0].name.startsWith(`${legacyPrefix}DB_`)){
+        throw new Error(`Legacy DB Prefix not ${legacyPrefix}DB_`)
     }
 
     const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
@@ -47,7 +49,7 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
             const jsonString = '[' + tryParse + ']';
             importables = JSON.parse(jsonString);
         } catch(e) {
-            throw new Error(`JSON parsing ${importOptionLegacyDB}DB_: ${e}`)
+            throw new Error(`JSON parsing ${legacyPrefix}DB_: ${e}`)
         }
     }
 
@@ -114,7 +116,7 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
 
     await db.delete(schema[importOptionLegacyDB]);
 
-
+    
    for(const importable of importableCollection){
 
         const importableType = importable

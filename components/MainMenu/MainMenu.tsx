@@ -65,8 +65,8 @@ export default function MainMenu({navigation}){
     const [printerSrc, setPrinterSrc] = useState<null | "gunCollection" | "gunCollectionArt5" | "ammoCollection">(null)
 
     const importOptionsLegacyDB = [
-        { label: tabBarLabels.gunCollection[language], value: 'gun' },
-        { label: tabBarLabels.ammoCollection[language], value: 'ammo' },
+        { label: tabBarLabels.gunCollection[language], value: 'gunCollection' },
+        { label: tabBarLabels.ammoCollection[language], value: 'ammoCollection' },
     ];
 
     const importOptions = [
