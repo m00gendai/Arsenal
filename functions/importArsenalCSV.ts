@@ -5,7 +5,7 @@ import { unflatten } from 'flat'
 import { CollectionType, ItemType } from 'interfaces';
 import * as schema from "db/schema"
 import { db } from "db/client"
-
+import * as Application from 'expo-application';
 import { determineEmptyObject, determineEmptyObjectReturns } from './determinators';
 import { alarm } from 'utils';
 
@@ -18,12 +18,24 @@ export default async function importArsenalCSV(data: CollectionType){
             return
         }
 
-        if(!result.assets[0].name.startsWith("arsenal_") && !result.assets[0].name.endsWith("DB")){
-            alarm("Import Arsenal CSV Error", "No Arsenal CSV selected")
+        if(!result.assets[0].name.startsWith("arsenal_") && !result.assets[0].name.endsWith("_CSV")){
+            alarm("Import Arsenal CSV Error: No Arsenal CSV selected", `Expected:\narsenal_${Application.nativeApplicationVersion.replaceAll(".", "-")}_${data}_CSV.csv\n\nReceived:\n${result.assets[0].name}.\n\nPlease use custom CSV import instead.`)
+            return
         }
 
-        if(result.assets[0].mimeType !== "text/csv"){
-            alarm("Import Arsenal CSV Error", "No valid CSV format")
+        const validMimeTypes = [
+            "text/csv",
+            "text/comma-separated-values",
+        ]
+
+        if (!validMimeTypes.includes(result.assets[0].mimeType)) {
+            alarm("Import Arsenal CSV Error: No valid CSV format", `Expected:\n${validMimeTypes.join("\n")}\n\nRead:\n${result.assets[0].mimeType}`);
+            return
+        }
+
+        if(result.assets[0].name.split("_")[1] !== Application.nativeApplicationVersion.replaceAll(".", "-")){
+            alarm(`Import Arsenal CSV Error: Version mismatch`, `Expected:\narsenal_${Application.nativeApplicationVersion.replaceAll(".", "-")}_${data}_CSV.csv\n\nReceived:\n${result.assets[0].name}.\n\nPlease use custom CSV import instead.`)
+            return
         }
 
         const importableItem:ItemType = determineEmptyObjectReturns(data)
