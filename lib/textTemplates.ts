@@ -1671,7 +1671,7 @@ export const snackbarText = {
 }
 
 export const developerSettingsWarning: SimpleTranslation = {
-    de: "",
+    de: "Diese Einstellungen sind UNWIDERRUFLICH. Es gibt keine Übersetzungen und keine Erklärungen. VERWENDUNG AUF EIGENE GEFAHR! Verwenden Sie sie nur, wenn Sie wissen, was Sie tun und wenn Sie sicher sind, was Sie tun. Es gibt keine Bestätigungsaufforderungen. Drücken Sie die Taste und die Funktion WIRD OHNE BESTÄTIGUNG AUSGEFÜHRT!",
     en: "These Settings are IRREVERSIBLE. There are no translations and no explanations provided. USE AT YOUR OWN RISK! Use only if you know what you are doing and if you are sure of what you are doing. There are no confirmation prompts. Press the button and the function runs WITHOUT CONFIRMATION!",
     fr: "Ces paramètres SONT IRRÉVERSIBLES. Il n’y a pas de traductions et pas d’explications. UTILISEZ-LES À VOS PROPRES RISQUES ET PÉNALITÉS! Utilisez-les uniquement si vous savez ce que vous faites et si vous êtes sûr de ce que vous faites. Il n’y a pas de demande de confirmation. Appuyez sur le bouton et la fonction s’EXÉCUTERA SANS CONFIRMATION!",
     it: "Queste impostazioni SONO IRREVERSIBILI. Non ci sono traduzioni e non ci sono spiegazioni. USATE A VOSTRA PROPRIA RESPONSABILITÀ! Usate solo se sapete cosa state facendo e se siete sicuri di quello che state facendo. Non ci sono richieste di conferma. Premete il pulsante e la funzione viene ESEGUITA SENZA CONFERMA!",
