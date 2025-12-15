@@ -88,6 +88,11 @@ export default function BottomBar({screen}:Props){
             onProgressChange={progress}
             mode={"parallax"}
             enabled={true}
+             onConfigurePanGesture={(gesture) => {
+              gesture
+                .activeOffsetX([-10, 10])   // activate only on horizontal swipe
+                .failOffsetY([-10, 10]);    // fail on vertical swipe
+            }}
             renderItem={({ index }) => (
               <Card
                 style={{
