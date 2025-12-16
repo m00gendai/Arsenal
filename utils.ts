@@ -150,29 +150,23 @@ export function checkDate(item:ItemType){
     if(item === undefined){
         return
     }
-    if(!('lastCleanedAt' in item) || !('cleanInterval' in item)){
+    if(!('lastCleanedAt_unix' in item) || !('cleanInterval' in item)){
         return
     }
 
-    if(item.lastCleanedAt === undefined){
+    if(!item.lastCleanedAt_unix){
         return
     }
-    if(item.lastCleanedAt === null){
-        return
-    }
-    if(item.cleanInterval === undefined){
+    if(!item.cleanInterval){
         return
     }
     if(item.cleanInterval === "none"){
         return
     }
+
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    let [day, month, year] = item.lastCleanedAt.split('.')
-    const firstDate = new Date(Number(year), Number(month) - 1, Number(day)).getTime()
-    const todayYear = new Date().getFullYear()
-    const todayMonth = new Date().getMonth()
-    const todayDay = new Date().getDate()
-    const secondDate = new Date(todayYear, todayMonth, todayDay).getTime()
+    const firstDate = item.lastCleanedAt_unix
+    const secondDate = new Date().getTime()
     const diffDays = Math.round(Math.abs((Number(firstDate) - Number(secondDate)) / oneDay));
     if(diffDays > mapIntervals(item.cleanInterval)){
         return true
