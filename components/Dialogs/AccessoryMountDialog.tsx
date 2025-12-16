@@ -10,12 +10,12 @@ import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { ItemType } from "interfaces";
+import { CollectionType, ItemType } from "interfaces";
 import { useViewStore } from "stores/useViewStore";
 import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";
 import { useTextStore } from "stores/useTextStore";
-import { determineAccessoryIcons } from "functions/determinators";
+import { determineAccessoryIcons, determineCardSubtitle, determineCardTitle } from "functions/determinators";
 
 interface Props{
     data: string
@@ -239,6 +239,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         setChecked(id)
         setCollection(collection)
     }
+
+    function getListEntryTitle(collection: CollectionType, item: ItemType){
+        return `${determineCardTitle(collection, item)}\n${determineCardSubtitle(collection, item, language)}`
+    }
     
     return(
         <ModalContainer
@@ -273,7 +277,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === gunData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onTertiary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onTertiary : ""}}>{getListEntryTitle("gunCollection", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -300,7 +304,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === silencerData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onTertiary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onTertiary : ""}}>{getListEntryTitle("gunCollection", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -327,7 +331,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === opticData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("accessoryCollection_Optic", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -354,7 +358,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === scopeData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("accessoryCollection_Scope", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -381,7 +385,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === lightLaserData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("accessoryCollection_LightLaser", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -408,7 +412,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === magazineData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("accessoryCollection_Magazine", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -435,7 +439,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === miscAccessoryData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("accessoryCollection_Misc", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -462,7 +466,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === barrelData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("partCollection_Barrel", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
@@ -490,7 +494,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             marginBottom: index === conversionKitData.length-1 ? 10 : 0
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{`${item.manufacturer ? item.manufacturer : ""} ${item.model}`}</Text>
+                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onPrimary : ""}}>{getListEntryTitle("partCollection_ConversionKit", item as unknown as ItemType)}</Text>
                     </View>
                 </TouchableNativeFeedback>
             )
