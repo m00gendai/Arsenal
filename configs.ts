@@ -98,8 +98,8 @@ export const cardActionsAccessory_Scope: string[] = ["delete", "clone", "quickMo
 export const cardActionsAccessory_LightLaser: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAccessory_Magazine: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAccessory_Misc: string[] = ["delete", "clone", "quickMount"]
-export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quickMount"]
-export const cardActionsPart_Barrel: string[] = ["delete", "clone", "quickMount"]
+export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quickMount", "quickShot"]
+export const cardActionsPart_Barrel: string[] = ["delete", "clone", "quickMount", "quickShot"]
 export const cardActionsAmmo: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
