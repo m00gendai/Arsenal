@@ -76,6 +76,16 @@ export default function ItemCard({ item }:Props){
         return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding))
       }
 
+    function checkDangerState(item: ItemType){
+        let isDanger:boolean
+        isDanger = checkDate(item)
+        if(isDanger){
+            return isDanger
+        }
+        isDanger = "currentStock" in item && "criticalStock" in item && item.currentStock && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? true : false : false
+        return isDanger
+    }
+
     return(
         <View>
         <TouchableNativeFeedback 
@@ -106,7 +116,7 @@ export default function ItemCard({ item }:Props){
                 }}
                 titleStyle={{
                     width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
-                    color: checkDate(item) ? theme.colors.error : theme.colors.onSurfaceVariant
+                    color: checkDangerState(item) ? theme.colors.error : theme.colors.onSurfaceVariant
                 }}
                 subtitleStyle={{
                     width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",

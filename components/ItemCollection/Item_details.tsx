@@ -40,13 +40,13 @@ export default function Item_details(){
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
             {/* Interval Warning Icons */}
-                                        {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 
+                                        {dataItem.name === "lastCleanedAt_unix" && checkDate(currentItem) ? 
                                             <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
                                                 <IconButton icon="spray-bottle" iconColor={theme.colors.error} /><IconButton icon="toothbrush" iconColor={theme.colors.error} />
                                             </View> 
                                         : 
                                         null}
-                    {/* Color splotch */}
+                    {/* Color splotch */}che
                                         {colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
                                             <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
                                                 <View style={{height: "50%", aspectRatio: "5/1", borderRadius: 50, backgroundColor: `${currentItem[dataItem.name]}`, transform:[{translateY: -5}]}}>
@@ -71,7 +71,7 @@ export default function Item_details(){
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
             {/* Interval Warning Icons */}
-                                        {dataItem.name === "lastCleanedAt" && checkDate(currentItem) ? 
+                                        {dataItem.name === "lastCleanedAt_unix" && checkDate(currentItem) ? 
                                             <View style={{position:"absolute", top: 0, right: 0, bottom: 0, left: 0, display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
                                                 <IconButton icon="spray-bottle" iconColor={theme.colors.error} /><IconButton icon="toothbrush" iconColor={theme.colors.error} />
                                             </View> 
