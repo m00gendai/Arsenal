@@ -50,7 +50,7 @@ export default {
         }
       ],
       ["expo-sqlite", {
-        "useSQLCipher": true,
+        "useSQLCipher": false,
       }],
       [
         "expo-build-properties",
