@@ -116,6 +116,8 @@ export const nonCollectionTables: string[]= ["accessoryCollection", "partCollect
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
 export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
 
+export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine"]
+
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
 export const sortingOptionsAccessory_Silencer:SortingTypesAccessory_Silencer[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
