@@ -145,11 +145,16 @@ export default function Item({navigation}){
     navigation.navigate("itemCollection")
 }
 
+function handleEdit(){
+    setHideBottomSheet(true)
+    navigation.navigate("editItem")
+}
+
 useEffect(() => {
   const unsubscribe = navigation.addListener("blur", () => {
     const nextRoute = navigation.getState().routes[navigation.getState().index];
     if (nextRoute.name === "QuickMount") return;
-
+    if (nextRoute.name === "editItem") return;
     setHideBottomSheet(false);
     setCurrentItem(determineEmptyObject(currentCollection));
   });
@@ -169,7 +174,7 @@ useEffect(() => {
                 <Appbar.BackAction  onPress={handleGoBack} />
                 <Appbar.Content title={`${currentItem.manufacturer ? currentItem.manufacturer : ""} ${"model" in currentItem ? currentItem.model : currentItem.designation}`} />
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
-                <Appbar.Action icon="pencil" onPress={()=>navigation.navigate("editItem")} />
+                <Appbar.Action icon="pencil" onPress={()=>handleEdit()} />
             </Appbar>
         
             <View style={styles.container}>   
