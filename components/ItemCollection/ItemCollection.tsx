@@ -73,7 +73,7 @@ useEffect(() => {
 
   const pulsate = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: fabWidth.value }]
+      transform: [{ scale: itemData.length === 0 ? fabWidth.value : 1}]
     };
   });
 
@@ -150,7 +150,20 @@ const listKey = isLandscape
     ListEmptyComponent={null}
   />
 
-      <Animated.View style={[{position: "absolute", bottom: defaultBottomBarHeight+defaultViewPadding, right: 0, margin: 16, width: 56, height: 56, backgroundColor: "transparent", display: "flex", justifyContent: "center", alignItems: "center"}, itemData.length === 0 ? pulsate : null]}>
+      <Animated.View style={
+        [{
+          position: "absolute", 
+          bottom: defaultBottomBarHeight+defaultViewPadding, 
+          right: 0, 
+          margin: 16, 
+          width: 56, 
+          height: 56, 
+          backgroundColor: "transparent", 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center"
+        }, 
+          pulsate]}>
         <FAB
           icon="plus"
           onPress={()=>handleFAB()}
