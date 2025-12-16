@@ -24,6 +24,7 @@ import sortAccessoryCollection_Magazine from "./sortAccessoryCollection_Magazine
 import { accessoryDataTemplate_Magazine, emptyMagazineObject, magazineRemarks } from "lib/DataTemplates/accessoryDataTemplate_Magazine";
 import sortAccessoryCollection_Misc from "./sortAccessoryCollection_Misc";
 import { accessoryDataTemplate_Misc, emptyMiscAccessoryObject, miscAccessoryRemarks } from "lib/DataTemplates/accessoryDataTemplate_Misc";
+import { getShortCaliberName } from "utils";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -463,49 +464,49 @@ export function determineCardTitle(collection: CollectionType, itemIn: ItemType)
     }
 }
 
-export function determineCardSubtitle(collection: CollectionType, itemIn: ItemType, language:Languages){
+export function determineCardSubtitle(collection: CollectionType, itemIn: ItemType, language:Languages, caliberDisplayNameList:{ name: string; displayName?: string }[]){
     switch(collection){
         case "gunCollection": 
             {   const item = itemIn as GunType
-                return item.serial && item.serial.length != 0 ? item.serial : ""
+                return item.serial && item.serial.length != 0 ? item.serial : " "
             }
         case "ammoCollection":
             {   const item = itemIn as AmmoType
-                return item.caliber ? item.caliber : ""
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
             }
         case "accessoryCollection_Silencer":
             {   const item = itemIn as AccessoryType_Silencer
-                return item.caliber ? item.caliber : ""
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
             }
         case "accessoryCollection_Optic":
             {   const item = itemIn as AccessoryType_Optic
-                return item.zoom ? item.zoom : ""
+                return item.zoom ? item.zoom : " "
             }
         case "accessoryCollection_Scope":
             {   const item = itemIn as AccessoryType_Scope
-                return item.zoom ? item.zoom : ""
+                return item.zoom ? item.zoom : " "
             }
         case "accessoryCollection_LightLaser":
             {   const item = itemIn as AccessoryType_LightLaser
-                return item.serial && item.serial.length != 0 ? item.serial : ""
+                return item.serial && item.serial.length != 0 ? item.serial : " "
             }
         case "accessoryCollection_Magazine":
             {   const item = itemIn as AccessoryType_Magazine
                 const capacity = item.capacity ? `${item.capacity} ${shotLabel[language]}` : ""
-                const caliber = item.caliber ? item.caliber : ""
+                const caliber = item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
                 return `${capacity} ${caliber}`
             }
         case "accessoryCollection_Misc":
             {   const item = itemIn as AccessoryType_Misc
-                return ""
+                return " "
             }
         case "partCollection_ConversionKit":
             {   const item = itemIn as PartType_ConversionKit
-                return item.serial && item.serial.length != 0 ? item.serial : ""
+                return item.serial && item.serial.length != 0 ? item.serial : " "
             }
         case "partCollection_Barrel":
             {   const item = itemIn as PartType_Barrel
-                return item.caliber ? item.caliber : ""
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
             }
     }
 }

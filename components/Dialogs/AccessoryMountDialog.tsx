@@ -28,7 +28,7 @@ interface Props{
 
 export default function AccessoryMountDialog({data, itemData, setItemData, showModal, setShowModal, setItemName}: Props){
 
-    const { language, theme } = usePreferenceStore()
+    const { language, theme, caliberDisplayNameList } = usePreferenceStore()
     const { setAlohaSnackbarVisible } = useViewStore()
     const { currentItem, setCurrentItem, currentCollection, currentAccessory } = useItemStore()
     const { setAlohaSnackbarText } = useTextStore()
@@ -241,7 +241,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getListEntryTitle(collection: CollectionType, item: ItemType){
-        return `${determineCardTitle(collection, item)}\n${determineCardSubtitle(collection, item, language)}`
+        return `${determineCardTitle(collection, item)}\n${determineCardSubtitle(collection, item, language, caliberDisplayNameList)}`
     }
     
     return(

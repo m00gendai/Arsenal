@@ -24,7 +24,7 @@ interface Props{
 
 export default function ItemCard_accessories({ item }:Props){
 
-    const { displaySettings, language, theme, generalSettings } = usePreferenceStore()
+    const { displaySettings, language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const { accessoryMount, partMount } = useDatabaseStore()
@@ -88,7 +88,7 @@ export default function ItemCard_accessories({ item }:Props){
                     color: theme.colors.onSurfaceVariant,
                 }}
                 title={determineCardTitle(itemType, item)}
-                subtitle={determineCardSubtitle(itemType, item, language)} 
+                subtitle={determineCardSubtitle(itemType, item, language, caliberDisplayNameList)} 
                 titleVariant={displaySettings.accessoryView === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings.accessoryView === "compactList" ? "labelSmall" : "bodySmall"}
                 titleNumberOfLines={displaySettings.accessoryView === "compactList" ? 1 : 2} 
