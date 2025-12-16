@@ -1,4 +1,4 @@
-import { CollectionType } from "interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, PartType_Barrel, PartType_ConversionKit } from "interfaces";
 import sortGunCollection from "./sortGunCollection";
 import { SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sortAmmoCollection";
@@ -17,7 +17,7 @@ import sortAccessoryCollection_LightLaser from "./sortAccessoryCollection_LightL
 import { accessoryDataTemplate_LightLaser, emptyLightLaserObject, lightLaserRemarks } from "lib/DataTemplates/accessoryDataTemplate_LightLaser";
 import sortPartCollection_Barrel from "./sortPartCollection_Barrel";
 import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/DataTemplates/partDataTemplate_Barrel";
-import { editAccessoryTitle, editAmmoTitle, editGunTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newPartTitle, tabBarLabels } from "lib/textTemplates";
+import { editAccessoryTitle, editAmmoTitle, editGunTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newPartTitle, shotLabel, tabBarLabels } from "lib/textTemplates";
 import sortAccessoryCollection_Scope from "./sortAccessoryCollection_Scope";
 import { accessoryDataTemplate_Scope, emptyScopeObject, scopeRemarks } from "lib/DataTemplates/accessoryDataTemplate_Scope";
 import sortAccessoryCollection_Magazine from "./sortAccessoryCollection_Magazine";
@@ -415,5 +415,97 @@ export function determineEditItemTitle(collection: CollectionType){
     }
     if(collection.startsWith("partCollection_")){
         return editPartTitle
+    }
+}
+
+export function determineCardTitle(collection: CollectionType, itemIn: ItemType){
+    switch(collection){
+        case "gunCollection": 
+            {   const item = itemIn as GunType
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "ammoCollection":
+            {   const item = itemIn as AmmoType
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.designation}`
+            }
+        case "accessoryCollection_Silencer":
+            {   const item = itemIn as AccessoryType_Silencer
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "accessoryCollection_Optic":
+            {   const item = itemIn as AccessoryType_Optic
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "accessoryCollection_Scope":
+            {   const item = itemIn as AccessoryType_Scope
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "accessoryCollection_LightLaser":
+            {   const item = itemIn as AccessoryType_LightLaser
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "accessoryCollection_Magazine":
+            {   const item = itemIn as AccessoryType_Magazine
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "accessoryCollection_Misc":
+            {   const item = itemIn as AccessoryType_Misc
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "partCollection_ConversionKit":
+            {   const item = itemIn as PartType_ConversionKit
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "partCollection_Barrel":
+            {   const item = itemIn as PartType_Barrel
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+    }
+}
+
+export function determineCardSubtitle(collection: CollectionType, itemIn: ItemType, language:Languages){
+    switch(collection){
+        case "gunCollection": 
+            {   const item = itemIn as GunType
+                return item.serial && item.serial.length != 0 ? item.serial : ""
+            }
+        case "ammoCollection":
+            {   const item = itemIn as AmmoType
+                return item.caliber ? item.caliber : ""
+            }
+        case "accessoryCollection_Silencer":
+            {   const item = itemIn as AccessoryType_Silencer
+                return item.caliber ? item.caliber : ""
+            }
+        case "accessoryCollection_Optic":
+            {   const item = itemIn as AccessoryType_Optic
+                return item.zoom ? item.zoom : ""
+            }
+        case "accessoryCollection_Scope":
+            {   const item = itemIn as AccessoryType_Scope
+                return item.zoom ? item.zoom : ""
+            }
+        case "accessoryCollection_LightLaser":
+            {   const item = itemIn as AccessoryType_LightLaser
+                return item.serial && item.serial.length != 0 ? item.serial : ""
+            }
+        case "accessoryCollection_Magazine":
+            {   const item = itemIn as AccessoryType_Magazine
+                const capacity = item.capacity ? `${item.capacity} ${shotLabel[language]}` : ""
+                const caliber = item.caliber ? item.caliber : ""
+                return `${capacity} ${caliber}`
+            }
+        case "accessoryCollection_Misc":
+            {   const item = itemIn as AccessoryType_Misc
+                return ""
+            }
+        case "partCollection_ConversionKit":
+            {   const item = itemIn as PartType_ConversionKit
+                return item.serial && item.serial.length != 0 ? item.serial : ""
+            }
+        case "partCollection_Barrel":
+            {   const item = itemIn as PartType_Barrel
+                return item.caliber ? item.caliber : ""
+            }
     }
 }
