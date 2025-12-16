@@ -1,5 +1,5 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, ItemType, StackParamList } from 'interfaces';
+import { AmmoType, CollectionType, ItemType, StackParamList } from 'interfaces';
 import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
@@ -11,6 +11,11 @@ import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
 import MountedIconBar from './MountedIconBar';
+import { determineCardSubtitle, determineCardTitle } from 'functions/determinators';
+import { db } from 'db/client';
+import * as schema from "db/schema"
+import { and, eq } from 'drizzle-orm';
+import { useEffect, useState } from 'react';
 
 interface Props{
     item: ItemType
@@ -23,6 +28,7 @@ export default function ItemCard_accessories({ item }:Props){
     const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const { accessoryMount, partMount } = useDatabaseStore()
+    const [itemType, setItemtype] = useState<CollectionType>(null)
 
     const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id || accessory.parentPartId === item.id)
     const attachedParts = partMount.filter(part => part.parentGunId === item.id || part.parentPartId === item.id)
@@ -37,6 +43,17 @@ export default function ItemCard_accessories({ item }:Props){
         setCardOptionsMenuVisible_accessories(true)
         
       }
+
+      
+
+      useEffect(()=>{
+        async function getItemType(item: ItemType){
+            const findAccessory = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, item.id))
+            const findPart = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, item.id))
+            setItemtype(findAccessory.length !== 0 ? findAccessory[0].type as CollectionType : findPart[0].type as CollectionType)
+        }
+        getItemType(item)
+      },[])
 
     return(
         <View>
@@ -70,8 +87,8 @@ export default function ItemCard_accessories({ item }:Props){
                     width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
-                title={`${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${"model" in item ? item.model : item.designation}`}
-                subtitle={"serial" in item ? item.serial && item.serial.length != 0 ? item.serial : " " : " "} 
+                title={determineCardTitle(itemType, item)}
+                subtitle={determineCardSubtitle(itemType, item, language)} 
                 titleVariant={displaySettings.accessoryView === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings.accessoryView === "compactList" ? "labelSmall" : "bodySmall"}
                 titleNumberOfLines={displaySettings.accessoryView === "compactList" ? 1 : 2} 
