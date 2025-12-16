@@ -220,6 +220,7 @@ export interface AccessoryType_Magazine{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  currentStock: string
 }
 
 export interface AccessoryType_Misc{

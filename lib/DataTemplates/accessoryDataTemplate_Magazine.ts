@@ -56,6 +56,14 @@ export const accessoryDataTemplate_Magazine:TemplateItem[] = [
             it: "",
             ch: "",
     },
+    {
+            name: "currentStock",
+            de: "Aktuelle Menge",
+            en: "Current stock",
+            fr: "Montant actuel",
+            it: "Quantità attuale",
+            ch: "Quantitad actuala",
+    },
     {   
             name: "serial",
             de: "Seriennummer",
@@ -189,6 +197,7 @@ export const emptyMagazineObject:AccessoryType_Magazine= {
     originCountry: null,
     caliber: [],
     capacity: null,
+    currentStock: null,
     platform: null,
     serial: null,
     permit: null,
