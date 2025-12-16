@@ -1,8 +1,8 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, ItemType, StackParamList } from 'interfaces';
+import { AccessoryType_Magazine, AmmoType, ItemType, StackParamList } from 'interfaces';
 import { Badge, Card, Icon, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
+import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs';
 import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,6 +11,7 @@ import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
+import { determineCardSubtitle, determineCardTitle } from 'functions/determinators';
 
 interface Props{
     item: ItemType
@@ -43,20 +44,32 @@ export default function ItemCard({ item }:Props){
         setCurrentItem(item)
       }
 
-      function setAmmoBadgeBackgroundColor(item: ItemType){
-        const ammo = item as AmmoType
-        return ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.criticalStock ? Number(ammo.currentStock.toString()) <= Number(ammo.criticalStock.toString()) ? theme.colors.errorContainer : theme.colors.primary : theme.colors.primary
-      }
+    function setBadgeBackgroundColor(itemIn: ItemType){
+        if(currentCollection === "ammoCollection"){
+            const item = itemIn as AmmoType
+            return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.errorContainer : theme.colors.primary : theme.colors.primary
+        }
+        return theme.colors.primary
+    }
 
-      function setAmmoBadgeColor(item: ItemType){
-        const ammo = item as AmmoType
-        return ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.criticalStock ? Number(ammo.currentStock.toString()) <= Number(ammo.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
-      }
+    function setBadgeColor(itemIn: ItemType){
+        if(currentCollection === "ammoCollection"){
+            const item = itemIn as AmmoType
+            return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
+        }
+        return theme.colors.onPrimary
+    }
 
-      function setAmmoBadgeContent(item: ItemType){
-        const ammo = item as AmmoType
-        return ammo.currentStock !== null && ammo.currentStock !== undefined && ammo.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(ammo.currentStock)) : "- - -" 
-      }
+    function setBadgeContent(itemIn: ItemType){
+        if(currentCollection === "ammoCollection"){
+            const item = itemIn as AmmoType
+            return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
+        }
+        if(currentCollection === "accessoryCollection_Magazine"){
+            const item = itemIn as AccessoryType_Magazine
+            return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
+        }
+    }
 
       function setCardWith(){
         const divisor = displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
@@ -99,8 +112,8 @@ export default function ItemCard({ item }:Props){
                     width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
-                title={`${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${"model" in item ? item.model : item.designation}`}
-                subtitle={"serial" in item ? item.serial && item.serial.length != 0 ? item.serial : " " : " "} 
+                title={determineCardTitle(currentCollection, item)}
+                subtitle={determineCardSubtitle(currentCollection, item, language)} 
                 titleVariant={displaySettings[currentCollection] === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings[currentCollection] === "compactList" ? "labelSmall" : "bodySmall"}
                 titleNumberOfLines={displaySettings[currentCollection] === "compactList" ? 1 : 2} 
@@ -116,12 +129,12 @@ export default function ItemCard({ item }:Props){
                     }}
                 />
                 {(attachedAccessories.length || attachedParts.length) ? <MountedIconBar accessories={attachedAccessories} parts={attachedParts} accessoryView={false}/> : null}
-                {currentCollection === "ammoCollection" ? 
+                {numberBadgeCollections.includes(currentCollection) ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                     <Badge
                         style={{
-                            backgroundColor: setAmmoBadgeBackgroundColor(item),
-                            color: setAmmoBadgeColor(item),
+                            backgroundColor: setBadgeBackgroundColor(item),
+                            color: setBadgeColor(item),
                             aspectRatio: "1/1",
                             fontSize: 10,
                             margin: 6,
@@ -129,7 +142,7 @@ export default function ItemCard({ item }:Props){
                         }}
                         size={40}
                     >
-                        {setAmmoBadgeContent(item)}
+                        {setBadgeContent(item)}
                     </Badge>
                 </TouchableRipple>      
                                  :
@@ -170,12 +183,12 @@ export default function ItemCard({ item }:Props){
                     }}
                 /> : null}
                 {(attachedAccessories.length || attachedParts.length) ? <MountedIconBar accessories={attachedAccessories} parts={attachedParts} accessoryView={false}/> : null}
-                {currentCollection === "ammoCollection" ? 
+                {numberBadgeCollections.includes(currentCollection) ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                     <Badge
                         style={{
-                            backgroundColor: setAmmoBadgeBackgroundColor(item),
-                            color: setAmmoBadgeColor(item),
+                            backgroundColor: setBadgeBackgroundColor(item),
+                            color: setBadgeColor(item),
                             aspectRatio: "1/1",
                             fontSize: 10,
                             marginTop: "auto",
@@ -185,7 +198,7 @@ export default function ItemCard({ item }:Props){
                         }}
                         size={48}
                     >
-                        {setAmmoBadgeContent(item)}
+                        {setBadgeContent(item)}
                     </Badge>
                 </TouchableRipple>      
                                  :
@@ -217,12 +230,12 @@ export default function ItemCard({ item }:Props){
                     flexDirection: "row"
                 }}
             >
-                {currentCollection === "ammoCollection" ? 
+                {numberBadgeCollections.includes(currentCollection) ? 
                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                     <Badge
                         style={{
-                            backgroundColor: setAmmoBadgeBackgroundColor(item),
-                            color: setAmmoBadgeColor(item),
+                            backgroundColor: setBadgeBackgroundColor(item),
+                            color: setBadgeColor(item),
                             aspectRatio: "1/1",
                             fontSize: 10,
                             marginTop: "auto",
@@ -232,7 +245,7 @@ export default function ItemCard({ item }:Props){
                         }}
                         size={36}
                     >
-                        {setAmmoBadgeContent(item)}
+                        {setBadgeContent(item)}
                     </Badge>
                 </TouchableRipple>      
                                  :
