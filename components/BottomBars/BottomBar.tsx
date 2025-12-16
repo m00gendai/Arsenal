@@ -57,7 +57,7 @@ export default function BottomBar({screen}:Props){
     return(
       <View style={{width: "100%", flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "flex-start"}}>
         
-        <View style={{backgroundColor: theme.colors.surface, width: "100%", height: defaultBottomBarHeight, flexDirection: "row", justifyContent: "space-around", alignItems: "center", borderTopColor: theme.colors.primary, borderTopWidth: 2, paddingTop: 2}}>
+        <View style={{backgroundColor: theme.colors.inverseOnSurface, width: "100%", height: defaultBottomBarHeight, flexDirection: "row", justifyContent: "space-around", alignItems: "center", borderTopColor: theme.colors.primary, borderTopWidth: 2, paddingTop: 2}}>
           
           <View style={{width: "100%", position: "absolute", left: 0, top: 0}}>
             <View style={{alignSelf: "center"}}>
@@ -78,7 +78,7 @@ export default function BottomBar({screen}:Props){
           })}
           </View>
 
-        <View style={{flex: 1, backgroundColor: theme.colors.surface, paddingBottom: defaultBottomBarTextHeight*2}}>
+        <View style={{flex: 1, backgroundColor: theme.colors.inverseOnSurface, paddingBottom: defaultBottomBarTextHeight*2}}>
           <Carousel
             ref={ref}
             width={width}
