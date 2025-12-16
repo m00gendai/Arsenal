@@ -244,6 +244,7 @@ export const calibers:Caliber[] = [
             {"name": ".307 Winchester"},
             {"name": ".308 Norma Magnum"},
             {"name": ".308 Winchester"},
+             {"name": ".30 Herrett"},
             {"name": ".32 ACP (7.65 Browning Short)"},
             {"name": ".32 H&R Magnum"},
             {"name": ".32 Long Colt (.32 Colt)"},
