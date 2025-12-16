@@ -10,6 +10,16 @@ import * as schema from "./db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
 import { DisplayVariants } from "stores/usePreferenceStore";
 
+export function getShortCaliberName(calibers:string[], caliberDisplayNameList:{name: string; displayName?: string;}[]){
+    const outputArray = calibers.map(item => {
+        // Find an object where displayName matches the item
+        const match = caliberDisplayNameList.find(obj => obj.name === item)
+        // If a match is found, return the displayName, else return the original item
+        return match ? match.displayName : item;
+    });
+    return outputArray
+}
+
 export function getIcon(type:SortingTypes){
     switch(type){
         case "alphabetical":
