@@ -5,7 +5,7 @@ import { useEffect, useRef, useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
-import { cleanIntervals, gunDeleteAlert, iosWarningText } from 'lib/textTemplates';
+import { cleanIntervals, gunDeleteAlert, iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
 import { printSingleItem } from 'functions/printToPDF';
 import { ItemType } from 'interfaces';
 import { alarm, checkDate } from 'utils';
@@ -246,7 +246,7 @@ useEffect(() => {
                             }} 
                             onPress={() => setActiveTab("details")}
                         >
-                            <Text style={{padding: defaultViewPadding, color: activeTab === "details" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>Details</Text>
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "details" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.details[language]}</Text>
                         </Pressable>
                         <Pressable 
                             style={{
@@ -259,7 +259,7 @@ useEffect(() => {
                             }} 
                             onPress={() => setActiveTab("accessories")}
                         >
-                            <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>Accessories</Text>
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.accessories[language]}</Text>
                         </Pressable>
                     </View>
 

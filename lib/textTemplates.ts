@@ -187,6 +187,11 @@ interface iosWarning{
     cancel: SimpleTranslation
 }
 
+interface ItemViewTabBarLabels{
+    details: SimpleTranslation
+    accessories: SimpleTranslation
+}
+
 export const cleanIntervals:CleanIntervals = {
     none: {
         de: "-",
@@ -1676,4 +1681,21 @@ export const developerSettingsWarning: SimpleTranslation = {
     fr: "Ces paramètres SONT IRRÉVERSIBLES. Il n’y a pas de traductions et pas d’explications. UTILISEZ-LES À VOS PROPRES RISQUES ET PÉNALITÉS! Utilisez-les uniquement si vous savez ce que vous faites et si vous êtes sûr de ce que vous faites. Il n’y a pas de demande de confirmation. Appuyez sur le bouton et la fonction s’EXÉCUTERA SANS CONFIRMATION!",
     it: "Queste impostazioni SONO IRREVERSIBILI. Non ci sono traduzioni e non ci sono spiegazioni. USATE A VOSTRA PROPRIA RESPONSABILITÀ! Usate solo se sapete cosa state facendo e se siete sicuri di quello che state facendo. Non ci sono richieste di conferma. Premete il pulsante e la funzione viene ESEGUITA SENZA CONFERMA!",
     ch: "Questas preferenzas èn IRREVOCABLES. I na dat naginas translaziuns e naginas decleraziuns. UTILISAI QUAI SIN ATGNA RISTGA! Duvrai quai mo sche Vus savais, tge che Vus faschais e sche Vus essas segirs, tge che Vus faschais. I na dat naginas pretensiuns da conferma. Smatgai la tasta e la funcziun vegn exequida SENZA CONFERMAR!",
+}
+
+export const itemViewTabBarLabels: ItemViewTabBarLabels = {
+    details: {
+        de: "Details",
+        en: "Details",
+        fr: "Détails",
+        it: "Dettagli",
+        ch: "Detagls"
+    },
+    accessories: {
+        de: "Zubehör",
+        en: "Accessories",
+        fr: "Accessoires",
+        it: "Accessori",
+        ch: "Airi"
+    },
 }
