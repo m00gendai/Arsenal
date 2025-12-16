@@ -35,7 +35,7 @@ export const languageSelection:{flag:string, code:Languages}[] = [
     {flag: "🇨🇭", code: "ch"},
     {flag: "🇫🇷", code: "fr"},
     {flag: "🇮🇹", code: "it"},
-    {flag: "🇬🇧", code: "en"},
+    {flag: "🇺🇸", code: "en"},
 ]
 
 export const pdfCommonStyles:CommonStyles = {
