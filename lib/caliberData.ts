@@ -698,7 +698,53 @@ export const calibers:Caliber[] = [
           ],          
     },
     {
-        range: "Flintenmunition",
+    range: "20mm",
+    variants: [
+        { "name": "20×70RB (Oerlikon F)" },
+        { "name": "20×72RB (Oerlikon S)" },
+        { "name": "20×101RB (Oerlikon FF)" },
+        { "name": "20×110RB (Oerlikon S)" },
+        { "name": "20×138B (Long Solothurn)" },
+        { "name": "20×102mm" }
+    ]
+    },
+    {
+    range: "23mm",
+    variants: [
+        { "name": "23×152B" }
+    ]
+    },
+    {
+    range: "25mm",
+    variants: [
+        { "name": "25×137mm" },
+        { "name": "25×163mm" }
+    ]
+    },
+    {
+    range: "30mm",
+    variants: [
+        { "name": "30×113B" },
+        { "name": "30×165mm" },
+        { "name": "30×173mm" }
+    ]
+    },
+    {
+    range: "37mm",
+    variants: [
+        { "name": "37×252SR" },
+        { "name": "37×263B" }
+    ]
+    },
+    {
+    range: "40mm",
+    variants: [
+        { "name": "40×311R (Bofors L/60)" },
+        { "name": "40×364R (Bofors L/70)" }
+    ]
+    },
+    {
+        range: "Shotgun",
         variants: [
             {
                 "name": "2 bore: 3+1⁄2 in (89mm)",
@@ -874,7 +920,7 @@ export const calibers:Caliber[] = [
         ]
     },
     {
-        range: "Luft",
+        range: "Luft/Air/Aria/Vent",
         variants: [
             {"name":".177 / 4.5mm"},
             {"name":".22 / 5.5mm"},
@@ -886,7 +932,103 @@ export const calibers:Caliber[] = [
         ]
     },
     {
-        range: "Anderes",
+  range: "22mm Grenade",
+  variants: [
+    { "name": "22×90mm NATO rifle grenade" },
+    { "name": "22mm spigot (blank-launched rifle grenade)" }
+  ]
+},
+{
+  range: "30mm Grenade",
+  variants: [
+    { "name": "30×29mm (VOG-17 / AGS-17)" },
+    { "name": "30×30mm (AGS-30)" }
+  ]
+},
+{
+  range: "37mm Grenade",
+  variants: [
+    { "name": "37×113mmSR (low-velocity)" },
+    { "name": "37mm gas / signal cartridge" }
+  ]
+},
+{
+  range: "40mm Grenade (low velocity)",
+  variants: [
+    { "name": "40×46mm LV" }
+  ]
+},
+{
+  range: "40mm Grenade (medium velocity)",
+  variants: [
+    { "name": "40×51mm MV" }
+  ]
+},
+{
+  range: "40mm Grenade (high velocity)",
+  variants: [
+    { "name": "40×53mm HV" }
+  ]
+},
+{
+  range: "51mm Grenade",
+  variants: [
+    { "name": "51mm mortar-grenade (French AGL)" }
+  ]
+},
+{
+  range: "57mm RPG",
+  variants: [
+    { "name": "57mm PG-2 (RPG-2)" }
+  ]
+},
+{
+  range: "66mm RPG",
+  variants: [
+    { "name": "66mm M72 LAW" }
+  ]
+},
+{
+  range: "70mm RPG",
+  variants: [
+    { "name": "70mm PG-7V (early RPG-7)" }
+  ]
+},
+{
+  range: "72–73mm RPG",
+  variants: [
+    { "name": "72.5mm RPG-26 Aglen" }
+  ]
+},
+{
+  range: "80–85mm RPG",
+  variants: [
+    { "name": "84mm Carl Gustaf (M2 / M3 / M4)" },
+    { "name": "85mm PG-7VL (RPG-7)" }
+  ]
+},
+{
+  range: "90mm RPG",
+  variants: [
+    { "name": "90mm M67 recoilless / rocket family" }
+  ]
+},
+{
+  range: "93mm RPG",
+  variants: [
+    { "name": "93mm PG-7VR tandem (RPG-7)" }
+  ]
+},
+{
+  range: "100–106mm RPG",
+  variants: [
+    { "name": "105mm RPG-27 Tavolga" },
+    { "name": "105mm RPG-29 Vampir" },
+    { "name": "106mm Panzerfaust 3" }
+  ]
+},
+    {
+        range: "Etc",
         variants: [
             {"name": "Granaten"},
             {"name": "Flechettes"},
