@@ -6,23 +6,13 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
 import { cleanIntervals } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
-import { checkDate } from "utils";
+import { checkDate, getShortCaliberName } from "utils";
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
 
 export default function Item_details(){
 
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
-
-     function getShortCaliberName(calibers:string[]){
-        const outputArray = calibers.map(item => {
-            // Find an object where displayName matches the item
-            const match = caliberDisplayNameList.find(obj => obj.name === item)
-            // If a match is found, return the displayName, else return the original item
-            return match ? match.displayName : item;
-        });
-        return outputArray
-    }
 
     function checkColor(color:string){
         if(color.length === 9){
@@ -43,7 +33,7 @@ export default function Item_details(){
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
                                                 generalSettings.caliberDisplayName ? // TODO: Make array display in ammo item vanish (its displayed as [.17 whatever])
-                                                    getShortCaliberName(currentItem[dataItem.name]).join("\n") : currentItem[dataItem.name]
+                                                    getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name]
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
@@ -74,7 +64,7 @@ export default function Item_details(){
                 {/* Textfield content */}
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name]).join("\n") : currentItem[dataItem.name]
+                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name]
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
