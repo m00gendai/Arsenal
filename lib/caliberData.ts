@@ -180,7 +180,10 @@ export const calibers:Caliber[] = [
             {"name": "6.5x52mm Carcano"},
             {"name": "6.5x53mmR"},
             {"name": "6.5x54mm Mannlicher–Schönauer"},
-            {"name": "6.5x55mm Swedish (aka 6.5x55mm Krag)"},
+            {
+                "name": "6.5x55mm Swedish (aka 6.5x55mm Krag)",
+                "displayName": "6.5x55mm Swedish"
+            },
             {"name": "6.5x57mm Mauser"},
             {"name": "6.5x58mm Vergueiro"},
             {"name": "6.5x68mm"},
@@ -404,7 +407,7 @@ export const calibers:Caliber[] = [
             {"name": ".357 SIG"},
             {
                 "name": ".357 S&W Magnum",
-                "displayName": ".357 S&W Magnum"
+                "displayName": ".357 Magnum"
             },
             {"name": ".357 SuperMag"},
             {"name": ".357/44 Bain & Davis"},
@@ -697,43 +700,151 @@ export const calibers:Caliber[] = [
     {
         range: "Flintenmunition",
         variants: [
-            {"name": "2 bore: 3+1⁄2 in (89mm)"},
-            {"name": "4 bore: 3+1⁄4 in (83mm)"},
-            {"name": "4 bore: 4 in (102mm)"},
+            {
+                "name": "2 bore: 3+1⁄2 in (89mm)",
+                "displayName": "2/89"
+            },
+            {
+                "name": "4 bore: 3+1⁄4 in (83mm)",
+                "displayName": "4/83"
+            },
+            {
+                "name": "4 bore: 4 in (102mm)",
+                "displayName": "4/102"
+            },
             {"name": "6 bore"},
-            {"name": "8 bore: 3 in (76mm)"},
-            {"name": "8 bore: 3+1⁄4 in (83mm)"},
-            {"name": "8 bore: 3+3⁄4 in (95mm)"},
-            {"name": "8 bore: 4 in (102mm)"},
-            {"name": "10 bore: 2+9⁄16 in (65mm)"},
-            {"name": "10 bore: 2+5⁄8 in (67mm)"},
-            {"name": "10 bore: 2+7⁄8 in (73mm)"},
-            {"name": "10 bore: 3 in (76mm)"},
-            {"name": "10 bore: 3+1⁄4 in (83mm)"},
-            {"name": "10 bore: 3+1⁄2 in (89mm)"},
-            {"name": "12 bore: 1+3⁄4 in (44mm)"},
-            {"name": "12 bore: 2 in (51mm)"},
-            {"name": "12 bore: 2+1⁄4 in (57mm)"},
-            {"name": "12 bore: 2+1⁄2 in (64mm)"},
-            {"name": "12 bore: 2+21/32 in (67.5mm)"},
-            {"name": "12 bore: 2+3⁄4 in (70mm)"},
-            {"name": "12 bore: 3 in (76mm)"},
-            {"name": "12 bore: 3+1⁄2 in (89mm)"},
-            {"name": "14 bore: 2+1⁄2 in (64mm)"},
-            {"name": "16 bore: 2+1⁄2 in (64mm)"},
-            {"name": "16 bore: 2+9⁄16 in (65mm)"},
-            {"name": "16 bore: 2+5⁄8 in (67mm)"},
-            {"name": "16 bore: 2+3⁄4 in (70mm)"},
-            {"name": "16 bore: 3 in (76mm)"},
-            {"name": "20 bore: 2+1⁄2 in (64mm)"},
-            {"name": "20 bore: 2+3⁄4 in (70mm)"},
-            {"name": "20 bore: 3 in (76mm)"},
-            {"name": "20 bore: 3+1⁄2 in (89mm)"},
-            {"name": "24 bore: 2+1⁄2 in (64mm)"},
-            {"name": "28 bore: 2+1⁄2 in (64mm)"},
-            {"name": "28 bore: 2+3⁄4 in (70mm)"},
-            {"name": "28 bore: 3 in (76mm)"},
-            {"name": "32 bore: 2+1⁄2 in (64mm)"},
+            {
+                "name": "8 bore: 3 in (76mm)",
+                "displayName": "8/76"
+            },
+            {
+                "name": "8 bore: 3+1⁄4 in (83mm)",
+                "displayName": "8/83"
+            },
+            {
+                "name": "8 bore: 3+3⁄4 in (95mm)",
+                "displayName": "8/95"
+            },
+            {
+                "name": "8 bore: 4 in (102mm)",
+                "displayName": "8/102"
+            },
+            {
+                "name": "10 bore: 2+9⁄16 in (65mm)",
+                "displayName": "10/65"
+            },
+            {
+                "name": "10 bore: 2+5⁄8 in (67mm)",
+                "displayName": "10/67"
+            },
+            {
+                "name": "10 bore: 2+7⁄8 in (73mm)",
+                "displayName": "10/73"
+            },
+            {
+                "name": "10 bore: 3 in (76mm)",
+                "displayName": "10/76"
+            },
+            {
+                "name": "10 bore: 3+1⁄4 in (83mm)",
+                "displayName": "10/83"
+            },
+            {
+                "name": "10 bore: 3+1⁄2 in (89mm)",
+                "displayName": "10/89"
+            },
+            {
+                "name": "12 bore: 1+3⁄4 in (44mm)",
+                "displayName": "12/44"
+            },
+            {
+                "name": "12 bore: 2 in (51mm)",
+                "displayName": "12/51"
+            },
+            {
+                "name": "12 bore: 2+1⁄4 in (57mm)",
+                "displayName": "12/57"
+            },
+            {
+                "name": "12 bore: 2+1⁄2 in (64mm)",
+                "displayName": "12/64"
+            },
+            {
+                "name": "12 bore: 2+21/32 in (67.5mm)",
+                "displayName": "12/67.5"
+            },
+            {
+                "name": "12 bore: 2+3⁄4 in (70mm)",
+                "displayName": "12/70"
+            },
+            {
+                "name": "12 bore: 3 in (76mm)",
+                "displayName": "12/76"
+            },
+            {
+                "name": "12 bore: 3+1⁄2 in (89mm)",
+                "displayName": "12/89"
+            },
+            {
+                "name": "14 bore: 2+1⁄2 in (64mm)",
+                "displayName": "14/64"
+            },
+            {
+                "name": "16 bore: 2+1⁄2 in (64mm)",
+                "displayName": "16/64"
+            },
+            {
+                "name": "16 bore: 2+9⁄16 in (65mm)",
+                "displayName": "16/65"
+            },
+            {
+                "name": "16 bore: 2+5⁄8 in (67mm)",
+                "displayName": "16/67"
+            },
+            {
+                "name": "16 bore: 2+3⁄4 in (70mm)",
+                "displayName": "16/70"
+            },
+            {
+                "name": "16 bore: 3 in (76mm)",
+                "displayName": "16/76"
+            },
+            {
+                "name": "20 bore: 2+1⁄2 in (64mm)",
+                "displayName": "20/64"
+            },
+            {
+                "name": "20 bore: 2+3⁄4 in (70mm)",
+                "displayName": "20/70"
+            },
+            {
+                "name": "20 bore: 3 in (76mm)",
+                "displayName": "20/76"
+            },
+            {
+                "name": "20 bore: 3+1⁄2 in (89mm)",
+                "displayName": "20/89"
+            },
+            {
+                "name": "24 bore: 2+1⁄2 in (64mm)",
+                "displayName": "24/64"
+            },
+            {
+                "name": "28 bore: 2+1⁄2 in (64mm)",
+                "displayName": "28/64"
+            },
+            {
+                "name": "28 bore: 2+3⁄4 in (70mm)",
+                "displayName": "28/70"
+            },
+            {
+                "name": "28 bore: 3 in (76mm)",
+                "displayName": "28/76"
+            },
+            {
+                "name": "32 bore: 2+1⁄2 in (64mm)",
+                "displayName": "32/64"
+            },
             {"name": ".410 bore: 2 in (51mm)"},
             {"name": ".410 bore: 2+1⁄2 in (64mm)"},
             {"name": ".410 bore: 3 in (76mm)"},
