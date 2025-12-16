@@ -53,7 +53,7 @@ export default function Statistics(){
     },[])
 
     return(
-        <List.Accordion left={props => <><List.Icon {...props} icon="chart-box-outline" /><List.Icon {...props} icon="chart-arc" /></>} title={preferenceTitles.statistics[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
+        <List.Accordion left={props => <List.Icon {...props} icon="chart-box-outline" />} title={preferenceTitles.statistics[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
             <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                 {Object.entries(statistics).map((statistic, index) =>{
                     return(
