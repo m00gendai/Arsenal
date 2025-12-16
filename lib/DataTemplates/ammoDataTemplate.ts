@@ -97,6 +97,5 @@ export const emptyAmmoObject:AmmoType = {
     criticalStock: null,
     tags: [],
     images: [],
-    previousStock: null,
     remarks: null,
 }
