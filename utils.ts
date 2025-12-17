@@ -1,14 +1,26 @@
-import { AmmoType, GunType, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
-import { gunDataTemplate } from "./lib/gunDataTemplate";
+import { AmmoType, CollectionType, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
+import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
-import { ammoDataTemplate } from "./lib/ammoDataTemplate";
+import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
 import { requiredFieldsAmmo, requiredFieldsGun } from "./configs";
 import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
+import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
+import { DisplayVariants } from "stores/usePreferenceStore";
 
-export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
+export function getShortCaliberName(calibers:string[], caliberDisplayNameList:{name: string; displayName?: string;}[]){
+    const outputArray = calibers.map(item => {
+        // Find an object where displayName matches the item
+        const match = caliberDisplayNameList.find(obj => obj.name === item)
+        // If a match is found, return the displayName, else return the original item
+        return match ? match.displayName : item;
+    });
+    return outputArray
+}
+
+export function getIcon(type:SortingTypes){
     switch(type){
         case "alphabetical":
             return "alphabetical-variant"
@@ -30,27 +42,30 @@ export function getIcon(type:SortingTypesGun | SortingTypesAmmo){
             return "counter"
         case "lastTopUpAt":
             return "basket-plus-outline"
+        case "decibelRating":
+            return "volume-source"
         default:
             return "alphabetical-variant"
     }
 }
 
-export function gunDataValidation(value:GunType, lang:string){
-    let validationResponse: {field: string, error: string}[] = []
-    const requiredFields: string[] = requiredFieldsGun
-    const x:{de: string, en: string, fr: string}[] = gunDataTemplate.filter(item => requiredFields.includes(item.name))
-    for(const entry of requiredFields){
-       if( !(entry in value) || value[entry].length == 0 ){
-        validationResponse = [...validationResponse, {field: x[0][lang], error: validationErros.requiredFieldEmpty[lang]}]
-       }
+export function getDisplaySwitchIcon(type: DisplayVariants){
+    switch(type){
+        case "list":
+            return "format-list-bulleted-type"
+        case "grid":
+            return "view-grid"
+        case "compactList":
+            return "format-list-group"
+        default:
+            return "view-grid"
     }
-    return validationResponse
 }
 
-export function ammoDataValidation(value:AmmoType, lang:string){
+export function itemDataValidation(collection: CollectionType, value:ItemType, lang:string){
     let validationResponse: {field: string, error: string}[] = []
-    const requiredFields: string[] = requiredFieldsAmmo
-    const x:{de: string, en: string, fr: string}[] = ammoDataTemplate.filter(item => requiredFields.includes(item.name))
+    const requiredFields: string[] = determineRequiredFields(collection)
+    const x:{de: string, en: string, fr: string}[] = determineDataTemplate(collection).filter(item => requiredFields.includes(item.name))
     for(const entry of requiredFields){
        if( !(entry in value) || value[entry].length == 0 ){
         validationResponse = [...validationResponse, {field: x[0][lang], error: validationErros.requiredFieldEmpty[lang]}]
@@ -131,31 +146,29 @@ function mapIntervals(interval){
     }
 }
 
-export function checkDate(gun:GunType){
-    if(gun === undefined){
+export function checkDate(item:ItemType){
+    if(item === undefined){
         return
     }
-    if(gun.lastCleanedAt === undefined){
+    if(!('lastCleanedAt_unix' in item) || !('cleanInterval' in item)){
         return
     }
-    if(gun.lastCleanedAt === null){
+
+    if(!item.lastCleanedAt_unix){
         return
     }
-    if(gun.cleanInterval === undefined){
+    if(!item.cleanInterval){
         return
     }
-    if(gun.cleanInterval === "none"){
+    if(item.cleanInterval === "none"){
         return
     }
+
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    let [day, month, year] = gun.lastCleanedAt.split('.')
-    const firstDate = new Date(Number(year), Number(month) - 1, Number(day)).getTime()
-    const todayYear = new Date().getFullYear()
-    const todayMonth = new Date().getMonth()
-    const todayDay = new Date().getDate()
-    const secondDate = new Date(todayYear, todayMonth, todayDay).getTime()
+    const firstDate = item.lastCleanedAt_unix
+    const secondDate = new Date().getTime()
     const diffDays = Math.round(Math.abs((Number(firstDate) - Number(secondDate)) / oneDay));
-    if(diffDays > mapIntervals(gun.cleanInterval)){
+    if(diffDays > mapIntervals(item.cleanInterval)){
         return true
     }
     return false
@@ -180,3 +193,9 @@ export function cleanNullValues (obj: GunType | AmmoType){
     });
     return cleaned;
   };
+
+  export function intlNumberFormatOptions(input){
+    return {
+        minimumFractionDigits: input % 1 === 0 ? 0 : 2,
+        maximumFractionDigits: input % 1 === 0 ? 0 : 2,
+  }}

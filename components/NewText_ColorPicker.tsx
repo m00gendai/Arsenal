@@ -1,6 +1,6 @@
 import { IconButton, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../interfaces';
 import { View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import ColorPicker, { Panel1, Swatches, Preview, HueSlider, InputWidget } from 'reanimated-color-picker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
@@ -11,13 +11,13 @@ import { GetColorName } from 'hex-color-to-color-name';
 
 interface Props{
     data: string
-    itemData?: GunType | AmmoType 
-    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    itemData?: ItemType
+    setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: COLORPICKER TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showModal, setShowModal] = useState(false);
     const [color, setColor] = useState<string>(itemData && itemData[data] ? itemData[data] : "#000")
@@ -85,7 +85,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function checkColor(color:string){
-        console.log(color)
+
         if(color === undefined){
             return ""
         }

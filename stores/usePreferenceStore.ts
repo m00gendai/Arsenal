@@ -1,101 +1,179 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc} from "../interfaces"
+
+export type DisplayVariants = "grid" | "list" | "compactList"
 
 interface GeneralSettings{
   displayImagesInListViewGun: boolean
   displayImagesInListViewAmmo: boolean
+  displayImagesInListViewAccessory_Silencer: boolean
+  displayImagesInListViewAccessory_Optic: boolean
+  displayImagesInListViewAccessory_Scope: boolean
+  displayImagesInListViewAccessory_LightLaser: boolean
+  displayImagesInListViewAccessory_Magazine: boolean
+  displayImagesInListViewAccessory_Misc: boolean
+  displayImagesInListViewPart_ConversionKit: boolean
+  displayImagesInListViewPart_Barrel: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
   caliberDisplayName: boolean
 }
 
-interface PreferenceStore {
-    language: string
-    switchLanguage: (lang: string) => void
-    theme: {name: string, colors: Color},
-    switchTheme: (name: string) => void,
-    dbImport: Date,
-    setDbImport: (date: Date) => void
-    displayAsGrid: boolean
-    setDisplayAsGrid: (status: boolean) => void
-    toggleDisplayAsGrid: () => void
-    sortBy: SortingTypesGun
-    setSortBy: (type: SortingTypesGun) => void
-    ammoDbImport: Date
-    setAmmoDbImport: (date: Date) => void
-    displayAmmoAsGrid: boolean
-    setDisplayAmmoAsGrid: (status: boolean) => void
-    toggleDisplayAmmoAsGrid: () => void
-    sortAmmoBy: SortingTypesAmmo
-    setSortAmmoBy: (type: SortingTypesAmmo) => void
-    generalSettings: GeneralSettings
-    setGeneralSettings: (settings: GeneralSettings) => void
-    sortAmmoIcon: string
-    setSortAmmoIcon: (data: string) => void
-    sortGunIcon: string
-    setSortGunIcon: (data: string) => void
-    sortGunsAscending: boolean
-    toggleSortGunsAscending: () => void
-    setSortGunsAscending: (status: boolean) => void
-    sortAmmoAscending: boolean
-    toggleSortAmmoAscending: () => void
-    setSortAmmoAscending: (status: boolean) => void
-    firstOpen: boolean
-    setFirstOpen: () => void
-    caliberDisplayNameList: {name: string, displayName: string}[]
-    setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
-    gunFilterOn: boolean
-    toggleGunFilterOn: () => void
-    ammoFilterOn: boolean
-    toggleAmmoFilterOn: () => void
-  }
+interface DisplaySettings{
+  gunCollection: DisplayVariants
+  ammoCollection: DisplayVariants
+  accessoryCollection_Silencer: DisplayVariants
+  accessoryCollection_Optic: DisplayVariants
+  accessoryCollection_Scope: DisplayVariants
+  accessoryCollection_LightLaser: DisplayVariants
+  accessoryCollection_Magazine: DisplayVariants
+  accessoryCollection_Misc: DisplayVariants
+  partCollection_ConversionKit: DisplayVariants
+  partCollection_Barrel: DisplayVariants
+  accessoryView: DisplayVariants
+}
 
-  export const usePreferenceStore = create<PreferenceStore>((set) => ({
+export interface SorterSettings{
+  gunCollection: {type: SortingTypesGun, direction: "asc" | "desc", icon: string}
+  ammoCollection: {type: SortingTypesAmmo, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Silencer: {type: SortingTypesAccessory_Silencer, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Optic: {type: SortingTypesAccessory_Optic, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Scope: {type: SortingTypesAccessory_Scope, direction: "asc" | "desc", icon: string}
+  accessoryCollection_LightLaser: {type: SortingTypesAccessory_LightLaser, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Magazine: {type: SortingTypesAccessory_Magazine, direction: "asc" | "desc", icon: string}
+  accessoryCollection_Misc: {type: SortingTypesAccessory_Misc, direction: "asc" | "desc", icon: string}
+  partCollection_ConversionKit: {type: SortingTypesPart_ConversionKit, direction: "asc" | "desc", icon: string}
+  partCollection_Barrel: {type: SortingTypesPart_Barrel, direction: "asc" | "desc", icon: string}
+}
+
+interface FilterState{
+  gunCollection: boolean
+  ammoCollection: boolean
+  accessoryCollection_Silencer: boolean
+  accessoryCollection_Optic: boolean
+  accessoryCollection_Scope: boolean
+  accessoryCollection_LightLaser: boolean
+  accessoryCollection_Magazine: boolean
+  accessoryCollection_Misc: boolean
+  partCollection_ConversionKit: boolean
+  partCollection_Barrel: boolean
+}
+
+interface InitialStoreState {
+  language: Languages
+  theme: {name: string, colors: Color}
+  generalSettings: GeneralSettings
+  displaySettings: DisplaySettings
+  sortBy: SorterSettings
+  caliberDisplayNameList: { name: string; displayName?: string }[]
+  filterOn: FilterState
+  hasCheckedForLegacyGunData: boolean
+  hasCheckedForLegacyAmmoData: boolean
+  hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
+  hasConvertedLegacyAmmoCaliberFieldToStringArray: boolean
+}
+
+const initialState:InitialStoreState = {
     language: "de",
-    switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
     theme: { name: "default", colors: colorThemes.default },
-    switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
-    dbImport: null,
-    setDbImport: (date: Date) => set((state) => ({dbImport: date})),
-    displayAsGrid: true,
-    setDisplayAsGrid: (status: boolean) => set((state) => ({displayAsGrid: status})),
-    toggleDisplayAsGrid: () => set((state) => ({displayAsGrid: !state.displayAsGrid})),
-    sortBy: "alphabetical",
-    setSortBy: (type: SortingTypesGun) => set((state) => ({sortBy: type})),
-    ammoDbImport: null,
-    setAmmoDbImport: (date: Date) => set((state) => ({ammoDbImport: date})),
-    displayAmmoAsGrid: true,
-    setDisplayAmmoAsGrid: (status: boolean) => set((state) => ({displayAmmoAsGrid: status})),
-    toggleDisplayAmmoAsGrid: () => set((state) => ({displayAmmoAsGrid: !state.displayAmmoAsGrid})),
-    sortAmmoBy: "alphabetical",
-    setSortAmmoBy: (type: SortingTypesAmmo) => set((state) => ({sortAmmoBy: type})),
-    sortAmmoIcon: "alphabetical-variant",
-    setSortAmmoIcon: (data: string) => set((state) => ({sortAmmoIcon: data})),
-    sortGunIcon: "alphabetical-variant",
-    setSortGunIcon: (data: string) => set((state) => ({sortGunIcon: data})),
-    sortGunsAscending: true,
-    toggleSortGunsAscending: () => set((state) => ({sortGunsAscending: !state.sortGunsAscending})),
-    setSortGunsAscending: (status: boolean) => set((state) => ({sortGunsAscending: status})),
-    sortAmmoAscending: true,
-    toggleSortAmmoAscending: () => set((state) => ({sortAmmoAscending: !state.sortAmmoAscending})),
-    setSortAmmoAscending: (status: boolean) => set((state) => ({sortAmmoAscending: status})),
     generalSettings: {
       displayImagesInListViewGun: true,
       displayImagesInListViewAmmo: true,
+      displayImagesInListViewAccessory_Silencer: true,
+      displayImagesInListViewAccessory_Optic: true,
+      displayImagesInListViewAccessory_Scope: true,
+      displayImagesInListViewAccessory_LightLaser: true,
+      displayImagesInListViewAccessory_Magazine: true,
+      displayImagesInListViewAccessory_Misc: true,
+      displayImagesInListViewPart_ConversionKit: true,
+      displayImagesInListViewPart_Barrel: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
       caliberDisplayName: false,
     },
-    setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
-    firstOpen: true,
-    setFirstOpen: () => set((state) => ({firstOpen: !state.firstOpen})),
+    displaySettings: {
+      gunCollection: "grid",
+      ammoCollection: "grid",
+      accessoryCollection_Silencer: "grid",
+      accessoryCollection_Optic: "grid",
+      accessoryCollection_Scope: "grid",
+      accessoryCollection_LightLaser: "grid",
+      accessoryCollection_Magazine: "grid",
+      accessoryCollection_Misc: "grid",
+      partCollection_ConversionKit: "grid",
+      partCollection_Barrel: "grid",
+      accessoryView: "grid"
+    },
+    sortBy: {
+      gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      ammoCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Silencer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Optic: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Scope: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_LightLaser: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Magazine: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      accessoryCollection_Misc: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_Barrel: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+    },
     caliberDisplayNameList: [],
+    filterOn: {
+      gunCollection: false,
+      ammoCollection: false,
+      accessoryCollection_Silencer: false,
+      accessoryCollection_Optic: false,
+      accessoryCollection_Scope: false,
+      accessoryCollection_LightLaser: false,
+      accessoryCollection_Magazine: false,
+      accessoryCollection_Misc: false,
+      partCollection_ConversionKit: false,
+      partCollection_Barrel: false
+    },
+    hasCheckedForLegacyGunData: false,
+    hasCheckedForLegacyAmmoData: false,
+    hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
+    hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
+  }
+
+
+interface StoreFunctions {
+    switchLanguage: (lang: string) => void
+    switchTheme: (name: string) => void,
+    setGeneralSettings: (settings: GeneralSettings) => void
+    setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
+    setDisplaySettings: (settings: DisplaySettings) => void
+    setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
+    setFilterOn: (status: FilterState) => void
+    setHasCheckedForLegacyGunData: (status: boolean) => void
+    setHasCheckedForLegacyAmmoData: (status: boolean) => void
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => void
+    setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => void
+    resetPreferenceStore: () => void
+  }
+
+  
+  export const usePreferenceStore = create<InitialStoreState & StoreFunctions>((set, store) => ({
+    ...initialState,
+    
+    switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
+    switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
+    setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
+    setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
     setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
-    gunFilterOn: false,
-    toggleGunFilterOn: () => set((state) => ({gunFilterOn: !state.gunFilterOn})),
-    ammoFilterOn: false,
-    toggleAmmoFilterOn: () => set((state) => ({ammoFilterOn: !state.ammoFilterOn}))
-  }))
+    setSortBy: (collection, settings) => set((state) => ({
+      sortBy: { 
+        ...state.sortBy, 
+        [collection]: settings 
+      }
+    })),
+    setFilterOn: (status: FilterState) => set((state) => ({filterOn: status})),
+    setHasCheckedForLegacyGunData: (status: boolean) => set((state) => ({hasCheckedForLegacyGunData: status})),
+    setHasCheckedForLegacyAmmoData: (status: boolean) => set((state) => ({hasCheckedForLegacyAmmoData: status})),
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
+    setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
+    resetPreferenceStore: () => {set(initialState);
+  },
+}))

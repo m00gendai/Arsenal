@@ -1,0 +1,1 @@
+ALTER TABLE `accessories_magazine` ADD `currentStock` text;

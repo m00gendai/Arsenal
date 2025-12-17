@@ -1,6 +1,6 @@
 import { IconButton, TextInput, Text, RadioButton, Divider } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { defaultViewPadding } from '../configs';
@@ -9,13 +9,13 @@ import { cleanIntervals, modalTexts } from '../lib/textTemplates';
 
 interface Props{
     data: string
-    itemData?: GunType | AmmoType 
-    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    itemData?: ItemType
+    setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: INTERVAL TEXT`)
+
     const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
     const [showCleanModal, setShowCleanModal] = useState<boolean>(false)
     const [checked, setChecked] = useState<string>("-")

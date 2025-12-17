@@ -433,4 +433,194 @@ export const colorThemes: ColorTheme = {
       "onSurfaceDisabled": "rgba(233, 225, 216, 0.38)",
       "backdrop": "rgba(54, 48, 36, 0.4)"
   },
+  "hotPink": {
+    "primary": "rgb(172, 36, 113)",
+    "onPrimary": "rgb(255, 255, 255)",
+    "primaryContainer": "rgb(255, 216, 230)",
+    "onPrimaryContainer": "rgb(61, 0, 36)",
+    "secondary": "rgb(115, 87, 97)",
+    "onSecondary": "rgb(255, 255, 255)",
+    "secondaryContainer": "rgb(254, 217, 230)",
+    "onSecondaryContainer": "rgb(42, 21, 30)",
+    "tertiary": "rgb(126, 85, 56)",
+    "onTertiary": "rgb(255, 255, 255)",
+    "tertiaryContainer": "rgb(255, 220, 198)",
+    "onTertiaryContainer": "rgb(48, 20, 0)",
+    "error": "rgb(186, 26, 26)",
+    "onError": "rgb(255, 255, 255)",
+    "errorContainer": "rgb(255, 218, 214)",
+    "onErrorContainer": "rgb(65, 0, 2)",
+    "background": "rgb(255, 251, 255)",
+    "onBackground": "rgb(31, 26, 28)",
+    "surface": "rgb(255, 251, 255)",
+    "onSurface": "rgb(31, 26, 28)",
+    "surfaceVariant": "rgb(241, 222, 227)",
+    "onSurfaceVariant": "rgb(80, 67, 72)",
+    "outline": "rgb(131, 115, 120)",
+    "outlineVariant": "rgb(212, 194, 199)",
+    "shadow": "rgb(0, 0, 0)",
+    "scrim": "rgb(0, 0, 0)",
+    "inverseSurface": "rgb(53, 47, 49)",
+    "inverseOnSurface": "rgb(250, 238, 240)",
+    "inversePrimary": "rgb(255, 176, 208)",
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(251, 240, 248)",
+      "level2": "rgb(248, 234, 244)",
+      "level3": "rgb(246, 227, 239)",
+      "level4": "rgb(245, 225, 238)",
+      "level5": "rgb(243, 221, 235)"
+    },
+    "surfaceDisabled": "rgba(31, 26, 28, 0.12)",
+    "onSurfaceDisabled": "rgba(31, 26, 28, 0.38)",
+    "backdrop": "rgba(57, 45, 49, 0.4)"
+  },
+  "hotPink_dark": {
+    "primary": "rgb(255, 176, 208)",
+    "onPrimary": "rgb(99, 0, 61)",
+    "primaryContainer": "rgb(140, 0, 88)",
+    "onPrimaryContainer": "rgb(255, 216, 230)",
+    "secondary": "rgb(225, 189, 202)",
+    "onSecondary": "rgb(65, 42, 51)",
+    "secondaryContainer": "rgb(89, 63, 74)",
+    "onSecondaryContainer": "rgb(254, 217, 230)",
+    "tertiary": "rgb(241, 187, 152)",
+    "onTertiary": "rgb(73, 40, 15)",
+    "tertiaryContainer": "rgb(99, 62, 35)",
+    "onTertiaryContainer": "rgb(255, 220, 198)",
+    "error": "rgb(255, 180, 171)",
+    "onError": "rgb(105, 0, 5)",
+    "errorContainer": "rgb(147, 0, 10)",
+    "onErrorContainer": "rgb(255, 180, 171)",
+    "background": "rgb(31, 26, 28)",
+    "onBackground": "rgb(235, 224, 226)",
+    "surface": "rgb(31, 26, 28)",
+    "onSurface": "rgb(235, 224, 226)",
+    "surfaceVariant": "rgb(80, 67, 72)",
+    "onSurfaceVariant": "rgb(212, 194, 199)",
+    "outline": "rgb(157, 140, 146)",
+    "outlineVariant": "rgb(80, 67, 72)",
+    "shadow": "rgb(0, 0, 0)",
+    "scrim": "rgb(0, 0, 0)",
+    "inverseSurface": "rgb(235, 224, 226)",
+    "inverseOnSurface": "rgb(53, 47, 49)",
+    "inversePrimary": "rgb(172, 36, 113)",
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(42, 34, 37)",
+      "level2": "rgb(49, 38, 42)",
+      "level3": "rgb(56, 43, 48)",
+      "level4": "rgb(58, 44, 50)",
+      "level5": "rgb(62, 47, 53)"
+    },
+    "surfaceDisabled": "rgba(235, 224, 226, 0.12)",
+    "onSurfaceDisabled": "rgba(235, 224, 226, 0.38)",
+    "backdrop": "rgba(57, 45, 49, 0.4)"
+  },
+  "white": {
+    "primary": "rgb(90, 90, 90)",
+    "onPrimary": "rgb(255, 255, 255)",
+    "primaryContainer": "rgb(230, 230, 230)",
+    "onPrimaryContainer": "rgb(30, 30, 30)",
+
+    "secondary": "rgb(110, 110, 110)",
+    "onSecondary": "rgb(255, 255, 255)",
+    "secondaryContainer": "rgb(235, 235, 235)",
+    "onSecondaryContainer": "rgb(40, 40, 40)",
+
+    "tertiary": "rgb(120, 120, 120)",
+    "onTertiary": "rgb(255, 255, 255)",
+    "tertiaryContainer": "rgb(240, 240, 240)",
+    "onTertiaryContainer": "rgb(45, 45, 45)",
+
+    "error": "rgb(120, 120, 120)",
+    "onError": "rgb(255, 255, 255)",
+    "errorContainer": "rgb(235, 235, 235)",
+    "onErrorContainer": "rgb(40, 40, 40)",
+
+    "background": "rgb(252, 252, 252)",
+    "onBackground": "rgb(30, 30, 30)",
+
+    "surface": "rgb(252, 252, 252)",
+    "onSurface": "rgb(30, 30, 30)",
+
+    "surfaceVariant": "rgb(230, 230, 230)",
+    "onSurfaceVariant": "rgb(70, 70, 70)",
+
+    "outline": "rgb(150, 150, 150)",
+    "outlineVariant": "rgb(200, 200, 200)",
+
+    "shadow": "rgb(0, 0, 0)",
+    "scrim": "rgb(0, 0, 0)",
+
+    "inverseSurface": "rgb(45, 45, 45)",
+    "inverseOnSurface": "rgb(240, 240, 240)",
+    "inversePrimary": "rgb(200, 200, 200)",
+
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(245, 245, 245)",
+      "level2": "rgb(240, 240, 240)",
+      "level3": "rgb(235, 235, 235)",
+      "level4": "rgb(232, 232, 232)",
+      "level5": "rgb(228, 228, 228)"
+    },
+
+    "surfaceDisabled": "rgba(30, 30, 30, 0.12)",
+    "onSurfaceDisabled": "rgba(30, 30, 30, 0.38)",
+    "backdrop": "rgba(50, 50, 50, 0.4)"
+  },
+  "black": {
+    "primary": "rgb(200, 200, 200)",
+    "onPrimary": "rgb(20, 20, 20)",
+    "primaryContainer": "rgb(55, 55, 55)",
+    "onPrimaryContainer": "rgb(235, 235, 235)",
+
+    "secondary": "rgb(180, 180, 180)",
+    "onSecondary": "rgb(20, 20, 20)",
+    "secondaryContainer": "rgb(60, 60, 60)",
+    "onSecondaryContainer": "rgb(230, 230, 230)",
+
+    "tertiary": "rgb(170, 170, 170)",
+    "onTertiary": "rgb(20, 20, 20)",
+    "tertiaryContainer": "rgb(65, 65, 65)",
+    "onTertiaryContainer": "rgb(225, 225, 225)",
+
+    "error": "rgb(200, 200, 200)",
+    "onError": "rgb(20, 20, 20)",
+    "errorContainer": "rgb(70, 70, 70)",
+    "onErrorContainer": "rgb(235, 235, 235)",
+
+    "background": "rgb(15, 15, 15)",
+    "onBackground": "rgb(235, 235, 235)",
+
+    "surface": "rgb(18, 18, 18)",
+    "onSurface": "rgb(235, 235, 235)",
+
+    "surfaceVariant": "rgb(45, 45, 45)",
+    "onSurfaceVariant": "rgb(180, 180, 180)",
+
+    "outline": "rgb(120, 120, 120)",
+    "outlineVariant": "rgb(80, 80, 80)",
+
+    "shadow": "rgb(0, 0, 0)",
+    "scrim": "rgb(0, 0, 0)",
+
+    "inverseSurface": "rgb(235, 235, 235)",
+    "inverseOnSurface": "rgb(30, 30, 30)",
+    "inversePrimary": "rgb(90, 90, 90)",
+
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(28, 28, 28)",
+      "level2": "rgb(32, 32, 32)",
+      "level3": "rgb(36, 36, 36)",
+      "level4": "rgb(40, 40, 40)",
+      "level5": "rgb(44, 44, 44)"
+    },
+
+    "surfaceDisabled": "rgba(235, 235, 235, 0.12)",
+    "onSurfaceDisabled": "rgba(235, 235, 235, 0.38)",
+    "backdrop": "rgba(0, 0, 0, 0.5)"
+  }
 }

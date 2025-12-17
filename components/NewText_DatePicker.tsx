@@ -1,9 +1,8 @@
 import { IconButton, TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType } from '../interfaces';
+import { ItemType } from '../interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
-import dayjs from 'dayjs';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { dateTimeOptions, defaultViewPadding } from '../configs';
 import ModalContainer from './ModalContainer';
@@ -11,17 +10,17 @@ import { modalTexts } from '../lib/textTemplates';
 
 interface Props{
     data: string
-    itemData?: GunType | AmmoType 
-    setItemData?: React.Dispatch<React.SetStateAction<GunType | AmmoType>>
+    itemData?: ItemType
+    setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
 }
 
 export default function NewText({data, itemData, setItemData, label}: Props){
-    console.log(`${data}: DATEPICKER TEXT`)
-    const [input, setInput] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
+
+    const [input, setInput] = useState<number>(itemData && itemData[data] ? itemData[data] : "")
     const [showDateTime, setShowDateTime] = useState<boolean>(false)
-    const [date, setDate] = useState<(string | number | Date | dayjs.Dayjs)>(dayjs());
-    const [initialDate, setInitialDate] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
+    const [date, setDate] = useState<number>(itemData && itemData[data] ? itemData[data] : Date.now());
+    const [initialDate, setInitialDate] = useState<number>(itemData && itemData[data] ? itemData[data] : null)
 
     const { language, theme } = usePreferenceStore()
 
@@ -31,29 +30,31 @@ export default function NewText({data, itemData, setItemData, label}: Props){
 
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(input:string | string[]){
+    function updateItemData(input: number){
         if(charCount < MAX_CHAR_COUNT){
-            setCharCount(input !== undefined ? input.length : 0)
-            setInput(Array.isArray(input) ? input.join("\n") : input)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
+            setCharCount(0)
+            setInput(input)
+            setItemData({...itemData, [data]: input})
         }
         if(charCount >= MAX_CHAR_COUNT && isBackspace){
-            setCharCount(input !== undefined ? input.length : 0)
-            setInput(Array.isArray(input) ? input.join("\n") : input)
-            setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
+            setCharCount(0)
+            setInput(input)
+            setItemData({...itemData, [data]: input})
         }
     }
 
     function updateDate(input){
-        console.log(input)
-        setInput(new Date(input).toLocaleDateString("de-CH", dateTimeOptions))
+        const inputDate = input as number
+        setInput(new Date(inputDate).getTime())
         setDate(input)
     }
 
     function confirmDate(){
-        updateItemData(input)
+        const inputDate = input ? input as number : date
+
+        updateItemData(inputDate)
         setShowDateTime(false)
-        setInitialDate(input)
+        setInitialDate(inputDate)
     }
 
     function cancelDate(){
@@ -62,7 +63,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function deleteDate(){
-        updateItemData("")
+        updateItemData(null)
         setShowDateTime(false)
     }
 
@@ -93,11 +94,10 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         }}
                         onFocus={()=>handleFocus()}
                         onBlur={()=>setFocus(false)}
-                        value={input ? input.toString() : ""}
+                        value={input ? new Date(input).toLocaleDateString("de-CH", dateTimeOptions) : ""}
                         editable={false}
                         showSoftInputOnFocus={true}
-                        onChangeText={input => updateItemData(input)}
-                        onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
+                        onChangeText={input => updateItemData(Number(input))}
                         left={null}
                         inputMode={"text"}
                         multiline={false}
@@ -121,7 +121,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                             firstDayOfWeek={1}
                             date={date}
                             onChange={(params) => updateDate(params.date)}
-                            selectedItemColor={theme.colors.primaryContainer}
+                            selectedItemColor={theme.colors.primary}
                             calendarTextStyle={{color: theme.colors.onBackground}}
                             headerTextStyle={{color: theme.colors.primary, padding: defaultViewPadding}}
                             headerTextContainerStyle={{backgroundColor: theme.colors.primaryContainer, elevation: 5, marginLeft: defaultViewPadding, marginRight: defaultViewPadding}}

@@ -2,17 +2,13 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateLocales, dateTimeOptions, defaultViewPadding } from "../configs";
-import { AMMO_DATABASE } from "../configs_DB"
+import { dateTimeOptions, defaultViewPadding } from "../configs";
 import { AmmoType } from "../interfaces";
-import * as SecureStore from "expo-secure-store"
-import { useAmmoStore } from "../stores/useAmmoStore";
 import { ammoQuickUpdate, gunQuickShot } from "../lib/textTemplates";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
+import { useItemStore } from "stores/useItemStore";
 
 export default function QuickStock({navigation}){
 
@@ -20,16 +16,12 @@ export default function QuickStock({navigation}){
     const [stockChange, setStockChange] = useState<"dec" | "inc" | "">("")
     const [stockValue, setStockValue] = useState<number>(0)
     const [input, setInput] = useState<string>("")
-    const { ammoDbImport, displayAmmoAsGrid, setDisplayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon } = usePreferenceStore()
-    const { ammoCollection, setAmmoCollection, currentAmmo, setCurrentAmmo } = useAmmoStore()
+    const { language, theme, } = usePreferenceStore()
+    const { currentCollection, setCurrentCollection, currentItem, setCurrentItem } = useItemStore()
     const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
     const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
 
-     const { data } = useLiveQuery(
-        db.select()
-        .from(schema.ammoCollection)
-        .where(eq(schema.ammoCollection.caliber, currentAmmo.caliber))
-      )
+    const currentAmmo = currentItem as AmmoType
 
     async function saveNewStock(ammo:AmmoType){
         const date:Date = new Date()

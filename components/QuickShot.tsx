@@ -1,80 +1,71 @@
 import { ScrollView, View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, List, Text, TextInput } from "react-native-paper";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateLocales, dateTimeOptions, defaultViewPadding } from "../configs";
+import { dateTimeOptions, defaultViewPadding } from "../configs";
 import { gunQuickShot, shotLabel } from "../lib/textTemplates";
-import { useGunStore } from "../stores/useGunStore";
-import { useAmmoStore } from "../stores/useAmmoStore";
 import { useState } from "react";
-import { AmmoType, GunType } from "../interfaces";
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
+import { AmmoType, ItemType } from "../interfaces";
+import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
+import { useItemStore } from "stores/useItemStore";
 
 export default function QuickShot({navigation}){
 
- 
+  const { language, theme } = usePreferenceStore()
+  const { currentItem, setCurrentItem, currentCollection, setCurrentCollection } = useItemStore()
+  const [shotCountFromStock, setShotCountFromStock] = useState<string[]>([])
+  const [shotCountNonStock, setShotCountNonStock] = useState<string>("")
+  const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
+  const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
+  const [negativeAmmoId, setNegativeAmmoId] = useState<string>("")
 
-    const { ammoDbImport, displayAmmoAsGrid, setDisplayAmmoAsGrid, toggleDisplayAmmoAsGrid, sortAmmoBy, setSortAmmoBy, language, theme, sortAmmoIcon, setSortAmmoIcon } = usePreferenceStore()
-    const { gunCollection, setGunCollection, currentGun, setCurrentGun } = useGunStore()
-    const [shotCountFromStock, setShotCountFromStock] = useState<string[]>([])
-    const [shotCountNonStock, setShotCountNonStock] = useState<string>("")
-    const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
-    const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
-    const [negativeAmmoId, setNegativeAmmoId] = useState<string>("")
+  const { data: dataQuery } = useLiveQuery(
+    db.select()
+    .from(schema.ammoCollection)
+  )
 
-    const { data } = useLiveQuery(
-      db.select()
-      .from(schema.ammoCollection)
-      .where(inArray(schema.ammoCollection.caliber, currentGun.caliber))
-    )
+  const data = (dataQuery as AmmoType[]).filter(ammo => {
+    return "caliber" in  currentItem && currentItem.caliber.includes(ammo.caliber[0])
+  })
 
-      async function saveNewStock(id: string, count:number){
-        const date:Date = new Date()
-        await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, id))
-        
-            
-    
+  async function saveNewStock(id: string, count:number){
+    const date:Date = new Date()
+    await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, id))
+  }
 
-    }
+  async function handleShotCount(){
+    const date:Date = new Date()
+    const mapped:number[] = Object.entries(shotCountFromStock).map(item => item[1] === "" ? 0 : Number(item[1]))
+    const currentShotCount:number = "shotCount" in currentItem ? currentItem.shotCount ? 0 : Number(currentItem.shotCount) : 0
+    const total: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCount
 
-    async function handleShotCount(){
-        const date:Date = new Date()
-        const mapped:number[] = Object.entries(shotCountFromStock).map(item => item[1] === "" ? 0 : Number(item[1]))
-        const currentShotCount:number = currentGun.shotCount === undefined ? 0 : currentGun.shotCount === null ? 0 : Number(currentGun.shotCount)
-        const total: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCount
-        const newGun:GunType = {...currentGun, shotCount: `${total}`, lastShotAt: `${date.toLocaleDateString("de-CH", dateTimeOptions)}`}
+    {/*@ts-expect-error*/}
+    await db.update(schema[currentCollection]).set({shotCount: `${total}`, lastShotAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema[currentCollection].id, currentItem.id))
 
-        await db.update(schema.gunCollection).set({shotCount: `${total}`, lastShotAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.gunCollection.id, currentGun.id))
-
-        if (shotCountFromStock.length !== 0) {
-         for (const count of Object.entries(shotCountFromStock)){
-
-          const ammo = await db.selectDistinct().from(schema.ammoCollection).where(eq(schema.ammoCollection.id, count[0]))
-
-          const newStock = parseInt(ammo[0].currentStock) - (count[1] === "" ? 0 : parseInt(count[1]))
-          await saveNewStock(ammo[0].id, newStock)
-         }
-           
-          }
-        
-
-        
-        setShotCountNonStock("")
-        setShotCountFromStock([])
-        navigation.goBack()
+    if (shotCountFromStock.length !== 0) {
+      for (const count of Object.entries(shotCountFromStock)){
+        const ammo = await db.selectDistinct().from(schema.ammoCollection).where(eq(schema.ammoCollection.id, count[0]))
+        const newStock = parseInt(ammo[0].currentStock) - (count[1] === "" ? 0 : parseInt(count[1]))
+        await saveNewStock(ammo[0].id, newStock)
       }
+    }  
 
-      const handleInputChange = (ammoStock: number, ammoId:string, value:string) => {
-        const newValue = value.replace(/[^0-9]/g, '');
-        setNegativeAmmo((ammoStock === undefined ? 0 : ammoStock === null ? 0 : Number(ammoStock)) < Number(value))
-        setNegativeAmmoId(ammoStock === undefined ? "" : ammoStock === null ? "" : Number(ammoStock) < Number(value) ? ammoId : "")
-        setShotCountFromStock(prevState => ({
-          ...prevState,
-          [`${ammoId}`]: newValue
-        }));
-      };
+    setShotCountNonStock("")
+    setShotCountFromStock([])
+    navigation.goBack()
+  }
+
+  const handleInputChange = (ammoStock: number, ammoId:string, value:string) => {
+    const newValue = value.replace(/[^0-9]/g, '');
+    setNegativeAmmo((ammoStock === undefined ? 0 : ammoStock === null ? 0 : Number(ammoStock)) < Number(value))
+    setNegativeAmmoId(ammoStock === undefined ? "" : ammoStock === null ? "" : Number(ammoStock) < Number(value) ? ammoId : "")
+    setShotCountFromStock(prevState => ({
+      ...prevState,
+      [`${ammoId}`]: newValue
+    }));
+  };
 
   
 
@@ -87,7 +78,7 @@ return(
                             <View style={{display: "flex", flexDirection: "row"}}><Text variant="titleLarge" style={{color: theme.colors.primary, padding: defaultViewPadding, flex: 9}}>{`QuickShot`}</Text><IconButton style={{flex: 1}} icon="help-circle-outline" onPress={()=>toggleSeeInfo(true)}/></View>
                         </View>
                   <ScrollView>
-                  {currentGun !== null && currentGun.caliber !== undefined && currentGun.caliber !== null && currentGun.caliber.length !== 0 ? 
+                  {"caliber" in currentItem && currentItem.caliber ? 
                     data.length === 0 ? null : <List.Accordion title={gunQuickShot.updateFromStock[language]} titleStyle={{color: theme.colors.onBackground}}>
                     <View style={{width: "100%", padding: defaultViewPadding, display: "flex", alignItems: "flex-start", flexDirection: "row", flexWrap: "wrap"}}>
                       {data.map(ammo =>{

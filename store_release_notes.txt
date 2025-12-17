@@ -13,6 +13,70 @@ Enter or paste your release notes for fr-FR here
 Enter or paste your release notes for it-IT here
 </it-IT>
 
+V2.1.0
+<de-DE>
+Neu:
+- Neue Sammlungskategorie: Zubehör
+- Neue Sammlungskategorie: Waffenbestandteile
+- Zubehör und Bestandteile lassen sich untereinander oder zu einer Waffe zuweisen
+- Kompakte Listenansicht
+Behoben:
+- Speichern nur möglich, nachdem ein anderes Eingabefeld ausgewählt wurde
+- Zahlenwerte mit Kommas führten zu kaputten Statistiken
+- Suchfeld in Munitionssamllung nicht sichtbar
+</de-DE>
+<en-US>
+New:
+- New collection category: Accessories
+- New collection category: Weapon parts
+- Accessories and parts can be linked with each other and to guns
+- Compact list view
+Fixed:
+- Saving only possible when another input field has been selected first
+- Number values with commas broke statistics
+- Searchfield in ammunition collection not visible
+</en-US>
+<fr-FR>
+Nouveau:
+- Nouvelle catégorie de collection: Accessoires
+- Nouvelle catégorie de collection: Pièces d’armes
+- Les accessoires et les pièces peuvent être liés entre eux et aux armes
+- Affichage de liste compact
+Correctif:
+- Enregistrement possible uniquement après avoir sélectionné un autre champ de saisie
+- Les valeurs numériques avec des virgules ont perturbé les statistiques
+- Le champ de recherche dans la collection de munitions n’était pas visible
+</fr-FR>
+<it-IT>
+Novità:
+- Nuova categoria di collezioni: Accessori
+- Nuova categoria di collezioni: Parti di armi
+- Accessori e parti possono essere collegati tra loro e alle armi
+- Visualizzazione compatta delle liste
+Risolti:
+- Salvataggio possibile solo dopo aver selezionato un altro campo di input
+- Valori numerici con virgole che causavano problemi con le statistiche
+- Campo di ricerca nella collezione di munizioni non visibi
+</it-IT>
+
+V2.0.1
+<de-DE>
+- Potentielle Out of Memory Fehler beim Export der Arsenal-Datenbank behoben
+- Fehler behoben bei seltenen Fällen, in denen Sammlungen erst dann angezeigt werden, wenn die Sortierreihenfolge manuell geändert wird
+</de-DE>
+<en-US>
+- Fixed potential out of memory errors in exporting Arsenal Database 
+- Fixed rare occasions where collections are not displayed until sorting order is manually changed
+</en-US>
+<fr-FR>
+- Correction d'erreurs potentielles de manque de mémoire lors de l'exportation de la base de données Arsenal 
+- Correction de cas rares où les collections ne sont pas affichées tant que l'ordre de tri n'est pas manuellement modifié
+</fr-FR>
+<it-IT>
+- Corretta la potenziale mancanza di memoria durante l'esportazione della banca dati Arsenal 
+- Corretta la rara situazione in cui le collezioni non vengono visualizzate finché l'ordine di ordinamento non viene cambiato manualmente
+</it-IT>
+
 V2.0.0
 <de-DE>
 Völlig überarbeitete interne Datenbankstruktur

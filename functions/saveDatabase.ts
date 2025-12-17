@@ -1,13 +1,14 @@
-import { expo } from "../db/client";
-import * as FileSystem from "expo-file-system";
-import JSZip from "jszip";
-import { db } from "../db/client";
-import * as schema from "../db/schema";
-import { AmmoType, GunType } from "../interfaces";
-import { count } from "drizzle-orm";
+import { db, expo } from "../db/client";
 import { DB_NAME, ZIP_NAME } from "../configs_DB";
-import { Platform } from "react-native";
+import { Directory, Paths } from 'expo-file-system/next';
+import { FileSystem } from 'react-native-file-access';
+import { zip } from 'react-native-zip-archive'
+import * as schema from "../db/schema";
+import { GunType, ItemType } from "../interfaces";
+import * as ExpoFS from "expo-file-system";
+import { collectionExportDirectories } from "../configs";
 import * as Sharing from 'expo-sharing';
+import { Platform } from "react-native";
 
 export default async function saveDatabase(
   setImportSize:(num:number)=>void, 
@@ -15,130 +16,90 @@ export default async function saveDatabase(
   resetImportProgress:(num:number)=>void
 ) {
 
-  let importProgress = 0
-  let permissions:FileSystem.FileSystemRequestDirectoryPermissionsResult
-  let fileUri:string
+  const dbPath = `file://${expo.databasePath}`;
+
+  let tempDir: Directory;
+  let imagesFolder: Directory
+  
+  try {
+    tempDir = new Directory(Paths.document, 'tmp_rsnl_bckp')
+    imagesFolder = new Directory(tempDir, 'images')
+    
+    if(tempDir.exists){
+      tempDir.delete();
+    }
+    tempDir.create();
+    imagesFolder.create()
+    
+  } catch(e) {
+    console.error(`Failed creating temporary directory: ${e}`)
+    return;
+  }
+  
+  try { 
+    await FileSystem.cp(dbPath, `${tempDir.uri}/${DB_NAME}`)
+  } catch(e) {
+    console.error(`Failed copying DB to tempDir1: ${e}`)
+    return;
+  }
+
+    try{
+
+      for(const item of collectionExportDirectories){
+
+        const collectionImagesFolder = new Directory(imagesFolder, item)
+        if(!collectionImagesFolder.exists){
+          collectionImagesFolder.create()
+        }
+
+        const itemsWithImages = await db.select().from(schema[item]) as ItemType[]
+        
+        for (const entry of itemsWithImages) {
+          if (entry.images?.length) {
+            for (const imagePath of entry.images) {
+              const fileName = imagePath.split("/").pop();
+              const sourceUri = `${ExpoFS.documentDirectory}${fileName}`;
+              const fileInfo = await ExpoFS.getInfoAsync(sourceUri);
+              if (fileInfo.exists) {
+                await FileSystem.cp(sourceUri, `${collectionImagesFolder.uri}${fileName}`)
+              }
+            }
+          }
+        }
+      }
+      
+    } catch(e){
+      throw new Error(`Save DB GunCollection: ${e}`)
+    }
 
   try {
-    
-    if(Platform.OS === "android"){
-      permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-      if (!permissions.granted || !permissions.directoryUri) {
-        console.log("User did not grant folder permissions.");
-        return;
-      }
-
-      fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
-        permissions.directoryUri,
-        ZIP_NAME,
-        "application/zip"
-      );
+    await zip(tempDir.uri, `${Paths.document.uri}/${ZIP_NAME}.zip`)
+  } catch(e) {
+    console.error(`Failed to ZIP content of temp1 to temp2: ${e}`)
+    return;
+  }
+  if(Platform.OS === "android"){
+    try {
+      const zipPath = `${Paths.document.uri}/${ZIP_NAME}.zip`;
+      await FileSystem.cpExternal(zipPath, `${ZIP_NAME}.zip`, "downloads")
+      console.info('Database backup successful!')
+    } catch(e) {
+      console.error(`ANDROID failed to copy external: ${e}`)
+      return;
     }
-    
-    console.log("Creating ZIP instance")
-    const zip = new JSZip();
-
-    console.log("Adding DB to ZIP file")
-    const dbPath = `file://${expo.databasePath}`;
-    const dbContent = await FileSystem.readAsStringAsync(dbPath, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-    zip.file(DB_NAME, dbContent, { base64: true });
-
-    console.log("Creating folders")
-    const imagesFolder = zip.folder("images");
-    const imagesFolder_Guns = imagesFolder.folder("gun")
-    const imagesFolder_Ammo = imagesFolder.folder("ammo")
-
-    console.log("Handling GUN Collection")
+  } else if(Platform.OS === "ios"){
     try{
-      const gunsWithImages = await db.select().from(schema.gunCollection) as GunType[]
-      const gunCollectionSize = await db.select({ count: count() }).from(schema.gunCollection)
-      setImportSize(gunCollectionSize[0].count)
-      importProgress = 0
-      for (const gun of gunsWithImages) {
-        if (gun.images?.length) {
-          for (const imagePath of gun.images) {
-            const fileName = imagePath.split("/").pop();
-            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
-            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
-            if (fileInfo.exists) {
-              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
-                encoding: FileSystem.EncodingType.Base64,
-              });
-              imagesFolder_Guns.file(fileName!, imageContent, { base64: true });
-            }
-          }
-        }
-        setImportProgress(importProgress+1)
-      }
-    } catch(e){
-      throw new Error("Save DB GunCollection: ", e)
-    }
-    
-
-    console.log("Handling AMMO Collection")
-    try{
-      const ammoWithImages = await db.select().from(schema.ammoCollection) as AmmoType[]
-      const ammoCollectionSize = await db.select({ count: count() }).from(schema.ammoCollection)
-      setImportSize(ammoCollectionSize[0].count)
-      importProgress = 0
-      for (const ammo of ammoWithImages) {
-        if (ammo.images?.length) {
-          for (const imagePath of ammo.images) {
-            const fileName = imagePath.split("/").pop();
-            const sourceUri = `${FileSystem.documentDirectory}${fileName}`;
-            const fileInfo = await FileSystem.getInfoAsync(sourceUri);
-            if (fileInfo.exists) {
-              const imageContent = await FileSystem.readAsStringAsync(sourceUri, {
-                encoding: FileSystem.EncodingType.Base64,
-              });
-              imagesFolder_Ammo.file(fileName!, imageContent, { base64: true });
-            }
-          }
-        }
-        setImportProgress(importProgress+1)
-      }
+      await Sharing.shareAsync(`${Paths.document.uri}/${ZIP_NAME}.zip`);
     }catch(e){
-      throw new Error("Save DB AmmoCollection: ", e)
+      console.error(`IOS failed to share external: ${e}`)
+      return
     }
-    
-
-    console.log("Generating ZIP Content")
-    const zipContent = await zip.generateAsync({
-      type: "base64",
-      compression: "DEFLATE",
-      compressionOptions: { level: 9 },
-    });
-
-    if(Platform.OS === "android"){
-      console.log("Save ZIP on Android")
-      await FileSystem.writeAsStringAsync(fileUri, zipContent, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-    }else if(Platform.OS === "ios"){
-      console.log("Share ZIP on iOS")
-      const tempZipPath = `${FileSystem.cacheDirectory}${ZIP_NAME}`;
-      
-      await FileSystem.writeAsStringAsync(tempZipPath, zipContent, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      
-      await Sharing.shareAsync(tempZipPath, {
-        mimeType: 'application/zip',
-      })
-    }
-   
-
-    console.log("Export completed successfully!");
-    console.log("File saved at:", fileUri);
-
-    
-  } catch (error) {
-    console.error("Export failed:", error);
-    throw error;
+  }
+  
+  // Clean up temp directories
+  try {
+    tempDir.delete();
+  } catch(e) {
+    console.error(`Failed to clean up: ${e}`)
   }
 }
-
-/*} // 7. Share the ZIP file if (await Sharing.isAvailableAsync()) { await Sharing.shareAsync(zipPath, { mimeType: 'application/zip', dialogTitle: 'Export Gun Collection' }); } */

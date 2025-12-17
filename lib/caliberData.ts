@@ -180,7 +180,10 @@ export const calibers:Caliber[] = [
             {"name": "6.5x52mm Carcano"},
             {"name": "6.5x53mmR"},
             {"name": "6.5x54mm Mannlicher–Schönauer"},
-            {"name": "6.5x55mm Swedish (aka 6.5x55mm Krag)"},
+            {
+                "name": "6.5x55mm Swedish (aka 6.5x55mm Krag)",
+                "displayName": "6.5x55mm Swedish"
+            },
             {"name": "6.5x57mm Mauser"},
             {"name": "6.5x58mm Vergueiro"},
             {"name": "6.5x68mm"},
@@ -244,6 +247,7 @@ export const calibers:Caliber[] = [
             {"name": ".307 Winchester"},
             {"name": ".308 Norma Magnum"},
             {"name": ".308 Winchester"},
+             {"name": ".30 Herrett"},
             {"name": ".32 ACP (7.65 Browning Short)"},
             {"name": ".32 H&R Magnum"},
             {"name": ".32 Long Colt (.32 Colt)"},
@@ -403,7 +407,7 @@ export const calibers:Caliber[] = [
             {"name": ".357 SIG"},
             {
                 "name": ".357 S&W Magnum",
-                "displayName": ".357 S&W Magnum"
+                "displayName": ".357 Magnum"
             },
             {"name": ".357 SuperMag"},
             {"name": ".357/44 Bain & Davis"},
@@ -694,45 +698,199 @@ export const calibers:Caliber[] = [
           ],          
     },
     {
-        range: "Flintenmunition",
+    range: "20mm",
+    variants: [
+        { "name": "20×70RB (Oerlikon F)" },
+        { "name": "20×72RB (Oerlikon S)" },
+        { "name": "20×101RB (Oerlikon FF)" },
+        { "name": "20×110RB (Oerlikon S)" },
+        { "name": "20×138B (Long Solothurn)" },
+        { "name": "20×102mm" }
+    ]
+    },
+    {
+    range: "23mm",
+    variants: [
+        { "name": "23×152B" }
+    ]
+    },
+    {
+    range: "25mm",
+    variants: [
+        { "name": "25×137mm" },
+        { "name": "25×163mm" }
+    ]
+    },
+    {
+    range: "30mm",
+    variants: [
+        { "name": "30×113B" },
+        { "name": "30×165mm" },
+        { "name": "30×173mm" }
+    ]
+    },
+    {
+    range: "37mm",
+    variants: [
+        { "name": "37×252SR" },
+        { "name": "37×263B" }
+    ]
+    },
+    {
+    range: "40mm",
+    variants: [
+        { "name": "40×311R (Bofors L/60)" },
+        { "name": "40×364R (Bofors L/70)" }
+    ]
+    },
+    {
+        range: "Shotgun",
         variants: [
-            {"name": "2 bore: 3+1⁄2 in (89mm)"},
-            {"name": "4 bore: 3+1⁄4 in (83mm)"},
-            {"name": "4 bore: 4 in (102mm)"},
+            {
+                "name": "2 bore: 3+1⁄2 in (89mm)",
+                "displayName": "2/89"
+            },
+            {
+                "name": "4 bore: 3+1⁄4 in (83mm)",
+                "displayName": "4/83"
+            },
+            {
+                "name": "4 bore: 4 in (102mm)",
+                "displayName": "4/102"
+            },
             {"name": "6 bore"},
-            {"name": "8 bore: 3 in (76mm)"},
-            {"name": "8 bore: 3+1⁄4 in (83mm)"},
-            {"name": "8 bore: 3+3⁄4 in (95mm)"},
-            {"name": "8 bore: 4 in (102mm)"},
-            {"name": "10 bore: 2+9⁄16 in (65mm)"},
-            {"name": "10 bore: 2+5⁄8 in (67mm)"},
-            {"name": "10 bore: 2+7⁄8 in (73mm)"},
-            {"name": "10 bore: 3 in (76mm)"},
-            {"name": "10 bore: 3+1⁄4 in (83mm)"},
-            {"name": "10 bore: 3+1⁄2 in (89mm)"},
-            {"name": "12 bore: 1+3⁄4 in (44mm)"},
-            {"name": "12 bore: 2 in (51mm)"},
-            {"name": "12 bore: 2+1⁄4 in (57mm)"},
-            {"name": "12 bore: 2+1⁄2 in (64mm)"},
-            {"name": "12 bore: 2+21/32 in (67.5mm)"},
-            {"name": "12 bore: 2+3⁄4 in (70mm)"},
-            {"name": "12 bore: 3 in (76mm)"},
-            {"name": "12 bore: 3+1⁄2 in (89mm)"},
-            {"name": "14 bore: 2+1⁄2 in (64mm)"},
-            {"name": "16 bore: 2+1⁄2 in (64mm)"},
-            {"name": "16 bore: 2+9⁄16 in (65mm)"},
-            {"name": "16 bore: 2+5⁄8 in (67mm)"},
-            {"name": "16 bore: 2+3⁄4 in (70mm)"},
-            {"name": "16 bore: 3 in (76mm)"},
-            {"name": "20 bore: 2+1⁄2 in (64mm)"},
-            {"name": "20 bore: 2+3⁄4 in (70mm)"},
-            {"name": "20 bore: 3 in (76mm)"},
-            {"name": "20 bore: 3+1⁄2 in (89mm)"},
-            {"name": "24 bore: 2+1⁄2 in (64mm)"},
-            {"name": "28 bore: 2+1⁄2 in (64mm)"},
-            {"name": "28 bore: 2+3⁄4 in (70mm)"},
-            {"name": "28 bore: 3 in (76mm)"},
-            {"name": "32 bore: 2+1⁄2 in (64mm)"},
+            {
+                "name": "8 bore: 3 in (76mm)",
+                "displayName": "8/76"
+            },
+            {
+                "name": "8 bore: 3+1⁄4 in (83mm)",
+                "displayName": "8/83"
+            },
+            {
+                "name": "8 bore: 3+3⁄4 in (95mm)",
+                "displayName": "8/95"
+            },
+            {
+                "name": "8 bore: 4 in (102mm)",
+                "displayName": "8/102"
+            },
+            {
+                "name": "10 bore: 2+9⁄16 in (65mm)",
+                "displayName": "10/65"
+            },
+            {
+                "name": "10 bore: 2+5⁄8 in (67mm)",
+                "displayName": "10/67"
+            },
+            {
+                "name": "10 bore: 2+7⁄8 in (73mm)",
+                "displayName": "10/73"
+            },
+            {
+                "name": "10 bore: 3 in (76mm)",
+                "displayName": "10/76"
+            },
+            {
+                "name": "10 bore: 3+1⁄4 in (83mm)",
+                "displayName": "10/83"
+            },
+            {
+                "name": "10 bore: 3+1⁄2 in (89mm)",
+                "displayName": "10/89"
+            },
+            {
+                "name": "12 bore: 1+3⁄4 in (44mm)",
+                "displayName": "12/44"
+            },
+            {
+                "name": "12 bore: 2 in (51mm)",
+                "displayName": "12/51"
+            },
+            {
+                "name": "12 bore: 2+1⁄4 in (57mm)",
+                "displayName": "12/57"
+            },
+            {
+                "name": "12 bore: 2+1⁄2 in (64mm)",
+                "displayName": "12/64"
+            },
+            {
+                "name": "12 bore: 2+21/32 in (67.5mm)",
+                "displayName": "12/67.5"
+            },
+            {
+                "name": "12 bore: 2+3⁄4 in (70mm)",
+                "displayName": "12/70"
+            },
+            {
+                "name": "12 bore: 3 in (76mm)",
+                "displayName": "12/76"
+            },
+            {
+                "name": "12 bore: 3+1⁄2 in (89mm)",
+                "displayName": "12/89"
+            },
+            {
+                "name": "14 bore: 2+1⁄2 in (64mm)",
+                "displayName": "14/64"
+            },
+            {
+                "name": "16 bore: 2+1⁄2 in (64mm)",
+                "displayName": "16/64"
+            },
+            {
+                "name": "16 bore: 2+9⁄16 in (65mm)",
+                "displayName": "16/65"
+            },
+            {
+                "name": "16 bore: 2+5⁄8 in (67mm)",
+                "displayName": "16/67"
+            },
+            {
+                "name": "16 bore: 2+3⁄4 in (70mm)",
+                "displayName": "16/70"
+            },
+            {
+                "name": "16 bore: 3 in (76mm)",
+                "displayName": "16/76"
+            },
+            {
+                "name": "20 bore: 2+1⁄2 in (64mm)",
+                "displayName": "20/64"
+            },
+            {
+                "name": "20 bore: 2+3⁄4 in (70mm)",
+                "displayName": "20/70"
+            },
+            {
+                "name": "20 bore: 3 in (76mm)",
+                "displayName": "20/76"
+            },
+            {
+                "name": "20 bore: 3+1⁄2 in (89mm)",
+                "displayName": "20/89"
+            },
+            {
+                "name": "24 bore: 2+1⁄2 in (64mm)",
+                "displayName": "24/64"
+            },
+            {
+                "name": "28 bore: 2+1⁄2 in (64mm)",
+                "displayName": "28/64"
+            },
+            {
+                "name": "28 bore: 2+3⁄4 in (70mm)",
+                "displayName": "28/70"
+            },
+            {
+                "name": "28 bore: 3 in (76mm)",
+                "displayName": "28/76"
+            },
+            {
+                "name": "32 bore: 2+1⁄2 in (64mm)",
+                "displayName": "32/64"
+            },
             {"name": ".410 bore: 2 in (51mm)"},
             {"name": ".410 bore: 2+1⁄2 in (64mm)"},
             {"name": ".410 bore: 3 in (76mm)"},
@@ -762,7 +920,7 @@ export const calibers:Caliber[] = [
         ]
     },
     {
-        range: "Luft",
+        range: "Luft/Air/Aria/Vent",
         variants: [
             {"name":".177 / 4.5mm"},
             {"name":".22 / 5.5mm"},
@@ -774,7 +932,103 @@ export const calibers:Caliber[] = [
         ]
     },
     {
-        range: "Anderes",
+  range: "22mm Grenade",
+  variants: [
+    { "name": "22×90mm NATO rifle grenade" },
+    { "name": "22mm spigot (blank-launched rifle grenade)" }
+  ]
+},
+{
+  range: "30mm Grenade",
+  variants: [
+    { "name": "30×29mm (VOG-17 / AGS-17)" },
+    { "name": "30×30mm (AGS-30)" }
+  ]
+},
+{
+  range: "37mm Grenade",
+  variants: [
+    { "name": "37×113mmSR (low-velocity)" },
+    { "name": "37mm gas / signal cartridge" }
+  ]
+},
+{
+  range: "40mm Grenade (low velocity)",
+  variants: [
+    { "name": "40×46mm LV" }
+  ]
+},
+{
+  range: "40mm Grenade (medium velocity)",
+  variants: [
+    { "name": "40×51mm MV" }
+  ]
+},
+{
+  range: "40mm Grenade (high velocity)",
+  variants: [
+    { "name": "40×53mm HV" }
+  ]
+},
+{
+  range: "51mm Grenade",
+  variants: [
+    { "name": "51mm mortar-grenade (French AGL)" }
+  ]
+},
+{
+  range: "57mm RPG",
+  variants: [
+    { "name": "57mm PG-2 (RPG-2)" }
+  ]
+},
+{
+  range: "66mm RPG",
+  variants: [
+    { "name": "66mm M72 LAW" }
+  ]
+},
+{
+  range: "70mm RPG",
+  variants: [
+    { "name": "70mm PG-7V (early RPG-7)" }
+  ]
+},
+{
+  range: "72–73mm RPG",
+  variants: [
+    { "name": "72.5mm RPG-26 Aglen" }
+  ]
+},
+{
+  range: "80–85mm RPG",
+  variants: [
+    { "name": "84mm Carl Gustaf (M2 / M3 / M4)" },
+    { "name": "85mm PG-7VL (RPG-7)" }
+  ]
+},
+{
+  range: "90mm RPG",
+  variants: [
+    { "name": "90mm M67 recoilless / rocket family" }
+  ]
+},
+{
+  range: "93mm RPG",
+  variants: [
+    { "name": "93mm PG-7VR tandem (RPG-7)" }
+  ]
+},
+{
+  range: "100–106mm RPG",
+  variants: [
+    { "name": "105mm RPG-27 Tavolga" },
+    { "name": "105mm RPG-29 Vampir" },
+    { "name": "106mm Panzerfaust 3" }
+  ]
+},
+    {
+        range: "Etc",
         variants: [
             {"name": "Granaten"},
             {"name": "Flechettes"},

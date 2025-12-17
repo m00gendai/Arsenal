@@ -2,179 +2,100 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
-import { AmmoType, CommonStyles, GunType } from '../interfaces';
-import { checkBoxes, gunDataTemplate, gunRemarks } from '../lib/gunDataTemplate';
-import { newTags, pdfTitleAmmo, pdfTitleArt5 } from '../lib/textTemplates';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { pdfFooter, pdfTitle } from '../lib/textTemplates';
-import { dateLocales } from '../configs';
-import { ammoDataTemplate, ammoRemarks } from '../lib/ammoDataTemplate';
+import { AmmoType, CollectionType, CommonStyles, GunType, ItemType } from 'interfaces';
+import { checkBoxes, gunDataTemplate, gunRemarks } from 'lib/DataTemplates/gunDataTemplate';
+import { newTags, pdfTitleAmmo, pdfTitleArt5 } from 'lib/textTemplates';
+import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { dateLocales, datePickerTriggerFields, dateTimeOptions, legacyDatePickerTriggerFields, pdfCommonStyles, pdfDateOptions, pdfExcludedKeys } from 'configs';
+import { ammoDataTemplate, ammoRemarks } from 'lib/DataTemplates/ammoDataTemplate';
 import { Platform } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import { db } from '../db/client';
-import * as schema from "../db/schema"
-import GunCollection from '../components/GunCollection';
+import { db } from 'db/client';
+import * as schema from "db/schema"
+import { determineDataTemplate } from './determinators';
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 
-async function getGunImages(guns:GunType[]){
-  const imageArray: null | string[][] = []
+const getTranslation = (key: string, language: string, collection: CollectionType): string => {
+  const data = determineDataTemplate(collection).find(item => item.name === key);
+  const remarks = gunRemarks.name === key ? gunRemarks[language] : null
+  const boxes = checkBoxes.find(item => item.name === key);
+  const tags = newTags.name === key ? newTags[language] : null
   
-  for(const gun of guns){
-    let imgs: null | string[] = null
-    if(gun.images && gun.images.length !== 0){
-        imgs = await Promise.all(gun.images.map(async image =>{
-            return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-        }))
-        imageArray.push(imgs)
-    } else {
-      imageArray.push([])
-    }
-  }
-  return imageArray
+  return data ? data[language] : remarks ? remarks : boxes ? boxes[language] : tags ? tags : key;
+};
+
+function parseDate(date: string){
+  return new Date(date).toLocaleDateString("de-CH", dateTimeOptions)
 }
 
-async function getAmmoImages(ammunition:AmmoType[]){
-  const imageArray: null | string[][] = []
-  
-  for(const ammo of ammunition){
-    let imgs: null | string[] = null
-    if(ammo.images && ammo.images.length !== 0){
-        imgs = await Promise.all(ammo.images.map(async image =>{
-            return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-        }))
-        imageArray.push(imgs)
-    } else {
-      imageArray.push([])
-    }
-  }
-  return imageArray
-}
-
-const getTranslation = (key: string, language: string): string => {
-    const data = gunDataTemplate.find(item => item.name === key);
-    const remarks = gunRemarks.name === key ? gunRemarks[language] : null
-    const boxes = checkBoxes.find(item => item.name === key);
-    const tags = newTags.name === key ? newTags[language] : null
-    return data ? data[language] : remarks ? remarks : boxes ? boxes[language] : tags ? tags : key;
-  };
-
-
-  const getTranslationAmmo = (key: string, language: string): string => {
-    const data = ammoDataTemplate.find(item => item.name === key);
-    const remarks = ammoRemarks.name === key ? ammoRemarks[language] : null
-    const boxes = checkBoxes.find(item => item.name === key);
-    const tags = newTags.name === key ? newTags[language] : null
-    return data ? data[language] : remarks ? remarks : boxes ? boxes[language] : tags ? tags : key;
-  };
-
-  function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
-    if(!shortCaliber){
-      return Array.isArray(calibers) ? calibers : [calibers]
-    }
-    console.log(calibers)
-    let outputArray
-    if(!Array.isArray(calibers)){
-      console.log("no arrey")
-       // Find an object where displayName matches the item
-        const match = displayNames.find(obj => obj.name === calibers)
-        // If a match is found, return the displayName, else return the original item as an Array
-        outputArray = match ? [match.displayName] : [calibers];
-        console.log(outputArray)
-        console.log("now is arrey")
-    }
-    if(Array.isArray(calibers)){
-      outputArray = calibers.map(item => {
-        // Find an object where displayName matches the item
-        const match = displayNames.find(obj => obj.name === item)
-        // If a match is found, return the displayName, else return the original item
-        return match ? match.displayName : item;
-      });
-    }
-      console.log(outputArray)
-      return outputArray
-    }
-
-function getShortCaliberNameFromString(calibers:string, displayNames:{name:string, displayName:string}[], shortCaliber: boolean){
+function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName?:string}[], shortCaliber: boolean){
   if(!shortCaliber){
+    console.log(calibers)
     return calibers
   }
-  const match = displayNames.find(obj => obj.name === calibers)
-  return match ? match.displayName : calibers;
-}
-
-  const commonStyles:CommonStyles={
-    allPageMargin: "15mm",
-    allPageMarginIOS: Math.ceil(15*2.83465),
-    allTitleFontSize: "30px",
-    allSubtitleFontSize: "12px",
-    allTableFontSize: "15px",
-    imageGap: "20px",
-    tableVerticalMargin: "20px",
-    tableRowVerticalPadding: "5px",
-    tableCellPadding: "5px",
-    footerWidth: "calc(100% - 30mm)",
-    footerFontSize: "8px",
-    footerTopBorder: "1px solid grey",
-    footerPaddingTop: "5px",
-    footerMarginTop: "5mm",
-    tagPadding: "5px",
-    tagFontSize: "10px",
-    tagContainerGap: "10px"
-  }
-  
-
-export async function printSingleGun(gun:GunType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
-
-    let imgs: null | string[] = null
-    if(gun.images && gun.images.length !== 0){
-        imgs = await Promise.all(gun.images.map(async image =>{
-            return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-        }))
-    }
-
-    const date:Date = new Date()
-    const dateOptions:Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: "2-digit",
-        minute: "2-digit"
-      };
-    const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
     
-    const excludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", ...art5Keys];
-    const gunHasArt5Key = art5Keys.filter(art5 => {return gun[art5] === true})
+  const outputArray = calibers.map(item => {
+      // Find an object where displayName matches the item
+      const match = displayNames.find(obj => obj.name === item)
+      // If a match is found, return the displayName, else return the original item
+      return match ? match.displayName : item;
+    });
+  return outputArray
+}  
 
-    const html = `
+export async function printSingleItem(item:ItemType, collection: CollectionType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
+
+  let imgs: null | string[] = null
+  if(item.images && item.images.length !== 0){
+    imgs = await Promise.all(item.images.map(async image =>{
+      return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
+    }))
+  }
+
+  const date:Date = new Date()
+  const generatedDate:string = date.toLocaleDateString(dateLocales[language], pdfDateOptions)
+    
+  const excludedKeys = [...pdfExcludedKeys, ...art5Keys, ...legacyDatePickerTriggerFields];
+  const gunHasArt5Key = art5Keys.filter(art5 => {return item[art5] === true})
+
+  const html = `
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
       </head>
       <body>
       <div class="bodyContent">
-        <h1>${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}</h1>
-        ${gun.images && gun.images.length !== 0 ? `<div class="imageContainer">${imgs.map(img => {return `<div class="imageDiv"><img class="image" src="data:image/jpeg;base64,${img}" /></div>`}).join("")}</div>`: ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<div class="tagContainer">${gun.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<hr />` : ""}
-        ${gunHasArt5Key.length !== 0 ? `<div class="tagContainer">${gunHasArt5Key.map(art5 => {return `<div class="tag">${getTranslation(art5, language)}</div>`}).join("")}</div>` : ""}
+        <h1>${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation}</h1>
+        ${item.images && item.images.length !== 0 ? `<div class="imageContainer">${imgs.map(img => {return `<div class="imageDiv"><img class="image" src="data:image/jpeg;base64,${img}" /></div>`}).join("")}</div>`: ""}
+        ${item.tags && item.tags.length !== 0 ? `<div class="tagContainer">${item.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
+        ${item.tags && item.tags.length !== 0 ? `<hr />` : ""}
+        ${gunHasArt5Key.length !== 0 ? `<div class="tagContainer">${gunHasArt5Key.map(art5 => {return `<div class="tag">${getTranslation(art5, language, collection)}</div>`}).join("")}</div>` : ""}
         <table>
             <tbody>
-                ${Object.entries(gun).map(entry =>{
-                    return excludedKeys.includes(entry[0]) ? null :`<tr><td><strong>${getTranslation(entry[0], language)}</strong></td><td class=${entry[0] === "caliber" ? "whitespace" : ""}>${entry[0] === "caliber" ? getShortCaliberNameFromArray(entry[1], caliberDisplayNameList, shortCaliber).join("\n") : entry[1] === null ? "" : entry[1]}</td></tr>`
+                ${Object.entries(item).map(entry =>{
+                    return excludedKeys.includes(entry[0]) ? null :
+                      `<tr>
+                        <td>
+                          <strong>
+                            ${getTranslation(entry[0], language, collection)}
+                          </strong>
+                        </td>
+                        <td>
+                          ${entry[0] === "caliber" ? getShortCaliberNameFromArray(entry[1], caliberDisplayNameList, shortCaliber).join("<br>") : entry[1] === null ? "" : datePickerTriggerFields.includes(entry[0]) ? parseDate(entry[1]) : entry[1]}
+                        </td>
+                      </tr>`
                 }).join("")}
             </tbody>
         </table>
-        ${gun.remarks && gun.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${gunRemarks[language]}</strong></div><div class="remarkContainerContent">${gun.remarks}</div></div>`: ""}
+        ${item.remarks && item.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${gunRemarks[language]}</strong></div><div class="remarkContainerContent">${item.remarks}</div></div>`: ""}
       </div>
         
      </body>
-     <div class="footer">${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}: ${pdfFooter[language]}, ${generatedDate}</div>
+     <div class="footer">${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation}: ${pdfFooter[language]}, ${generatedDate}</div>
       <style>
       @page {
         size: A4;
-        margin: ${commonStyles.allPageMargin};
+        margin: ${pdfCommonStyles.allPageMargin};
       }
       body{
         display: flex;
@@ -191,7 +112,7 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
         text-align: left;
         margin: 0;
         padding: 0;
-        font-size: ${commonStyles.allTitleFontSize};
+        font-size: ${pdfCommonStyles.allTitleFontSize};
       }
       hr{
         width: 100%;
@@ -206,7 +127,7 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
             width: 100%;
             aspect-ratio: 30/10;
             display: flex;
-            gap: ${commonStyles.imageGap};
+            gap: ${pdfCommonStyles.imageGap};
             justify-content: center;
             align-items: center;
             flex-wrap: nowrap;
@@ -234,32 +155,32 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
         justify-content: flex-start;
         align-items: flex-start; 
         flex-wrap: wrap;
-        gap: ${commonStyles.tagContainerGap};
+        gap: ${pdfCommonStyles.tagContainerGap};
     }
         .tag{
             position: relative;
             border: 1px solid black;
-            padding: ${commonStyles.tagPadding};
+            padding: ${pdfCommonStyles.tagPadding};
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: ${commonStyles.tagFontSize};
+            font-size: ${pdfCommonStyles.tagFontSize};
         }
     table {
         position: relative;
-        margin: ${commonStyles.tableVerticalMargin} 0;
+        margin: ${pdfCommonStyles.tableVerticalMargin} 0;
         width: 100%;
-        font-size: ${commonStyles.allTableFontSize};
+        font-size: ${pdfCommonStyles.allTableFontSize};
         border-collapse: collapse;
     }
     table > tbody > tr {
-        padding: ${commonStyles.tableRowVerticalPadding} 0;
+        padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
     }
     table > tbody > tr:nth-child(even){
         background-color: #f5f5f5;
     }
     table > tbody > tr > td {
-        padding: ${commonStyles.tableCellPadding};
+        padding: ${pdfCommonStyles.tableCellPadding};
         
     }
     .remarkContainer{
@@ -282,17 +203,14 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
         width: 100%;
         white-space: pre-wrap;
     }
-    .whitespace{
-      white-space: pre-wrap;
-    }
     .footer{
       position: fixed;
       bottom: 0;
-      width: ${commonStyles.footerWidth};
-      font-size: ${commonStyles.footerFontSize};
-      border-top: ${commonStyles.footerTopBorder};
-      padding-top: ${commonStyles.footerPaddingTop};
-      margin-top: ${commonStyles.footerMarginTop};
+      width: ${pdfCommonStyles.footerWidth};
+      font-size: ${pdfCommonStyles.footerFontSize};
+      border-top: ${pdfCommonStyles.footerTopBorder};
+      padding-top: ${pdfCommonStyles.footerPaddingTop};
+      margin-top: ${pdfCommonStyles.footerMarginTop};
       display: flex;
       justify-content: center;
       align-items: center;
@@ -307,12 +225,12 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
         html: html,
         height:842, 
         width:595, 
-        margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
+        margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS},
         base64: true
       });
       await shareAsync(file.uri);
     } else if(Platform.OS === "android"){
-      const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
+      const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS}});
       const cUri = await FileSystem.getContentUriAsync(uri)
       await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
           data: cUri,
@@ -323,388 +241,7 @@ export async function printSingleGun(gun:GunType, language: string, shortCaliber
       
 }
 
-export async function printSingleAmmo(ammo:AmmoType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
-
-  let imgs: null | string[] = null
-  if(ammo.images && ammo.images.length !== 0){
-      imgs = await Promise.all(ammo.images.map(async image =>{
-          return await FileSystem.readAsStringAsync(`${FileSystem.documentDirectory}${image.split("/").pop()}`, { encoding: 'base64' });
-      }))
-  }
-
-  const date:Date = new Date()
-  const dateOptions:Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: "2-digit",
-      minute: "2-digit"
-    };
-  const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
-  const excludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "lastTopUpAt", "id", "tags", "remarks", "previousStock", "currentStock", "criticalStock"];
-  const art5Keys = checkBoxes.map(checkBox => checkBox.name)
-
-  const html = `
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    </head>
-    <body>
-    <div class="bodyContent">
-      <h1>${ammo.manufacturer ? ammo.manufacturer : ""} ${ammo.designation}</h1>
-      ${ammo.images && ammo.images.length !== 0 ? `<div class="imageContainer">${imgs.map(img => {return `<div class="imageDiv"><img class="image" src="data:image/jpeg;base64,${img}" /></div>`}).join("")}</div>`: ""}
-      ${ammo.tags && ammo.tags.length !== 0 ? `<div class="tagContainer">${ammo.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
-      ${ammo.tags && ammo.tags.length !== 0 ? `<hr />` : ""}
-      <table>
-          <tbody>
-              ${Object.entries(ammo).map(entry =>{
-                  
-                  return excludedKeys.includes(entry[0]) ? null :`<tr><td><strong>${getTranslationAmmo(entry[0], language)}</strong></td><td>${entry[0] === "caliber" ? getShortCaliberNameFromString(entry[1], caliberDisplayNameList, shortCaliber) : entry[1]}</td></tr>`
-              }).join("")}
-          </tbody>
-      </table>
-      ${ammo.remarks && ammo.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${ammoRemarks[language]}</strong></div><div class="remarkContainerContent">${ammo.remarks}</div></div>`: ""}
-    </div>
-      
-   </body>
-   <div class="footer">${ammo.manufacturer ? ammo.manufacturer : ""} ${ammo.designation}: ${pdfFooter[language]}, ${generatedDate}</div>
-   <style>
-   @page {
-     size: A4;
-     margin: ${commonStyles.allPageMargin};
-   }
-   body{
-     display: flex;
-     justify-content: center;
-     align-items: flex-start;
-     align-content: flex-start;
-     margin: 0;
-     padding: 0;
-     font-family: "Helvetica";
-   }
-   h1{
-     position: relative;
-     width: 100%;
-     text-align: left;
-     margin: 0;
-     padding: 0;
-     font-size: ${commonStyles.allTitleFontSize};
-   }
-   hr{
-     width: 100%;
-   }
-   .bodyContent{
-     width: 100%;
-     padding: 0;
-     box-sizing: border-box;
-   }
-   .imageContainer {
-    position: relative;
-        width: 100%;
-        aspect-ratio: 30/10;
-        display: flex;
-        gap: ${commonStyles.imageGap};
-        justify-content: center;
-        align-items: center;
-        flex-wrap: nowrap;
-        margin: 10px 0;
-        box-shadow: 0px 2px 5px -2px black;
-        padding: 5px;
-  }
-  .imageDiv {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
- .tagContainer{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: flex-start;
-     align-items: flex-start; 
-     flex-wrap: wrap;
-     gap: ${commonStyles.tagContainerGap};
- }
-     .tag{
-         position: relative;
-         border: 1px solid black;
-         padding: ${commonStyles.tagPadding};
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         font-size: ${commonStyles.tagFontSize};
-     }
- table {
-     position: relative;
-     margin: ${commonStyles.tableVerticalMargin} 0;
-     width: 100%;
-     font-size: ${commonStyles.allTableFontSize};
-     border-collapse: collapse;
- }
- table > tbody > tr {
-     padding: ${commonStyles.tableRowVerticalPadding} 0;
- }
- table > tbody > tr:nth-child(even){
-     background-color: #f5f5f5;
- }
- table > tbody > tr > td {
-     padding: ${commonStyles.tableCellPadding};
-     
- }
- .remarkContainer{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: center;
-     align-items: flex-start;
-     flex-wrap: wrap;
- }
- .remarkContainerTitle{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: flex-start;
-     align-items: center;
- }
- .remarkContainerContent{
-     position: relative;
-     width: 100%;
-     white-space: pre-wrap;
- }
- .footer{
-   position: fixed;
-   bottom: 0;
-   width: ${commonStyles.footerWidth};
-   font-size: ${commonStyles.footerFontSize};
-   border-top: ${commonStyles.footerTopBorder};
-   padding-top: ${commonStyles.footerPaddingTop};
-   margin-top: ${commonStyles.footerMarginTop};
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   align-content: center;
-}
-   </style>
-  </html>
-  `;
-
-  if (Platform.OS === 'ios') {
-    const file = await Print.printToFileAsync({
-      html: html,
-      height:842, 
-      width:595, 
-      margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
-      base64: true
-    });
-    await shareAsync(file.uri);
-  } else if(Platform.OS === "android"){
-    const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
-    const cUri = await FileSystem.getContentUriAsync(uri)
-    await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-        data: cUri,
-        flags: 1,
-        type: 'application/pdf'
-    });
-  }   
-    
-}
-
-export async function printAmmoGallery(ammunition:AmmoType[], language: string){
-
-  const imageArray:null | string[][] = await getAmmoImages(ammunition)
-
-  const date:Date = new Date()
-  const dateOptions:Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: "2-digit",
-      minute: "2-digit"
-    };
-  const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
-  const excludedKeys = ["images", "createdAt", "lastModifiedAt", "lastTopUpAt", "id", "tags", "remarks", "previousStock", "currentStock", "criticalStock"];
-
-  const html = `
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    </head>
-    <body>
-    ${ammunition.map((ammo, index) =>{
-return(
-    `
-    <div class="bodyContent">
-      <h1>${ammo.manufacturer ? ammo.manufacturer : ""} ${ammo.designation}</h1>
-      ${imageArray[index].length !== 0 ? `<div class="imageContainer">${imageArray[index].map(img => {return `<div class="image" style="background-image: url(data:image/jpeg;base64,${img});"></div>`}).join("")}</div>`: ""}
-      ${ammo.tags && ammo.tags.length !== 0 ? `<div class="tagContainer">${ammo.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
-      ${ammo.tags && ammo.tags.length !== 0 ? `<hr />` : ""}
-      <table>
-          <tbody>
-              ${Object.entries(ammo).map(entry =>{
-                  
-                  return excludedKeys.includes(entry[0]) ? null :`<tr><td><strong>${getTranslationAmmo(entry[0], language)}</strong></td><td>${entry[1]}</td></tr>`
-              }).join("")}
-          </tbody>
-      </table>
-      ${ammo.remarks && ammo.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${ammoRemarks[language]}</strong></div><div class="remarkContainerContent">${ammo.remarks}</div></div>`: ""}
-    </div>`
-  )}).join("")}
-   </body>
-   <div class="footer">${pdfFooter[language]}, ${generatedDate}</div>
-   <style>
-   @page {
-     size: A4;
-     margin: ${commonStyles.allPageMargin};
-   }
-   body{
-     display: flex;
-     justify-content: center;
-     align-items: flex-start;
-     align-content: flex-start;
-     flex-wrap: wrap;
-     margin: 0;
-     padding: 0;
-   }
-   h1{
-     position: relative;
-     width: 100%;
-     text-align: left;
-     margin: 0;
-     padding: 0;
-     font-size: ${commonStyles.allTitleFontSize};
-   }
-   hr{
-     width: 100%;
-   }
-   .bodyContent{
-     width: 100%;
-     height: 100%;
-     padding: 0;
-     box-sizing: border-box;
-   }
-   .imageContainer{
-     position: relative;
-     width: 100%;
-     aspect-ratio: 30/10;
-     display: flex;
-     gap: ${commonStyles.imageGap};
-     justify-content: center;
-     align-items: center;
-     flex-wrap: nowrap;
-     margin: 10px 0;
-     box-shadow: 0px 2px 5px -2px black;
-     padding: 5px;
-   }
-     .image{
-         position: relative;
-         width: 100%;
-         height: 100%;
-         
-         background-size:contain;
-         background-position: top;
-         background-repeat: no-repeat;
-     }
- .tagContainer{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: flex-start;
-     align-items: flex-start; 
-     flex-wrap: wrap;
-     gap: ${commonStyles.tagContainerGap};
- }
-     .tag{
-         position: relative;
-         border: 1px solid black;
-         padding: ${commonStyles.tagPadding};
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         font-size: ${commonStyles.tagFontSize};
-     }
- table {
-     position: relative;
-     margin: ${commonStyles.tableVerticalMargin} 0;
-     width: 100%;
-     font-size: ${commonStyles.allTableFontSize};
-     border-collapse: collapse;
- }
- table > tbody > tr {
-     padding: ${commonStyles.tableRowVerticalPadding} 0;
- }
- table > tbody > tr:nth-child(even){
-     background-color: #f5f5f5;
- }
- table > tbody > tr > td {
-     padding: ${commonStyles.tableCellPadding};
-     
- }
- .remarkContainer{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: center;
-     align-items: flex-start;
-     flex-wrap: wrap;
- }
- .remarkContainerTitle{
-     position: relative;
-     width: 100%;
-     display: flex;
-     justify-content: flex-start;
-     align-items: center;
- }
- .remarkContainerContent{
-     position: relative;
-     width: 100%;
-     white-space: pre-wrap;
- }
- .footer{
-   position: fixed;
-   bottom: 0;
-   width: ${commonStyles.footerWidth};
-   font-size: ${commonStyles.footerFontSize};
-   border-top: ${commonStyles.footerTopBorder};
-   padding-top: ${commonStyles.footerPaddingTop};
-   margin-top: ${commonStyles.footerMarginTop};
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   align-content: center;
-}
-   </style>
-  </html>
-  `;
-
-
-      // On iOS/android prints the given html. On web prints the HTML from the current page.
-      const { uri } = await Print.printToFileAsync({html, height:842, width:595});
-    
-     
-     // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-     FileSystem.getContentUriAsync(uri).then(cUri => {
-      /* if (Platform.OS === 'ios') {
-        Sharing.shareAsync(cUri); */
-      IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-          data: cUri,
-          flags: 1,
-          type: 'application/pdf'
-       });
-    });
-    
-}
-
-export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS GUN COLLECTION")
 
 const gunCollection = db.select().from(schema.gunCollection).all()
@@ -724,7 +261,7 @@ const guns = gunCollection.sort((a, b) =>{
       minute: "2-digit"
     };
   const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
-  const excludedKeys = ["images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "manufacturingDate", "originCountry", "paidPrice", "shotCount", "mainColor", "lastCleanedAt", "cleanInterval", "lastShotAt", "marketValue", "boughtFrom"];
+  const excludedKeys = ["images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "manufacturingDate", "originCountry", "paidPrice", "shotCount", "mainColor", "lastCleanedAt", "lastCleanedAt_unix", "cleanInterval", "lastShotAt", "lastShotAt_unix", "marketValue", "boughtFrom"];
   const html = `
   <html>
     <head>
@@ -742,7 +279,7 @@ const guns = gunCollection.sort((a, b) =>{
           <tbody>
               ${guns.map(gun =>{
                 /*@ts-expect-error */
-                return `<tr>${gunDataTemplate.map(data=>{return data.name in gun && !excludedKeys.includes(data.name) ? `<td class=${data.name === "caliber" ? "whitespace" : ""}>${data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",\n") : gun[data.name]}</td>` : !(data.name in gun) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
+                return `<tr>${gunDataTemplate.map(data=>{return data.name in gun && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : gun[data.name]}</td>` : !(data.name in gun) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
           </tbody>
       </table>
     </div>
@@ -752,7 +289,7 @@ const guns = gunCollection.sort((a, b) =>{
    <style>
    @page {
      size: A4 landscape;
-     margin:${commonStyles.allPageMargin};
+     margin:${pdfCommonStyles.allPageMargin};
    }
    body{
      display: flex;
@@ -769,12 +306,12 @@ const guns = gunCollection.sort((a, b) =>{
      text-align: left;
      margin: 0;
      padding: 0;
-     font-size: ${commonStyles.allTitleFontSize};
+     font-size: ${pdfCommonStyles.allTitleFontSize};
    }
    .legend{
      width: 100%;
      text-align: left;
-     font-size: ${commonStyles.allSubtitleFontSize};
+     font-size: ${pdfCommonStyles.allSubtitleFontSize};
    }
    .bodyContent{
      width: 100%;
@@ -783,27 +320,27 @@ const guns = gunCollection.sort((a, b) =>{
    }
  table {
      position: relative;
-     margin: ${commonStyles.tableVerticalMargin} 0;
+     margin: ${pdfCommonStyles.tableVerticalMargin} 0;
      width: 100%;
-     font-size: ${commonStyles.allTableFontSize};
+     font-size: ${pdfCommonStyles.allTableFontSize};
      border-collapse: collapse;
  }
 
  tr {
    position: relative;
-     padding: ${commonStyles.tableRowVerticalPadding} 0;
+     padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
      width: 100%;
  }
  tr:nth-child(even){
      background-color: #f5f5f5;
  }
  td {
-     padding: ${commonStyles.tableCellPadding};
+     padding: ${pdfCommonStyles.tableCellPadding};
      vertical-align: top;
  }
  th{
    text-align: left;
-   padding: ${commonStyles.tableCellPadding};
+   padding: ${pdfCommonStyles.tableCellPadding};
  }
  th, td{
    border: 1px solid #ddd;
@@ -811,17 +348,14 @@ const guns = gunCollection.sort((a, b) =>{
  .hidden{
    color: transparent;
  }
- .whitespace{
-   white-space: pre-wrap;
- }
  .footer{
      position: fixed;
      bottom: 0;
-     width: ${commonStyles.footerWidth};
-     font-size: ${commonStyles.footerFontSize};
-     border-top: ${commonStyles.footerTopBorder};
-     padding-top: ${commonStyles.footerPaddingTop};
-     margin-top: ${commonStyles.footerMarginTop};
+     width: ${pdfCommonStyles.footerWidth};
+     font-size: ${pdfCommonStyles.footerFontSize};
+     border-top: ${pdfCommonStyles.footerTopBorder};
+     padding-top: ${pdfCommonStyles.footerPaddingTop};
+     margin-top: ${pdfCommonStyles.footerMarginTop};
      display: flex;
      justify-content: center;
      align-items: center;
@@ -839,12 +373,12 @@ const guns = gunCollection.sort((a, b) =>{
       html: html,
       height:595, 
       width:842, 
-      margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
+      margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS},
       base64: true
     });
     await shareAsync(file.uri);
   } else if(Platform.OS === "android"){
-    const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
+    const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS}});
     const cUri = await FileSystem.getContentUriAsync(uri)
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
         data: cUri,
@@ -854,7 +388,7 @@ const guns = gunCollection.sort((a, b) =>{
   }    
 }
 
-export async function printGunCollectionArt5(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printGunCollectionArt5(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS GUN COLLECTION ART 5")
 
 const gunCollection = db.select().from(schema.gunCollection).all()
@@ -876,7 +410,7 @@ const guns = gunHasArt5Key.sort((a, b) =>{
       minute: "2-digit"
     };
   const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
-  const excludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "manufacturingDate", "originCountry", "paidPrice", "shotCount", "mainColor", "lastCleanedAt", "cleanInterval", "lastShotAt", "marketValue", "boughtFrom"];
+  const excludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "manufacturingDate", "originCountry", "paidPrice", "shotCount", "mainColor", "lastCleanedAt", "lastCleanedAt_unix", "cleanInterval", "lastShotAt", "lastShotAt_unix", "marketValue", "boughtFrom"];
   const html = `
   <html>
     <head>
@@ -897,9 +431,9 @@ const guns = gunHasArt5Key.sort((a, b) =>{
               return `
               <tr>${gunDataTemplate.map(data=> {
                 return data.name in gun && !excludedKeys.includes(data.name) ? 
-                  `<td class=${data.name === "caliber" ? "whitespace" : ""}>${
+                  `<td>${
                     /*@ts-expect-error */
-                    data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",\n") : gun[data.name]
+                    data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : gun[data.name]
                   }</td>` 
                 : !(data.name in gun) && !excludedKeys.includes(data.name) ? 
                   `<td></td>`
@@ -918,7 +452,7 @@ const guns = gunHasArt5Key.sort((a, b) =>{
    <style>
    @page {
      size: A4 landscape;
-     margin:${commonStyles.allPageMargin};
+     margin:${pdfCommonStyles.allPageMargin};
    }
    body{
      display: flex;
@@ -935,12 +469,12 @@ const guns = gunHasArt5Key.sort((a, b) =>{
      text-align: left;
      margin: 0;
      padding: 0;
-     font-size: ${commonStyles.allTitleFontSize};
+     font-size: ${pdfCommonStyles.allTitleFontSize};
    }
    .legend{
      width: 100%;
      text-align: left;
-     font-size: ${commonStyles.allSubtitleFontSize};
+     font-size: ${pdfCommonStyles.allSubtitleFontSize};
    }
    .bodyContent{
      width: 100%;
@@ -949,27 +483,27 @@ const guns = gunHasArt5Key.sort((a, b) =>{
    }
  table {
      position: relative;
-     margin: ${commonStyles.tableVerticalMargin} 0;
+     margin: ${pdfCommonStyles.tableVerticalMargin} 0;
      width: 100%;
-     font-size: ${commonStyles.allTableFontSize};
+     font-size: ${pdfCommonStyles.allTableFontSize};
      border-collapse: collapse;
  }
 
  tr {
    position: relative;
-     padding: ${commonStyles.tableRowVerticalPadding} 0;
+     padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
      width: 100%;
  }
  tr:nth-child(even){
      background-color: #f5f5f5;
  }
  td {
-     padding: ${commonStyles.tableCellPadding};
+     padding: ${pdfCommonStyles.tableCellPadding};
      vertical-align: top;
  }
  th{
    text-align: left;
-   padding: ${commonStyles.tableCellPadding};
+   padding: ${pdfCommonStyles.tableCellPadding};
  }
  th, td{
    border: 1px solid #ddd;
@@ -980,17 +514,14 @@ const guns = gunHasArt5Key.sort((a, b) =>{
  .hidden{
    color: transparent;
  }
- .whitespace{
-   white-space: pre-wrap;
- }
  .footer{
      position: fixed;
      bottom: 0;
-     width: ${commonStyles.footerWidth};
-     font-size: ${commonStyles.footerFontSize};
-     border-top: ${commonStyles.footerTopBorder};
-     padding-top: ${commonStyles.footerPaddingTop};
-     margin-top: ${commonStyles.footerMarginTop};
+     width: ${pdfCommonStyles.footerWidth};
+     font-size: ${pdfCommonStyles.footerFontSize};
+     border-top: ${pdfCommonStyles.footerTopBorder};
+     padding-top: ${pdfCommonStyles.footerPaddingTop};
+     margin-top: ${pdfCommonStyles.footerMarginTop};
      display: flex;
      justify-content: center;
      align-items: center;
@@ -1006,12 +537,12 @@ const guns = gunHasArt5Key.sort((a, b) =>{
       html: html,
       height:595, 
       width:842, 
-      margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
+      margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS},
       base64: true
     });
     await shareAsync(file.uri);
   } else if(Platform.OS === "android"){
-    const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
+    const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS}});
     const cUri = await FileSystem.getContentUriAsync(uri)
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
         data: cUri,
@@ -1021,196 +552,7 @@ const guns = gunHasArt5Key.sort((a, b) =>{
   }   
 }
 
-export async function printGunGallery(guns:GunType[], language: string){
-
-    const date:Date = new Date()
-    const dateOptions:Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: "2-digit",
-        minute: "2-digit"
-      };
-    const generatedDate:string = date.toLocaleDateString(dateLocales[language], dateOptions)
-    const excludedKeys = ["images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt"];
-    const art5Keys = checkBoxes.map(checkBox => checkBox.name)
-
-    const imageArray:null | string[][] = await getGunImages(guns)
-
-    const html = `
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-      </head>
-      <body>
-      ${guns.map((gun, index) =>{
-        
-        return(
-         `<div class="bodyContent">
-        <h1>${gun.manufacturer ? gun.manufacturer : ""} ${gun.model}</h1>
-        ${imageArray[index].length !== 0 ? `<div class="imageContainer">${imageArray[index].map(img => {return `<div class="image" style="background-image: url(data:image/jpeg;base64,${img});"></div>`}).join("")}</div>`: ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<div class="tagContainer">${gun.tags.map(tag => {return `<div class="tag">${tag}</div>`}).join("")}</div>` : ""}
-        ${gun.tags && gun.tags.length !== 0 ? `<hr />` : ""}
-        ${gun.status && Object.entries(gun.status).length !== 0 ? `<div class="tagContainer">${Object.entries(gun.status).map(status => {return status[1] && art5Keys.includes(status[0]) ? `<div class="tag">${getTranslation(status[0], language)}</div>` : ""}).join("")}</div>` : ""}
-        <table>
-            <tbody>
-                ${Object.entries(gun).map(entry =>{
-                    
-                    return excludedKeys.includes(entry[0]) ? null :`<tr><td><strong>${getTranslation(entry[0], language)}</strong></td><td>${entry[1]}</td></tr>`
-                }).join("")}
-            </tbody>
-        </table>
-        ${gun.remarks && gun.remarks.length !== 0 ? `<div class="remarkContainer"><div class="remarkContainerTitle"><strong>${gunRemarks[language]}</strong></div><div class="remarkContainerContent">${gun.remarks}</div></div>`: ""}
-      
-        </div>`
-        )
-              }).join("")}
-      </body>
-     <div class="footer">${pdfFooter[language]}, ${generatedDate}</div>
-      <style>
-      @page {
-        size: A4;
-        margin: ${commonStyles.allPageMargin};
-      }
-      body{
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        align-content: flex-start;
-        flex-wrap: wrap;
-        margin: 0;
-        padding: 0;
-      }
-      h1{
-        position: relative;
-        width: 100%;
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        font-size: ${commonStyles.allTitleFontSize};
-      }
-      hr{
-        width: 100%;
-      }
-      .bodyContent{
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      .imageContainer{
-        position: relative;
-        width: 100%;
-        aspect-ratio: 30/10;
-        display: flex;
-        gap: ${commonStyles.imageGap};
-        justify-content: center;
-        align-items: center;
-        flex-wrap: nowrap;
-        margin: 10px 0;
-        box-shadow: 0px 2px 5px -2px black;
-        padding: 5px;
-      }
-        .image{
-            position: relative;
-            width: 100%;
-            height: 100%;
-            
-            background-size:contain;
-            background-position: top;
-            background-repeat: no-repeat;
-        }
-    .tagContainer{
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start; 
-        flex-wrap: wrap;
-        gap: ${commonStyles.tagContainerGap};
-    }
-        .tag{
-            position: relative;
-            border: 1px solid black;
-            padding: ${commonStyles.tagPadding};
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: ${commonStyles.tagFontSize};
-        }
-    table {
-        position: relative;
-        margin: ${commonStyles.tableVerticalMargin} 0;
-        width: 100%;
-        font-size: ${commonStyles.allTableFontSize};
-        border-collapse: collapse;
-    }
-    table > tbody > tr {
-        padding: ${commonStyles.tableRowVerticalPadding} 0;
-    }
-    table > tbody > tr:nth-child(even){
-        background-color: #f5f5f5;
-    }
-    table > tbody > tr > td {
-        padding: ${commonStyles.tableCellPadding};
-        
-    }
-    .remarkContainer{
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-    .remarkContainerTitle{
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .remarkContainerContent{
-        position: relative;
-        width: 100%;
-        white-space: pre-wrap;
-    }
-    .footer{
-      position: fixed;
-      bottom: 0;
-      width: ${commonStyles.footerWidth};
-      font-size: ${commonStyles.footerFontSize};
-      border-top: ${commonStyles.footerTopBorder};
-      padding-top: ${commonStyles.footerPaddingTop};
-      margin-top: ${commonStyles.footerMarginTop};
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
-  }
-      </style>
-    </html>
-    `;
-
-
-        // On iOS/android prints the given html. On web prints the HTML from the current page.
-        const { uri } = await Print.printToFileAsync({html, height:842, width:595});
-     
-       
-       // await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-       FileSystem.getContentUriAsync(uri).then(cUri => {
-        /* if (Platform.OS === 'ios') {
-          Sharing.shareAsync(cUri); */
-        IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-            data: cUri,
-            flags: 1,
-            type: 'application/pdf'
-         });
-      });
-}
-
-export async function printAmmoCollection(ammunition:AmmoType[], language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName:string}[]){
+export async function printAmmoCollection(ammunition:AmmoType[], language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
 console.log("HELLO THIS IS AMMO COLLECTION")
   const date:Date = new Date()
   const dateOptions:Intl.DateTimeFormatOptions = {
@@ -1239,7 +581,7 @@ console.log("HELLO THIS IS AMMO COLLECTION")
         </thead>
           <tbody>
               ${ammunition.map(ammo =>{
-                return `<tr>${ammoDataTemplate.map(data=>{return data.name in ammo && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromString(ammo[data.name], caliberDisplayNameList, shortCaliber) : ammo[data.name]}` : !(data.name in ammo) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
+                return `<tr>${ammoDataTemplate.map(data=>{return data.name in ammo && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(ammo[data.name], caliberDisplayNameList, shortCaliber) : ammo[data.name]}` : !(data.name in ammo) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
           </tbody>
       </table>
     </div>
@@ -1249,7 +591,7 @@ console.log("HELLO THIS IS AMMO COLLECTION")
    <style>
    @page {
      size: A4 landscape;
-     margin:${commonStyles.allPageMargin};
+     margin:${pdfCommonStyles.allPageMargin};
    }
    body{
      display: flex;
@@ -1266,12 +608,12 @@ console.log("HELLO THIS IS AMMO COLLECTION")
      text-align: left;
      margin: 0;
      padding: 0;
-     font-size: ${commonStyles.allTitleFontSize};
+     font-size: ${pdfCommonStyles.allTitleFontSize};
    }
    .legend{
      width: 100%;
      text-align: left;
-     font-size: ${commonStyles.allSubtitleFontSize};
+     font-size: ${pdfCommonStyles.allSubtitleFontSize};
    }
    .bodyContent{
      width: 100%;
@@ -1280,27 +622,27 @@ console.log("HELLO THIS IS AMMO COLLECTION")
    }
  table {
      position: relative;
-     margin: ${commonStyles.tableVerticalMargin} 0;
+     margin: ${pdfCommonStyles.tableVerticalMargin} 0;
      width: 100%;
-     font-size: ${commonStyles.allTableFontSize};
+     font-size: ${pdfCommonStyles.allTableFontSize};
      border-collapse: collapse;
  }
 
  tr {
    position: relative;
-     padding: ${commonStyles.tableRowVerticalPadding} 0;
+     padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
      width: 100%;
  }
  tr:nth-child(even){
      background-color: #f5f5f5;
  }
  td {
-     padding: ${commonStyles.tableCellPadding};
+     padding: ${pdfCommonStyles.tableCellPadding};
      vertical-align: top;
  }
  th{
    text-align: left;
-   padding: ${commonStyles.tableCellPadding};
+   padding: ${pdfCommonStyles.tableCellPadding};
  }
  th, td{
    border: 1px solid #ddd;
@@ -1311,11 +653,11 @@ console.log("HELLO THIS IS AMMO COLLECTION")
  .footer{
      position: fixed;
      bottom: 0;
-     width: ${commonStyles.footerWidth};
-     font-size: ${commonStyles.footerFontSize};
-     border-top: ${commonStyles.footerTopBorder};
-     padding-top: ${commonStyles.footerPaddingTop};
-     margin-top: ${commonStyles.footerMarginTop};
+     width: ${pdfCommonStyles.footerWidth};
+     font-size: ${pdfCommonStyles.footerFontSize};
+     border-top: ${pdfCommonStyles.footerTopBorder};
+     padding-top: ${pdfCommonStyles.footerPaddingTop};
+     margin-top: ${pdfCommonStyles.footerMarginTop};
      display: flex;
      justify-content: center;
      align-items: center;
@@ -1332,14 +674,14 @@ console.log("HELLO THIS IS AMMO COLLECTION")
           html: html,
           height:595, 
           width:842, 
-          margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS},
+          margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS},
           base64: true
         });
       
         await shareAsync(file.uri);
       } else if(Platform.OS === "android"){
        
-        const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: commonStyles.allPageMarginIOS, right: commonStyles.allPageMarginIOS, bottom: commonStyles.allPageMarginIOS, left: commonStyles.allPageMarginIOS}});
+        const { uri } = await Print.printToFileAsync({html, height:595, width:842, margins: {top: pdfCommonStyles.allPageMarginIOS, right: pdfCommonStyles.allPageMarginIOS, bottom: pdfCommonStyles.allPageMarginIOS, left: pdfCommonStyles.allPageMarginIOS}});
         
         const cUri = await FileSystem.getContentUriAsync(uri)
         await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {

@@ -56,6 +56,24 @@ interface DatabaseOperation{
 interface TabBarLabels{
     gunCollection: SimpleTranslation
     ammoCollection: SimpleTranslation
+    opticCollection: SimpleTranslation
+    scopeCollection: SimpleTranslation
+    silencerCollection: SimpleTranslation
+    lightLaserCollection: SimpleTranslation
+    conversionCollection: SimpleTranslation
+    barrelCollection: SimpleTranslation
+    magazineCollection: SimpleTranslation
+    miscAccessoryCollection: SimpleTranslation
+    bookCollection: SimpleTranslation
+    printMagazineCollection: SimpleTranslation
+    swissMilitaryRegulationCollection: SimpleTranslation
+    literatureMiscCollection: SimpleTranslation
+    diesCollection: SimpleTranslation
+    bulletCollection: SimpleTranslation
+    caseCollection: SimpleTranslation
+    primerCollection: SimpleTranslation
+    powderCollection: SimpleTranslation
+    reloadingMiscCollection: SimpleTranslation
 }
 
 interface AmmoQuickUpdate{
@@ -71,16 +89,18 @@ interface Tooltips{
 }
 
 interface Sorting{
-    alphabetic: SimpleTranslation
-    lastModified: SimpleTranslation
-    lastAdded: SimpleTranslation
+    alphabetical: SimpleTranslation
+    lastModifiedAt: SimpleTranslation
+    createdAt: SimpleTranslation
     paidPrice: SimpleTranslation
     marketValue: SimpleTranslation
     acquisitionDate: SimpleTranslation
-    lastCleaned: SimpleTranslation
-    lastShot: SimpleTranslation
+    lastCleanedAt: SimpleTranslation
+    lastShotAt: SimpleTranslation
     currentStock: SimpleTranslation
     lastTopUpAt: SimpleTranslation
+    lastBatteryChangeAt: SimpleTranslation
+    capacity: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -114,6 +134,7 @@ interface ModalText{
     colorPicker: ModalTextItems
     caliberPicker: ModalTextItems
     cleanInterval: ModalTextItems
+    mountedOn: ModalTextItems
 }
 
 interface ModalTextItems{
@@ -154,6 +175,9 @@ interface aboutThanksPersons{
 interface LongPressActions{
     clone: SimpleTranslation
     delete: SimpleTranslation
+    goto: SimpleTranslation
+    unmount: SimpleTranslation
+    remount: SimpleTranslation
 }
 
 interface iosWarning{
@@ -161,6 +185,11 @@ interface iosWarning{
     text: SimpleTranslation
     ok: SimpleTranslation
     cancel: SimpleTranslation
+}
+
+interface ItemViewTabBarLabels{
+    details: SimpleTranslation
+    accessories: SimpleTranslation
 }
 
 export const cleanIntervals:CleanIntervals = {
@@ -273,6 +302,38 @@ export const newAmmoTitle:SimpleTranslation = {
     fr: "Nouvelles munitions",
     it: "Nuove munizioni",
     ch: "Nova muniziun",
+}
+
+export const editAccessoryTitle:SimpleTranslation = {
+    de: "Zubehör bearbeiten",
+    en: "Edit Accessory",
+    fr: "Modifier l’accessoire",
+    it: "Modificare accessorio",
+    ch: "Modifitgar accessoris",
+}
+
+export const newAccessoryTitle:SimpleTranslation = {
+    de: "Neues Zubehör",
+    en: "New Accessory",
+    fr: "Nouvel accessoire",
+    it: "Nuovo accessorio",
+    ch: "Nov accessori",
+}
+
+export const editPartTitle:SimpleTranslation = {
+    de: "Waffenbestandteil bearbeiten",
+    en: "Edit Weapon Part",
+    fr: "Modifier la partie d’une arme",
+    it: "Modifica parte arma",
+    ch: "Modifitgar ina part da l’arma",
+}
+
+export const newPartTitle:SimpleTranslation = {
+    de: "Neues Waffenbestandteil",
+    en: "New Weapon Part",
+    fr: "Pièce de nouvelle arme",
+    it: "Nuova parte di arma",
+    ch: "Nova part da las armas",
 }
 
 export const unsavedChangesAlert:Alert = {
@@ -700,10 +761,10 @@ export const preferenceTitles:PreferenceTitle = {
     },
     importCSV_ammo: {
         de: "Eigene CSV Datenbank importieren",
-        en: "",
-        fr: "", 
-        it: "", 
-        ch: "",
+        en: "Import custom CSV Database",
+        fr: "Importer une base de données CSV personnalisée", 
+        it: "Importazione di una propria banca dati CSV", 
+        ch: "Importar l’atgna banca da datas CSV",
     },
     gunList: {
         de: "Verzeichnisse",
@@ -713,18 +774,18 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "Register",
     },
     printAllGuns: {
-        de: "Komplettes Verzeichnis als Tabelle",
-        en: "Complete list as a table",
-        fr: "Liste complète sous forme de tableau",
-        it: "Elenco completo come tabella",
-        ch: "Register cumplet sco tabella",
+        de: "Komplettes Waffenverzeichnis als Tabelle",
+        en: "Complete gun list as a table",
+        fr: "Liste complète des armes sous forme de tableau",
+        it: "Elenco completo delle armi come tabella",
+        ch: "Register cumplet da las armas sco tabella",
     },
     printArt5:{
-        de: "Verzeichnis nach WG Art. 5 als Tabelle",
-        en: "List according to WA Art. 5 as table",
-        fr: "Liste selon la LArm Art. 5 sous forme de tableau",
-        it: "Elenco secondo la LArm Art. 5 come tabella",
-        ch: "Register tenor la LArm Art. 5 sco tabella",
+        de: "Waffenverzeichnis nach WG Art. 5 als Tabelle",
+        en: "Gun List according to WA Art. 5 as table",
+        fr: "Liste des armes selon la LArm Art. 5 sous forme de tableau",
+        it: "Elenco delle armi secondo la LArm Art. 5 come tabella",
+        ch: "Register da las armas tenor la LArm Art. 5 sco tabella",
     },
     printGallery:{
         de: "Galerie",
@@ -833,6 +894,186 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Munitions",
         it: "Munizioni",
         ch: "Muniziun",
+    },
+    opticCollection: {
+        de: "Optiken",
+        en: "Optics",
+        fr: "Optiques",
+        it: "Ottici",
+        ch: "Opticas",
+    },
+    scopeCollection: {
+        de: "Zielfernrohre",
+        en: "Scopes",
+        fr: "Télémètres",
+        it: "Telecamere",
+        ch: "Portaperspectiv",
+    },
+    magazineCollection: {
+        de: "Magazine",
+        en: "Magazines",
+        fr: "Magazines",
+        it: "Riviste",
+        ch: "Magasins",
+    },
+    silencerCollection: {
+        de: "Schalldämpfer",
+        en: "Silencers",
+        fr: "Silencieux",
+        it: "Silenziatore",
+        ch: "Surdina dal tun",
+    },
+    lightLaserCollection: {
+        de: "Licht & Laser",
+        en: "Light & Laser",
+        fr: "Lumière & Laser",
+        it: "Luce & Laser",
+        ch: "Glisch & Laser",
+    },
+    conversionCollection: {
+        de: "Wechelsysteme",
+        en: "Conversion System",
+        fr: "Système de conversion",
+        it: "Sistema di conversione",
+        ch: "Sistem da midada",
+    },
+    barrelCollection: {
+        de: "Läufe",
+        en: "Barrels",
+        fr: "Canons ",
+        it: "Canne",
+        ch: "Channa",
+    },
+    miscAccessoryCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses",
+    },
+    bookCollection: {
+        de: "Bücher",
+        en: "Books",
+        fr: "Livres",
+        it: "Libri",
+        ch: "Cudeschs",
+    },
+    printMagazineCollection: {
+        de: "Magazine",
+        en: "Magazines",
+        fr: "Magazines",
+        it: "Rivista",
+        ch: "Revista",
+    },
+    swissMilitaryRegulationCollection: {
+        de: "Reglemente Schweizer Armee",
+        en: "Swiss Army Rulebooks",
+        fr: "Règlements de l'armée suisse",
+        it: "Regolamenti dell'esercito svizzero",
+        ch: "Reglaments da l'armada svizra",
+    },
+    literatureMiscCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses", 
+    },
+    diesCollection:{
+        de: "Matritzen",
+        en: "Dies",
+        fr: "Recharger des cartouches",
+        it: "Ricaricare le cartucce",
+        ch: "Matriza", 
+    },
+    bulletCollection: {
+        de: "Geschosse",
+        en: "Bullets",
+        fr: "Projectiles",
+        it: "Proiettile",
+        ch: "Projectil", 
+    },
+    caseCollection: {
+        de: "Hülsen",
+        en: "Casings",
+        fr: "Boîtes",
+        it: "Cartucce",
+        ch: "Mantuns", 
+    },
+    primerCollection: {
+        de: "Zündhütchen",
+        en: "Primers",
+        fr: "Amorces",
+        it: "Capsule",
+        ch: "Chamona d'envidar", 
+    },
+    powderCollection: {
+        de: "Pulver",
+        en: "Poweder",
+        fr: "Poudre",
+        it: "Polvere",
+        ch: "Pulvrus", 
+    },
+    reloadingMiscCollection: {
+        de: "Diverses",
+        en: "Miscellaneous",
+        fr: "Divers",
+        it: "Varie",
+        ch: "Diverses", 
+    }
+}
+
+interface MainCollectionCategories {
+    gunCollection: SimpleTranslation
+    ammoCollection: SimpleTranslation
+    accessoryCollection: SimpleTranslation
+    literatureCollection: SimpleTranslation
+    reloadingCollection: SimpleTranslation
+    partCollection: SimpleTranslation
+}
+
+export const mainCollectionCategories: MainCollectionCategories = {
+    gunCollection: {
+        de: "Waffen",
+        en: "Weapons",
+        fr: "Armes",
+        it: "Armi",
+        ch: "Armas",
+    },
+    ammoCollection: {
+        de: "Munition",
+        en: "Ammunition",
+        fr: "Munitions",
+        it: "Munizioni",
+        ch: "Muniziun",
+    },
+    accessoryCollection: {
+        de: "Zubehör",
+        en: "Accessories", 
+        fr: "Accessoires",
+        it: "Accessorio",
+        ch: "Accessoris",
+    },
+    literatureCollection: {
+        de: "Literatur",
+        en: "Literature", 
+        fr: "Littérature",
+        it: "Letteratura",
+        ch: "Litteratura",
+    },
+    reloadingCollection: {
+        de: "Wiederladen",
+        en: "Reloading", 
+        fr: "Recharger",
+        it: "Ricaricare",
+        ch: "Rechargiar",
+    },
+    partCollection: {
+        de: "Waffenteile",
+        en: "Weapon Parts", 
+        fr: "Pièces d’armes",
+        it: "Pezzi di arma",
+        ch: "Parts d’armas",
     }
 }
 
@@ -894,21 +1135,21 @@ export const tooltips:Tooltips = {
 }
 
 export const sorting:Sorting = {
-    alphabetic: {
+    alphabetical: {
         de: "Alphabetisch",
         en: "Alphabetical",
         fr: "Alphabétique",
         it: "Alfabetico",
         ch: "Alfabetic",
     },
-    lastModified: {
+    lastModifiedAt: {
         de: "Zuletzt geändert",
         en: "Last modified",
         fr: "Dernière modification",
         it: "Ultima modifica",
         ch: "L'ultima giada midà",
     },
-    lastAdded: {
+    createdAt: {
         de: "Zuletzt hinzugefügt",
         en: "Last added",
         fr: "Dernier ajout",
@@ -936,14 +1177,14 @@ export const sorting:Sorting = {
         it: "Data di acquisizione",
         ch: "Data d'acquist",        
     },
-    lastCleaned:{
+    lastCleanedAt:{
         de: "Zuletzt gereinigt",     
         en: "Last cleaned",
         fr: "Dernier nettoyage",
         it: "Ultima pulizia",
         ch: "Ultima nettegiada",        
     },
-    lastShot:{
+    lastShotAt:{
         de: "Zuletzt geschossen",     
         en: "Last shot",
         fr: "Dernier coup de feu",
@@ -963,6 +1204,20 @@ export const sorting:Sorting = {
         fr: "Quantité actuelle",
         it: "Quantità attuale",
         ch: "Quantitad actuala",    
+    },
+    lastBatteryChangeAt:{
+        de: "Letzter Batteriewechsel",     
+        en: "Last Battery Change",
+        fr: "Dernier changement de batterie",
+        it: "Ultimo cambio di batteria",
+        ch: "Ultima midada da battaria",    
+    },
+    capacity:{
+        de: "Kapazität",     
+        en: "Capacity",
+        fr: "Capacité",
+        it: "Capacità",
+        ch: "Capacitad",    
     }
 }
 
@@ -1221,6 +1476,22 @@ export const modalTexts: ModalText = {
             ch: `Tscherni in interval da temp, cur che l'arma stuess puspè vegnir nettegiada.\n\nDies vegn quintà vi da la valur da "l'ultima nettegiada", premess che quella saja messa.\n\nBenenen surpassament da l'interval cumpara il num da l'arma en la survista cotschna.`,
         }
     },
+    mountedOn: {
+        title: {
+            de: "QuickMount",
+            en: "QuickMount",
+            fr: "QuickMount",
+            it: "QuickMount",
+            ch: "QuickMount",
+        },
+        text:{
+            de: `Wähle, auf welche Waffe/welches Zubehör das aktuelle Zubehör/Waffenteil montiert werden soll.`,
+            en: ``,
+            fr: ``,
+            it: ``,
+            ch: ``,
+        }
+    },
 }
 
 export const caliberPickerStrings:CaliberPickerStrings = {
@@ -1315,6 +1586,27 @@ export const longPressActions:LongPressActions = {
         fr: "Supprimer",
         it: "Cancellare",
         ch: "Stizzar",
+    },
+    goto: {
+        de: "",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    },
+    unmount: {
+        de: "Abmontieren",
+        en: "Unmount",
+        fr: "Démonter",
+        it: "Smontare",
+        ch: "Demontar",
+    },
+    remount: {
+        de: "Woanders montieren",
+        en: "Remount",
+        fr: "Monter ailleurs",
+        it: "Montare altrove",
+        ch: "Montar insanua auter",
     }
 }
 
@@ -1363,4 +1655,47 @@ export const importExportSelectionLabel: SimpleTranslation = {
     fr: "Base de données sélectionnée",
     it: "Database selezionato",
     ch: "Banca da datas tschernida",
+}
+
+export const snackbarText = {
+    mountAccessory: {
+        de: `Zubehör/Waffenteil auf {{{A}}} montiert.`,
+        en: "Accessory/Weapon Part mounted on {{{A}}}",
+        fr: "Accessoire/pièce d’arme montée sur {{{A}}}",
+        it: "Accessorio/parte dell’arma montata su {{{A}}}",
+        ch: "Accessoris/part da las armas montads sin {{{A}}}",
+    },
+    removeAccessory: {
+        de: `{{{A}}} entfernt.`,
+        en: "{{{A}}} removed.",
+        fr: "{{{A}}} éloigné.",
+        it: "{{{{A}}} lontano.",
+        ch: "{{{A}}} davent.",
+    }
+
+}
+
+export const developerSettingsWarning: SimpleTranslation = {
+    de: "Diese Einstellungen sind UNWIDERRUFLICH. Es gibt keine Übersetzungen und keine Erklärungen. VERWENDUNG AUF EIGENE GEFAHR! Verwenden Sie sie nur, wenn Sie wissen, was Sie tun und wenn Sie sicher sind, was Sie tun. Es gibt keine Bestätigungsaufforderungen. Drücken Sie die Taste und die Funktion WIRD OHNE BESTÄTIGUNG AUSGEFÜHRT!",
+    en: "These Settings are IRREVERSIBLE. There are no translations and no explanations provided. USE AT YOUR OWN RISK! Use only if you know what you are doing and if you are sure of what you are doing. There are no confirmation prompts. Press the button and the function runs WITHOUT CONFIRMATION!",
+    fr: "Ces paramètres SONT IRRÉVERSIBLES. Il n’y a pas de traductions et pas d’explications. UTILISEZ-LES À VOS PROPRES RISQUES ET PÉNALITÉS! Utilisez-les uniquement si vous savez ce que vous faites et si vous êtes sûr de ce que vous faites. Il n’y a pas de demande de confirmation. Appuyez sur le bouton et la fonction s’EXÉCUTERA SANS CONFIRMATION!",
+    it: "Queste impostazioni SONO IRREVERSIBILI. Non ci sono traduzioni e non ci sono spiegazioni. USATE A VOSTRA PROPRIA RESPONSABILITÀ! Usate solo se sapete cosa state facendo e se siete sicuri di quello che state facendo. Non ci sono richieste di conferma. Premete il pulsante e la funzione viene ESEGUITA SENZA CONFERMA!",
+    ch: "Questas preferenzas èn IRREVOCABLES. I na dat naginas translaziuns e naginas decleraziuns. UTILISAI QUAI SIN ATGNA RISTGA! Duvrai quai mo sche Vus savais, tge che Vus faschais e sche Vus essas segirs, tge che Vus faschais. I na dat naginas pretensiuns da conferma. Smatgai la tasta e la funcziun vegn exequida SENZA CONFERMAR!",
+}
+
+export const itemViewTabBarLabels: ItemViewTabBarLabels = {
+    details: {
+        de: "Details",
+        en: "Details",
+        fr: "Détails",
+        it: "Dettagli",
+        ch: "Detagls"
+    },
+    accessories: {
+        de: "Zubehör",
+        en: "Accessories",
+        fr: "Accessoires",
+        it: "Accessori",
+        ch: "Airi"
+    },
 }

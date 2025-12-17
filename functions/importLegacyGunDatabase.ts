@@ -1,27 +1,30 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import { AmmoType, GunType } from '../interfaces';
+import { AmmoType, CollectionType, GunType, ItemType } from '../interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
 import { manipulateAsync } from "expo-image-manipulator"
 import { expo, db } from "../db/client"
 import * as schema from "../db/schema"
 import { ImportExportStore } from '../stores/useImportExportStore';
+import { determineTagSchema } from './determinators';
 
-export async function importLegacyGunDatabase(resizeImages:boolean, importOptionLegacyDB:"gun"|"ammo"){
-       
+export async function importLegacyGunDatabase(resizeImages:boolean, importOptionLegacyDB: CollectionType){
+
+    const legacyPrefix = importOptionLegacyDB.startsWith("gun") ? "gun" : "ammo"
+
     const result = await DocumentPicker.getDocumentAsync({copyToCacheDirectory: true})
-    
+ 
     if(result.assets === null){
         return
     }
     
-    if(!result.assets[0].name.startsWith(`${importOptionLegacyDB}DB_`)){
-        throw new Error(`Legacy DB Prefix not ${importOptionLegacyDB}DB_`)
+    if(!result.assets[0].name.startsWith(`${legacyPrefix}DB_`)){
+        throw new Error(`Legacy DB Prefix not ${legacyPrefix}DB_`)
     }
 
     const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
 
-    let importables:GunType[] | AmmoType[]
+    let importables: ItemType[]
     try {
         importables = JSON.parse(content)
     } catch(e) {
@@ -46,12 +49,12 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
             const jsonString = '[' + tryParse + ']';
             importables = JSON.parse(jsonString);
         } catch(e) {
-            throw new Error(`JSON parsing ${importOptionLegacyDB}DB_: ${e}`)
+            throw new Error(`JSON parsing ${legacyPrefix}DB_: ${e}`)
         }
     }
 
     const importTags:{label:string, status:boolean}[] = []
-    const importableCollection:GunType[] | AmmoType[] = await Promise.all(importables.map(async importable=>{
+    const importableCollection:ItemType[] = await Promise.all(importables.map(async importable=>{
         if(importable.images !== null && importable.images.length !== 0){
             const base64images:string[] = await Promise.all(importable.images.map(async (image, index) =>{
                 const base64ImageUri = `data:image/jpeg;base64,${image}`;
@@ -89,7 +92,7 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
                 })
                 return fileUri
             }))
-            const importableItem:GunType | AmmoType = {...importable, images: base64images}
+            const importableItem: ItemType = {...importable, images: base64images}
             if(importable.tags !== undefined && importable.tags.length !== 0){
                 for(const tag of importable.tags){
                     if(!importTags.some(importTag => importTag.label === tag)){
@@ -110,39 +113,45 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
         }
     }))
 
-    if(importOptionLegacyDB === "gun"){
-        await db.delete(schema.gunCollection);
-    }
-    if(importOptionLegacyDB === "ammo"){
-        await db.delete(schema.ammoCollection);
-    }
 
+    await db.delete(schema[importOptionLegacyDB]);
+
+    
    for(const importable of importableCollection){
-    if(importOptionLegacyDB === "gun"){
-        const importableType = importable as GunType
-        const flatGun = {...importableType, ...importableType.status}
 
-        if(!Array.isArray(importableType.caliber)){
-            /*@ts-expect-error */
-            flatGun.caliber = importableType.caliber.split("\n")
+        const importableType = importable
+
+        let flatItem: ItemType
+
+        if("status" in importableType){
+            flatItem = {...importableType, ...importableType.status}
+        } else {
+            flatItem = {...importableType}
         }
 
-        await db.insert(schema.gunCollection).values(flatGun)
-    }
-    if(importOptionLegacyDB === "ammo"){
-        const importableType = importable as AmmoType
-        await db.insert(schema.ammoCollection).values(importableType)
+        let parsedCaliber = null
+        if("caliber" in importableType && !Array.isArray(importableType.caliber)){
+            parsedCaliber = (importableType.caliber as string).split("\n")
+        } 
+        if("caliber" in importableType && Array.isArray(importableType.caliber)){
+            parsedCaliber = importableType.caliber
+        }
+        
+        let insertItem: ItemType
+        if(parsedCaliber){
+            insertItem = {
+                ...flatItem,
+                caliber: parsedCaliber
+            }
+        } else {
+            insertItem = flatItem
+        }
+
+        await db.insert(schema[importOptionLegacyDB]).values(insertItem)
     }
     
-   }
-
    for(const tag of importTags){
-    if(importOptionLegacyDB === "gun"){
-        await db.insert(schema.gunTags).values({label: tag.label}).onConflictDoNothing()
-    }
-    if(importOptionLegacyDB === "ammo"){
-        await db.insert(schema.ammoTags).values({label: tag.label}).onConflictDoNothing()
-    }
+    await db.insert(determineTagSchema(importOptionLegacyDB)).values({label: tag.label}).onConflictDoNothing()
    }
 
    return importableCollection.length
