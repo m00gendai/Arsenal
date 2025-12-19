@@ -4,12 +4,28 @@ import { SortingTypesAccessory_Scope } from "../interfaces";
 
 export default function sortAccessoryCollection_Scope(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Scope){
     const ascending = direction === "asc"
-
+        // subtitle is zoom
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Scope.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Scope.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Scope.zoom}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Scope.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Scope.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Scope.zoom}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -56,8 +72,23 @@ export default function sortAccessoryCollection_Scope(direction: "asc" | "desc",
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Scope.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Scope.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Scope.zoom}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Scope.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Scope.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Scope.zoom}, ''), '')
+                )
+            )
+        `))
 }

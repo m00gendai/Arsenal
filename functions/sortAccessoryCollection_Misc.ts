@@ -4,12 +4,26 @@ import { SortingTypesAccessory_Misc } from "../interfaces";
 
 export default function sortAccessoryCollection_Misc(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Misc){
     const ascending = direction === "asc"
-
+        // currently no subtitles
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Misc.manufacturer}, ""), ${schema.accessoryCollection_Misc.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Misc.manufacturer}, ""), ${schema.accessoryCollection_Misc.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Misc.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Misc.model}, ''), '') 
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Misc.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Misc.model}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -44,8 +58,21 @@ export default function sortAccessoryCollection_Misc(direction: "asc" | "desc", 
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Misc.manufacturer}, ""), ${schema.accessoryCollection_Misc.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Misc.manufacturer}, ""), ${schema.accessoryCollection_Misc.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Misc.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Misc.model}, ''), '') 
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Misc.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Misc.model}, ''), '')
+                )
+            )
+        `))
 }

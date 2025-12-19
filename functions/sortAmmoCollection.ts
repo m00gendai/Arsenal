@@ -5,12 +5,28 @@ import { SortingTypesAmmo } from "../interfaces";
 export default function sortAmmoCollection(direction: "asc" | "desc", sortBy:SortingTypesAmmo){
 
     const ascending = direction === "asc"
-    
+    // subtitle is caliber
     if(sortBy === "alphabetical"){
         return ascending ?
-            asc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-            :
-            desc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.ammoCollection.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.ammoCollection.designation}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.ammoCollection.caliber}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.ammoCollection.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.ammoCollection.designation}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.ammoCollection.caliber}, ''), '')
+                )
+            )
+        `))
     }
     if(sortBy === "createdAt"){
         return ascending ?
@@ -39,7 +55,23 @@ export default function sortAmmoCollection(direction: "asc" | "desc", sortBy:Sor
 
     // Fallback sorter
     return ascending ?
-            asc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
-            :
-            desc((sql`COALESCE(NULLIF(${schema.ammoCollection.manufacturer}, ""), ${schema.ammoCollection.designation})`))
+    asc((sql`
+        lower(
+            trim(
+                coalesce(nullif(${schema.ammoCollection.manufacturer}, ''), '') || ' ' ||
+                coalesce(nullif(${schema.ammoCollection.designation}, ''), '') || ' ' ||
+                coalesce(nullif(${schema.ammoCollection.caliber}, ''), '')
+            )
+        )
+    `))
+    :
+    desc((sql
+        `lower(
+            trim(
+                coalesce(nullif(${schema.ammoCollection.manufacturer}, ''), '') || ' ' ||
+                coalesce(nullif(${schema.ammoCollection.designation}, ''), '') || ' ' ||
+                coalesce(nullif(${schema.ammoCollection.caliber}, ''), '')
+            )
+        )
+    `))
 }

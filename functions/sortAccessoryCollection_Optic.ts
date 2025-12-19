@@ -4,12 +4,28 @@ import { SortingTypesAccessory_Optic, SortingTypesAccessory_Silencer } from "../
 
 export default function sortAccessoryCollection_Optic(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Optic){
     const ascending = direction === "asc"
-
+        // subtitle is reticle
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Optic.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Optic.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Optic.reticle}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Optic.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Optic.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Optic.reticle}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -56,8 +72,23 @@ export default function sortAccessoryCollection_Optic(direction: "asc" | "desc",
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Optic.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Optic.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Optic.reticle}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Optic.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Optic.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Optic.reticle}, ''), '')
+                )
+            )
+        `))
 }

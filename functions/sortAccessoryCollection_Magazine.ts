@@ -4,12 +4,30 @@ import { SortingTypesAccessory_Magazine } from "../interfaces";
 
 export default function sortAccessoryCollection_Magazine(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Magazine){
     const ascending = direction === "asc"
-
+        // subtitle is capacity + caliber
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.model}, ''), '') || ' ' ||
+                        coalesce(cast(${schema.accessoryCollection_Magazine.capacity} as text), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.caliber}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.model}, ''), '') || ' ' ||
+                        coalesce(cast(${schema.accessoryCollection_Magazine.capacity} as text), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Magazine.caliber}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -62,8 +80,25 @@ export default function sortAccessoryCollection_Magazine(direction: "asc" | "des
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.model}, ''), '') || ' ' ||
+                    coalesce(cast(${schema.accessoryCollection_Magazine.capacity} as text), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.caliber}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.model}, ''), '') || ' ' ||
+                    coalesce(cast(${schema.accessoryCollection_Magazine.capacity} as text), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_Magazine.caliber}, ''), '')
+                )
+            )
+        `))
 }

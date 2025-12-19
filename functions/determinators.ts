@@ -468,19 +468,19 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
     switch(collection){
         case "gunCollection": 
             {   const item = itemIn as GunType
-                return item.serial && item.serial.length != 0 ? item.serial : " "
+                return item.serial && item.serial.length !== 0 ? item.serial : " "
             }
         case "ammoCollection":
             {   const item = itemIn as AmmoType
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Silencer":
             {   const item = itemIn as AccessoryType_Silencer
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Optic":
             {   const item = itemIn as AccessoryType_Optic
-                return item.zoom ? item.zoom : " "
+                return item.reticle ? item.reticle : " "
             }
         case "accessoryCollection_Scope":
             {   const item = itemIn as AccessoryType_Scope
@@ -493,7 +493,7 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
         case "accessoryCollection_Magazine":
             {   const item = itemIn as AccessoryType_Magazine
                 const capacity = item.capacity ? `${item.capacity} ${shotLabel[language]}` : ""
-                const caliber = item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
+                const caliber = item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
                 return `${capacity} ${caliber}`
             }
         case "accessoryCollection_Misc":
@@ -502,11 +502,11 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             }
         case "partCollection_ConversionKit":
             {   const item = itemIn as PartType_ConversionKit
-                return item.serial && item.serial.length != 0 ? item.serial : " "
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "partCollection_Barrel":
             {   const item = itemIn as PartType_Barrel
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList) : " "
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
     }
 }

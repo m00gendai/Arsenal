@@ -4,12 +4,28 @@ import { SortingTypesAccessory_LightLaser } from "../interfaces";
 
 export default function sortAccessoryCollection_LightLaser(direction: "asc" | "desc", sortBy:SortingTypesAccessory_LightLaser){
     const ascending = direction === "asc"
-
+        // subtitle is serial
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.serial}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_LightLaser.serial}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -50,8 +66,23 @@ export default function sortAccessoryCollection_LightLaser(direction: "asc" | "d
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.serial}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.accessoryCollection_LightLaser.serial}, ''), '')
+                )
+            )
+        `))
 }

@@ -4,12 +4,28 @@ import { SortingTypesAccessory_Silencer } from "../interfaces";
 
 export default function sortAccessoryCollection_Silencer(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
     const ascending = direction === "asc"
-
+        // subtitle is caliber
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.caliber}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.caliber}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -56,8 +72,23 @@ export default function sortAccessoryCollection_Silencer(direction: "asc" | "des
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`))
-
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.caliber}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.accessoryCollection_Silencer.caliber}, ''), '')
+                    )
+                )
+            `))
 }
