@@ -1,4 +1,4 @@
-import { PaperProvider, Text } from 'react-native-paper';
+import { IconButton, PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from "react"
 import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "./configs_DB"
@@ -22,7 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import QuickShot from './components/QuickShot';
 import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { calibers } from './lib/caliberData';
 import { expo, db } from "./db/client"
 import * as schema from "./db/schema"
@@ -31,7 +31,7 @@ import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import migrations from './drizzle/migrations';
 import { checkBoxes } from './lib/DataTemplates/gunDataTemplate';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
-import BottomSheet, { BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFooter, BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBars/BottomBar';
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs';
@@ -46,6 +46,7 @@ import { eq } from 'drizzle-orm';
 import checkLegacyGunData from 'functions/checkLegacyGunData';
 import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
 import migrateLegacyDateAndCaliberFields from 'functions/migrateLegacyDateAndCaliberFields';
+import { snapshot } from 'node:test';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -97,9 +98,14 @@ export default function App() {
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet } = useViewStore()
   const { currentCollection } = useItemStore()
-  const { setAmmoTags, setTags } = useTagStore()
-  const [gunsLoaded, setGunsLoaded] = useState(false)
+
+
+  // States and Refs
+
+  const [bottomBarIcon, setBottomBarIcon] = useState<string>("chevron-up")
+  const snapStateRef = useRef<number>(null)
   const bottomSheetRef = useRef<BottomSheet>(null);
+
 
   // INIT PREPARE FUNCTION - THIS ESSENTAILLY SETS UP THE APP
   
@@ -371,13 +377,26 @@ export default function App() {
   }
 
 
+  // This handles the bottomSheet state - open or closed - across swipes and button presses
+
+  function handleBottomSheetChange(){
+    if(snapStateRef.current === 0){
+      snapStateRef.current = 1
+      setBottomBarIcon("chevron-down")
+    } else {
+      snapStateRef.current = 0
+      setBottomBarIcon("chevron-up")
+    }
+  }
+
+
   // Actual main structure
 
   return (
     <GestureHandlerRootView>
-    <NavigationContainer theme={navTheme}>
-      <PaperProvider theme={currentTheme}>
-        <StatusBar backgroundColor={mainMenuOpen ? theme.colors.primary : theme.colors.background} style={theme.name.includes("dark") ? "light" : "dark"} />
+      <NavigationContainer theme={navTheme}>
+        <PaperProvider theme={currentTheme}>
+          <StatusBar backgroundColor={mainMenuOpen ? theme.colors.primary : theme.colors.background} style={theme.name.includes("dark") ? "light" : "dark"} />
           <SafeAreaView 
             onLayout={onLayoutRootView}
             style={{
@@ -401,61 +420,65 @@ export default function App() {
                 component={Item}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid}} 
               />
-  
+
               <Stack.Screen
                 name="newItem"
                 component={NewItem}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 
-            <Stack.Screen
-              name="editItem"
-              component={EditItem}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
-            />
+              <Stack.Screen
+                name="editItem"
+                component={EditItem}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
 
-            <Stack.Screen
-              name="QuickStock"
-              component={QuickStock}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
-            />
+              <Stack.Screen
+                name="QuickStock"
+                component={QuickStock}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
+              />
 
-            <Stack.Screen
-              name="QuickShot"
-              component={QuickShot}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
-            />
+              <Stack.Screen
+                name="QuickShot"
+                component={QuickShot}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
+              />
 
-            <Stack.Screen
-              name="QuickMount"
-              component={QuickMount}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
-            />
+              <Stack.Screen
+                name="QuickMount"
+                component={QuickMount}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, gestureDirection: "vertical-inverted", presentation: "transparentModal"}} 
+              />
 
-            <Stack.Screen
-              name="MainMenu"
-              component={MainMenu}
-              options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, gestureDirection: "horizontal-inverted", presentation: "transparentModal", cardStyle: { backgroundColor: Dimensions.get("window").width > Dimensions.get("window").height ? "transparent" : theme.colors.background}}} 
-            />
+              <Stack.Screen
+                name="MainMenu"
+                component={MainMenu}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, gestureDirection: "horizontal-inverted", presentation: "transparentModal", cardStyle: { backgroundColor: Dimensions.get("window").width > Dimensions.get("window").height ? "transparent" : theme.colors.background}}} 
+              />
 
-          </Stack.Navigator>
-          <AlohaSnackbar/>
-          {mainMenuOpen ? null : hideBottomSheet ? null : <BottomSheet
-        ref={bottomSheetRef}
-        
-            snapPoints={[
-              defaultBottomBarHeight
-            ]}
-            handleComponent={null}            
-      >
-        
-        <BottomSheetView style={{ flex: 1 }}>
-          <BottomBar screen={currentCollection}/>
-        </BottomSheetView>
-      </BottomSheet>}
-        </SafeAreaView>
-      </PaperProvider>
-    </NavigationContainer>
+            </Stack.Navigator>
+            
+            <AlohaSnackbar/>
+            
+            {mainMenuOpen ? null : hideBottomSheet ? null : 
+              <BottomSheet
+                ref={bottomSheetRef}
+                onChange={()=> handleBottomSheetChange()}
+                snapPoints={[
+                  defaultBottomBarHeight
+                ]}
+                handleComponent={null}   
+              >
+                <BottomSheetView style={{ flex: 1 }}>
+                  <BottomBar screen={currentCollection} bottomBarRef={bottomSheetRef} snapStateRef={snapStateRef} bottomBarIcon={bottomBarIcon}/>
+                </BottomSheetView>
+              </BottomSheet>
+            }
+
+          </SafeAreaView>
+        </PaperProvider>
+      </NavigationContainer>
     </GestureHandlerRootView>
   )
 }
