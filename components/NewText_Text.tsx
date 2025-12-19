@@ -41,7 +41,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
         } else if(input === null){
             setCharCount(0)
         } else {
-            setCharCount(input.toString().length)
+            setCharCount(input.current.toString().length)
         }
     }
 
