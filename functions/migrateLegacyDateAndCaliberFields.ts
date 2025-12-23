@@ -79,7 +79,6 @@ function checkLegacyAmmoCaliber(ammo: any){
   if(!ammo.caliber){
     return null
   }
-  console.log(typeof ammo.caliber)
   if(Array.isArray(ammo.caliber)){
     return ammo.caliber
   }

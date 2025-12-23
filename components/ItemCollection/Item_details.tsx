@@ -24,8 +24,6 @@ export default function Item_details(){
     return(
         <View>
                         {determineDataTemplate(currentCollection).map((dataItem, index)=>{
-                            console.log(caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name] : "")
                             if(!generalSettings.emptyFields){
                                 return(
                                     <View key={`${dataItem.name}`} style={{flex: 1, flexDirection: "column"}} >
