@@ -17,7 +17,7 @@ import { useViewStore } from "stores/useViewStore";
 export default function CardOptionsMenu(){
 
     const { language, theme } = usePreferenceStore()
-    const { cardOptionsMenuVisible, setCardOptionsMenuVisible } = useViewStore()
+    const { cardOptionsMenuVisible, setCardOptionsMenuVisible, setHideBottomSheet } = useViewStore()
     const { currentCollection, currentItem, setCurrentItem } = useItemStore()  
 
     const [deleteDialogVisible, toggleDeleteDialogVisible] = useState<boolean>(false)
@@ -26,6 +26,7 @@ export default function CardOptionsMenu(){
 
     function handleClone(){
         setCardOptionsMenuVisible(false)
+        setHideBottomSheet(true)
         navigation.navigate("newItem", {clone: true})
       }
 
@@ -108,7 +109,7 @@ export default function CardOptionsMenu(){
 
     <Dialog visible={deleteDialogVisible} onDismiss={()=>toggleDeleteDialogVisible(!deleteDialogVisible)}>
                             <Dialog.Title>
-                            {currentItem ? `${"model" in currentItem ? (currentItem.model || "") : (currentItem.designation || "")} ${gunDeleteAlert.title[language]}` : ""}
+                            {currentItem ? `${"model" in currentItem ? (currentItem.model || "") : "designation" in currentItem ? (currentItem.designation || "") : (currentItem.title || "")} ${gunDeleteAlert.title[language]}` : ""}
                             </Dialog.Title>
                             <Dialog.Content>
                                 <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
