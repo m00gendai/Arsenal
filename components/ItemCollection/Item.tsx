@@ -11,7 +11,7 @@ import { ItemType } from 'interfaces';
 import { alarm, checkDate } from 'utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
-import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs';
+import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
@@ -172,7 +172,7 @@ useEffect(() => {
             
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={handleGoBack} />
-                <Appbar.Content title={`${currentItem.manufacturer ? currentItem.manufacturer : ""} ${"model" in currentItem ? currentItem.model : currentItem.designation}`} />
+                <Appbar.Content title={`${"manufacturer" in currentItem && currentItem.manufacturer ? currentItem.manufacturer : "title" in currentItem && currentItem.title ? currentItem.title : ""} ${"model" in currentItem ? currentItem.model : "designation" in currentItem && currentItem.designation ? currentItem.designation : ""}`} />
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
                 <Appbar.Action icon="pencil" onPress={()=>handleEdit()} />
             </Appbar>
@@ -248,7 +248,7 @@ useEffect(() => {
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "details" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.details[language]}</Text>
                         </Pressable>
-                        <Pressable 
+                        {accessoryExceptions.includes(currentCollection) ? null : <Pressable 
                             style={{
                                 display: "flex", 
                                 flexDirection: "row", 
@@ -260,7 +260,7 @@ useEffect(() => {
                             onPress={() => setActiveTab("accessories")}
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.accessories[language]}</Text>
-                        </Pressable>
+                        </Pressable>}
                     </View>
 
 
@@ -293,7 +293,7 @@ useEffect(() => {
                 <Portal>
                     <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
                         <Dialog.Title>
-                        {`${"model" in currentItem ? currentItem.model : currentItem.designation} ${gunDeleteAlert.title[language]}`}
+                        {`${"model" in currentItem ? currentItem.model : "designation" in currentItem ? currentItem.designation : currentItem.title} ${gunDeleteAlert.title[language]}`}
                         </Dialog.Title>
                         <Dialog.Content>
                             <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
