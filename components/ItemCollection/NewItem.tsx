@@ -107,7 +107,7 @@ await db.insert(schema[currentCollection]).values(idless)
             })
         }
         setSaveState(true)
-        setSnackbarText(`${value.manufacturer ? value.manufacturer : ""} ${"model" in value ? value.model : value.designation} ${toastMessages.saved[language]}`)
+        setSnackbarText(`${"manufacturer" in value && value.manufacturer ? value.manufacturer : ""} ${"model" in value ? value.model : "designation" in value ?  value.designation : value.title} ${toastMessages.saved[language]}`)
         onToggleSnackBar()
         setCurrentItem({...itemData, id: value.id})
         navigation.navigate("item")

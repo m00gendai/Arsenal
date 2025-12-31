@@ -89,7 +89,7 @@ export default function EditGun({navigation}){
         }
         
         setSaveState(true)
-        setSnackbarText(`${item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : item.designation} ${toastMessages.changed[language]}`)
+        setSnackbarText(`${"manufacturer" in item && item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : "designation" in item ?  item.designation : item.title} ${toastMessages.changed[language]}`)
         onToggleSnackBar()
         setCurrentItem(item)
       }
@@ -441,7 +441,7 @@ export default function EditGun({navigation}){
 
                         <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
                             <Dialog.Title>
-                            {`${"model" in currentItem ? currentItem.model : currentItem.designation} ${gunDeleteAlert.title[language]}`}
+                            {`${"model" in currentItem ? currentItem.model : "designation" in currentItem ? currentItem.designation : currentItem.title} ${gunDeleteAlert.title[language]}`}
                             </Dialog.Title>
                             <Dialog.Content>
                                 <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
