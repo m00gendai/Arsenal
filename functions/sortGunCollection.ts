@@ -5,12 +5,28 @@ import { SortingTypesGun } from "../interfaces";
 export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesGun){
 
     const ascending = direction === "asc"
-
+        // subtitle is serial
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.gunCollection.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.gunCollection.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.gunCollection.serial}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.gunCollection.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.gunCollection.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.gunCollection.serial}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -57,8 +73,23 @@ export default function sortGunCollection(direction: "asc" | "desc", sortBy:Sort
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.gunCollection.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.gunCollection.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.gunCollection.serial}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.gunCollection.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.gunCollection.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.gunCollection.serial}, ''), '')
+                )
+            )
+        `))
 }

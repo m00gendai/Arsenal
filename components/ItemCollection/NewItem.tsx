@@ -211,23 +211,25 @@ await db.insert(schema[currentCollection]).values(idless)
 
 useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+        if(saveState === null){
+            setHideBottomSheet(false)
+            return
+        }
+        if (saveState) {
+            setHideBottomSheet(false)
+            return
+        }
+      
+        e.preventDefault()
 
-      if (saveState) {
-        // If we don't have unsaved changes, then we don't need to do anything
-        return;
-      }
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
+        setExitAction(e.data.action)
 
-      // Save the action to be triggered later
-      setExitAction(e.data.action);
-
-      // Show the dialog
-      toggleUnsavedDialogVisible(true);
+        toggleUnsavedDialogVisible(true)
     });
 
     return unsubscribe;
-  }, [navigation, saveState])
+
+}, [navigation, saveState])
 
   const handleDiscard = () => {
       toggleUnsavedDialogVisible(false);

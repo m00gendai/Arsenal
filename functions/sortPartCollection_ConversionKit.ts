@@ -4,12 +4,28 @@ import { SortingTypesAccessory_Silencer, SortingTypesPart_ConversionKit } from "
 
 export default function sortPartCollection_ConversionKit(direction: "asc" | "desc", sortBy:SortingTypesPart_ConversionKit){
     const ascending = direction === "asc"
-
+        // subtitle is caliber
         if(sortBy === "alphabetical"){
             return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`))
+            asc((sql`
+                lower(
+                    trim(
+                        coalesce(nullif(${schema.partCollection_ConversionKit.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.partCollection_ConversionKit.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.partCollection_ConversionKit.caliber}, ''), '')
+                    )
+                )
+            `))
+            :
+            desc((sql
+                `lower(
+                    trim(
+                        coalesce(nullif(${schema.partCollection_ConversionKit.manufacturer}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.partCollection_ConversionKit.model}, ''), '') || ' ' ||
+                        coalesce(nullif(${schema.partCollection_ConversionKit.caliber}, ''), '')
+                    )
+                )
+            `))
         }
         if(sortBy === "createdAt"){
             return ascending ?
@@ -56,8 +72,23 @@ export default function sortPartCollection_ConversionKit(direction: "asc" | "des
         
         // Default sorter
         return ascending ?
-                asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`))
-                :
-                desc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`))
-
+        asc((sql`
+            lower(
+                trim(
+                    coalesce(nullif(${schema.partCollection_ConversionKit.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.partCollection_ConversionKit.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.partCollection_ConversionKit.caliber}, ''), '')
+                )
+            )
+        `))
+        :
+        desc((sql
+            `lower(
+                trim(
+                    coalesce(nullif(${schema.partCollection_ConversionKit.manufacturer}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.partCollection_ConversionKit.model}, ''), '') || ' ' ||
+                    coalesce(nullif(${schema.partCollection_ConversionKit.caliber}, ''), '')
+                )
+            )
+        `))
 }

@@ -25,6 +25,9 @@ const getTranslation = (key: string, language: string, collection: CollectionTyp
 };
 
 function parseDate(date: string){
+  if(date === null){
+    return ""
+  }
   return new Date(date).toLocaleDateString("de-CH", dateTimeOptions)
 }
 
@@ -278,8 +281,7 @@ const guns = gunCollection.sort((a, b) =>{
         </thead>
           <tbody>
               ${guns.map(gun =>{
-                /*@ts-expect-error */
-                return `<tr>${gunDataTemplate.map(data=>{return data.name in gun && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : gun[data.name]}</td>` : !(data.name in gun) && !excludedKeys.includes(data.name) ? `<td></td>`: null}).join("")}</tr>`}).join("")}
+                return `<tr>${gunDataTemplate.map(data=>{return data.name in gun && !excludedKeys.includes(data.name) ? `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : datePickerTriggerFields.includes(data.name) ? parseDate(gun[data.name]) : gun[data.name] ? gun[data.name] : ""}</td>` : !(data.name in gun) && !excludedKeys.includes(data.name) ? `<td></td>`: ""}).join("")}</tr>`}).join("")}
           </tbody>
       </table>
     </div>
@@ -431,10 +433,7 @@ const guns = gunHasArt5Key.sort((a, b) =>{
               return `
               <tr>${gunDataTemplate.map(data=> {
                 return data.name in gun && !excludedKeys.includes(data.name) ? 
-                  `<td>${
-                    /*@ts-expect-error */
-                    data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : gun[data.name]
-                  }</td>` 
+                  `<td>${data.name === "caliber" ? getShortCaliberNameFromArray(gun[data.name], caliberDisplayNameList, shortCaliber).join(",<br>") : datePickerTriggerFields.includes(data.name) ? parseDate(gun[data.name]) : gun[data.name] ? gun[data.name] : ""}</td>` 
                 : !(data.name in gun) && !excludedKeys.includes(data.name) ? 
                   `<td></td>`
                 : null}).join("")}${checkBoxes.map(box => {

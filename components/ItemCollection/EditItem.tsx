@@ -253,26 +253,28 @@ export default function EditGun({navigation}){
           },
       });
 
-      useEffect(() => {
-      const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-        if(aboutToDeleteRef.current){
-            return
-        }
-        if (saveState) {
-          // If we don't have unsaved changes, then we don't need to do anything
-          return;
-        }
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+
+            if(aboutToDeleteRef.current){
+                return
+            }
+            if(saveState === null){
+                return
+            }
+            if (saveState) {
+                return
+            }
+
+            e.preventDefault()
+    
+            setExitAction(e.data.action)
+    
+            toggleUnsavedDialogVisible(true)
+        });
   
-        // Save the action to be triggered later
-        setExitAction(e.data.action);
-  
-        // Show the dialog
-        toggleUnsavedDialogVisible(true);
-      });
-  
-      return unsubscribe;
+        return unsubscribe;
+        
     }, [navigation, saveState])
 
     const handleDiscard = () => {

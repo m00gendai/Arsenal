@@ -4,7 +4,7 @@ import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { dateTimeOptions, defaultViewPadding } from "../configs";
 import { gunQuickShot, shotLabel } from "../lib/textTemplates";
 import { useState } from "react";
-import { AmmoType, ItemType } from "../interfaces";
+import { AmmoType, GunType, ItemType } from "../interfaces";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import * as schema from "../db/schema"
@@ -38,7 +38,7 @@ export default function QuickShot({navigation}){
   async function handleShotCount(){
     const date:Date = new Date()
     const mapped:number[] = Object.entries(shotCountFromStock).map(item => item[1] === "" ? 0 : Number(item[1]))
-    const currentShotCount:number = "shotCount" in currentItem ? currentItem.shotCount ? 0 : Number(currentItem.shotCount) : 0
+    const currentShotCount:number = "shotCount" in currentItem ? currentItem.shotCount ? Number(currentItem.shotCount) : 0 : 0
     const total: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCount
 
     {/*@ts-expect-error*/}

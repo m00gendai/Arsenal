@@ -33,7 +33,7 @@ export default function Item_details(){
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
                                                 generalSettings.caliberDisplayName ? // TODO: Make array display in ammo item vanish (its displayed as [.17 whatever])
-                                                    getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name]
+                                                    getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
@@ -64,7 +64,7 @@ export default function Item_details(){
                 {/* Textfield content */}
                                         <Text style={{width: "100%", fontSize: 18, marginBottom: 5, paddingBottom: 5, borderBottomColor: theme.colors.primary, borderBottomWidth: 0.2}}>
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
-                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name]
+                                                generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
