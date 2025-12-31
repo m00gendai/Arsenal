@@ -421,6 +421,39 @@ export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const literatureCollection_Book = sqliteTable("literature_book", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    language: text("language"),
+    title: text("title"),
+    subtitle: text("subtitle"),
+    isbn: text("isbn"),
+    publishingDate: text("publishingDate"),
+    author: text("author"),
+    publisher: text("publisher"),
+    edition: text("edition"),
+    series: text("series"),
+    volume: text("volume"),
+    pages: text("pages"),
+    format: text("format"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    remarks: text("remarks"),
+})
+
+export const literature_BookTags = sqliteTable("literature_bookTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("bookTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const gunReminders = sqliteTable("gunReminder",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),

@@ -296,6 +296,31 @@ export interface PartType_Barrel{
   currentlyMountedOn: string
 }
 
+export interface LiteratureType_Book{
+    id: string
+    createdAt: number
+    lastModifiedAt: number
+    images: string[]
+    tags: string[]
+    language: string
+    title: string
+    subtitle: string
+    isbn: string
+    publishingDate: string
+    author: string
+    publisher: string
+    edition: string
+    series: string
+    volume: string
+    pages: string
+    format: string
+    acquisitionDate_unix: number | null
+    paidPrice: string
+    boughtFrom: string
+    marketValue: string
+    remarks: string
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
@@ -306,6 +331,7 @@ export type ItemType =  | GunType
                         | AccessoryType_Misc
                         | PartType_ConversionKit
                         | PartType_Barrel
+                        | LiteratureType_Book
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -317,6 +343,7 @@ export type CollectionType =  | "gunCollection"
                               | "accessoryCollection_Misc"
                               | "partCollection_ConversionKit"
                               | "partCollection_Barrel"
+                              | "literatureCollection_Book"
 
 export type Screens = "itemCollection"
 
@@ -488,6 +515,14 @@ export type SortingTypesPart_Barrel = | "alphabetical"
                                       | "lastCleanedAt" 
                                       | "lastShotAt"
 
+export type SortingTypesLiterature_Book = | "alphabetical" 
+                                          | "createdAt" 
+                                          | "lastModifiedAt" 
+                                          | "paidPrice" 
+                                          | "marketValue" 
+                                          | "acquisitionDate" 
+                                          | "pages" 
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
@@ -498,6 +533,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesAccessory_Misc
                             | SortingTypesPart_ConversionKit
                             | SortingTypesPart_Barrel
+                            | SortingTypesLiterature_Book
 
                             
 export type Languages = | "de" 

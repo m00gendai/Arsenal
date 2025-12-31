@@ -101,6 +101,7 @@ interface Sorting{
     lastTopUpAt: SimpleTranslation
     lastBatteryChangeAt: SimpleTranslation
     capacity: SimpleTranslation
+    pages: SimpleTranslation
 }
 
 interface GunQuickShot{
@@ -334,6 +335,22 @@ export const newPartTitle:SimpleTranslation = {
     fr: "Pièce de nouvelle arme",
     it: "Nuova parte di arma",
     ch: "Nova part da las armas",
+}
+
+export const newLiteratureTitle:SimpleTranslation = {
+    de: "Neue Literatur",
+    en: "New Literature",
+    fr: "Nouvelle littérature",
+    it: "Nuova letteratura",
+    ch: "Nova litteratura",
+}
+
+export const editLiteratureTitle:SimpleTranslation = {
+    de: "Literatur bearbeiten",
+    en: "Edit Literature",
+    fr: "Éditer la littérature",
+    it: "Edit Letteratura",
+    ch: "Edì litteratura",
 }
 
 export const unsavedChangesAlert:Alert = {
@@ -1218,6 +1235,13 @@ export const sorting:Sorting = {
         fr: "Capacité",
         it: "Capacità",
         ch: "Capacitad",    
+    },
+    pages:{
+        de: "Seiten",     
+        en: "Pages",
+        fr: "Pages",
+        it: "Pagine",
+        ch: "Paginas",    
     }
 }
 

@@ -44,6 +44,8 @@ export function getIcon(type:SortingTypes){
             return "basket-plus-outline"
         case "decibelRating":
             return "volume-source"
+        case "pages":
+            return "book-open-page-variant-outline"
         default:
             return "alphabetical-variant"
     }

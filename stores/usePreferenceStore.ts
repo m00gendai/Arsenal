@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book} from "../interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -15,6 +15,7 @@ interface GeneralSettings{
   displayImagesInListViewAccessory_Misc: boolean
   displayImagesInListViewPart_ConversionKit: boolean
   displayImagesInListViewPart_Barrel: boolean
+  displayImagesInListViewLiterature_Book: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -32,6 +33,7 @@ interface DisplaySettings{
   accessoryCollection_Misc: DisplayVariants
   partCollection_ConversionKit: DisplayVariants
   partCollection_Barrel: DisplayVariants
+  literatureCollection_Book: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -46,6 +48,7 @@ export interface SorterSettings{
   accessoryCollection_Misc: {type: SortingTypesAccessory_Misc, direction: "asc" | "desc", icon: string}
   partCollection_ConversionKit: {type: SortingTypesPart_ConversionKit, direction: "asc" | "desc", icon: string}
   partCollection_Barrel: {type: SortingTypesPart_Barrel, direction: "asc" | "desc", icon: string}
+  literatureCollection_Book: {type: SortingTypesLiterature_Book, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
@@ -59,6 +62,7 @@ interface FilterState{
   accessoryCollection_Misc: boolean
   partCollection_ConversionKit: boolean
   partCollection_Barrel: boolean
+  literatureCollection_Book: boolean
 }
 
 interface InitialStoreState {
@@ -89,6 +93,7 @@ const initialState:InitialStoreState = {
       displayImagesInListViewAccessory_Misc: true,
       displayImagesInListViewPart_ConversionKit: true,
       displayImagesInListViewPart_Barrel: true,
+      displayImagesInListViewLiterature_Book: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -105,6 +110,7 @@ const initialState:InitialStoreState = {
       accessoryCollection_Misc: "grid",
       partCollection_ConversionKit: "grid",
       partCollection_Barrel: "grid",
+      literatureCollection_Book: "grid",
       accessoryView: "grid"
     },
     sortBy: {
@@ -118,6 +124,7 @@ const initialState:InitialStoreState = {
       accessoryCollection_Misc: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_Barrel: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      literatureCollection_Book: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
     },
     caliberDisplayNameList: [],
     filterOn: {
@@ -130,7 +137,8 @@ const initialState:InitialStoreState = {
       accessoryCollection_Magazine: false,
       accessoryCollection_Misc: false,
       partCollection_ConversionKit: false,
-      partCollection_Barrel: false
+      partCollection_Barrel: false,
+      literatureCollection_Book: false,
     },
     hasCheckedForLegacyGunData: false,
     hasCheckedForLegacyAmmoData: false,

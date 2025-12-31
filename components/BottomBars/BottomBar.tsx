@@ -39,7 +39,7 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
 
   const progress = useSharedValue<number>(0);
   
-  const data = ["Accessories", "Parts"] // ["Accessories", "Literature", "Reloading"];
+  const data = ["Accessories", "Parts", "Literature"] // ["Accessories", "Literature", "Reloading"];
   
   const width = Dimensions.get("window").width;
 
@@ -129,10 +129,10 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
             {index === 0 ? 
               <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> :
               index=== 1 ? 
-              <BottomBar_PartCollection handleNavigation={handleNavigation} /> : null /*
+              <BottomBar_PartCollection handleNavigation={handleNavigation} /> :
               index=== 2 ? 
-              <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> :
-              null*/}
+              <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
+              null}
             </Card>
           )}
         />
