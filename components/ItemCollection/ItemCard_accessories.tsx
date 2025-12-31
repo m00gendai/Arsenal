@@ -87,7 +87,7 @@ export default function ItemCard_accessories({ item }:Props){
                     width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
-                title={determineCardTitle(itemType, item)}
+                title={determineCardTitle(itemType, item, language)}
                 subtitle={determineCardSubtitle(itemType, item, language, caliberDisplayNameList)} 
                 titleVariant={displaySettings.accessoryView === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings.accessoryView === "compactList" ? "labelSmall" : "bodySmall"}

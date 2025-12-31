@@ -122,7 +122,7 @@ export default function ItemCard({ item }:Props){
                     width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
-                title={determineCardTitle(currentCollection, item)}
+                title={determineCardTitle(currentCollection, item, language)}
                 subtitle={determineCardSubtitle(currentCollection, item, language, caliberDisplayNameList)} 
                 titleVariant={displaySettings[currentCollection] === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings[currentCollection] === "compactList" ? "labelSmall" : "bodySmall"}

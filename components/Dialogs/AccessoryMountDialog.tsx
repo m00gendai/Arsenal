@@ -241,7 +241,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getListEntryTitle(collection: CollectionType, item: ItemType){
-        return `${determineCardTitle(collection, item)}\n${determineCardSubtitle(collection, item, language, caliberDisplayNameList)}`
+        return `${determineCardTitle(collection, item, language)}\n${determineCardSubtitle(collection, item, language, caliberDisplayNameList)}`
     }
     
     return(
