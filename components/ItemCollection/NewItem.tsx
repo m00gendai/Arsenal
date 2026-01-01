@@ -16,7 +16,7 @@ import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -87,9 +87,10 @@ export default function NewItem({navigation}){
             return
         }
         
-    const {db_id, ...idless} = value
+        const {db_id, ...idless} = value
+        
         try{
-await db.insert(schema[currentCollection]).values(idless)
+            await db.insert(schema[currentCollection]).values(idless)
         } catch(e){
             console.error(e)
         }
@@ -106,6 +107,28 @@ await db.insert(schema[currentCollection]).values(idless)
                 type: currentCollection
             })
         }
+
+        
+
+        for (const [key, value] of Object.entries(idless)) {
+            if(!fieldsForAutocomplete.includes(key)){
+                continue
+            }
+
+            if(typeof value !== "string"){
+                continue
+            }
+            if(value.trim().length === 0){
+                continue
+            }
+
+            await db.insert(schema.autocomplete).values({
+                id: uuidv4(),
+                label: value,
+                field: key
+            }).onConflictDoNothing();
+        }
+
         setSaveState(true)
         setSnackbarText(`${"manufacturer" in value && value.manufacturer ? value.manufacturer : ""} ${"model" in value ? value.model : "designation" in value ?  value.designation : value.title} ${toastMessages.saved[language]}`)
         onToggleSnackBar()

@@ -15,7 +15,7 @@ import { imageHandling, itemDataValidation } from 'utils';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -24,6 +24,7 @@ import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
 import { determineDataTemplate, determineEditItemTitle, determineRemarkDataTemplate } from 'functions/determinators';
 import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function EditGun({navigation}){
@@ -86,6 +87,25 @@ export default function EditGun({navigation}){
             await db.update(schema[currentCollection]).set(item).where((eq(schema[currentCollection].id, item.id)))
         }catch(e){
             console.error(e)
+        }
+
+        for (const [key, value] of Object.entries(item)) {
+            if(!fieldsForAutocomplete.includes(key)){
+                continue
+            }
+
+            if(typeof value !== "string"){
+                continue
+            }
+            if(value.trim().length === 0){
+                continue
+            }
+
+            await db.insert(schema.autocomplete).values({
+                id: uuidv4(),
+                label: value,
+                field: key
+            }).onConflictDoNothing();
         }
         
         setSaveState(true)

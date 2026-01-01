@@ -454,6 +454,13 @@ export const literature_BookTags = sqliteTable("literature_bookTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const autocomplete = sqliteTable("autocomplete",{
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull(),
+    label: text("label").notNull().unique(),
+    field: text("field").notNull()
+})
+
 export const gunReminders = sqliteTable("gunReminder",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),
