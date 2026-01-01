@@ -92,6 +92,10 @@ export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanInterval"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 
+export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields]
+export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
+export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks"]
+
 export const cardActionsGun: string[] = ["delete", "clone", "quickShot"]
 export const cardActionsAccessory_Silencer: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsAccessory_Optic: string[] = ["delete", "clone", "quickMount"]
