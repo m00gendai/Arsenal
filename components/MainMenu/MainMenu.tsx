@@ -10,7 +10,7 @@ import { colorThemes } from "lib/colorThemes"
 import { useEffect, useState } from "react"
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { CollectionType, DBOperations, ItemType, Languages } from "interfaces"
+import { CollectionType, DBOperations, ItemType, Languages, StackParamList } from "interfaces"
 import { printGunCollection, printGunCollectionArt5 } from "functions/printToPDF"
 import { useTagStore } from "stores/useTagStore"
 import { manipulateAsync } from "expo-image-manipulator"
@@ -51,11 +51,13 @@ export default function MainMenu({navigation}){
         importModalVisible, 
         toggleImportModalVisible,
         exportModalVisible,
-        toggleExportModalVisible 
+        toggleExportModalVisible, 
+        setHideBottomSheet
     } = useViewStore()
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const { overWriteAmmoTags, overWriteTags} = useTagStore()
     const { setCSVHeader, setCSVBody, importProgress, setImportProgress, resetImportProgress, importSize, setImportSize, resetImportSize, setDbCollectionType } = useImportExportStore()
+
 
     const [snackbarText, setSnackbarText] = useState<string>("")
     const [dbModalText, setDbModalText] = useState<string>("")
@@ -326,13 +328,23 @@ export default function MainMenu({navigation}){
 
         }
     }
+
+    function handleEditDataNavigation(target: string){
+        setHideBottomSheet(true)
+        navigation.navigate(target)
+    }
+
+    function handleCloseMenu(){
+        setHideBottomSheet(false)
+        navigation.goBack()
+    }
     
 
     return(
         
            <View style={{height: "100%", width: Dimensions.get("window").width > Dimensions.get("window").height ? "60%" : "100%"}}>
                 <View style={{width: "100%", height: "100%"}}>
-                    <TouchableNativeFeedback onPress={()=>navigation.goBack()}>
+                    <TouchableNativeFeedback onPress={()=>handleCloseMenu()}>
                         <View style={{width: "100%", height: 50, display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", paddingLeft: 20, backgroundColor: theme.colors.primary}}>
                             <Icon source="arrow-left" size={20} color={theme.colors.onPrimary}/>
                         </View>
@@ -487,6 +499,25 @@ export default function MainMenu({navigation}){
                                                 <Text style={{flex: 7}}>{generalSettingsLabels.loginGuard[language]}</Text>
                                                 <Switch style={{flex: 3}} value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} />
                                             </View>
+                                        </View>
+                                    </View>
+                                </List.Accordion>
+
+                                {/* EDIT DATA */}
+
+                                <List.Accordion left={props => <List.Icon {...props} icon="playlist-edit" />} title={preferenceTitles.editData[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
+                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                                        <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
+                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                                                <Text style={{flex: 7}}>{preferenceTitles.editData_Autocomplete[language]}</Text>
+                                                <IconButton 
+                                                    icon={"chevron-right"} 
+                                                    iconColor={theme.colors.onPrimary} 
+                                                    style={{backgroundColor: theme.colors.primary}} 
+                                                    onPress={() => handleEditDataNavigation("EditAutocomplete")}
+                                                />
+                                            </View>
+                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                                         </View>
                                     </View>
                                 </List.Accordion>
