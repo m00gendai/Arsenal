@@ -17,6 +17,8 @@ export const emptyAmmoObject:AmmoType = {
     designation: "",
     originCountry: null,
     caliber: null,
+    bulletType: null,
+    bulletWeight: null,
     headstamp: null,
     currentStock: null,
     lastTopUpAt_unix: null,

@@ -76,6 +76,8 @@ export const ammoCollection = sqliteTable("ammo", {
     originCountry: text("originCountry"),
     caliber: text("caliber", {mode: "json"}),
     headstamp: text("headstamp"),
+    bulletWeight: text("bulletWeight"),
+    bulletType: text("bulletType"),
     currentStock: text("currentStock"),
     lastTopUpAt: text("lastTopUpAt"),
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
@@ -335,6 +337,7 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     serial: text("serial"),
     permit: text("permit"),
     lumen: text("lumen"),
+    candela: text("candela"),
     wavelength: text("wavelength"),
     laserPower: text("laserPower"),
     acquisitionDate_unix: integer("acquisitionDate_unix"),
@@ -411,7 +414,8 @@ export const accessoryCollection_Misc = sqliteTable("accessories_misc", {
     marketValue: text("marketValue"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    serial: text("serial")
 })
 
 export const accessory_MiscTags = sqliteTable("accessories_miscTags", {

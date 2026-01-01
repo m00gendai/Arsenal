@@ -62,6 +62,8 @@ export interface AmmoType{
   originCountry: string | null
   createdAt: number,
   lastModifiedAt: number,
+  bulletType: string,
+  bulletWeight: string,
   headstamp: string | null
   currentStock: string
   lastTopUpAt_unix: number | null
@@ -177,6 +179,7 @@ export interface AccessoryType_LightLaser{
   serial: string
   permit: string
   lumen: string
+  candela: string
   wavelength: string
   laserPower: string
   acquisitionDate_unix: number | null
@@ -238,6 +241,7 @@ export interface AccessoryType_Misc{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  serial: string
 }
 
 export interface PartType_ConversionKit{

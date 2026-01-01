@@ -15,6 +15,7 @@ export const emptyMiscAccessoryObject:AccessoryType_Misc= {
     model: "",
     manufacturingDate: null,
     originCountry: null,
+    serial: null,
     acquisitionDate_unix: null,
     boughtFrom: null,
     mainColor: null,

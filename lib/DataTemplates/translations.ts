@@ -32,6 +32,7 @@ interface DataTemplateTranslations {
     pages: DataTemplateTranslation
     format: DataTemplateTranslation
     lumen: DataTemplateTranslation
+    candela: DataTemplateTranslation
     wavelength: DataTemplateTranslation
     laserPower: DataTemplateTranslation
     batteryLastChangedAt_unix: DataTemplateTranslation
@@ -53,7 +54,8 @@ interface DataTemplateTranslations {
     lastTopUpAt_unix: DataTemplateTranslation
     criticalStock: DataTemplateTranslation
     length: DataTemplateTranslation
-
+    bulletType: DataTemplateTranslation
+    bulletWeight: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -301,9 +303,17 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         name: "lumen",
         de: "Lumen",
         en: "Lumen",
-        fr: "Lumière",
+        fr: "Lumen",
         it: "Lumen",
         ch: "Lumen",
+    },
+    "candela":{   
+        name: "candela",
+        de: "Candela",
+        en: "Candela",
+        fr: "Candela",
+        it: "Candela",
+        ch: "Candela",
     },
     "wavelength":{   
         name: "wavelength",
@@ -472,6 +482,22 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Longueur du canon",
         it: "Lunghezza della canna",
         ch: "Lunghezza da la channa",
+    },
+    "bulletType":{
+        name: "bulletType",
+        de: "Geschosstyp",
+        en: "Bullet type",
+        fr: "Type de balle",
+        it: "Tipo di proiettile",
+        ch: "Tip da culla",
+    },
+    "bulletWeight":{
+        name: "bulletWeight",
+        de: "Geschossgewicht",
+        en: "Bullet weight",
+        fr: "Poids de la balle",
+        it: "Peso del proiettile",
+        ch: "Pais dal projectil",
     },
 }
 

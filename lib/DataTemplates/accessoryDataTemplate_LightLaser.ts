@@ -21,6 +21,7 @@ export const emptyLightLaserObject:AccessoryType_LightLaser = {
     mainColor: null,
     permit: null,
     lumen: null,
+    candela: null,
     wavelength: null,
     laserPower: null,
     remarks : null,
