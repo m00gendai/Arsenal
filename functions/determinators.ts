@@ -515,11 +515,11 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             }
         case "ammoCollection":
             {   const item = itemIn as AmmoType
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+                return item.caliber && item.caliber.length !== 0 ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Silencer":
             {   const item = itemIn as AccessoryType_Silencer
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+                return item.caliber && item.caliber.length !== 0 ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Optic":
             {   const item = itemIn as AccessoryType_Optic
