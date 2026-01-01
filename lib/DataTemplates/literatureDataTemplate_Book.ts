@@ -1,6 +1,7 @@
 import { LiteratureType_Book } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
+import { excludedKeysForDataTemplates } from "configs";
 
 type TemplateKeys = keyof Omit<LiteratureType_Book, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
@@ -33,9 +34,8 @@ export const emptyBookObject:LiteratureType_Book = {
     remarks: null,
 }
 
-const excludedKeys = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks"]
 export const literatureDataTemplate_Book:TemplateItem[] = Object.keys(emptyBookObject)
-    .filter(key => !excludedKeys.includes(key))
+    .filter(key => !excludedKeysForDataTemplates.includes(key))
     .map(key =>{
     const translation = dataTemplate_Translations[key as keyof typeof dataTemplate_Translations];    
     return translation as TemplateItem;
