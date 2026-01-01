@@ -4,8 +4,6 @@ export interface GunTypeDetails{
   model: string
   manufacturingDate: string | null
   originCountry: string | null
-  gunType: string | null
-  functionType: string | null
   caliber: string[] | null
   serial: string | null
   permit: string | null
@@ -561,6 +559,7 @@ export type StackParamList = {
   QuickStock: undefined
   QuickShot: undefined
   QuickMount: {item: ItemType}
+  EditAutocomplete: undefined
 }
 
 export interface Tag {
