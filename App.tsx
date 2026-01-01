@@ -47,6 +47,7 @@ import checkLegacyGunData from 'functions/checkLegacyGunData';
 import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
 import migrateLegacyDateAndCaliberFields from 'functions/migrateLegacyDateAndCaliberFields';
 import { snapshot } from 'node:test';
+import EditAutocomplete from 'components/MainMenu/EditAutoComplete';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -455,6 +456,12 @@ export default function App() {
                 name="MainMenu"
                 component={MainMenu}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, gestureDirection: "horizontal-inverted", presentation: "transparentModal", cardStyle: { backgroundColor: Dimensions.get("window").width > Dimensions.get("window").height ? "transparent" : theme.colors.background}}} 
+              />
+
+              <Stack.Screen
+                name="EditAutocomplete"
+                component={EditAutocomplete}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 
             </Stack.Navigator>
