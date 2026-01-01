@@ -1,105 +1,13 @@
+import { excludedKeysForDataTemplates } from "configs";
 import { AccessoryType_Misc } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
+import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
 
 type TemplateKeys = keyof Omit<AccessoryType_Misc, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
 type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
-
-export const accessoryDataTemplate_Misc:TemplateItem[] = [
-    {
-            name: "manufacturer",
-            de: "Hersteller",
-            en: "Manufacturer",
-            fr: "Fabricant",
-            it: "Produttore",
-            ch: "Producent",
-    },
-    {   
-            name: "model",
-            de: "Modellbezeichnung",
-            en: "Model Name",
-            fr: "Désignation du modèle",
-            it: "Nome del modello",
-            ch: "Designaziun dal model",
-            },
-    {
-            name: "manufacturingDate",
-            de: "Herstellungszeitraum",
-            en: "Manufacturing Date",
-            fr: "Période de fabrication",
-            it: "Periodo di produzione",
-            ch: "Perioda da producziun",
-    },
-    {
-            name: "originCountry",
-            de: "Ursprungsland",    
-            en: "Origin Country",
-            fr: "Pays d'origine",
-            it: "Paese di origine",
-            ch: "Pajais d'origin",
-    },
-    {
-            name: "acquisitionDate_unix",
-            de: "Erwerbsdatum",     
-            en: "Acquision Date",
-            fr: "Date d'acquisition",
-            it: "Data di acquisizione",
-            ch: "Data d'acquist",
-        
-    },
-    {
-        name: "paidPrice",
-        de: "Kaufpreis",     
-        en: "Price",
-        fr: "Prix d'achat",
-        it: "Prezzo",
-        ch: "Pretsch da cumpra",
-    
-    },
-    {
-        name: "boughtFrom",
-        de: "Gekauft bei/von",     
-        en: "Acquired from",
-        fr: "Acquis auprès de/par",
-        it: "Acquistati presso/da",
-        ch: "Acquistà tar/da",
-    },
-    {
-        name: "marketValue",
-        de: "Aktueller Marktwert",
-        en: "Current market value",
-        fr: "Valeur de marché actuelle",
-        it: "Valore di mercato attuale",
-        ch: "Valur actuala dal martgà"
-    },
-    {
-            name: "mainColor",
-            de: "Hauptfarbe",
-            en: "Main Color",
-            fr: "Couleur principale",
-            it: "Colore principale",
-            ch: "Da colur principala",
-    },
-    {
-            name: "currentlyMountedOn",
-            de: "Montiert auf",
-            en: "Mounted on",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-]
-
-export const miscAccessoryRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
-    name: "remarks",
-    de: "Bemerkungen",
-    en: "Remarks",
-    fr: "Remarques",
-    it: "Osservazioni",
-    ch: "Remartgar",
-}
 
 export const emptyMiscAccessoryObject:AccessoryType_Misc= {
     id: "",
@@ -119,3 +27,16 @@ export const emptyMiscAccessoryObject:AccessoryType_Misc= {
     marketValue: null,
     currentlyMountedOn: null,
 }
+
+export const accessoryDataTemplate_Misc:TemplateItem[] = Object.keys(emptyMiscAccessoryObject)
+    .filter(key => !excludedKeysForDataTemplates.includes(key))
+    .map(key =>{
+    const translation = dataTemplate_Translations[key as keyof typeof dataTemplate_Translations];    
+    return translation as TemplateItem;
+})
+
+export const miscAccessoryRemarks: DataTemplateTranslation = dataTemplate_TranslationRemarks.remarks
+
+// This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
+// This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
+const _check: Record<TemplateKeys, any> = dataTemplate_Translations;

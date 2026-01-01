@@ -1,170 +1,13 @@
+import { excludedKeysForDataTemplates } from "configs";
 import { AccessoryType_LightLaser } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
+import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
 
 type TemplateKeys = keyof Omit<AccessoryType_LightLaser, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
 type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
-
-
-export const accessoryDataTemplate_LightLaser:TemplateItem[] = [
-    {
-            name: "manufacturer",
-            de: "Hersteller",
-            en: "Manufacturer",
-            fr: "Fabricant",
-            it: "Produttore",
-            ch: "Producent",
-    },
-    {   
-            name: "model",
-            de: "Modellbezeichnung",
-            en: "Model Name",
-            fr: "Désignation du modèle",
-            it: "Nome del modello",
-            ch: "Designaziun dal model",
-            },
-    {
-            name: "manufacturingDate",
-            de: "Herstellungszeitraum",
-            en: "Manufacturing Date",
-            fr: "Période de fabrication",
-            it: "Periodo di produzione",
-            ch: "Perioda da producziun",
-    },
-    {
-            name: "originCountry",
-            de: "Ursprungsland",    
-            en: "Origin Country",
-            fr: "Pays d'origine",
-            it: "Paese di origine",
-            ch: "Pajais d'origin",
-    },
-    {   
-            name: "serial",
-            de: "Seriennummer",
-            en: "Serial",
-            fr: "Numéro de série",
-            it: "Numero di serie",
-            ch: "Numer da seria",
-    },
-    {   
-            name: "permit",
-            de: "Bewilligung",
-            en: "Permit",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "lumen",
-            de: "Lumen",
-            en: "Lumen",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "wavelength",
-            de: "Wellenlänge Laser",
-            en: "Laser Wavelength",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {   
-            name: "laserPower",
-            de: "Laserstärke",
-            en: "Laser Power",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {
-            name: "acquisitionDate_unix",
-            de: "Erwerbsdatum",     
-            en: "Acquision Date",
-            fr: "Date d'acquisition",
-            it: "Data di acquisizione",
-            ch: "Data d'acquist",
-        
-    },
-    {
-        name: "paidPrice",
-        de: "Kaufpreis",     
-        en: "Price",
-        fr: "Prix d'achat",
-        it: "Prezzo",
-        ch: "Pretsch da cumpra",
-    
-    },
-    {
-        name: "boughtFrom",
-        de: "Gekauft bei/von",     
-        en: "Acquired from",
-        fr: "Acquis auprès de/par",
-        it: "Acquistati presso/da",
-        ch: "Acquistà tar/da",
-    },
-    {
-        name: "marketValue",
-        de: "Aktueller Marktwert",
-        en: "Current market value",
-        fr: "Valeur de marché actuelle",
-        it: "Valore di mercato attuale",
-        ch: "Valur actuala dal martgà"
-    },
-    {
-        name: "shotCount",
-        de: "Schussbelastung",
-        en: "Shot count",
-        fr: "Compte de tirs",
-        it: "Numero di colpi sparati",
-        ch: "Chargia da tir",
-    },
-    {
-        name: "lastShotAt_unix",
-        de: "Zuletzt geschossen",
-        en: "Last shot",
-        fr: "Derniers tirs",
-        it: "Ultimo colpo",
-        ch: "L'ultim culp",
-    },
-    {
-        name: "batteryLastChangedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
-    },
-    {
-            name: "mainColor",
-            de: "Hauptfarbe",
-            en: "Main Color",
-            fr: "Couleur principale",
-            it: "Colore principale",
-            ch: "Da colur principala",
-    },
-    {
-            name: "currentlyMountedOn",
-            de: "Montiert auf",
-            en: "Mounted on",
-            fr: "Morere sur",
-            it: "Montare sole",
-            ch: "Va montaschier sur",
-    },
-]
-
-export const lightLaserRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
-    name: "remarks",
-    de: "Bemerkungen",
-    en: "Remarks",
-    fr: "Remarques",
-    it: "Osservazioni",
-    ch: "Remartgar",
-}
 
 export const emptyLightLaserObject:AccessoryType_LightLaser = {
     id: "",
@@ -192,3 +35,16 @@ export const emptyLightLaserObject:AccessoryType_LightLaser = {
     currentlyMountedOn: null,
     batteryLastChangedAt_unix: null
 }
+
+export const accessoryDataTemplate_LightLaser:TemplateItem[] = Object.keys(emptyLightLaserObject)
+    .filter(key => !excludedKeysForDataTemplates.includes(key))
+    .map(key =>{
+    const translation = dataTemplate_Translations[key as keyof typeof dataTemplate_Translations];    
+    return translation as TemplateItem;
+})
+
+export const lightLaserRemarks: DataTemplateTranslation = dataTemplate_TranslationRemarks.remarks
+
+// This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
+// This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
+const _check: Record<TemplateKeys, any> = dataTemplate_Translations;

@@ -1,5 +1,7 @@
+import { excludedKeysForDataTemplates } from "configs";
 import { GunType } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
+import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks, dataTemplate_TranslationCheckboxes } from "./translations";
 
 type TemplateKeys = keyof Omit<GunType, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
@@ -7,225 +9,12 @@ type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
 
-
-export const gunDataTemplate:TemplateItem[] = [
-    {
-            name: "manufacturer",
-            de: "Hersteller",
-            en: "Manufacturer",
-            fr: "Fabricant",
-            it: "Produttore",
-            ch: "Producent",
-    },
-    {   
-            name: "model",
-            de: "Modellbezeichnung",
-            en: "Model Name",
-            fr: "Désignation du modèle",
-            it: "Nome del modello",
-            ch: "Designaziun dal model",
-            },
-    {
-            name: "manufacturingDate",
-            de: "Herstellungszeitraum",
-            en: "Manufacturing Date",
-            fr: "Période de fabrication",
-            it: "Periodo di produzione",
-            ch: "Perioda da producziun",
-        
-    },
-    {
-            name: "originCountry",
-            de: "Ursprungsland",    
-            en: "Origin Country",
-            fr: "Pays d'origine",
-            it: "Paese di origine",
-            ch: "Pajais d'origin",
-    },
-    {
-            name: "caliber",
-            de: "Kaliber",
-            en: "Caliber",
-            fr: "Calibre",
-            it: "Calibro",
-            ch: "Caliber",
-    },
-    {   
-            name: "serial",
-            de: "Seriennummer",
-            en: "Serial",
-            fr: "Numéro de série",
-            it: "Numero di serie",
-            ch: "Numer da seria",
-    },
-    {
-            name: "permit",
-            de: "Bewilligung",
-            en: "Permit",
-            fr: "Permis",
-            it: "Permesso",
-            ch: "Concessiun",
-    },
-    {
-            name: "acquisitionDate_unix",
-            de: "Erwerbsdatum",     
-            en: "Acquision Date",
-            fr: "Date d'acquisition",
-            it: "Data di acquisizione",
-            ch: "Data d'acquist",
-        
-    },
-    {
-        name: "paidPrice",
-        de: "Kaufpreis",     
-        en: "Price",
-        fr: "Prix d'achat",
-        it: "Prezzo",
-        ch: "Pretsch da cumpra",
-    
-    },
-    {
-        name: "boughtFrom",
-        de: "Gekauft bei/von",     
-        en: "Acquired from",
-        fr: "Acquis auprès de/par",
-        it: "Acquistati presso/da",
-        ch: "Acquistà tar/da",
-    },
-    {
-        name: "marketValue",
-        de: "Aktueller Marktwert",
-        en: "Current market value",
-        fr: "Valeur de marché actuelle",
-        it: "Valore di mercato attuale",
-        ch: "Valur actuala dal martgà"
-    },
-    {
-        name: "shotCount",
-        de: "Schussbelastung",
-        en: "Shot count",
-        fr: "Compte de tirs",
-        it: "Numero di colpi sparati",
-        ch: "Chargia da tir",
-    },
-    {
-        name: "lastShotAt_unix",
-        de: "Zuletzt geschossen",
-        en: "Last shot",
-        fr: "Derniers tirs",
-        it: "Ultimo colpo",
-        ch: "L'ultim culp",
-    },
-    {
-        name: "lastCleanedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
-    },
-    {
-        name: "cleanInterval",
-        de: "Reinigungsintervall",
-        en: "Cleaning interval",
-        fr: "Intervalle de nettoyage",
-        it: "Intervallo di pulizia",
-        ch: "Interval da nettegiar",
-    },
-    {
-            name: "mainColor",
-            de: "Hauptfarbe",
-            en: "Main Color",
-            fr: "Couleur principale",
-            it: "Colore principale",
-            ch: "Da colur principala",
-    },
-]
-
-export const gunRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
-    name: "remarks",
-    de: "Bemerkungen",
-    en: "Remarks",
-    fr: "Remarques",
-    it: "Osservazioni",
-    ch: "Remartgar",
-}
-
-export const checkBoxes:{name: string, de:string, en:string, fr:string, it: string, ch: string}[] = [
-    {
-        name: "fullAuto",
-        de: "Seriefeuerwaffe",
-        en: "Automatic firearm", 
-        fr: "Arme à feu automatique",
-        it: "Arma da fuoco automatica",
-        ch: "Arma da fieu a seria",
-    },
-    {
-        name: "exFullAuto",
-        de: "Umgebaute Seriefeuerwaffe",
-        en: "Converted automatic firearm", 
-        fr: "Arme à feu automatique transformée",
-        it: "Arma da fuoco automatica convertita",
-        ch: "Arma da fieu a seria transfurmada",
-    },
-    {
-        name: "highCapacityMagazine",
-        de: "Ladevorrichtung mit hoher Kapazität",
-        en: "High Capacity Magazine", 
-        fr: "Chargeur de grande capacité",
-        it: "Caricatore ad alta capacità",
-        ch: "Indriz da chargiar da gronda capacitad",
-    },
-    {
-        name: "short",
-        de: "Kürzbar auf unter 60cm",
-        en: "Can be shortened to under 60cm", 
-        fr: "Peut être raccourci à moins de 60cm",
-        it: "Può essere accorciato a meno di 60cm",
-        ch: "Per pauc sin main che 60cm",
-    },
-    {
-        name: "launcher",
-        de: "Militärisches Abschussgerät mit Sprengwirkung",
-        en: "Military launching device with explosive effect",
-        fr: "Lanceur militaire à effet explosif",
-        it: "Ordigni militari con effetto dirompente",
-        ch: "Apparats militars cun effect explosiv",
-    },
-    {
-        name: "decepticon",
-        de: "Gebrauchsgegenstand vortäuschend",
-        en: "Resembling article of everyday use",
-        fr: "Imitant un objet d’usage courant",
-        it: "Simulano oggetti d’uso corrente",
-        ch: "Imitaziun d’in object da diever",
-    },
-    {
-        name: "blooptoob",
-        de: "Granatwerfer als Zusatz zu einer Feuerwaffe",
-        en: "Grenade launcher as additional device for a firearm",
-        fr: "Lance-grenades d’appoint à une arme à feu",
-        it: "Lanciagranate supplementare di un’arma da fuoco",
-        ch: "Bittagranatas supplementaras d’ina arma da fieu",
-    },
-    {
-        name: "grandfather",
-        de: "Altrechtlich erworben",
-        en: "Acquired under old law", 
-        fr: "Acquis sous l'ancien régime",
-        it: "Acquisito in base alla vecchia legge",
-        ch: "Acquistà tenor il dretg vegl",
-    }
-]
-
 export const emptyGunObject:GunType= {
     id: "",
     manufacturer: null,
     model: "",
     manufacturingDate: null,
     originCountry: null,
-    gunType: null,
-    functionType: null,
     caliber: [],
     serial: null,
     permit: null,
@@ -252,3 +41,32 @@ export const emptyGunObject:GunType= {
     blooptoob: false,
     grandfather: false,
 }
+
+
+export const gunDataTemplate:TemplateItem[] = Object.keys(emptyGunObject)
+    .filter(key => !excludedKeysForDataTemplates.includes(key))
+    .map(key =>{
+        const translation = {
+            ...dataTemplate_Translations[key as keyof typeof dataTemplate_Translations],
+            ...dataTemplate_TranslationCheckboxes[key as keyof typeof dataTemplate_TranslationCheckboxes]
+        }   
+        return translation as TemplateItem
+})
+
+export const checkBoxes: DataTemplateTranslation[] = Object.entries(dataTemplate_TranslationCheckboxes).map(checkbox =>{
+    return checkbox[1]
+})
+
+export const gunRemarks: DataTemplateTranslation = dataTemplate_TranslationRemarks.remarks
+
+// This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
+// This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
+const mergedTranslations: Record<TemplateKeys, any> = {
+    ...dataTemplate_Translations,
+    ...Object.fromEntries(
+        Object.entries(dataTemplate_TranslationCheckboxes).map(c => [c[1].name, c])
+    )
+};
+
+const _check: Record<TemplateKeys, any> = mergedTranslations;
+

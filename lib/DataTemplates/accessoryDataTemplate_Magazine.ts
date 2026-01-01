@@ -1,193 +1,13 @@
+import { excludedKeysForDataTemplates } from "configs";
 import { AccessoryType_Magazine } from "interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
+import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
 
 type TemplateKeys = keyof Omit<AccessoryType_Magazine, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
 type TemplateItem = {
     name: TemplateKeys
 } & SimpleTranslation;
-
-export const accessoryDataTemplate_Magazine:TemplateItem[] = [
-    {
-            name: "manufacturer",
-            de: "Hersteller",
-            en: "Manufacturer",
-            fr: "Fabricant",
-            it: "Produttore",
-            ch: "Producent",
-    },
-    {   
-            name: "model",
-            de: "Modellbezeichnung",
-            en: "Model Name",
-            fr: "Désignation du modèle",
-            it: "Nome del modello",
-            ch: "Designaziun dal model",
-            },
-    {
-            name: "manufacturingDate",
-            de: "Herstellungszeitraum",
-            en: "Manufacturing Date",
-            fr: "Période de fabrication",
-            it: "Periodo di produzione",
-            ch: "Perioda da producziun",
-    },
-    {
-            name: "originCountry",
-            de: "Ursprungsland",    
-            en: "Origin Country",
-            fr: "Pays d'origine",
-            it: "Paese di origine",
-            ch: "Pajais d'origin",
-    },
-    {
-            name: "caliber",
-            de: "Kaliber",
-            en: "Caliber",
-            fr: "Calibre",
-            it: "Calibro",
-            ch: "Caliber",
-    },
-    {
-            name: "capacity",
-            de: "Kapazität",
-            en: "Capacity",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {
-            name: "currentStock",
-            de: "Aktuelle Menge",
-            en: "Current stock",
-            fr: "Montant actuel",
-            it: "Quantità attuale",
-            ch: "Quantitad actuala",
-    },
-    {   
-            name: "serial",
-            de: "Seriennummer",
-            en: "Serial",
-            fr: "Numéro de série",
-            it: "Numero di serie",
-            ch: "Numer da seria",
-    },
-    {
-            name: "material",
-            de: "Material",
-            en: "Material",
-            fr: "La Materiala",
-            it: "Il Materiale",
-            ch: "Va Materiala",
-    },
-    {
-            name: "platform",
-            de: "Waffenplattform",
-            en: "Gun Platform",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-    {
-            name: "permit",
-            de: "Bewilligung",
-            en: "Permit",
-            fr: "Permis",
-            it: "Permesso",
-            ch: "Concessiun",
-    },
-    {
-            name: "acquisitionDate_unix",
-            de: "Erwerbsdatum",     
-            en: "Acquision Date",
-            fr: "Date d'acquisition",
-            it: "Data di acquisizione",
-            ch: "Data d'acquist",
-        
-    },
-    {
-        name: "paidPrice",
-        de: "Kaufpreis",     
-        en: "Price",
-        fr: "Prix d'achat",
-        it: "Prezzo",
-        ch: "Pretsch da cumpra",
-    
-    },
-    {
-        name: "boughtFrom",
-        de: "Gekauft bei/von",     
-        en: "Acquired from",
-        fr: "Acquis auprès de/par",
-        it: "Acquistati presso/da",
-        ch: "Acquistà tar/da",
-    },
-    {
-        name: "marketValue",
-        de: "Aktueller Marktwert",
-        en: "Current market value",
-        fr: "Valeur de marché actuelle",
-        it: "Valore di mercato attuale",
-        ch: "Valur actuala dal martgà"
-    },
-    {
-        name: "shotCount",
-        de: "Schussbelastung",
-        en: "Shot count",
-        fr: "Compte de tirs",
-        it: "Numero di colpi sparati",
-        ch: "Chargia da tir",
-    },
-    {
-        name: "lastShotAt_unix",
-        de: "Zuletzt geschossen",
-        en: "Last shot",
-        fr: "Derniers tirs",
-        it: "Ultimo colpo",
-        ch: "L'ultim culp",
-    },
-    {
-        name: "lastCleanedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
-    },
-    {
-        name: "cleanInterval",
-        de: "Reinigungsintervall",
-        en: "Cleaning interval",
-        fr: "Intervalle de nettoyage",
-        it: "Intervallo di pulizia",
-        ch: "Interval da nettegiar",
-    },
-    {
-            name: "mainColor",
-            de: "Hauptfarbe",
-            en: "Main Color",
-            fr: "Couleur principale",
-            it: "Colore principale",
-            ch: "Da colur principala",
-    },
-    {
-            name: "currentlyMountedOn",
-            de: "Montiert auf",
-            en: "Mounted on",
-            fr: "",
-            it: "",
-            ch: "",
-    },
-]
-
-export const magazineRemarks:{name:string, de:string, en:string, fr:string, it: string, ch: string} = {
-    name: "remarks",
-    de: "Bemerkungen",
-    en: "Remarks",
-    fr: "Remarques",
-    it: "Osservazioni",
-    ch: "Remartgar",
-}
 
 export const emptyMagazineObject:AccessoryType_Magazine= {
     id: "",
@@ -218,3 +38,16 @@ export const emptyMagazineObject:AccessoryType_Magazine= {
     material: null,
     currentlyMountedOn: null,
 }
+
+export const accessoryDataTemplate_Magazine:TemplateItem[] = Object.keys(emptyMagazineObject)
+    .filter(key => !excludedKeysForDataTemplates.includes(key))
+    .map(key =>{
+    const translation = dataTemplate_Translations[key as keyof typeof dataTemplate_Translations];    
+    return translation as TemplateItem;
+})
+
+export const magazineRemarks: DataTemplateTranslation = dataTemplate_TranslationRemarks.remarks
+
+// This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
+// This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
+const _check: Record<TemplateKeys, any> = dataTemplate_Translations;
