@@ -46,6 +46,8 @@ interface PreferenceTitle{
     generalSettings: SimpleTranslation
     about: SimpleTranslation
     statistics: SimpleTranslation
+    editData: SimpleTranslation
+    editData_Autocomplete: SimpleTranslation
 }
 
 interface DatabaseOperation{
@@ -845,6 +847,20 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Statistiques",
         it: "Statistiche",
         ch: "Statisticas",
+    },
+    editData:{
+        de: "Daten bearbeiten",
+        en: "Edit data",
+        fr: "Modifier les données",       
+        it: "Modificare i dati",            
+        ch: "Modifitgar las datas" 
+    },
+    editData_Autocomplete:{
+        de: "Autovervollständigungsdaten bearbeiten",
+        en: "Edit Autocomplete Data",
+        fr: "Modifier les données d’auto-complétion",   
+        it: "Modificare i dati di completamento automatico",
+        ch: "Modifitgar las datas da completaziun automatica"
     }
 }
 
