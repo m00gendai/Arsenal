@@ -43,7 +43,9 @@ interface PreferenceTitle{
     printGallery: SimpleTranslation
     ammoList: SimpleTranslation
     printAllAmmo: SimpleTranslation
+    settings: SimpleTranslation
     generalSettings: SimpleTranslation
+    preferredUnits: SimpleTranslation
     about: SimpleTranslation
     statistics: SimpleTranslation
     editData: SimpleTranslation
@@ -827,12 +829,26 @@ export const preferenceTitles:PreferenceTitle = {
         it: "Elenco completo come tabella",
         ch: "Register cumplet sco tabella",
     },
+    settings:{
+        de: "Einstellungen",
+        en: "settings",
+        fr: "Paramètres",
+        it: "Impostazioni",
+        ch: "Parameters",
+    },
     generalSettings:{
         de: "Allgemeine Einstellungen",
         en: "General settings",
         fr: "Paramètres généraux",
         it: "Impostazioni generali",
         ch: "Parameters generals",
+    },
+    preferredUnits: {
+        de: "Masseinheiten",
+        en: "Measurement Units",
+        fr: "Unités de mesure",
+        it: "Unità di misura",
+        ch: "Unitads da mesiraziun",
     },
     about:{
         de: "Über",
