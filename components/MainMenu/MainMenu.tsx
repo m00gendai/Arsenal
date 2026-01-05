@@ -1,7 +1,7 @@
 import { ScrollView, TouchableNativeFeedback, View, Platform, Dimensions } from "react-native"
 import { useViewStore } from "stores/useViewStore"
-import { ActivityIndicator, Button, Dialog, Divider, Icon, IconButton, List, Modal, Portal, Snackbar, Switch, Text } from "react-native-paper"
-import { databaseExportAlert, databaseImportAlert, databaseOperations, generalSettingsLabels, importExportSelectionLabel, iosWarningText, loginGuardAlert, preferenceTitles, resizeImageAlert, tabBarLabels, toastMessages } from "lib/textTemplates"
+import { ActivityIndicator, Button, Dialog, Divider, Icon, IconButton, List, Modal, Portal, Snackbar, Text } from "react-native-paper"
+import { databaseExportAlert, databaseImportAlert, databaseOperations, importExportSelectionLabel, iosWarningText, preferenceTitles, tabBarLabels, toastMessages } from "lib/textTemplates"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { defaultViewPadding, languageSelection } from "configs"
@@ -10,9 +10,8 @@ import { colorThemes } from "lib/colorThemes"
 import { useEffect, useState } from "react"
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { CollectionType, DBOperations, ItemType, Languages, StackParamList } from "interfaces"
+import { CollectionType, DBOperations, Languages } from "interfaces"
 import { printGunCollection, printGunCollectionArt5 } from "functions/printToPDF"
-import { useTagStore } from "stores/useTagStore"
 import { manipulateAsync } from "expo-image-manipulator"
 import Papa from 'papaparse';
 import { mainMenu_DatabaseOperations } from "lib/Text/mainMenu_DatabaseOperations"
@@ -20,7 +19,6 @@ import { useImportExportStore } from "stores/useImportExportStore"
 import CSVImportModal from "components/CSVImportModal"
 import { alarm } from "utils"
 import * as SystemUI from "expo-system-ui"
-import * as LocalAuthentication from 'expo-local-authentication';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import saveDatabase from "functions/saveDatabase"
@@ -32,6 +30,10 @@ import Statistics from "./Statistics"
 import About from "./About"
 import exportArsenalCSV from "functions/exportArsenalCSV"
 import importArsenalCSV from "functions/importArsenalCSV"
+import Settings_General from "./Settings/Settings_General"
+import ListAccordion from "react-native-paper/lib/typescript/components/List/ListAccordion"
+import Settings_Units from "./Settings/Settings_Units"
+import Settings from "./Settings/Settings"
 
 
 export default function MainMenu({navigation}){
@@ -42,10 +44,6 @@ export default function MainMenu({navigation}){
         setToastVisible, 
         dbModalVisible, 
         setDbModalVisible, 
-        imageResizeVisible, 
-        toggleImageResizeVisible, 
-        loginGuardVisible, 
-        toggleLoginGuardVisible, 
         importCSVVisible, 
         toggleImportCSVVisible, 
         importModalVisible, 
@@ -55,7 +53,6 @@ export default function MainMenu({navigation}){
         setHideBottomSheet
     } = useViewStore()
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-    const { overWriteAmmoTags, overWriteTags} = useTagStore()
     const { setCSVHeader, setCSVBody, importProgress, setImportProgress, resetImportProgress, importSize, setImportSize, resetImportSize, setDbCollectionType } = useImportExportStore()
 
 
@@ -213,37 +210,6 @@ export default function MainMenu({navigation}){
         toggleExportModalVisible()
     }
 
-    async function handleSwitchesAlert(setting:string){
-        if(setting === "resizeImages"){
-            toggleImageResizeVisible()        
-        }
-        if(setting === "loginGuard"){
-            const compatible = await LocalAuthentication.hasHardwareAsync();
-            console.info(`compatible: ${compatible}`)
-            const isEnrolled = await LocalAuthentication.isEnrolledAsync()
-            console.info(`isEnrolled: ${isEnrolled}`)
-            const getEnrolledLevel = await LocalAuthentication.getEnrolledLevelAsync()
-            console.info(`getEnrolledLevel: ${getEnrolledLevel}`)
-            if(!compatible){
-                toggleLoginGuardVisible()
-            }
-            if(!isEnrolled){
-                toggleLoginGuardVisible()
-            }
-            if(compatible && isEnrolled){
-                handleSwitches("loginGuard")
-            }
-        }
-    }
-
-    async function handleSwitches(setting: string){
-        const newSettings = {...generalSettings, [setting]: !generalSettings[setting]}
-            setGeneralSettings(newSettings)
-            const preferences:string = await AsyncStorage.getItem(PREFERENCES)
-            const newPreferences:{[key:string] : string} = preferences == null ? {"generalSettings": newSettings} : {...JSON.parse(preferences), "generalSettings": newSettings} 
-            await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
-        }
-        
     async function importCSV(data: DBOperations){
         let result 
         
@@ -465,43 +431,10 @@ export default function MainMenu({navigation}){
                                     </View>
                                 </List.Accordion>
 
-                                {/* GENERAL SETTINGS */ }
-   
-                                <List.Accordion left={props => <List.Icon {...props} icon="cog-outline" />} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
-                                    <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                                        <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewGun[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewGun} onValueChange={()=>handleSwitches("displayImagesInListViewGun")} />
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewAmmo[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewAmmo} onValueChange={()=>handleSwitches("displayImagesInListViewAmmo")} />
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.emptyFields[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.emptyFields} onValueChange={()=>handleSwitches("emptyFields")} />
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.caliberDisplayName[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.caliberDisplayName} onValueChange={()=>handleSwitches("caliberDisplayName")} />
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.resizeImages[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.resizeImages} onValueChange={()=>generalSettings.resizeImages ? handleSwitchesAlert("resizeImages") : handleSwitches("resizeImages")} />
-                                            </View>
-                                            <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                                            <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                                                <Text style={{flex: 7}}>{generalSettingsLabels.loginGuard[language]}</Text>
-                                                <Switch style={{flex: 3}} value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} />
-                                            </View>
-                                        </View>
-                                    </View>
-                                </List.Accordion>
+                                {/* SETTINGS */ }
+
+                                        <Settings />
+
 
                                 {/* EDIT DATA */}
 
@@ -590,33 +523,7 @@ export default function MainMenu({navigation}){
                 </Dialog>
 
 
-                <Dialog visible={imageResizeVisible} onDismiss={()=>toggleImageResizeVisible()}>
-                    <Dialog.Title>
-                    {`${resizeImageAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{`${resizeImageAlert.subtitle[language]}`}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={()=>{
-                            handleSwitches("resizeImages");
-                            toggleImageResizeVisible();
-                        }} icon="check" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{resizeImageAlert.yes[language]}</Button>
-                        <Button onPress={()=>toggleImageResizeVisible()} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{resizeImageAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
-
-                <Dialog visible={loginGuardVisible} onDismiss={()=>toggleLoginGuardVisible()}>
-                    <Dialog.Title>
-                    {`${loginGuardAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{`${loginGuardAlert.subtitle[language]}`}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={()=>toggleLoginGuardVisible()} icon="emoticon-frown-outline" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{loginGuardAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+                
 
             <Portal>
                {importCSVVisible ? <CSVImportModal /> : null} 
