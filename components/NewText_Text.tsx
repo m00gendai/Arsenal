@@ -26,7 +26,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const [isFocus, setFocus] = useState<boolean>(false)
     const [rerender, setRerender] = useState(0)
 
-    const { language, theme, generalSettings } = usePreferenceStore()
+    const { language, theme, generalSettings, preferredUnits } = usePreferenceStore()
 
     const {data: autocompleteData } = useLiveQuery(db.select()
         .from(schema.autocomplete)
@@ -90,7 +90,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         updateItemData(text)
                     }}
                     onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
-                    left={currencyPrefixFields.includes(data) ? <TextInput.Affix text="CHF " /> : null}
+                    left={currencyPrefixFields.includes(data) ? <TextInput.Affix text={`${preferredUnits.selectedCurrency} `} /> : null}
                     inputMode={`${numberTextFields.includes(data) ? "decimal" : "text"}`}
                     multiline={false}
                     returnKeyType='done'

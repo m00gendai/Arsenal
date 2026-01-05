@@ -12,7 +12,7 @@ import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
 export default function Item_details(){
 
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()
-    const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
 
     function checkColor(color:string){
         if(color.length === 9){
@@ -35,7 +35,7 @@ export default function Item_details(){
                                                 generalSettings.caliberDisplayName ? // TODO: Make array display in ammo item vanish (its displayed as [.17 whatever])
                                                     getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
-                                            : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : currencyPrefixFields.includes(dataItem.name) ? `${preferredUnits.selectedCurrency} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
@@ -66,7 +66,7 @@ export default function Item_details(){
                                             {caliberPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? 
                                                 generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
-                                            : currencyPrefixFields.includes(dataItem.name) ? `CHF ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : currencyPrefixFields.includes(dataItem.name) ? `${preferredUnits.selectedCurrency} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>

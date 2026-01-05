@@ -18,6 +18,7 @@ import { useItemTags } from 'hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
 import CardOptionsMenu_accessories from 'components/CardOptionsMenu_accessories';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
+import OnboardingDialog from 'components/Dialogs/Onboarding/OnboardingDialog';
 
 export default function ItemCollection({navigation, route}){
 
@@ -123,6 +124,7 @@ const listKey = isLandscape
 
   return(
     <View style={{flex: 1, backgroundColor: "transparent"}}>
+      <OnboardingDialog />
       <AppBar collection={currentCollection} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {itemData.length === 0 ? 
         <View style={{position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>

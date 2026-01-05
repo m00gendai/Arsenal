@@ -87,6 +87,8 @@ export default function App() {
     switchTheme, 
     generalSettings,
     setGeneralSettings, 
+    preferredUnits,
+    setPreferredUnits,
     displaySettings,
     setDisplaySettings,
     sortBy,
@@ -97,7 +99,7 @@ export default function App() {
     setHasConvertedLegacyAmmoCaliberFieldToStringArray,
     setHasConvertedLegacyDateFieldsToUnixTimeStamp
   } = usePreferenceStore();
-  const { mainMenuOpen, hideBottomSheet } = useViewStore()
+  const { mainMenuOpen, hideBottomSheet, setOnboardingVisible } = useViewStore()
   const { currentCollection } = useItemStore()
 
 
@@ -156,6 +158,12 @@ export default function App() {
 
           console.info("Successfully checked for legacy data")
           console.info("Setting App to Ready")
+
+          try{
+            isPreferences?.hasBeenOnboarded ? setOnboardingVisible(false) : setOnboardingVisible(true)
+          } catch(e){
+            alarm("Onboarding Error @onLayoutRootView", e)
+          }
           setAppIsReady(true)
           return
         }
@@ -191,6 +199,11 @@ export default function App() {
 
           console.info("Successfully checked for legacy data")
           console.info("Setting App to Ready")
+          try{
+            isPreferences?.hasBeenOnboarded ? setOnboardingVisible(false) : setOnboardingVisible(true)
+          } catch(e){
+            alarm("Onboarding Error @onLayoutRootView", e)
+          }
           setAppIsReady(true)
           return
         }
@@ -232,6 +245,11 @@ export default function App() {
 
             console.info("Successfully checked for legacy data")
             console.info("Setting App to Ready")
+            try{
+            isPreferences?.hasBeenOnboarded ? setOnboardingVisible(false) : setOnboardingVisible(true)
+          } catch(e){
+            alarm("Onboarding Error @onLayoutRootView", e)
+          }
             setAppIsReady(true)
             return
           } else{
@@ -264,6 +282,11 @@ export default function App() {
 
             console.info("Successfully checked for legacy data")
             console.info("Setting App to Ready")
+            try{
+            isPreferences?.hasBeenOnboarded ? setOnboardingVisible(false) : setOnboardingVisible(true)
+          } catch(e){
+            alarm("Onboarding Error @onLayoutRootView", e)
+          }
             setAppIsReady(true)
             return
           }
@@ -287,7 +310,6 @@ export default function App() {
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
-      
     }
   }, [appIsReady]);
 
@@ -318,6 +340,10 @@ export default function App() {
           ...generalSettings, 
           ...isPreferences?.generalSettings
         });
+        setPreferredUnits({
+          ...preferredUnits,
+          ...isPreferences?.preferredUnits
+        })
         setDisplaySettings({
           ...displaySettings,
           ...isPreferences?.displaySettings
