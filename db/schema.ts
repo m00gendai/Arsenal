@@ -184,7 +184,7 @@ export const partCollection_Barrel = sqliteTable("parts_barrel", {
     caliber: text("caliber", {mode: "json"}),
     serial: text("serial"),
     thread: text("thread"),
-    length: text("length"),
+    barrelLength: text("barrelLength"),
     currentlyMountedOn: text("currentlyMountedOn"),
     permit: text("permit"),
     acquisitionDate_unix: integer("acquisitionDate_unix"),

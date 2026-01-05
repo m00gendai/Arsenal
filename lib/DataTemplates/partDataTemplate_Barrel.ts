@@ -17,7 +17,7 @@ export const emptyBarrelObject:PartType_Barrel= {
     originCountry: null,
     caliber: [],
     thread: null,
-    length: null,
+    barrelLength: null,
     serial: null,
     permit: null,
     acquisitionDate_unix: null,

@@ -282,7 +282,7 @@ export interface PartType_Barrel{
   originCountry: string
   caliber: string[]
   thread: string
-  length: string
+  barrelLength: string
   serial: string
   permit: string
   acquisitionDate_unix: number | null

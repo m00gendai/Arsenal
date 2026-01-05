@@ -53,7 +53,7 @@ interface DataTemplateTranslations {
     headstamp: DataTemplateTranslation
     lastTopUpAt_unix: DataTemplateTranslation
     criticalStock: DataTemplateTranslation
-    length: DataTemplateTranslation
+    barrelLength: DataTemplateTranslation
     bulletType: DataTemplateTranslation
     bulletWeight: DataTemplateTranslation
 }
@@ -475,8 +475,8 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "Ultima variazione di quantità",
         ch: "Ultima midada da la quantitad",
     },
-    "length": {
-        name: "length",
+    "barrelLength": {
+        name: "barrelLength",
         de: "Lauflänge",
         en: "Barrel length",
         fr: "Longueur du canon",
