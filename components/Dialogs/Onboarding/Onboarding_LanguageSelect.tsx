@@ -59,7 +59,7 @@ export default function Onboarding_LanguageSelect(){
             })}
 
             <View style={{marginTop: defaultViewPadding*2}}>
-                <Text >{languageHint[language]}</Text>
+                <Text style={{fontStyle: 'italic'}}>{languageHint[language]}</Text>
             </View>
         </View>
     )

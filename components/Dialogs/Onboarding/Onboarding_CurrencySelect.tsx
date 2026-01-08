@@ -52,7 +52,7 @@ export default function Onboarding_CurrencySelect({selectedCurrency, setSelected
             />
 
             <View style={{marginTop: defaultViewPadding*2}}>
-                <Text>{currencyHint[language]}</Text>
+                <Text style={{fontStyle: 'italic'}}>{currencyHint[language]}</Text>
             </View>
         </View>
     )

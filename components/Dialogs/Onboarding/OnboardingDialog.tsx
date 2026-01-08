@@ -3,7 +3,7 @@ import { Languages } from "interfaces";
 import { SimpleTranslation } from "lib/textTemplates";
 import { useState } from "react";
 import { Dimensions, View } from "react-native";
-import { IconButton, Modal, Portal, RadioButton, Text } from "react-native-paper";
+import { Icon, IconButton, Modal, Portal, RadioButton, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import Onboarding_LanguageSelect from "./Onboarding_LanguageSelect";
 import Onboarding_CurrencySelect from "./Onboarding_CurrencySelect";
@@ -11,6 +11,7 @@ import Onboarding_WeightSelect from "./Onboarding_UnitSelect";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PREFERENCES } from "configs_DB";
 import { useViewStore } from "stores/useViewStore";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function OnboardingDialog(){
 
@@ -27,6 +28,24 @@ export default function OnboardingDialog(){
 
     const [generalLengthUnit, setGeneralLengthUnit] = useState<string>("cm")
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>("in")
+
+    const titles = [
+        {
+            title: "Eligere Lingua",
+            left: "translate",
+            right: "translate",
+        },
+        {
+            title: "Eligere Pecuniam",
+            left: "currency-usd",
+            right: "cash-multiple",
+        },
+        {
+            title: "Eligere Unitates",
+            left: "weight-kilogram",
+            right: "ruler",
+        },
+    ]
 
     function forward(){
         setOnboardIndex(onboardIndex => onboardIndex+1)
@@ -78,7 +97,6 @@ export default function OnboardingDialog(){
                         backgroundColor: defaultModalBackdrop
                     }}
                 >
-
                     <View 
                         style={{
                             borderRadius: 25, 
@@ -90,10 +108,29 @@ export default function OnboardingDialog(){
                             alignItems: "flex-start", 
                             flexWrap: "wrap", 
                             backgroundColor: theme.colors.background,
-                            padding: defaultViewPadding
                         }}
                     >
-                        <View style={{width: "100%", flexDirection: "column", flexGrow: 1}}>
+                        <View 
+                            style={{
+                                backgroundColor: theme.colors.primary, 
+                                width: "100%", 
+                                borderTopLeftRadius: 25, 
+                                borderTopRightRadius: 25,
+                                padding: defaultViewPadding,
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: defaultViewPadding
+                            }}
+                        >
+                            <Icon source={titles[onboardIndex].left} size={20} color={theme.colors.onPrimary}/>
+                            <Text variant="titleLarge" style={{color: theme.colors.onPrimary}}>
+                                {titles[onboardIndex].title}
+                            </Text>
+                            <Icon source={titles[onboardIndex].right} size={20} color={theme.colors.onPrimary}/>
+                        </View>
+                        <ScrollView style={{width: "100%", flexDirection: "column", flexGrow: 1, padding: defaultViewPadding}}>
                             <View style={{ flex: 1, display: onboardIndex === 0 ? "flex" : "none" }}>
                                 <Onboarding_LanguageSelect />
                             </View>
@@ -119,7 +156,7 @@ export default function OnboardingDialog(){
                                     setSelectedPowderWeight={setSelectedPowderWeight}/>
                                     
                             </View>
-                        </View>
+                        </ScrollView>
 
                         
 

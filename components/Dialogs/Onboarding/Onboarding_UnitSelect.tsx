@@ -145,7 +145,7 @@ Props){
             <View style={{flex: 1}}></View>
 
             <View style={{marginTop: defaultViewPadding*2}}>
-                <Text>{unitHint[language]}</Text>
+                <Text style={{fontStyle: 'italic'}}>{unitHint[language]}</Text>
             </View>
         </View>
     )
