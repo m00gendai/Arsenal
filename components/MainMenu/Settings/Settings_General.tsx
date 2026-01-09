@@ -22,94 +22,111 @@ export default function Settings_General(){
     }
 
     async function handleSwitchesAlert(setting:string){
-            if(setting === "resizeImages"){
-                toggleImageResizeVisible()        
+        if(setting === "resizeImages"){
+            toggleImageResizeVisible()        
+        }
+        if(setting === "loginGuard"){
+            const compatible = await LocalAuthentication.hasHardwareAsync();
+            console.info(`compatible: ${compatible}`)
+            const isEnrolled = await LocalAuthentication.isEnrolledAsync()
+            console.info(`isEnrolled: ${isEnrolled}`)
+            const getEnrolledLevel = await LocalAuthentication.getEnrolledLevelAsync()
+            console.info(`getEnrolledLevel: ${getEnrolledLevel}`)
+            if(!compatible){
+                toggleLoginGuardVisible()
             }
-            if(setting === "loginGuard"){
-                const compatible = await LocalAuthentication.hasHardwareAsync();
-                console.info(`compatible: ${compatible}`)
-                const isEnrolled = await LocalAuthentication.isEnrolledAsync()
-                console.info(`isEnrolled: ${isEnrolled}`)
-                const getEnrolledLevel = await LocalAuthentication.getEnrolledLevelAsync()
-                console.info(`getEnrolledLevel: ${getEnrolledLevel}`)
-                if(!compatible){
-                    toggleLoginGuardVisible()
-                }
-                if(!isEnrolled){
-                    toggleLoginGuardVisible()
-                }
-                if(compatible && isEnrolled){
-                    handleSwitches("loginGuard")
-                }
+            if(!isEnrolled){
+                toggleLoginGuardVisible()
+            }
+            if(compatible && isEnrolled){
+                handleSwitches("loginGuard")
             }
         }
+    }
 
     return( 
         <View style={{backgroundColor: theme.colors.tertiaryContainer}}>
-        <List.Accordion left={props => <List.Icon {...props} icon="tune" />} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
-            <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
-                <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewGun[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewGun} onValueChange={()=>handleSwitches("displayImagesInListViewGun")} />
-                    </View>
-                    <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewAmmo[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewAmmo} onValueChange={()=>handleSwitches("displayImagesInListViewAmmo")} />
-                    </View>
-                    <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.emptyFields[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.emptyFields} onValueChange={()=>handleSwitches("emptyFields")} />
-                    </View>
-                    <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.caliberDisplayName[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.caliberDisplayName} onValueChange={()=>handleSwitches("caliberDisplayName")} />
-                    </View>
-                    <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.resizeImages[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.resizeImages} onValueChange={()=>generalSettings.resizeImages ? handleSwitchesAlert("resizeImages") : handleSwitches("resizeImages")} />
-                    </View>
-                    <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                    <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                        <Text style={{flex: 7}}>{generalSettingsLabels.loginGuard[language]}</Text>
-                        <Switch style={{flex: 3}} value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} />
+            <List.Accordion left={props => <List.Icon {...props} icon="tune" />} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
+                <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                    <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewGun[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewGun} onValueChange={()=>handleSwitches("displayImagesInListViewGun")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.displayImagesInListViewAmmo[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewAmmo} onValueChange={()=>handleSwitches("displayImagesInListViewAmmo")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.titleBelowImage[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.titleBelowImage} onValueChange={()=>handleSwitches("titleBelowImage")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.emptyFields[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.emptyFields} onValueChange={()=>handleSwitches("emptyFields")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.caliberDisplayName[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.caliberDisplayName} onValueChange={()=>handleSwitches("caliberDisplayName")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.resizeImages[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.resizeImages} onValueChange={()=>generalSettings.resizeImages ? handleSwitchesAlert("resizeImages") : handleSwitches("resizeImages")} />
+                        </View>
+                        
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.loginGuard[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} />
+                        </View>
                     </View>
                 </View>
-            </View>
-        </List.Accordion>
+            </List.Accordion>
 
-        <Dialog visible={imageResizeVisible} onDismiss={()=>toggleImageResizeVisible()}>
-                    <Dialog.Title>
-                    {`${resizeImageAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{`${resizeImageAlert.subtitle[language]}`}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={()=>{
-                            handleSwitches("resizeImages");
-                            toggleImageResizeVisible();
-                        }} icon="check" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{resizeImageAlert.yes[language]}</Button>
-                        <Button onPress={()=>toggleImageResizeVisible()} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{resizeImageAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+            <Dialog visible={imageResizeVisible} onDismiss={()=>toggleImageResizeVisible()}>
+                <Dialog.Title>
+                {`${resizeImageAlert.title[language]}`}
+                </Dialog.Title>
+                <Dialog.Content>
+                    <Text>{`${resizeImageAlert.subtitle[language]}`}</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={()=>{
+                        handleSwitches("resizeImages");
+                        toggleImageResizeVisible();
+                    }} icon="check" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{resizeImageAlert.yes[language]}</Button>
+                    <Button onPress={()=>toggleImageResizeVisible()} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{resizeImageAlert.no[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
 
-                <Dialog visible={loginGuardVisible} onDismiss={()=>toggleLoginGuardVisible()}>
-                    <Dialog.Title>
-                    {`${loginGuardAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{`${loginGuardAlert.subtitle[language]}`}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={()=>toggleLoginGuardVisible()} icon="emoticon-frown-outline" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{loginGuardAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+            <Dialog visible={loginGuardVisible} onDismiss={()=>toggleLoginGuardVisible()}>
+                <Dialog.Title>
+                {`${loginGuardAlert.title[language]}`}
+                </Dialog.Title>
+                <Dialog.Content>
+                    <Text>{`${loginGuardAlert.subtitle[language]}`}</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={()=>toggleLoginGuardVisible()} icon="emoticon-frown-outline" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{loginGuardAlert.no[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
 
-            </View>
+        </View>
     )
 }

@@ -20,6 +20,7 @@ interface GeneralSettings{
   loginGuard: boolean
   emptyFields: boolean
   caliberDisplayName: boolean
+  titleBelowImage: boolean
 }
 
 interface DisplaySettings{
@@ -109,6 +110,7 @@ const initialState:InitialStoreState = {
       loginGuard: false,
       emptyFields: false,
       caliberDisplayName: false,
+      titleBelowImage: false
     },
     displaySettings: {
       gunCollection: "grid",
@@ -206,5 +208,5 @@ interface StoreFunctions {
     setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
     resetPreferenceStore: () => {set(initialState)},
-    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status})),
+    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status}))
 }))

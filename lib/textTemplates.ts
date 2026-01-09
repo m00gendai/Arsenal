@@ -132,6 +132,7 @@ interface GeneralSettingsLabels{
     loginGuard: SimpleTranslation
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
+    titleBelowImage: SimpleTranslation
 }
 
 interface ModalText{
@@ -1417,6 +1418,13 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Utiliser des désignations de calibres courtes dans les entrées et les listes PDF",
         it: "Usa etichette di calibro brevi nelle voci e nelle liste PDF",
         ch: "Duvrar nums da caliber curts en inscripziuns e glistas da pdf"
+    },
+    titleBelowImage: {
+        de: "Text unterhalb des Bildes in der Kachelansicht anzeigen",
+        en: "Show text below image in grid view",
+        fr: "Afficher le texte sous l’image en vue en grille",
+        it: "Mostrare il testo sotto l’immagine nella vista a griglia",
+        ch: "Mussar il text sut l’imatge en la vista da griglia",
     }
 }
 
