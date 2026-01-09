@@ -3,14 +3,14 @@ import { useViewStore } from "stores/useViewStore"
 import { Icon } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { useEffect } from "react"
-import Statistics from "./Statistics"
+import Statistics from "./Statistics/Statistics"
 import About from "./About"
 import Settings from "./Settings/Settings"
 import DatabaseOperations from "./DatabaseOperations"
 import ColorPalette from "./ColorPalette"
 import Lists from "./Lists"
 import LanguageSelection from "./LanguageSelection"
-import EditData from "./EditData"
+import EditData from "./EditData/EditData"
 
 export default function MainMenu({navigation}){
 

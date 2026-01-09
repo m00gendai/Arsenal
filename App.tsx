@@ -47,7 +47,8 @@ import checkLegacyGunData from 'functions/checkLegacyGunData';
 import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
 import migrateLegacyDateAndCaliberFields from 'functions/migrateLegacyDateAndCaliberFields';
 import { snapshot } from 'node:test';
-import EditAutocomplete from 'components/MainMenu/EditAutoComplete';
+import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
+import Statistics from 'components/MainMenu/Statistics/Statistics';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -487,6 +488,12 @@ export default function App() {
               <Stack.Screen
                 name="EditAutocomplete"
                 component={EditAutocomplete}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
+
+              <Stack.Screen
+                name="Statistics"
+                component={Statistics}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 
