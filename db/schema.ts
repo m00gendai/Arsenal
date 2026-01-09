@@ -57,6 +57,8 @@ export const legacyAmmoCollection = sqliteTable("ammo", {
     originCountry: text("originCountry"),
     caliber: text("caliber"),
     headstamp: text("headstamp"),
+    bulletWeight: text("bulletWeight"),
+    bulletType: text("bulletType"),
     currentStock: text("currentStock"),
     lastTopUpAt: text("lastTopUpAt"),
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
