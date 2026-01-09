@@ -115,6 +115,7 @@ export interface AccessoryType_Optic{
   serial: string
   reticle: string
   reticleColor: string
+  footprint: string
   zoom: string
   unit: string
   clicksToUnitElevation: string

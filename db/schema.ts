@@ -257,6 +257,7 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     serial: text("serial"),
     reticle: text("reticle"),
     reticleColor: text("reticleColor"),
+    footprint: text("footprint"),
     zoom: text("zoom"),
     unit: text("unit"),
     clicksToUnitElevation: text("clicksToUnitElevation"),

@@ -18,6 +18,7 @@ export const emptyOpticObject:AccessoryType_Optic= {
     serial: null,
     reticle: null,
     reticleColor: null,
+    footprint: null,
     zoom: null,
     unit: null,
     clicksToUnitElevation: null,

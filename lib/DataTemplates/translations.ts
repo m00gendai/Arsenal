@@ -56,6 +56,7 @@ interface DataTemplateTranslations {
     barrelLength: DataTemplateTranslation
     bulletType: DataTemplateTranslation
     bulletWeight: DataTemplateTranslation
+    footprint: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -498,6 +499,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Poids de la balle",
         it: "Peso del proiettile",
         ch: "Pais dal projectil",
+    },
+    "footprint":{
+        name: "footprint",
+        de: "Footprint",
+        en: "Footprint",
+        fr: "Empreinte",
+        it: "Impronta",
+        ch: "Impronta",
     },
 }
 
