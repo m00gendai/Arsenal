@@ -42,19 +42,20 @@ export const emptyGunObject:GunType= {
     grandfather: false,
 }
 
+export const checkBoxes: DataTemplateTranslation[] = Object.entries(dataTemplate_TranslationCheckboxes).map(checkbox =>{
+    return checkbox[1]
+})
+const checkboxKeys = checkBoxes.map(box => box.name)
 
 export const gunDataTemplate:TemplateItem[] = Object.keys(emptyGunObject)
     .filter(key => !excludedKeysForDataTemplates.includes(key))
+    .filter(key => !checkboxKeys.includes(key))
     .map(key =>{
         const translation = {
             ...dataTemplate_Translations[key as keyof typeof dataTemplate_Translations],
             ...dataTemplate_TranslationCheckboxes[key as keyof typeof dataTemplate_TranslationCheckboxes]
         }   
         return translation as TemplateItem
-})
-
-export const checkBoxes: DataTemplateTranslation[] = Object.entries(dataTemplate_TranslationCheckboxes).map(checkbox =>{
-    return checkbox[1]
 })
 
 export const gunRemarks: DataTemplateTranslation = dataTemplate_TranslationRemarks.remarks
