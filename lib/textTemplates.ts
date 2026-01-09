@@ -183,6 +183,13 @@ interface LongPressActions{
     goto: SimpleTranslation
     unmount: SimpleTranslation
     remount: SimpleTranslation
+    clean: SimpleTranslation
+    battery: SimpleTranslation
+}
+
+interface LongPressActionsSuccessMessages{
+    clean: SimpleTranslation
+    battery: SimpleTranslation
 }
 
 interface iosWarning{
@@ -1663,6 +1670,37 @@ export const longPressActions:LongPressActions = {
         fr: "Monter ailleurs",
         it: "Montare altrove",
         ch: "Montar insanua auter",
+    },
+    clean: {
+        de: "Reinigen",
+        en: "Clean",
+        fr: "Nettoyer",
+        it: "Pulire",
+        ch: "Nettar",
+    },
+    battery: {
+        de: "Batterie wechseln",
+        en: "Change Battery",
+        fr: "Changer la batterie",
+        it: "Cambiare la batteria",
+        ch: "Midar la batteria",
+    }
+}
+
+export const longPressActionsSuccessMessages:LongPressActionsSuccessMessages = {
+    clean: {
+        de: "gereinigt",
+        en: "cleaned",
+        fr: "nettoyé",
+        it: "pulito",
+        ch: "nettà",
+    },
+    battery: {
+        de: "Batterie für {{{A}}} gewechselt",
+        en: "Changed battery for {{{A}}}",
+        fr: "Batterie changée pour {{{A}}}",
+        it: "Batteria sostituita per {{{A}}}",
+        ch: "Batteria midada per {{{A}}}",
     }
 }
 
