@@ -201,9 +201,10 @@ export default function EditGun({navigation}){
 
             const newImage = selectedImage;
             if (newImage && newImage.length !== 0) {
-                newImage.splice(indx, 1, fileName);
-                setSelectedImage(newImage);
-                setItemData({ ...itemData, images: newImage });
+                const newImages = [...selectedImage]
+                newImages.splice(indx, 1, fileName)
+                setSelectedImage(newImages)
+                setItemData({ ...itemData, images: newImages })
             } else {
                 setSelectedImage([newPath]);
                 if (itemData && itemData.images && itemData.images.length !== 0) {
