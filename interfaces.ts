@@ -564,6 +564,7 @@ export type StackParamList = {
   QuickShot: undefined
   QuickMount: {item: ItemType}
   EditAutocomplete: undefined
+  Statistics: undefined
 }
 
 export interface Tag {
