@@ -30,6 +30,7 @@ export default function Item({navigation}){
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
     const [activeTab, setActiveTab] = useState<"details" | "accessories">("details")
+    const [rotation, setRotation] = useState<number>(0)
 
     const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
@@ -107,7 +108,29 @@ export default function Item({navigation}){
         await Sharing.shareAsync(img.includes(FileSystem.documentDirectory) ? img: `${FileSystem.documentDirectory}${img}`)
     }
 
-    
+    function handleRotateImage(){
+        if(rotation + 90 === 360){
+            setRotation(0)
+            return
+        }
+        const newRotation = rotation + 90
+        setRotation(newRotation)
+    }
+
+    function handleNextImage(){
+        const totalImages = currentItem.images.length-1
+        if(lightBoxIndex+1 > totalImages){
+            setLightBoxIndex(0)
+            return
+        }
+        const nextIndex = lightBoxIndex+1
+        setLightBoxIndex(nextIndex)
+    }
+
+    function handleClose(){
+        setLightBoxOpen()
+        setRotation(0)
+    }
 
     function generateGradient(item: ItemType){
         if("mainColor" in item && item.mainColor){
@@ -197,7 +220,7 @@ useEffect(() => {
                                             return(
                                                 <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
                                                     <View style={styles.imageContainer} >
-                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]} /> 
+                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]}/> 
                                                     </View>
                                                 </TouchableNativeFeedback>
                                             )
@@ -282,10 +305,40 @@ useEffect(() => {
                     <Modal visible={lightBoxOpen} onDismiss={setLightBoxOpen}>
                         <View style={{width: "100%", height: "100%", padding: 0, display: "flex", flexDirection: "row", flexWrap: "wrap", backgroundColor: "green"}}>
                             <View style={{padding: 0, margin: 0, position: "absolute", top: defaultViewPadding, right: defaultViewPadding, left: defaultViewPadding, zIndex: 999, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                                <Pressable onPress={()=>handleShareImage(currentItem.images[lightBoxIndex])}><Icon source="share-variant" size={40} color={theme.colors.inverseSurface}/></Pressable>
-                                <Pressable onPress={setLightBoxOpen} ><Icon source="close-thick" size={40} color={theme.colors.inverseSurface}/></Pressable>
+                                <IconButton
+                                    onPress={()=>handleShareImage(currentItem.images[lightBoxIndex])}
+                                    icon="share-variant"
+                                    iconColor={theme.colors.onPrimary}
+                                    size={30}
+                                    mode="contained"
+                                    style={{backgroundColor: theme.colors.primary}}
+                                />
+                                <IconButton
+                                    onPress={()=>handleRotateImage()}
+                                    icon="arrow-down-right-bold"
+                                    iconColor={theme.colors.onPrimary}
+                                    size={30}
+                                    mode="contained"
+                                    style={{backgroundColor: theme.colors.primary}}
+                                />
+                                <IconButton
+                                    onPress={()=>handleNextImage()}
+                                    icon="skip-forward"
+                                    iconColor={theme.colors.onPrimary}
+                                    size={30}
+                                    mode="contained"
+                                    style={{backgroundColor: theme.colors.primary}}
+                                />
+                                <IconButton
+                                    onPress={()=>handleClose()}
+                                    icon="close-thick"
+                                    iconColor={theme.colors.onPrimary}
+                                    size={30}
+                                    mode="contained"
+                                    style={{backgroundColor: theme.colors.primary}}
+                                />
                             </View>
-                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]}/> : null}
+                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]} rotationInput={rotation}/> : null}
                         </View>
                     </Modal>    
                 </Portal>   

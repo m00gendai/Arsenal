@@ -2,19 +2,19 @@ import { Image, StyleSheet, View } from 'react-native';
 import { GestureDetector, Gesture, GestureHandlerRootView, PinchGesture, PanGesture, SimultaneousGesture } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { defaultViewPadding } from '../configs';
-import { IconButton } from 'react-native-paper';
-import { usePreferenceStore } from '../stores/usePreferenceStore';
 import * as FileSystem from 'expo-file-system';
 
 interface Props{
   selectedImage:string
   isLightBox: boolean
   placeholder?: "gun" | "ammo"
+  rotationInput?: number
 }
 
-export default function ImageViewer({selectedImage, isLightBox, placeholder}:Props){
+export default function ImageViewer({selectedImage, isLightBox, placeholder, rotationInput}:Props){
 
     const scale = useSharedValue<number>(1);
+    const rotation = useSharedValue(0)
     const savedScale = useSharedValue<number>(1);
     const positionX = useSharedValue<number>(0)
     const positionY = useSharedValue<number>(0)
@@ -22,8 +22,8 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder}:Pro
     const barrierY = useSharedValue<number>(0)
 
   const imageName = selectedImage ? `${FileSystem.documentDirectory}${selectedImage.split("/").pop()}` : placeholder // Legacy support for full file paths
-
-    const { language, theme, generalSettings } = usePreferenceStore()
+  
+  rotation.value = rotationInput;
   
     const pinchGesture: PinchGesture = Gesture.Pinch().runOnJS(true)
       .onUpdate((e) => {
@@ -63,7 +63,12 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder}:Pro
     const composed:SimultaneousGesture = Gesture.Simultaneous(pinchGesture,panGesture)
     const animatedStyle = useAnimatedStyle(() => ({
         /*@ts-expect-error*/
-        transform: [{ scale: scale.value}, {translateX: positionX.value }, {translateY: positionY.value }],
+        transform: [
+          { scale: scale.value}, 
+          {translateX: positionX.value }, 
+          {translateY: positionY.value },
+          { rotate: `${rotation.value}deg` }
+        ],
       }));
 
     return(
