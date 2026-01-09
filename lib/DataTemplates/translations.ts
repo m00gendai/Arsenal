@@ -334,11 +334,11 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
     },
     "batteryLastChangedAt_unix":{
         name: "batteryLastChangedAt_unix",
-        de: "Zuletzt gereinigt",
-        en: "Last cleaned",
-        fr: "Nettoyé en dernier",
-        it: "Ultima pulizia",
-        ch: "Il davos purifitgà",
+        de: "Letzter Batteriewechsel",     
+        en: "Last Battery Change",
+        fr: "Dernier changement de batterie",
+        it: "Ultimo cambio di batteria",
+        ch: "Ultima midada da battaria",    
     },
     "currentlyMountedOn":{
         name: "currentlyMountedOn",
