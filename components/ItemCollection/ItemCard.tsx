@@ -6,7 +6,7 @@ import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections
 import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate } from 'utils';
+import { checkDate, checkShotCount } from 'utils';
 import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';
@@ -76,6 +76,10 @@ export default function ItemCard({ item }:Props){
     function checkDangerState(item: ItemType){
         let isDanger:boolean
         isDanger = checkDate(item)
+        if(isDanger){
+            return isDanger
+        }
+        isDanger = checkShotCount(item)
         if(isDanger){
             return isDanger
         }

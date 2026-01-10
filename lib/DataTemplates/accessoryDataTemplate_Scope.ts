@@ -37,6 +37,9 @@ export const emptyScopeObject:AccessoryType_Scope= {
     paidPrice: null,
     marketValue: null,
     cleanInterval: null,
+    cleanInterval_CustomTime: null,
+    cleanInterval_ShotCount: null,
+    cleanIntervalDisplay: null,
     currentlyMountedOn: null,
     batteryLastChangedAt_unix: null
 }

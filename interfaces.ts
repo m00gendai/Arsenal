@@ -21,7 +21,10 @@ export interface GunTypeDetails{
   lastCleanedAt_unix: number | null
   paidPrice: string
   marketValue: string
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
 }
 
 export interface GunTypeStatus{
@@ -96,7 +99,10 @@ export interface AccessoryType_Silencer{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   mainColor: string
   remarks: string
   currentlyMountedOn: string
@@ -128,7 +134,10 @@ export interface AccessoryType_Optic{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   batteryLastChangedAt_unix: number | null
   mainColor: string
   remarks: string
@@ -160,7 +169,10 @@ export interface AccessoryType_Scope{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   batteryLastChangedAt_unix: number | null
   mainColor: string
   remarks: string
@@ -218,7 +230,10 @@ export interface AccessoryType_Magazine{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   mainColor: string
   remarks: string
   currentlyMountedOn: string
@@ -265,7 +280,10 @@ export interface PartType_ConversionKit{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   mainColor: string
   remarks: string
   currentlyMountedOn: string
@@ -293,7 +311,10 @@ export interface PartType_Barrel{
   shotCount: string
   lastShotAt_unix: number | null
   lastCleanedAt_unix: number | null
-  cleanInterval: null | "none" | "day_1" | "day_7" | "day_14" | "month_1" | "month_3" | "month_6" | "month_9" | "year_1" | "year_5" | "year_10"
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
   mainColor: string
   remarks: string
   currentlyMountedOn: string

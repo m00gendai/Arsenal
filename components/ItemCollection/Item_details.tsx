@@ -4,7 +4,7 @@ import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplat
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
-import { cleanIntervals } from "lib/textTemplates";
+import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, getShortCaliberName } from "utils";
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
@@ -13,6 +13,19 @@ export default function Item_details(){
 
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+
+    function getCleanIntervalDisplayValue(){
+        if("cleanIntervalDisplay" in currentItem){
+            const [presetString, shotSelectString] = currentItem.cleanIntervalDisplay.split("/").map(s => s.trim())
+            return(
+                presetString && shotSelectString ? 
+                    `${cleanIntervals[presetString][language]} / ${shotSelectString} ${shotLabel[language]}`
+                    :  
+                    `${cleanIntervals[presetString][language]}` || `${shotSelectString} ${shotLabel[language]}` || ""
+            )
+        }
+        return ""
+    }
 
     function checkColor(color:string){
         if(color.length === 9){
@@ -38,7 +51,7 @@ export default function Item_details(){
                                             : currencyPrefixFields.includes(dataItem.name) ? `${preferredUnits.selectedCurrency} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : bulletWeightPrefixFields.includes(dataItem.name) ? `${preferredUnits.bulletWeightUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : barrelLengthPrefixFields.includes(dataItem.name) ? `${preferredUnits.barrelLengthUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
-                                            : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
+                                            : dataItem.name === "cleanIntervalDisplay" && currentItem[dataItem.name] ? getCleanIntervalDisplayValue()
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
             {/* Interval Warning Icons */}

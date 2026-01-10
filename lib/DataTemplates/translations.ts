@@ -18,6 +18,9 @@ interface DataTemplateTranslations {
     lastShotAt_unix: DataTemplateTranslation
     lastCleanedAt_unix: DataTemplateTranslation
     cleanInterval: DataTemplateTranslation
+    cleanInterval_CustomTime: DataTemplateTranslation
+    cleanInterval_ShotCount: DataTemplateTranslation
+    cleanIntervalDisplay: DataTemplateTranslation
     mainColor: DataTemplateTranslation
     language: DataTemplateTranslation
     title: DataTemplateTranslation
@@ -190,6 +193,30 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
     },
     "cleanInterval": {
         name: "cleanInterval",
+        de: "cleanInterval",
+        en: "cleanInterval",
+        fr: "cleanInterval",
+        it: "cleanInterval",
+        ch: "cleanInterval",
+    },
+    "cleanInterval_CustomTime": {
+        name: "cleanInterval_CustomTime",
+        de: "cleanInterval_CustomTime",
+        en: "cleanInterval_CustomTime",
+        fr: "cleanInterval_CustomTime",
+        it: "cleanInterval_CustomTime",
+        ch: "cleanInterval_CustomTime",
+    },
+    "cleanInterval_ShotCount": {
+        name: "cleanInterval_ShotCount",
+        de: "cleanInterval_ShotCount",
+        en: "cleanInterval_ShotCount",
+        fr: "cleanInterval_ShotCount",
+        it: "cleanInterval_ShotCount",
+        ch: "cleanInterval_ShotCount",
+    },
+    "cleanIntervalDisplay": {
+        name: "cleanIntervalDisplay",
         de: "Reinigungsintervall",
         en: "Cleaning interval",
         fr: "Intervalle de nettoyage",

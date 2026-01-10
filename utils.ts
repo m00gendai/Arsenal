@@ -177,6 +177,14 @@ export function checkDate(item:ItemType){
     return false
 }
 
+export function checkShotCount(item:ItemType){
+    if("shotCount" in item && "cleanInterval_ShotCount" in item){
+        if(item.shotCount && Number(item.shotCount) > 1 && item.cleanInterval_ShotCount)
+            return item.shotCount >= item.cleanInterval_ShotCount
+    }
+    return false
+}
+
 export function alarm(title: string, error:string){
     Alert.alert(`${title}`, `${error}`, [
       {

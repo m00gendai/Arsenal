@@ -151,17 +151,17 @@ interface ModalTextItems{
 ["-", "1 Tag", "7 Tage", "14 Tage", "1 Monat", "3 Monate", "6 Monate", "9 Monate", "1 Jahr", "5 Jahre", "10 Jahre"]
 
 interface CleanIntervals{
-    none: SimpleTranslation
-    day_1: SimpleTranslation
-    day_7: SimpleTranslation
-    day_14: SimpleTranslation
-    month_1: SimpleTranslation
-    month_3: SimpleTranslation
-    month_6: SimpleTranslation
-    month_9: SimpleTranslation
-    year_1: SimpleTranslation
-    year_5: SimpleTranslation
-    year_10: SimpleTranslation
+    none: {name: string} & SimpleTranslation
+    day_1: {name: string} & SimpleTranslation
+    day_7: {name: string} & SimpleTranslation
+    day_14: {name: string} & SimpleTranslation
+    month_1: {name: string} & SimpleTranslation
+    month_3: {name: string} & SimpleTranslation
+    month_6: {name: string} & SimpleTranslation
+    month_9: {name: string} & SimpleTranslation
+    year_1: {name: string} & SimpleTranslation
+    year_5: {name: string} & SimpleTranslation
+    year_10: {name: string} & SimpleTranslation
 }
 
 interface CaliberPickerStrings{
@@ -207,6 +207,7 @@ interface ItemViewTabBarLabels{
 
 export const cleanIntervals:CleanIntervals = {
     none: {
+        name: "none",
         de: "-",
         en: "-",
         fr: "-",
@@ -214,6 +215,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "-",
     },
     day_1: {
+        name: "day_1",
         de: "1 Tag",
         en: "1 day",
         fr: "1 jour",
@@ -221,6 +223,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 di",
     },
     day_7: {
+        name: "day_7",
         de: "1 Woche",
         en: "1 week",
         fr: "1 semaine",
@@ -228,6 +231,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 emna",
     },
     day_14: {
+        name: "day_14",
         de: "2 Wochen",
         en: "2 weeks",
         fr: "2 semaines",
@@ -235,6 +239,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "2 emnas",
     },
     month_1:{
+        name: "month_1",
         de: "1 Monat",
         en: "1 month",
         fr: "1 mois",
@@ -242,6 +247,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 mais",
     },
     month_3: {
+        name: "month_3",
         de: "3 Monate",
         en: "3 months",
         fr: "3 mois",
@@ -249,6 +255,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "3 mais",
     },
     month_6: {
+        name: "month_6",
         de: "6 Monate",
         en: "6 months",
         fr: "6 mois",
@@ -256,6 +263,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "6 mais",
     },
     month_9: {
+        name: "month_9",
         de: "9 Monate",
         en: "9 months",
         fr: "9 mois",
@@ -263,6 +271,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "9 mais",
     },
     year_1: {
+        name: "year_1",
         de: "1 Jahr",
         en: "1 year",
         fr: "1 Année",
@@ -270,6 +279,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 onn",
     },
     year_5: {
+        name: "year_5",
         de: "5 Jahre",
         en: "5 years",
         fr: "5 ans",
@@ -277,6 +287,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "5 onns",
     },
     year_10: {
+        name: "year_10",
         de: "10 Jahre",
         en: "10' years",
         fr: "10 ans",
@@ -1542,8 +1553,8 @@ export const modalTexts: ModalText = {
         text:{
             de: `Wähle einen Zeitintervall, nach dem die Waffe wieder geputzt werden müsste.\n\nDies wird anhand des Wertes von "zuletzt geputzt" gerechnet, sofern dieser gesetzt ist.\n\nBei Überschreitung des Intervalls erscheint der Name der Waffe in der Übersicht rot.`,
             en: `Select a time interval after which the weapon should be cleaned again.\n\nThis is calculated based on the value of "last cleaned", if this is set.\n\nIf the interval is exceeded, the name of the weapon appears in red in the overview.`,
-            fr: `Choisir un intervalle de temps après lequel l'arme devrait être nettoyée à nouveau.\nnCeci est calculé en fonction de la valeur de "dernier nettoyé", si celle-ci est définie.\nnSi l'intervalle est dépassé, le nom de l'arme apparaît en rouge dans l'aperçu.`,
-            it: `Selezionare un intervallo di tempo dopo il quale l'arma deve essere pulita di nuovo.\n}Questo viene calcolato in base al valore di "ultima pulizia", se impostato.\n}Se l'intervallo viene superato, il nome dell'arma appare in rosso nella panoramica.`,
+            fr: `Choisir un intervalle de temps après lequel l'arme devrait être nettoyée à nouveau.\n\nCeci est calculé en fonction de la valeur de "dernier nettoyé", si celle-ci est définie.\n\nSi l'intervalle est dépassé, le nom de l'arme apparaît en rouge dans l'aperçu.`,
+            it: `Selezionare un intervallo di tempo dopo il quale l'arma deve essere pulita di nuovo.\n\nQuesto viene calcolato in base al valore di "ultima pulizia", se impostato.\n\nSe l'intervallo viene superato, il nome dell'arma appare in rosso nella panoramica.`,
             ch: `Tscherni in interval da temp, cur che l'arma stuess puspè vegnir nettegiada.\n\nDies vegn quintà vi da la valur da "l'ultima nettegiada", premess che quella saja messa.\n\nBenenen surpassament da l'interval cumpara il num da l'arma en la survista cotschna.`,
         }
     },
