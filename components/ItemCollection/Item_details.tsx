@@ -3,7 +3,7 @@ import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, Icon
 import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
 import { cleanIntervals } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, getShortCaliberName } from "utils";
@@ -36,6 +36,8 @@ export default function Item_details(){
                                                     getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `${preferredUnits.selectedCurrency} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : bulletWeightPrefixFields.includes(dataItem.name) ? `${preferredUnits.bulletWeightUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : barrelLengthPrefixFields.includes(dataItem.name) ? `${preferredUnits.barrelLengthUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>
@@ -67,6 +69,8 @@ export default function Item_details(){
                                                 generalSettings.caliberDisplayName ? getShortCaliberName(currentItem[dataItem.name], caliberDisplayNameList).join("\n") : currentItem[dataItem.name].join("\n")
                                             : colorPickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? GetColorName(`${checkColor(currentItem[dataItem.name]).split("#")[1]}`)
                                             : currencyPrefixFields.includes(dataItem.name) ? `${preferredUnits.selectedCurrency} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : bulletWeightPrefixFields.includes(dataItem.name) ? `${preferredUnits.bulletWeightUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
+                                            : barrelLengthPrefixFields.includes(dataItem.name) ? `${preferredUnits.barrelLengthUnit} ${currentItem[dataItem.name] ? currentItem[dataItem.name] :  ""}` 
                                             : dataItem.name === "cleanInterval" && currentItem[dataItem.name] ? cleanIntervals[currentItem[dataItem.name]] ? cleanIntervals[currentItem[dataItem.name]][language] : ""
                                             : datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name] ? new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
                                             : currentItem[dataItem.name]}</Text>

@@ -2,7 +2,7 @@ import { TextInput, Text, Portal, ThemeProvider } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../interfaces';
 import { View, Pressable, Keyboard } from 'react-native';
-import { currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun } from '../configs';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun } from '../configs';
 import { ScrollView } from 'react-native-gesture-handler';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
@@ -69,7 +69,18 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         updateItemData(text)
                     }}
                     onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
-                    left={currencyPrefixFields.includes(data) ? <TextInput.Affix text={`${preferredUnits.selectedCurrency} `} /> : null}
+                    left={
+                        currencyPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.selectedCurrency} `} /> 
+                        : 
+                        bulletWeightPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.bulletWeightUnit} `} /> 
+                        :
+                        barrelLengthPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.barrelLengthUnit} `} /> 
+                        :
+                        null
+                    }
                     inputMode={`${numberTextFields.includes(data) ? "decimal" : "text"}`}
                     multiline={false}
                     returnKeyType='done'
