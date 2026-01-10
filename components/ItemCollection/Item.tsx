@@ -8,7 +8,7 @@ import { useViewStore } from 'stores/useViewStore';
 import { cleanIntervals, gunDeleteAlert, iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
 import { printSingleItem } from 'functions/printToPDF';
 import { ItemType } from 'interfaces';
-import { alarm, checkDate } from 'utils';
+import { alarm, checkDate, generateGradient } from 'utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
 import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs';
@@ -132,19 +132,7 @@ export default function Item({navigation}){
         setRotation(0)
     }
 
-    function generateGradient(item: ItemType){
-        if("mainColor" in item && item.mainColor){
-            const color = item.mainColor
-            return [color, 
-                    `${colord(color).isDark() ? 
-                        colord(color).lighten(0.2).toHex() : 
-                        colord(color).darken(0.2).toHex()}`, 
-                    color]
-        } else {
-            const color = theme.colors.background
-            return [color, color, color]
-        }
-    }
+ 
 
    
 
@@ -204,7 +192,7 @@ useEffect(() => {
                 <ScrollView style={{width: "100%"}}>
                     <LinearGradient 
                         start={{x: 0.0, y:0.0}} end={{x: 1.0, y: 1.0}} 
-                        colors={generateGradient(currentItem) as [ColorValue, ColorValue, ...ColorValue[]]}
+                        colors={generateGradient(currentItem, theme) as [ColorValue, ColorValue, ...ColorValue[]]}
                     >
                         <View style={{width: "100%", aspectRatio: "21/10"}}>
                             <Carousel
