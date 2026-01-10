@@ -1,4 +1,4 @@
-import { AmmoType, CollectionType, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
+import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
 import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
 import { validationErros } from "./lib//textTemplates";
 import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
@@ -9,6 +9,7 @@ import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
 import { DisplayVariants } from "stores/usePreferenceStore";
+import { colord } from "colord";
 
 export function getShortCaliberName(calibers:string[], caliberDisplayNameList:{name: string; displayName?: string;}[]){
     const outputArray = calibers.map(item => {
@@ -201,3 +202,17 @@ export function cleanNullValues (obj: GunType | AmmoType){
         minimumFractionDigits: input % 1 === 0 ? 0 : 2,
         maximumFractionDigits: input % 1 === 0 ? 0 : 2,
   }}
+
+  export function generateGradient(item: ItemType, theme:{name: string; colors: Color;}){
+        if("mainColor" in item && item.mainColor){
+            const color = item.mainColor
+            return [color, 
+                    `${colord(color).isDark() ? 
+                        colord(color).lighten(0.2).toHex() : 
+                        colord(color).darken(0.2).toHex()}`, 
+                    color]
+        } else {
+            const color = theme.colors.background
+            return [color, color, color]
+        }
+    }
