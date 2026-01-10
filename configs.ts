@@ -82,7 +82,10 @@ export const requiredFieldsPart_Barrel:string[] = ["model"]
 export const requiredFieldsLiterature_Book:string[] = ["title"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
-export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition"]
+export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
+export const barrelLengthPrefixFields:string[] = ["barrelLength"]
+
+export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "barrelLength"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]
 export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
