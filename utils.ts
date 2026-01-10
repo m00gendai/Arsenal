@@ -204,7 +204,7 @@ export function cleanNullValues (obj: GunType | AmmoType){
   }}
 
   export function generateGradient(item: ItemType, theme:{name: string; colors: Color;}){
-        if("mainColor" in item && item.mainColor){
+        if(item && "mainColor" in item && item.mainColor){
             const color = item.mainColor
             return [color, 
                     `${colord(color).isDark() ? 
