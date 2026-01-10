@@ -27,7 +27,9 @@ export default function QuickShot({navigation}){
   )
 
   const data = (dataQuery as AmmoType[]).filter(ammo => {
-    return "caliber" in  currentItem && currentItem.caliber.includes(ammo.caliber[0])
+    if(ammo.caliber){
+      return "caliber" in  currentItem && currentItem.caliber.includes(ammo.caliber[0])
+    }
   })
 
   async function saveNewStock(id: string, count:number){
