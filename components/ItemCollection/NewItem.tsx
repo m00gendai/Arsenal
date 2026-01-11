@@ -291,6 +291,16 @@ export default function NewItem({navigation}){
         animated: true,
         })
     }
+
+    function swapItems(arr: string[], from: number, to: number){
+        if(to < 0 || to >= arr.length || from > selectedImage.length-1){
+            return
+        } 
+        const copy = [...arr];
+        [copy[from], copy[to]] = [copy[to], copy[from]]
+        setSelectedImage(copy)
+        setItemData({ ...itemData, images: copy })
+    }
     
     return(
         <KeyboardAvoidingView behavior='padding' style={{flex: 1}}>
@@ -353,6 +363,20 @@ export default function NewItem({navigation}){
                                                         iconColor={theme.colors.onPrimary} 
                                                         style={{backgroundColor: theme.colors.primary}}
                                                          onPress={()=>pickImageAsync(index)}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-left" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                            onPress={()=>swapItems(selectedImage, index, index-1)}
+                                                            disabled={selectedImage ? index === 0 || index > selectedImage.length-1 : true}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-right" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                            onPress={()=>swapItems(selectedImage, index, index+1)}
+                                                            disabled={selectedImage ? index >= selectedImage.length-1 : true}
                                                     />
                                                     <IconButton 
                                                         icon="delete" 

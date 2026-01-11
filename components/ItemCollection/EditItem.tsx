@@ -310,6 +310,16 @@ export default function EditGun({navigation}){
         })
     }
 
+function swapItems(arr: string[], from: number, to: number){
+    if(to < 0 || to >= arr.length || from > selectedImage.length-1){
+        return
+    } 
+    const copy = [...arr];
+    [copy[from], copy[to]] = [copy[to], copy[from]]
+    setSelectedImage(copy)
+    setItemData({ ...itemData, images: copy })
+}
+
     return(
         <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
             <Appbar style={{width: "100%"}}>
@@ -341,7 +351,7 @@ export default function EditGun({navigation}){
                                                     style={{
                                                         position: "absolute",
                                                         bottom: 0,
-                                                        width: "75%",
+                                                        width: "100%",
                                                         height: "100%",
                                                         display: "flex",
                                                         flexDirection: "row",
@@ -361,6 +371,20 @@ export default function EditGun({navigation}){
                                                         iconColor={theme.colors.onPrimary} 
                                                         style={{backgroundColor: theme.colors.primary}}
                                                          onPress={()=>pickImageAsync(index)}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-left" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                         onPress={()=>swapItems(selectedImage, index, index-1)}
+                                                         disabled={index === 0 || index > selectedImage.length-1}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-right" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                         onPress={()=>swapItems(selectedImage, index, index+1)}
+                                                         disabled={index >= selectedImage.length-1}
                                                     />
                                                     <IconButton 
                                                         icon="delete" 
