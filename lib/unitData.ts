@@ -192,22 +192,12 @@ interface WeightUnit{
     base: number
 }
 
-// weights all have their relation to grams. All weight data is stored in grams and displayed according to the chosen unit
+// weights all have their relation to milligrams. All weight data is stored in milligrams and displayed according to the chosen unit
 export const weightUnits:WeightUnit[] = [
-    {
-        name: "pound", 
-        iso: "lb", 
-        base: 453.592,
-        de: "Pfund",
-        en: "Pound",
-        fr: "Livre",          
-        it: "Libbra",          
-        ch: "Lira"            
-    },
     {
         name: "grain", 
         iso: "gr", 
-        base: 0.0647989,
+        base: 64.7989100002,
         de: "Grain",
         en: "Grain",
         fr: "Grain",           
@@ -215,9 +205,39 @@ export const weightUnits:WeightUnit[] = [
         ch: "Grain"            
     },
     {
+        name: "ounce",
+        iso: "oz",
+        base: 28349.523125,
+        de: "Unze",
+        en: "Ounce",
+        fr: "Once",
+        it: "Oncia",
+        ch: "Unze"          
+    },
+    {
+        name: "pound", 
+        iso: "lb", 
+        base: 453592.37,
+        de: "Pfund",
+        en: "Pound",
+        fr: "Livre",          
+        it: "Libbra",          
+        ch: "Lira"            
+    },
+    {
+        name: "milligram", 
+        iso: "mg",
+        base: 1,
+        de: "Milligramm",
+        en: "Milligram",
+        fr: "Milligramme",
+        it: "Milligrammo",
+        ch: "Milligramm"       
+    },
+    {
         name: "gram", 
         iso: "g",
-        base: 1,
+        base: 1000,
         de: "Gramm",
         en: "Gram",
         fr: "Gramme",         
@@ -227,7 +247,7 @@ export const weightUnits:WeightUnit[] = [
     {
         name: "kilogram", 
         iso: "kg", 
-        base: 1000,
+        base: 1000000,
         de: "Kilogram",
         en: "Kilogram",
         fr: "Kilogramme",      
@@ -246,7 +266,7 @@ interface DistUnit{
     iso: string
     base: number
 }
-// weights all have their relation to milimeter. All weight data is stored in milimeters and displayed according to the chosen unit
+// lengths all have their relation to milimeter. All length data is stored in milimeters and displayed according to the chosen unit
 export const distUnits:DistUnit[] = [
     {
         name: "millimeter", 
