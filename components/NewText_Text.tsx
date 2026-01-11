@@ -26,7 +26,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
         if(unitFields_Length.includes(data)){
             return convertLengthUnitsToPreferredUnit(preferredUnits, data, itemData[data])
         }
-        return data
+        return itemData[data]
     }
 
     const input = useRef<string>(itemData && itemData[data] ? handleConversions(itemData, data) : "")
