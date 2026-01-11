@@ -46,7 +46,7 @@ export default function Settings_Units(){
             setPreferredUnits(onboardingPreferences)
         }
         saveUnits()
-    },[generalLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency])
+    },[generalLengthUnit, barrelLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency])
 
     const weightData = weightUnits.map(unit => {
             return(

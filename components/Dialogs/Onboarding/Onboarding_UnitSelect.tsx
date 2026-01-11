@@ -91,11 +91,11 @@ Props){
     }
 
     const unitHint: SimpleTranslation = {
-        de: "Gewichtseinheiten werden in der Datenbank in Gramm gespeichert und je nach gewählter Einheit umgerechnet dargestellt. Längenmässe in Milimeter. Die Einheiten können jederzeit in den Einstellungen geändert werden.",
-        en: "Weight units are saved in the database in grams and displayed converted according to the chosen unit. Length units in millimeters. The units can be changed in the settings at any time.",
-        fr: "Les unités de poids sont enregistrées dans la base de données en grammes et affichées sous forme convertie selon l’unité sélectionnée. Unités de longueur en millimètres. Les unités peuvent être modifiées à tout moment dans les paramètres.",
-        it: "Le unità di peso vengono salvate nel database in grammi e visualizzate in forma convertita in base all’unità selezionata. Unità di lunghezza in millimetri. Le unità possono essere modificate in qualsiasi momento nelle impostazioni.",
-        ch: "Las unitads da pais vegnan memorisadas en la banca da datas en grams e visualisadas convertidas tenor l’unitad tschernida. Unitads da lunghezza en millimeters. Las unitads pon vegnir midada da tut temp en las configuraziuns.",
+        de: "Gewichtseinheiten werden in der Datenbank in Milligramm gespeichert und je nach gewählter Einheit umgerechnet dargestellt. Längenmässe in Milimeter. Die Einheiten können jederzeit in den Einstellungen geändert werden.",
+        en: "Weight units are saved in the database in milligrams and displayed converted according to the chosen unit. Length units in millimeters. The units can be changed in the settings at any time.",
+        fr: "Les unités de poids sont enregistrées dans la base de données en milligrammes et affichées sous forme convertie selon l’unité sélectionnée. Unités de longueur en millimètres. Les unités peuvent être modifiées à tout moment dans les paramètres.",
+        it: "Le unità di peso vengono salvate nel database in milligrammi e visualizzate in forma convertita in base all’unità selezionata. Unità di lunghezza in millimetri. Le unità possono essere modificate in qualsiasi momento nelle impostazioni.",
+        ch: "Las unitads da pais vegnan memorisadas en la banca da datas en milligrams e visualisadas convertidas tenor l’unitad tschernida. Unitads da lunghezza en millimeters. Las unitads pon vegnir midada da tut temp en las configuraziuns.",
     }
     
     return(

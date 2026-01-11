@@ -2,10 +2,11 @@ import { TextInput, Text, Portal, ThemeProvider } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../interfaces';
 import { View, Pressable, Keyboard } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun } from '../configs';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs';
 import { ScrollView } from 'react-native-gesture-handler';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
+import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'utils';
 
 interface Props{
     data: string
@@ -16,26 +17,45 @@ interface Props{
 
 export default function NewText({data, itemData, setItemData, label}: Props){
 
-    const input = useRef<string|string[]>(itemData && itemData[data] ? itemData[data] : "")
+    const { preferredUnits } = usePreferenceStore()
+
+    function handleConversions(itemData:ItemType, data:string){
+        if(unitFields_Weight.includes(data)){
+            return convertWeightUnitsToPreferredUnit(preferredUnits, data, itemData[data])
+        }
+        if(unitFields_Length.includes(data)){
+            return convertLengthUnitsToPreferredUnit(preferredUnits, data, itemData[data])
+        }
+        return data
+    }
+
+    const input = useRef<string>(itemData && itemData[data] ? handleConversions(itemData, data) : "")
 
     const [charCount, setCharCount] = useState(input.current?.length ?? 0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const { preferredUnits } = usePreferenceStore()
-
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(text:string | string[]){
+    function updateItemData(text:string){
+        let determinedText: string
+        if(unitFields_Weight.includes(data)){
+            determinedText = convertWeightUnitsToMilligram(preferredUnits, data, text)
+        } else if(unitFields_Length.includes(data)){
+            determinedText = convertLengthUnitsToMillimeter(preferredUnits, data, text)
+        }else {
+            determinedText = text
+        }
+        
         if(charCount < MAX_CHAR_COUNT){
             setCharCount(text.length ?? 0)
             input.current = text
-            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
+            setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
         if(charCount >= MAX_CHAR_COUNT && isBackspace){
             setCharCount(text.length ?? 0)
             input.current = text
-            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
+            setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
     }
 

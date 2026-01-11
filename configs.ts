@@ -85,6 +85,9 @@ export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
 export const barrelLengthPrefixFields:string[] = ["barrelLength"]
 
+export const unitFields_Weight: string[] = [...bulletWeightPrefixFields]
+export const unitFields_Length: string[] = [...barrelLengthPrefixFields]
+
 export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "barrelLength"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]

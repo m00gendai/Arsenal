@@ -66,7 +66,7 @@ interface FilterState{
   literatureCollection_Book: boolean
 }
 
-interface PreferredUnits{
+export interface PreferredUnits{
   selectedCurrency: string
   generalWeightUnit: string
   bulletWeightUnit: string

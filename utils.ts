@@ -8,8 +8,9 @@ import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
 import * as schema from "./db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
-import { DisplayVariants } from "stores/usePreferenceStore";
+import { DisplayVariants, PreferredUnits } from "stores/usePreferenceStore";
 import { colord } from "colord";
+import { distUnits, weightUnits } from "lib/unitData";
 
 export function getShortCaliberName(calibers:string[], caliberDisplayNameList:{name: string; displayName?: string;}[]){
     const outputArray = calibers.map(item => {
@@ -203,24 +204,57 @@ export function cleanNullValues (obj: GunType | AmmoType){
       }
     });
     return cleaned;
-  };
+};
 
-  export function intlNumberFormatOptions(input){
+export function intlNumberFormatOptions(input){
     return {
         minimumFractionDigits: input % 1 === 0 ? 0 : 2,
         maximumFractionDigits: input % 1 === 0 ? 0 : 2,
-  }}
-
-  export function generateGradient(item: ItemType, theme:{name: string; colors: Color;}){
-        if(item && "mainColor" in item && item.mainColor){
-            const color = item.mainColor
-            return [color, 
-                    `${colord(color).isDark() ? 
-                        colord(color).lighten(0.2).toHex() : 
-                        colord(color).darken(0.2).toHex()}`, 
-                    color]
-        } else {
-            const color = theme.colors.background
-            return [color, color, color]
-        }
     }
+}
+
+export function generateGradient(item: ItemType, theme:{name: string; colors: Color;}){
+    if(item && "mainColor" in item && item.mainColor){
+        const color = item.mainColor
+        return [color, 
+                `${colord(color).isDark() ? 
+                    colord(color).lighten(0.2).toHex() : 
+                    colord(color).darken(0.2).toHex()}`, 
+                color]
+    } else {
+        const color = theme.colors.background
+        return [color, color, color]
+    }
+}
+
+export function convertWeightUnitsToMilligram(preferredUnits: PreferredUnits, weightField:string, inputWeight:string){
+    const unit:string = preferredUnits[`${weightField}Unit`]
+    const base = weightUnits.filter(weight => weight.iso === unit)
+    const conversion = base[0].base
+    const weightInMilligram = Number(inputWeight)*conversion
+    return weightInMilligram.toFixed(2)
+}
+
+export function convertWeightUnitsToPreferredUnit(preferredUnits: PreferredUnits, weightField:string, inputWeight:string){
+    const unit:string = preferredUnits[`${weightField}Unit`]
+    const base = weightUnits.filter(weight => weight.iso === unit)
+    const conversion = base[0].base
+    const weightInPreferredUnit = Number(inputWeight)/conversion
+    return weightInPreferredUnit.toFixed(2)
+}
+
+export function convertLengthUnitsToMillimeter(preferredUnits: PreferredUnits, lengthField:string, inputLength:string){
+    const unit:string = preferredUnits[`${lengthField}Unit`]
+    const base = distUnits.filter(length => length.iso === unit)
+    const conversion = base[0].base
+    const lengthInMillimeter = Number(inputLength)*conversion
+    return lengthInMillimeter.toFixed(2)
+}
+
+export function convertLengthUnitsToPreferredUnit(preferredUnits: PreferredUnits, lengthField:string, inputLength:string){
+    const unit:string = preferredUnits[`${lengthField}Unit`]
+    const base = distUnits.filter(length => length.iso === unit)
+    const conversion = base[0].base
+    const lengthInPreferredUnit = Number(inputLength)/conversion
+    return lengthInPreferredUnit.toFixed(2)
+}
