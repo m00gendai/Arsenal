@@ -1,5 +1,5 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip } from 'react-native-paper';
-import { act, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import { GunType, AmmoType, ItemType } from '../interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
@@ -7,6 +7,8 @@ import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { defaultViewPadding } from '../configs';
 import ModalContainer from './ModalContainer';
 import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PREFERENCES } from 'configs_DB';
 
 interface Props{
     data: string
@@ -17,6 +19,33 @@ interface Props{
 }
 
 export default function NewText({data, itemData, setItemData, label, multiCaliber}: Props){
+
+    async function setLastUsedCaliber(name:string[]){
+        let isPreferences 
+        try{
+            const preferences:string = await AsyncStorage.getItem(PREFERENCES)
+            isPreferences = preferences ? JSON.parse(preferences) : null;
+        } catch(e){
+          throw new Error(`CaliberPicker setLastUsedCaliber getPreferences: ${e}`)
+        }
+        let lastUsedCalibers: string[] = []
+        try{
+            if(isPreferences?.lastUsedCalibers){
+                lastUsedCalibers = isPreferences.lastUsedCalibers
+            }
+            let addedCaliber: string[] = []
+            if(lastUsedCalibers.includes(name[0])){
+                addedCaliber = [...lastUsedCalibers]
+            } else {
+                addedCaliber = [...name, ...lastUsedCalibers]
+            }
+            const insertableArray:string[]= addedCaliber.toSpliced(10)
+            const newPreferences = {...isPreferences, lastUsedCalibers: insertableArray}
+            await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
+        }catch(e){
+            throw new Error(`CaliberPicker setLastUsedCaliber getPreferences.lastUsedCalibers: ${e}`)
+        }
+    }
 
     function determineActiveCaliber(itemData: ItemType ){
         if(!itemData){
@@ -39,6 +68,7 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
     const [activeCaliber, setActiveCaliber] = useState<string[]>(determineActiveCaliber(itemData))
     const [caliberView, setCaliberView] = useState<"search" | "list">("search")
     const [caliberQuery, setCaliberQuery] = useState<string>("")
+    const [lastUsed, setLastUsed] = useState<string[]>([])
 
     const { language, theme } = usePreferenceStore()
 
@@ -47,6 +77,27 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
     const [isFocus, setFocus] = useState<boolean>(false)
 
     const MAX_CHAR_COUNT: number = 100
+
+    useEffect(()=>{
+        async function getLastUsedCaliber(){
+            let isPreferences 
+            try{
+                const preferences:string = await AsyncStorage.getItem(PREFERENCES)
+                isPreferences = preferences ? JSON.parse(preferences) : null;
+            } catch(e){
+            throw new Error(`CaliberPicker setLastUsedCaliber getPreferences: ${e}`)
+            }
+            try{
+                if(isPreferences?.lastUsedCalibers){
+                    setLastUsed(isPreferences.lastUsedCalibers)
+                }
+            }catch(e){
+                console.error(e)
+            }
+        }
+        getLastUsedCaliber()
+    },[])
+
 
     function updateItemData(input: string[]){
     // Convert to appropriate format based on multiCaliber
@@ -91,6 +142,7 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
     function handleCaliberSelectConfirm(){
         updateItemData(activeCaliber)
         setShowModalCaliber(false)
+        setLastUsedCaliber(activeCaliber)
     }
 
     function handleCaliberSelectCancel(){
@@ -147,7 +199,7 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
                     <List.Section style={{width: "100%", flexDirection: "column", height: "100%"}}>
                         <ScrollView style={{height: "20%", width: "100%", backgroundColor: theme.colors.background}}>
                             {Array.isArray(activeCaliber) && activeCaliber.length !== 0 ? 
-                                activeCaliber.map((cal, index) => {return <View key={cal} style={{paddingTop: index === 0 ? defaultViewPadding : 0, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: defaultViewPadding/2}}><Chip onClose={()=>{console.log(cal);handleCaliberItemSelect(cal)}}>{cal}</Chip></View>}) 
+                                activeCaliber.map((cal, index) => {return <View key={cal} style={{paddingTop: index === 0 ? defaultViewPadding : 0, paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, paddingBottom: defaultViewPadding/2}}><Chip onClose={()=>{handleCaliberItemSelect(cal)}}>{cal}</Chip></View>}) 
                                 : <Text style={{padding: defaultViewPadding}}>{`${caliberPickerStrings.caliberSelection[language]}`}</Text>
                             }
                         </ScrollView>
@@ -247,7 +299,10 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
                                     }
                                 })
                             :
-                            null}
+                            lastUsed.map((caliber, index) =>{
+                                return <List.Item key={`${caliber}_${index}`} title={caliber} onPress={()=>handleCaliberItemSelect(caliber)} />
+                            })
+                            }
                             </ScrollView>
                         </View>}
                     </List.Section>
