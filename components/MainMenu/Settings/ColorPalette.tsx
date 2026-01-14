@@ -20,8 +20,9 @@ export default function ColorPalette(){
         await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
     }
 
-    return(
-        <List.Accordion left={props => <List.Icon {...props} icon="palette" />} title={preferenceTitles.colors[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
+    return(<View style={{backgroundColor: theme.colors.tertiaryContainer}}>
+            <List.Accordion left={props => <List.Icon {...props} icon="palette" />} title={preferenceTitles.colors[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
+        
             <View style={{marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                 <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
                     {Object.entries(colorThemes).map(colorTheme =>{
@@ -46,5 +47,6 @@ export default function ColorPalette(){
                 </View>
             </View>
         </List.Accordion>
+        </View>
 )
 }
