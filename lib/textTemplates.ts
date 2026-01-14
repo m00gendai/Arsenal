@@ -45,6 +45,7 @@ interface PreferenceTitle{
     printAllAmmo: SimpleTranslation
     settings: SimpleTranslation
     generalSettings: SimpleTranslation
+    displaySettings: SimpleTranslation
     preferredUnits: SimpleTranslation
     about: SimpleTranslation
     statistics: SimpleTranslation
@@ -126,10 +127,14 @@ interface TagModal{
 }
 
 interface GeneralSettingsLabels{
-    displayImagesInListViewGun: SimpleTranslation
-    displayImagesInListViewAmmo: SimpleTranslation
     resizeImages: SimpleTranslation
     loginGuard: SimpleTranslation
+    hintsDisplay: SimpleTranslation
+}
+
+interface DisplaySettingsLabels{
+    displayImagesInListViewGun: SimpleTranslation
+    displayImagesInListViewAmmo: SimpleTranslation
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
     titleBelowImage: SimpleTranslation
@@ -850,7 +855,7 @@ export const preferenceTitles:PreferenceTitle = {
     },
     settings:{
         de: "Einstellungen",
-        en: "settings",
+        en: "Settings",
         fr: "Paramètres",
         it: "Impostazioni",
         ch: "Parameters",
@@ -861,6 +866,13 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Paramètres généraux",
         it: "Impostazioni generali",
         ch: "Parameters generals",
+    },
+    displaySettings: {
+        de: "Anzeigeoptionen",
+        en: "Display settings",
+        fr: "Paramètres d'affichage",   
+        it: "Impostazioni di visualizzazione",
+        ch: "Configuraziuns da visualisaziun" 
     },
     preferredUnits: {
         de: "Masseinheiten",
@@ -1388,20 +1400,6 @@ export const tagModal:TagModal ={
 }
 
 export const generalSettingsLabels: GeneralSettingsLabels = {
-    displayImagesInListViewGun: {
-        de: "Bilder in Listenansicht Waffen anzeigen", 
-        en: "Show images in gun list view",
-        fr: "Afficher les images dans la vue en liste armes",
-        it: "Visualizzare le immagini nella vista elenco armi",
-        ch: "Mussar armas cun ina glista"  
-    },
-    displayImagesInListViewAmmo: {
-        de: "Bilder in Listenansicht Munition anzeigen", 
-        en: "Show images in ammunition list view",
-        fr: "Afficher les images dans la vue en liste munitions",
-        it: "Visualizzare le immagini nella vista elenco munizioni",
-        ch: "Mussar maletgs cun ina glista muniziun"  
-    },
     resizeImages: {
         de: "Bildoptimierung",
         en: "Image optimization",
@@ -1415,6 +1413,30 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Login biométrique",
         it: "Login biometrico",
         ch: "Login biometric"
+    },
+    hintsDisplay: {
+        de: "Hinweisbox anzeigen",
+        en: "Show hints box",
+        fr: "Afficher la boîte d’indices",    
+        it: "Mostrare la finestra dei suggerimenti",
+        ch: "Mussar la box d’indizis",         
+    }
+}
+
+export const displaySettingsLabels: DisplaySettingsLabels = {
+    displayImagesInListViewGun: {
+        de: "Bilder in Listenansicht Waffen anzeigen", 
+        en: "Show images in gun list view",
+        fr: "Afficher les images dans la vue en liste armes",
+        it: "Visualizzare le immagini nella vista elenco armi",
+        ch: "Mussar armas cun ina glista"  
+    },
+    displayImagesInListViewAmmo: {
+        de: "Bilder in Listenansicht Munition anzeigen", 
+        en: "Show images in ammunition list view",
+        fr: "Afficher les images dans la vue en liste munitions",
+        it: "Visualizzare le immagini nella vista elenco munizioni",
+        ch: "Mussar maletgs cun ina glista muniziun"  
     },
     emptyFields: {
         de: "Leere Felder in Einträgen ausblenden",
@@ -1436,7 +1458,7 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Afficher le texte sous l’image en vue en grille",
         it: "Mostrare il testo sotto l’immagine nella vista a griglia",
         ch: "Mussar il text sut l’imatge en la vista da griglia",
-    }
+    },
 }
 
 export const aboutText: SimpleTranslation = {

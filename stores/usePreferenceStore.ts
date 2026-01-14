@@ -21,6 +21,7 @@ interface GeneralSettings{
   emptyFields: boolean
   caliberDisplayName: boolean
   titleBelowImage: boolean
+  hintsDisplay: boolean
 }
 
 interface DisplaySettings{
@@ -110,7 +111,8 @@ const initialState:InitialStoreState = {
       loginGuard: false,
       emptyFields: false,
       caliberDisplayName: false,
-      titleBelowImage: false
+      titleBelowImage: false,
+      hintsDisplay: true
     },
     displaySettings: {
       gunCollection: "grid",
@@ -165,7 +167,7 @@ const initialState:InitialStoreState = {
     hasCheckedForLegacyAmmoData: false,
     hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
     hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
-    hasBeenOnboarded: false
+    hasBeenOnboarded: false,
   }
 
 
