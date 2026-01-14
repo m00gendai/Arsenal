@@ -5,7 +5,7 @@ import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { defaultViewPadding } from "configs"
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
@@ -23,6 +23,7 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
     const { theme } = usePreferenceStore()
 
     const [rerender, setRerender] = useState(0)
+    const [visible, setVisible] = useState<boolean>(true)
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -41,9 +42,24 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
         setRerender(rerender => rerender + 1)
     }
 
+    function getMatches(){
+        return autocompleteData.some((data) =>
+            data.label.toLowerCase().includes((inputText as string).toLowerCase())
+        )
+    }
+
+    useEffect(() => {
+        const hasMatches = getMatches()
+        if (charCount >= 2 && isFocus && hasMatches) {
+            setVisible(true);
+        } else {
+            setVisible(false);
+        }
+    }, [charCount, isFocus, autocompleteData])
+
     return(
         <Portal>
-            {charCount >= 2 && isFocus && autocompleteData.length > 0 ? <BottomSheet
+            {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
                 ref={bottomSheetRef}
                 snapPoints={[
                     "5%", "25%", "50%"
@@ -82,6 +98,7 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
                                 </Pressable>
                             )
                         }
+                        return null
                     })}
                 </BottomSheetScrollView >
 
