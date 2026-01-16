@@ -1,7 +1,7 @@
 import { IconButton, PaperProvider, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "./configs_DB"
+import { AMMO_DATABASE, A_KEY_DATABASE, GUN_DATABASE, KEY_DATABASE, PREFERENCES } from "./configs/configs_DB"
 import 'react-native-gesture-handler';
 import React from 'react';
 import { usePreferenceStore } from './stores/usePreferenceStore';
@@ -9,9 +9,9 @@ import { useViewStore } from './stores/useViewStore';
 import MainMenu from './components/MainMenu/MainMenu';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { AmmoType, GunType, StackParamList } from './interfaces';
+import { AmmoType, GunType, StackParamList } from './lib/interfaces';
 import * as SecureStore from "expo-secure-store"
-import { alarm, getIcon } from './utils';
+import { alarm, getIcon } from './functions/utils';
 import { useAmmoStore } from './stores/useAmmoStore';
 import { useTagStore } from './stores/useTagStore';
 import { useGunStore } from './stores/useGunStore';
@@ -34,7 +34,7 @@ import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-rean
 import BottomSheet, { BottomSheetFooter, BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBars/BottomBar';
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs';
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs/configs';
 import ItemCollection from 'components/ItemCollection/ItemCollection';
 import Item from 'components/ItemCollection/Item';
 import NewItem from 'components/ItemCollection/NewItem';
@@ -43,9 +43,9 @@ import { useItemStore } from 'stores/useItemStore';
 import QuickMount from 'components/QuickMount';
 import AlohaSnackbar from 'components/AlohaSnackbar';
 import { eq } from 'drizzle-orm';
-import checkLegacyGunData from 'functions/checkLegacyGunData';
-import checkLegacyAmmoData from 'functions/checkLegacyAmmoData';
-import migrateLegacyDateAndCaliberFields from 'functions/migrateLegacyDateAndCaliberFields';
+import checkLegacyGunData from 'functions/legacy/checkLegacyGunData';
+import checkLegacyAmmoData from 'functions/legacy/checkLegacyAmmoData';
+import migrateLegacyDateAndCaliberFields from 'functions/legacy/migrateLegacyDateAndCaliberFields';
 import { snapshot } from 'node:test';
 import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
 import Statistics from 'components/MainMenu/Statistics/Statistics';

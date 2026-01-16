@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
-import { SortingTypesAccessory_Silencer, SortingTypesPart_ConversionKit } from "../interfaces";
+import { SortingTypesAccessory_Silencer, SortingTypesPart_ConversionKit } from "../../lib/interfaces";
 
 export default function sortPartCollection_ConversionKit(direction: "asc" | "desc", sortBy:SortingTypesPart_ConversionKit){
     const ascending = direction === "asc"

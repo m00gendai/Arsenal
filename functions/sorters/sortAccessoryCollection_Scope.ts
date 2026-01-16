@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
-import { SortingTypesAccessory_Scope } from "../interfaces";
+import { SortingTypesAccessory_Scope } from "../../lib/interfaces";
 
 export default function sortAccessoryCollection_Scope(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Scope){
     const ascending = direction === "asc"

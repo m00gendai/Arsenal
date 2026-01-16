@@ -5,7 +5,7 @@ import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { defaultViewPadding } from "configs"
+import { defaultViewPadding } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
 import { preferenceTitles } from "lib/textTemplates"

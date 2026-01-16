@@ -3,11 +3,11 @@
 
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { AmmoType, GunType } from '../interfaces';
+import { AmmoType, GunType } from '../../lib/interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
 import { manipulateAsync } from "expo-image-manipulator"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { A_KEY_DATABASE, AMMO_DATABASE, GUN_DATABASE, KEY_DATABASE } from '../configs_DB';
+import { A_KEY_DATABASE, AMMO_DATABASE, GUN_DATABASE, KEY_DATABASE } from '../../configs/configs_DB';
 import * as SecureStore from "expo-secure-store"
 import { v4 as uuidv4 } from 'uuid';
 

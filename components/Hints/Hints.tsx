@@ -3,12 +3,12 @@ import { IconButton, Text } from "react-native-paper"
 import { hints, hintsTitle } from "./hints_text";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { FlipInEasyX, useSharedValue } from "react-native-reanimated";
-import { defaultViewPadding } from "configs";
+import { defaultViewPadding } from "configs/configs";
 import Carousel, { ICarouselInstance, Pagination } from "react-native-reanimated-carousel";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PREFERENCES } from "configs_DB";
+import { PREFERENCES } from "configs/configs_DB";
 import { generalSettingsLabels } from "lib/textTemplates";
 
 export default function Hints(){

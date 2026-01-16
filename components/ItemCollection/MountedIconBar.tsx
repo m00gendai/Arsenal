@@ -1,7 +1,7 @@
-import { defaultViewPadding } from "configs";
+import { defaultViewPadding } from "configs/configs";
 import { db } from "db/client";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
-import { AccessoryMount, CollectionType, ItemType, PartMount } from "interfaces";
+import { AccessoryMount, CollectionType, ItemType, PartMount } from "lib/interfaces";
 import { View } from "react-native";
 import { Icon } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";

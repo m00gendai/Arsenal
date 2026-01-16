@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import "react-native-get-random-values"
 import { v4 as uuidv4 } from 'uuid';
 import ImageViewer from "components/ImageViewer"
-import { ItemType, ItemTypeWithDbId } from 'interfaces';
-import { generateGradient, imageHandling, itemDataValidation } from 'utils';
+import { ItemType, ItemTypeWithDbId } from 'lib/interfaces';
+import { generateGradient, imageHandling, itemDataValidation } from 'functions/utils';
 import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
 import { imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
@@ -15,7 +15,7 @@ import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';

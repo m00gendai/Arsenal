@@ -1,10 +1,10 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip, RadioButton } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../lib/interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { defaultViewPadding } from '../configs';
+import { defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';

@@ -3,10 +3,10 @@ import { Checkbox, Text, IconButton } from 'react-native-paper';
 import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
-import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, getShortCaliberName } from "utils";
+import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, getShortCaliberName } from "functions/utils";
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
 
 export default function Item_details(){

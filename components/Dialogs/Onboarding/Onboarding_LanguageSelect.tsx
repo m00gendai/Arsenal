@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultViewPadding, languageSelection } from "configs";
-import { PREFERENCES } from "configs_DB";
-import { Languages } from "interfaces";
+import { defaultViewPadding, languageSelection } from "configs/configs";
+import { PREFERENCES } from "configs/configs_DB";
+import { Languages } from "lib/interfaces";
 import { SimpleTranslation } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";

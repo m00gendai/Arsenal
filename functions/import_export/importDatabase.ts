@@ -3,12 +3,12 @@ import * as DocumentPicker from 'expo-document-picker';
 import { unzip } from 'react-native-zip-archive'
 import * as SQLite from 'expo-sqlite';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
-import * as schema from "../db/schema"
-import { db } from "../db/client"
-import { DB_NAME } from "../configs_DB";
-import { collectionImportTables, legacyDatePickerTriggerFields, nonCollectionTables } from "configs";
-import { determineTagSchema } from "./determinators";
-import { AmmoType, CollectionType, ItemType, LegacyAmmoType } from "interfaces";
+import * as schema from "../../db/schema"
+import { db } from "../../db/client"
+import { DB_NAME } from "../../configs/configs_DB";
+import { collectionImportTables, legacyDatePickerTriggerFields, nonCollectionTables } from "configs/configs";
+import { determineTagSchema } from "../determinators";
+import { AmmoType, CollectionType, ItemType, LegacyAmmoType } from "lib/interfaces";
 
 function parseDate(inDate: string | number) {
  

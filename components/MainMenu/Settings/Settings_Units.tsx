@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultViewPadding } from "configs";
+import { defaultViewPadding } from "configs/configs";
 import { preferenceTitles, SimpleTranslation } from "lib/textTemplates";
 import { View } from "react-native";
 import { Divider, List } from "react-native-paper";
@@ -8,7 +8,7 @@ import { useViewStore } from "stores/useViewStore"
 import { currencies, distUnits, weightUnits } from "lib/unitData";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useEffect, useState } from "react";
-import { PREFERENCES } from "configs_DB";
+import { PREFERENCES } from "configs/configs_DB";
 
 export default function Settings_Units(){
 

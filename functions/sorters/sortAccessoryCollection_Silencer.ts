@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
-import { SortingTypesAccessory_Silencer } from "../interfaces";
+import { SortingTypesAccessory_Silencer } from "../../lib/interfaces";
 
 export default function sortAccessoryCollection_Silencer(direction: "asc" | "desc", sortBy:SortingTypesAccessory_Silencer){
     const ascending = direction === "asc"

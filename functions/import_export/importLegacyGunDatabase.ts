@@ -1,12 +1,12 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import { AmmoType, CollectionType, GunType, ItemType } from '../interfaces';
+import { AmmoType, CollectionType, GunType, ItemType } from '../../lib/interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
 import { manipulateAsync } from "expo-image-manipulator"
-import { expo, db } from "../db/client"
-import * as schema from "../db/schema"
-import { ImportExportStore } from '../stores/useImportExportStore';
-import { determineTagSchema } from './determinators';
+import { expo, db } from "../../db/client"
+import * as schema from "../../db/schema"
+import { ImportExportStore } from '../../stores/useImportExportStore';
+import { determineTagSchema } from '../determinators';
 
 export async function importLegacyGunDatabase(resizeImages:boolean, importOptionLegacyDB: CollectionType){
 

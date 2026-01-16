@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import { SortingTypesAmmo } from "../interfaces";
+import { SortingTypesAmmo } from "../../lib/interfaces";
 
 export default function sortAmmoCollection(direction: "asc" | "desc", sortBy:SortingTypesAmmo){
 

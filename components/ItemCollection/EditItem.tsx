@@ -4,18 +4,18 @@ import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
 import "react-native-get-random-values"
 import ImageViewer from "../ImageViewer"
-import { ItemType } from 'interfaces';
+import { ItemType } from 'lib/interfaces';
 import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
 import { gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
-import { generateGradient, imageHandling, itemDataValidation } from 'utils';
+import { generateGradient, imageHandling, itemDataValidation } from 'functions/utils';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';

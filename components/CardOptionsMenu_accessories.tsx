@@ -1,9 +1,9 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { cardActionsMountedOn, defaultCardOptionsMenuIconSize, defaultViewPadding } from "configs";
+import { cardActionsMountedOn, defaultCardOptionsMenuIconSize, defaultViewPadding } from "configs/configs";
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';
-import { StackParamList } from "interfaces";
+import { StackParamList } from "lib/interfaces";
 import { longPressActions, snackbarText } from "lib/textTemplates";
 import { Pressable, View } from "react-native";
 import { Card, Icon, Modal, Portal, Text } from "react-native-paper";

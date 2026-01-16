@@ -1,11 +1,11 @@
-import { defaultViewPadding } from "configs";
-import { printGunCollection, printGunCollectionArt5 } from "functions/printToPDF";
+import { defaultViewPadding } from "configs/configs";
+import { printGunCollection, printGunCollectionArt5 } from "functions/printers/printToPDF";
 import { iosWarningText, preferenceTitles } from "lib/textTemplates";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 import { Button, Dialog, Divider, IconButton, List, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { alarm } from "utils";
+import { alarm } from "functions/utils";
 
 export default function Lists(){
 

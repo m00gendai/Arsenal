@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { A_KEY_DATABASE, AMMO_DATABASE, KEY_DATABASE, PREFERENCES } from "configs_DB"
+import { A_KEY_DATABASE, AMMO_DATABASE, KEY_DATABASE, PREFERENCES } from "configs/configs_DB"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { AmmoType } from "interfaces"
+import { AmmoType } from "lib/interfaces"
 import * as SecureStore from "expo-secure-store"
-import { alarm } from "utils"
-import { legacyDatePickerTriggerFields } from "configs"
+import { alarm } from "functions/utils"
+import { legacyDatePickerTriggerFields } from "configs/configs"
 
 // This checks for legacy ammo data and migrates it to SQLite DB. Afterwards it emtpies the keys array and removes the legacy ammo data from SecureStore
 // This should only trigger once from an update <2.0.0 to a higher version using SQLite. After this ran, the key array should be empty and thus no

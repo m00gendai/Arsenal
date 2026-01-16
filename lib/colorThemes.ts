@@ -1,6 +1,6 @@
 import {
   ColorTheme
-} from "../interfaces";
+} from "./interfaces";
 
 export const colorThemes: ColorTheme = {
 

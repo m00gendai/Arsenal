@@ -1,5 +1,5 @@
-import { excludedKeysForDataTemplates } from "configs";
-import { GunType } from "interfaces"
+import { excludedKeysForDataTemplates } from "configs/configs";
+import { GunType } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks, dataTemplate_TranslationCheckboxes } from "./translations";
 

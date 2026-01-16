@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { FAB, Icon, ThemeProvider } from 'react-native-paper';
-import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs';
-import { AccessoryMount, ItemType, PartMount, Tag } from 'interfaces';
+import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs/configs';
+import { AccessoryMount, ItemType, PartMount, Tag } from 'lib/interfaces';
 import { useViewStore } from 'stores/useViewStore';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ItemCard from './ItemCard';

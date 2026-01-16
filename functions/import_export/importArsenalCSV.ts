@@ -2,12 +2,12 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import Papa from 'papaparse';
 import { unflatten } from 'flat'
-import { CollectionType, ItemType } from 'interfaces';
+import { CollectionType, ItemType } from 'lib/interfaces';
 import * as schema from "db/schema"
 import { db } from "db/client"
 import * as Application from 'expo-application';
-import { determineEmptyObject, determineEmptyObjectReturns } from './determinators';
-import { alarm } from 'utils';
+import { determineEmptyObject, determineEmptyObjectReturns } from '../determinators';
+import { alarm } from 'functions/utils';
 
 
 export default async function importArsenalCSV(data: CollectionType){

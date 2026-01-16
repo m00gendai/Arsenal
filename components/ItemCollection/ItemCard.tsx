@@ -1,12 +1,12 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AccessoryType_Magazine, AmmoType, ItemType, StackParamList } from 'interfaces';
+import { AccessoryType_Magazine, AmmoType, ItemType, StackParamList } from 'lib/interfaces';
 import { Badge, Card, Icon, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs';
+import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs/configs';
 import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate, checkShotCount } from 'utils';
+import { checkDate, checkShotCount } from 'functions/utils';
 import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';

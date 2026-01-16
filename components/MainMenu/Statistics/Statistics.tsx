@@ -1,13 +1,13 @@
 import { Divider, List, Text } from "react-native-paper";
 import { preferenceTitles, statisticItems } from "lib/textTemplates";
-import { dateLocales, defaultViewPadding } from "configs";
+import { dateLocales, defaultViewPadding } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { View } from "react-native";
 import { db } from "db/client";
 import { count } from "drizzle-orm";
 import * as schema from "db/schema"
 import { useEffect, useState } from "react";
-import { intlNumberFormatOptions } from "utils";
+import { intlNumberFormatOptions } from "functions/utils";
 
 
 export default function Statistics(){

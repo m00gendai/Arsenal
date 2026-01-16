@@ -1,5 +1,5 @@
 import { Button, Dialog, IconButton, Modal, Portal, Text } from "react-native-paper";
-import { defaultModalBackdrop, defaultViewPadding } from "../configs";
+import { defaultModalBackdrop, defaultViewPadding } from "../configs/configs";
 import { Dimensions, ScrollView, View } from "react-native";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { useState } from "react";

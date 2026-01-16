@@ -1,12 +1,12 @@
-import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "./interfaces";
-import { gunDataTemplate } from "./lib/DataTemplates/gunDataTemplate";
-import { validationErros } from "./lib//textTemplates";
-import { ammoDataTemplate } from "./lib/DataTemplates/ammoDataTemplate";
-import { requiredFieldsAmmo, requiredFieldsGun } from "./configs";
+import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "../lib/interfaces";
+import { gunDataTemplate } from "../lib/DataTemplates/gunDataTemplate";
+import { validationErros } from "../lib/textTemplates";
+import { ammoDataTemplate } from "../lib/DataTemplates/ammoDataTemplate";
+import { requiredFieldsAmmo, requiredFieldsGun } from "../configs/configs";
 import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
-import * as schema from "./db/schema"
+import * as schema from "../db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
 import { DisplayVariants, PreferredUnits } from "stores/usePreferenceStore";
 import { colord } from "colord";

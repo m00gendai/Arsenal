@@ -6,7 +6,7 @@ import { db } from "db/client"
 import { eq, asc } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { useEffect, useRef, useState } from "react"
-import { defaultViewPadding } from "configs"
+import { defaultViewPadding } from "configs/configs"
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 interface Props{

@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { CollectionType, ItemType } from "../interfaces"
+import { CollectionType, ItemType } from "../lib/interfaces"
 
 interface ItemStore {
     currentItem: ItemType | null

@@ -1,7 +1,7 @@
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { CollectionType } from "interfaces";
+import { CollectionType } from "lib/interfaces";
 
 export function useItemTags(type: CollectionType) {
     const { data: gunTags } = useLiveQuery(

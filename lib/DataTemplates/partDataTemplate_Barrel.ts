@@ -1,5 +1,5 @@
-import { excludedKeysForDataTemplates } from "configs";
-import { PartType_Barrel } from "interfaces"
+import { excludedKeysForDataTemplates } from "configs/configs";
+import { PartType_Barrel } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks } from "./translations";
 

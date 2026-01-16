@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
-import { SortingTypesPart_Barrel } from "../interfaces";
+import { SortingTypesPart_Barrel } from "../../lib/interfaces";
 
 export default function sortPartCollection_Barrel(direction: "asc" | "desc", sortBy:SortingTypesPart_Barrel){
     const ascending = direction === "asc"

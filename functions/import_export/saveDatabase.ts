@@ -1,12 +1,12 @@
-import { db, expo } from "../db/client";
-import { DB_NAME, ZIP_NAME } from "../configs_DB";
+import { db, expo } from "../../db/client";
+import { DB_NAME, ZIP_NAME } from "../../configs/configs_DB";
 import { Directory, Paths } from 'expo-file-system/next';
 import { FileSystem } from 'react-native-file-access';
 import { zip } from 'react-native-zip-archive'
-import * as schema from "../db/schema";
-import { GunType, ItemType } from "../interfaces";
+import * as schema from "../../db/schema";
+import { GunType, ItemType } from "../../lib/interfaces";
 import * as ExpoFS from "expo-file-system";
-import { collectionExportDirectories } from "../configs";
+import { collectionExportDirectories } from "../../configs/configs";
 import * as Sharing from 'expo-sharing';
 import { Platform } from "react-native";
 

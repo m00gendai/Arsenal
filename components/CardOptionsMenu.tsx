@@ -1,10 +1,10 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { defaultViewPadding, defaultCardOptionsMenuFontSize, defaultCardOptionsMenuIconSize } from "configs";
+import { defaultViewPadding, defaultCardOptionsMenuFontSize, defaultCardOptionsMenuIconSize } from "configs/configs";
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';
 import { determineCardOptions } from "functions/determinators";
-import { ItemType, StackParamList } from "interfaces";
+import { ItemType, StackParamList } from "lib/interfaces";
 import { gunDeleteAlert, longPressActions, longPressActionsSuccessMessages, sorting } from "lib/textTemplates";
 import { useState } from "react";
 import { Pressable, View } from "react-native";

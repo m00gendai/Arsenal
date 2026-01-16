@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultViewPadding } from "configs";
-import { PREFERENCES } from "configs_DB";
+import { defaultViewPadding } from "configs/configs";
+import { PREFERENCES } from "configs/configs_DB";
 import { displaySettingsLabels, loginGuardAlert, preferenceTitles, resizeImageAlert } from "lib/textTemplates";
 import { View } from "react-native";
 import { Dialog, Divider, List, Switch, Text, Button } from "react-native-paper";

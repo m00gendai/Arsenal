@@ -1,4 +1,4 @@
-import { Languages } from "interfaces";
+import { Languages } from "lib/interfaces";
 
 interface Currency{
     isoCode: string

@@ -1,5 +1,5 @@
-import { defaultViewPadding, languageSelection } from "configs";
-import { Languages } from "interfaces";
+import { defaultViewPadding, languageSelection } from "configs/configs";
+import { Languages } from "lib/interfaces";
 import { SimpleTranslation } from "lib/textTemplates";
 import { currencies } from "lib/unitData";
 import { useState } from "react";

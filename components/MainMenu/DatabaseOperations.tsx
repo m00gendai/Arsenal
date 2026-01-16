@@ -1,10 +1,10 @@
 import CSVImportModal from "components/CSVImportModal";
-import { collectionExportDirectories, defaultViewPadding } from "configs";
+import { collectionExportDirectories, defaultViewPadding } from "configs/configs";
 import { db } from "db/client";
 import * as schema from "db/schema"
 import { count } from "drizzle-orm";
-import saveDatabase from "functions/saveDatabase";
-import { CollectionType, DBOperations } from "interfaces";
+import saveDatabase from "functions/import_export/saveDatabase";
+import { CollectionType, DBOperations } from "lib/interfaces";
 import { mainMenu_DatabaseOperations } from "lib/Text/mainMenu_DatabaseOperations";
 import { databaseExportAlert, databaseImportAlert, databaseOperations, importExportSelectionLabel, preferenceTitles, tabBarLabels, toastMessages } from "lib/textTemplates";
 import { useState } from "react";
@@ -14,14 +14,14 @@ import { useImportExportStore } from "stores/useImportExportStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useTextStore } from "stores/useTextStore";
 import { useViewStore } from "stores/useViewStore";
-import { alarm } from "utils";
+import { alarm } from "functions/utils";
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import Papa from 'papaparse';
-import exportArsenalCSV from "functions/exportArsenalCSV";
-import importDatabase from "functions/importDatabase";
-import importArsenalCSV from "functions/importArsenalCSV";
-import { importLegacyGunDatabase } from "functions/importLegacyGunDatabase";
+import exportArsenalCSV from "functions/import_export/exportArsenalCSV";
+import importDatabase from "functions/import_export/importDatabase";
+import importArsenalCSV from "functions/import_export/importArsenalCSV";
+import { importLegacyGunDatabase } from "functions/import_export/importLegacyGunDatabase";
 import { Dropdown } from "react-native-paper-dropdown";
 import { determineTabBarLabel } from "functions/determinators";
 

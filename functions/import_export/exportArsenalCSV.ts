@@ -1,6 +1,6 @@
-import { CollectionType, DBOperations } from "../interfaces"
-import * as schema from "../db/schema"
-import { db } from "../db/client"
+import { CollectionType, DBOperations } from "../../lib/interfaces"
+import * as schema from "../../db/schema"
+import { db } from "../../db/client"
 import Papa from 'papaparse';
 import { flatten } from 'flat'
 import * as FileSystem from "expo-file-system";

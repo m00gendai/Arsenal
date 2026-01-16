@@ -13,6 +13,76 @@ Enter or paste your release notes for fr-FR here
 Enter or paste your release notes for it-IT here
 </it-IT>
 
+v3.1.0
+<de-DE>
+Neu:
+- Sammlung: Literatur
+- Neue Felder für Munition, Licht&Laser, Optiken und Verschiedenes
+- Onboarding (setzen von präferierter Währung und Gewichts- und Längenmassen)
+- Hinweis-System
+- Autocomplete
+- Quick Actions: Batteriewechsel und Reinigung
+Verbessert:
+- Bilderreihenfolge veränderbar
+- Bilder drehbar
+- Reinigungsintervall überarbeitet
+- Zuletzt gewählte Kaliber in Kaliberauswahl aufgeführt
+Behoben:
+- CSV Importe/Exporte nur für Waffen und Munition
+- QuickShot hat angebautes Zubehör nicht berücksichtigt
+</de-DE>
+<en-US>
+New:
+- Collection: Literature
+- New fields for Ammunition, Lights&Lasers, Optics, and Miscellaneous
+- Onboarding (setting preferred currency and weight and length units)
+- In-app hint system
+- Autocomplete
+- Quick Actions: Battery replacement and cleaning
+Improved:
+- Image order can be changed
+- Images can be rotated
+- Cleaning interval revised
+- Recently selected calibers are now shown in the caliber selection
+Fixed:
+- CSV imports/exports limited to firearms and ammunition
+- QuickShot now correctly considers attached accessories
+</en-US>
+<fr-FR>
+Nouveautés:
+- Collection: Littérature
+- Nouveaux champs pour les munitions, lumière&laser, optiques et divers
+- Onboarding (définition de la devise préférée et des unités de poids et de longueur)
+- Système d’astuces intégré à l’application
+- Saisie semi-automatique
+- Actions rapides: remplacement de batterie et nettoyage
+Améliorations:
+- L’ordre des images peut être modifié
+- Rotation des images possible
+- Intervalle de nettoyage révisé
+- Les calibres récemment sélectionnés sont désormais affichés dans la sélection des calibres
+Corrections:
+- Import/export CSV limité aux armes et aux munitions
+- QuickShot prend désormais correctement en compte les accessoires montés
+</fr-FR>
+<it-IT>
+Novità:
+- Collezione: Letteratura
+- Nuovi campi per munizioni, luce&laser, ottiche e varie
+- Onboarding (impostazione della valuta preferita e delle unità di peso e lunghezza)
+- Sistema di suggerimenti integrato nell’app
+- Completamento automatico
+- Azioni rapide: sostituzione della batteria e pulizia
+Miglioramenti:
+- L’ordine delle immagini può essere modificato
+- Le immagini possono essere ruotate
+- Intervallo di pulizia rivisto
+- I calibri selezionati di recente sono ora mostrati nella selezione dei calibri
+Correzioni:
+- Importazione/esportazione CSV limitata ad armi e munizioni
+- QuickShot ora tiene correttamente conto degli accessori montati
+</it-IT>
+
 V2.1.0
 <de-DE>
 Neu:

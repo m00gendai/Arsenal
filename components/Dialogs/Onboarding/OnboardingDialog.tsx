@@ -1,5 +1,5 @@
-import { defaultModalBackdrop, defaultViewPadding, languageSelection } from "configs";
-import { Languages } from "interfaces";
+import { defaultModalBackdrop, defaultViewPadding, languageSelection } from "configs/configs";
+import { Languages } from "lib/interfaces";
 import { SimpleTranslation } from "lib/textTemplates";
 import { useState } from "react";
 import { Dimensions, View } from "react-native";
@@ -9,7 +9,7 @@ import Onboarding_LanguageSelect from "./Onboarding_LanguageSelect";
 import Onboarding_CurrencySelect from "./Onboarding_CurrencySelect";
 import Onboarding_WeightSelect from "./Onboarding_UnitSelect";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PREFERENCES } from "configs_DB";
+import { PREFERENCES } from "configs/configs_DB";
 import { useViewStore } from "stores/useViewStore";
 import { ScrollView } from "react-native-gesture-handler";
 

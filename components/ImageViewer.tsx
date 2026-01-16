@@ -1,7 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native';
 import { GestureDetector, Gesture, GestureHandlerRootView, PinchGesture, PanGesture, SimultaneousGesture } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { defaultViewPadding } from '../configs';
+import { defaultViewPadding } from '../configs/configs';
 import * as FileSystem from 'expo-file-system';
 
 interface Props{

@@ -6,12 +6,12 @@ import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
 import { cleanIntervals, gunDeleteAlert, iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
-import { printSingleItem } from 'functions/printToPDF';
-import { ItemType } from 'interfaces';
-import { alarm, checkDate, generateGradient } from 'utils';
+import { printSingleItem } from 'functions/printers/printToPDF';
+import { ItemType } from 'lib/interfaces';
+import { alarm, checkDate, generateGradient } from 'functions/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
-import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs';
+import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs/configs';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as schema from "db/schema"

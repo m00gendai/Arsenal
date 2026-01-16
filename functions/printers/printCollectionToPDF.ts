@@ -2,10 +2,10 @@ import { generatePDF } from 'react-native-html-to-pdf';
 import * as FileSystem from "expo-file-system";
 import { Platform } from 'react-native';
 import { shareAsync } from 'expo-sharing';
-import { CommonStyles } from 'interfaces';
+import { CommonStyles } from 'lib/interfaces';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { dateLocales } from 'configs';
+import { dateLocales } from 'configs/configs';
 import { pdfFooter, pdfTitle } from 'lib/textTemplates';
 import { gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
 

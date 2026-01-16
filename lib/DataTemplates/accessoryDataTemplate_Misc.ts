@@ -1,5 +1,5 @@
-import { excludedKeysForDataTemplates } from "configs";
-import { AccessoryType_Misc } from "interfaces"
+import { excludedKeysForDataTemplates } from "configs/configs";
+import { AccessoryType_Misc } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
 

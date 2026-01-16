@@ -1,6 +1,6 @@
-import * as schema from "../db/schema"
+import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
-import { SortingTypesLiterature_Book } from "../interfaces";
+import { SortingTypesLiterature_Book } from "../../lib/interfaces";
 
 export default function sortLiteratureCollection_Book(direction: "asc" | "desc", sortBy:SortingTypesLiterature_Book){
     const ascending = direction === "asc"
