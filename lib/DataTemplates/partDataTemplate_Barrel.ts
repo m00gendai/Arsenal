@@ -38,6 +38,7 @@ export const emptyBarrelObject:PartType_Barrel= {
     cleanInterval_ShotCount: null,
     cleanIntervalDisplay: null,
     currentlyMountedOn: null,
+    customInventoryDesignation: null,
 }
 
 export const partDataTemplate_Barrel:TemplateItem[] = Object.keys(emptyBarrelObject)

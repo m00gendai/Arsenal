@@ -27,6 +27,7 @@ export const emptyMiscAccessoryObject:AccessoryType_Misc= {
     paidPrice: null,
     marketValue: null,
     currentlyMountedOn: null,
+    customInventoryDesignation: null
 }
 
 export const accessoryDataTemplate_Misc:TemplateItem[] = Object.keys(emptyMiscAccessoryObject)

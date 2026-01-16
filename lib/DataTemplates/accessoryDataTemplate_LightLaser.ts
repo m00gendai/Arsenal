@@ -34,7 +34,8 @@ export const emptyLightLaserObject:AccessoryType_LightLaser = {
     paidPrice: null,
     marketValue: null,
     currentlyMountedOn: null,
-    batteryLastChangedAt_unix: null
+    batteryLastChangedAt_unix: null,
+    customInventoryDesignation: null
 }
 
 export const accessoryDataTemplate_LightLaser:TemplateItem[] = Object.keys(emptyLightLaserObject)

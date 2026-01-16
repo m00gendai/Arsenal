@@ -43,6 +43,7 @@ export const emptyGunObject:GunType= {
     decepticon: false,
     blooptoob: false,
     grandfather: false,
+    customInventoryDesignation: null,
 }
 
 export const checkBoxes: DataTemplateTranslation[] = Object.entries(dataTemplate_TranslationCheckboxes).map(checkbox =>{

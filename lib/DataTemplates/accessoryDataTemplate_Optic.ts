@@ -42,7 +42,8 @@ export const emptyOpticObject:AccessoryType_Optic= {
     cleanInterval_ShotCount: null,
     cleanIntervalDisplay: null,
     currentlyMountedOn: null,
-    batteryLastChangedAt_unix: null
+    batteryLastChangedAt_unix: null,
+    customInventoryDesignation: null
 }
 
 export const accessoryDataTemplate_Optic:TemplateItem[] = Object.keys(emptyOpticObject)

@@ -40,6 +40,7 @@ export const emptyMagazineObject:AccessoryType_Magazine= {
     cleanIntervalDisplay: null,
     material: null,
     currentlyMountedOn: null,
+    customInventoryDesignation: null
 }
 
 export const accessoryDataTemplate_Magazine:TemplateItem[] = Object.keys(emptyMagazineObject)

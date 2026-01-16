@@ -41,7 +41,8 @@ export const emptyScopeObject:AccessoryType_Scope= {
     cleanInterval_ShotCount: null,
     cleanIntervalDisplay: null,
     currentlyMountedOn: null,
-    batteryLastChangedAt_unix: null
+    batteryLastChangedAt_unix: null,
+    customInventoryDesignation: null
 }
 
 

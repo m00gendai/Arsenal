@@ -36,6 +36,7 @@ export const emptyConversionKitObject:PartType_ConversionKit= {
     cleanInterval_ShotCount: null,
     cleanIntervalDisplay: null,
     currentlyMountedOn: null,
+    customInventoryDesignation: null,
 }
 
 export const partDataTemplate_ConversionKit:TemplateItem[] = Object.keys(emptyConversionKitObject)

@@ -39,6 +39,7 @@ export const gunCollection = sqliteTable('guns', {
     decepticon: integer("decepticon", {mode: "boolean"}).default(false),
     blooptoob: integer("blooptoob", {mode: "boolean"}).default(false),
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const gunTags = sqliteTable("gunTags", {
@@ -67,6 +68,7 @@ export const legacyAmmoCollection = sqliteTable("ammo", {
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const ammoCollection = sqliteTable("ammo", {
@@ -88,6 +90,7 @@ export const ammoCollection = sqliteTable("ammo", {
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const ammoTags = sqliteTable("ammoTags", {
@@ -169,6 +172,7 @@ export const partCollection_ConversionKit = sqliteTable("parts_conversionKit", {
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const part_ConversionKitTags = sqliteTable("parts_conversionKitTags", {
@@ -208,6 +212,7 @@ export const partCollection_Barrel = sqliteTable("parts_barrel", {
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const part_BarrelTags = sqliteTable("parts_barrelTags", {
@@ -247,7 +252,8 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
@@ -291,7 +297,8 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
@@ -334,7 +341,8 @@ export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_ScopeTags = sqliteTable("accessories_scopeTags", {
@@ -370,7 +378,8 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_LightLaserTags = sqliteTable("accessories_lightLaserTags", {
@@ -411,7 +420,8 @@ export const accessoryCollection_Magazine = sqliteTable("accessories_magazine", 
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_MagazineTags = sqliteTable("accessories_magazineTags", {
@@ -439,7 +449,8 @@ export const accessoryCollection_Misc = sqliteTable("accessories_misc", {
     mainColor: text("mainColor"),
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
-    serial: text("serial")
+    serial: text("serial"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
@@ -473,6 +484,7 @@ export const literatureCollection_Book = sqliteTable("literature_book", {
     boughtFrom: text("boughtFrom"),
     marketValue: text("marketValue"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const literature_BookTags = sqliteTable("literature_bookTags", {

@@ -25,6 +25,7 @@ export interface GunTypeDetails{
   cleanInterval_CustomTime: null | string
   cleanInterval_ShotCount: null | string
   cleanIntervalDisplay: null | string
+  customInventoryDesignation: null | string
 }
 
 export interface GunTypeStatus{
@@ -55,6 +56,7 @@ export interface LegacyAmmoType{
   tags: string[]
   images: string[]
   remarks: string
+  customInventoryDesignation: null | string
 }
 
 export interface AmmoType{
@@ -74,6 +76,7 @@ export interface AmmoType{
   tags: string[]
   images: string[]
   remarks: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_Silencer{
@@ -106,6 +109,7 @@ export interface AccessoryType_Silencer{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_Optic{
@@ -142,6 +146,7 @@ export interface AccessoryType_Optic{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_Scope{
@@ -177,6 +182,7 @@ export interface AccessoryType_Scope{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_LightLaser{
@@ -205,6 +211,7 @@ export interface AccessoryType_LightLaser{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_Magazine{
@@ -238,6 +245,7 @@ export interface AccessoryType_Magazine{
   remarks: string
   currentlyMountedOn: string
   currentStock: string
+  customInventoryDesignation: null | string
 }
 
 export interface AccessoryType_Misc{
@@ -258,6 +266,7 @@ export interface AccessoryType_Misc{
   remarks: string
   currentlyMountedOn: string
   serial: string
+  customInventoryDesignation: null | string
 }
 
 export interface PartType_ConversionKit{
@@ -287,6 +296,7 @@ export interface PartType_ConversionKit{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface PartType_Barrel{
@@ -318,6 +328,7 @@ export interface PartType_Barrel{
   mainColor: string
   remarks: string
   currentlyMountedOn: string
+  customInventoryDesignation: null | string
 }
 
 export interface LiteratureType_Book{
@@ -343,6 +354,7 @@ export interface LiteratureType_Book{
     boughtFrom: string
     marketValue: string
     remarks: string
+    customInventoryDesignation: null | string
 }
 
 export type ItemType =  | GunType 

@@ -25,6 +25,7 @@ export const emptyAmmoObject:AmmoType = {
     criticalStock: null,
     tags: [],
     images: [],
+    customInventoryDesignation: null,
     remarks: null,
 }
 

@@ -60,6 +60,7 @@ interface DataTemplateTranslations {
     bulletType: DataTemplateTranslation
     bulletWeight: DataTemplateTranslation
     footprint: DataTemplateTranslation
+    customInventoryDesignation: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -535,6 +536,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "Impronta",
         ch: "Impronta",
     },
+    "customInventoryDesignation": {
+        name: "customInventoryDesignation",
+        de: "Eigene Inventarbezeichnung",
+        en: "Custom Inventory Identifier",
+        fr: "Désignation d’inventaire personnalisée",
+        it: "Designazione inventariale personalizzata",
+        ch: "Designaziun d’inventari persunalisada"
+    }
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {
