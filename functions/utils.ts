@@ -1,12 +1,9 @@
-import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun } from "../lib/interfaces";
-import { gunDataTemplate } from "../lib/DataTemplates/gunDataTemplate";
+import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes } from "../lib/interfaces";
 import { validationErros } from "../lib/textTemplates";
-import { ammoDataTemplate } from "../lib/DataTemplates/ammoDataTemplate";
-import { requiredFieldsAmmo, requiredFieldsGun } from "../configs/configs";
+import { dateTimeOptions, unitFields_Length, unitFields_Weight } from "../configs/configs";
 import * as ImagePicker from "expo-image-picker"
 import { ImageResult, manipulateAsync } from 'expo-image-manipulator';
 import { Alert, Image } from "react-native"
-import * as schema from "../db/schema"
 import { determineDataTemplate, determineRequiredFields } from "functions/determinators";
 import { DisplayVariants, PreferredUnits } from "stores/usePreferenceStore";
 import { colord } from "colord";
@@ -257,4 +254,38 @@ export function convertLengthUnitsToPreferredUnit(preferredUnits: PreferredUnits
     const conversion = base[0].base
     const lengthInPreferredUnit = Number(inputLength)/conversion
     return lengthInPreferredUnit.toFixed(2)
+}
+
+export function checkConversionFields(item:ItemType, name: string, preferredUnits:PreferredUnits){
+    if(unitFields_Weight.includes(name)){
+        return `${convertWeightUnitsToPreferredUnit(preferredUnits, name, item[name])}${preferredUnits[`${name}Unit`]}`
+    }
+    if(unitFields_Length.includes(name)){
+        return `${convertLengthUnitsToPreferredUnit(preferredUnits, name, item[name])}${preferredUnits[`${name}Unit`]}`
+    }
+    return item[name]
+}
+
+export function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName?:string}[], shortCaliber: boolean){
+    if(!shortCaliber){
+        return calibers
+    }
+    if(!Array.isArray(calibers)){
+        return []
+    }
+    
+    const outputArray = calibers.map(item => {
+        // Find an object where displayName matches the item
+        const match = displayNames.find(obj => obj.name === item)
+        // If a match is found, return the displayName, else return the original item
+        return match ? match.displayName : item;
+    })
+    return outputArray
+}  
+
+export function parseDate(date: string){
+  if(date === null){
+    return ""
+  }
+  return new Date(date).toLocaleDateString("de-CH", dateTimeOptions)
 }
