@@ -936,7 +936,7 @@ export const databaseOperations:DatabaseOperation = {
     }
 }
 
-export const pdfTitle:SimpleTranslation = {
+export const pdfTitle_GunCollection:SimpleTranslation = {
     de: "Waffenverzeichnis",
     en: "List of weapons",
     fr: "Liste des armes",
@@ -944,7 +944,7 @@ export const pdfTitle:SimpleTranslation = {
     ch: "Register da las armas",
 }
 
-export const pdfTitleAmmo:SimpleTranslation = {
+export const pdfTitle_AmmoCollection:SimpleTranslation = {
     de: "Munitionsverzeichnis",
     en: "List of ammunition",
     fr: "Liste des munitions",
@@ -952,7 +952,7 @@ export const pdfTitleAmmo:SimpleTranslation = {
     ch: "Register da muniziun",
 }
 
-export const pdfTitleArt5:SimpleTranslation = {
+export const pdfTitle_GunCollectionArt5:SimpleTranslation = {
     de: "Waffenverzeichnis gemäss Waffengesetz Artikel 5",
     en: "List of weapons according to Weapons Act article 5",
     fr: "Liste des armes conformément à la loi sur les armes, article 5",

@@ -4,7 +4,7 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
 import { ListPrinter } from 'lib/interfaces';
 import { checkBoxes, gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
-import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'lib/textTemplates';
 import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { Platform } from 'react-native';
 import { db } from 'db/client';
@@ -92,6 +92,17 @@ function getHeaderFooterLength(printer:ListPrinter){
   }
 }
 
+function getTitle(printer:ListPrinter){
+  switch(printer){
+    case "gunCollection":
+      return pdfTitle_GunCollection
+    case "gunCollectionArt5":
+      return pdfTitle_GunCollectionArt5
+    case "gunCollectionHybrid":
+      return pdfTitle_GunCollection
+  }
+}
+
 export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[], printer: ListPrinter, preferredUnits: PreferredUnits){
 
   const gunCollection = db.select().from(schema.gunCollection).all()
@@ -107,8 +118,8 @@ export async function printGunCollection(language: string, shortCaliber: boolean
         <div class="bodyContent">
           <table>
             <thead>
-              <tr colspan=${getHeaderFooterLength(printer)}>
-                <th>${pdfTitle[language]}</th>
+              <tr>
+                <th colspan=${getHeaderFooterLength(printer)}>${getTitle(printer)[language]}</th>
               </tr>
               <tr>
                 ${gunDataTemplate.map(data=>{return excludedKeys.includes(data.name) ? "" : `<th>${data[language]}</th>`}).join("")}${checkForCheckboxes(printer) ? checkBoxes.map((box, index) => `<th>${index+1}</th>`).join("") : ""}

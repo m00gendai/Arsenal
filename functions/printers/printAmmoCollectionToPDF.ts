@@ -3,7 +3,7 @@ import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
 import { ListPrinter } from 'lib/interfaces';
-import { pdfFooter, pdfTitle } from 'lib/textTemplates';
+import { pdfFooter, pdfTitle_AmmoCollection } from 'lib/textTemplates';
 import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { ammoDataTemplate } from 'lib/DataTemplates/ammoDataTemplate';
 import { Platform } from 'react-native';
@@ -53,8 +53,8 @@ export async function printAmmoCollection(language: string, shortCaliber: boolea
         <div class="bodyContent">
           <table>
             <thead>
-              <tr colspan=${getHeaderFooterLength(printer)}>
-                <th>${pdfTitle[language]}</th>
+              <tr>
+                <th colspan=${getHeaderFooterLength(printer)}>${pdfTitle_AmmoCollection[language]}</th>
               </tr>
               <tr>
                 ${ammoDataTemplate.map(data=>{return excludedKeys.includes(data.name) ? null : `<th>${data[language]}</th>`}).join("")}
