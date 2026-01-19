@@ -631,3 +631,5 @@ export interface PartMount{
     parentPartId: string
     parentPartType: CollectionType
 }
+
+export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection"

@@ -40,6 +40,7 @@ interface PreferenceTitle{
     gunList: SimpleTranslation
     printAllGuns: SimpleTranslation
     printArt5: SimpleTranslation
+    printGunsHybrid: SimpleTranslation
     printGallery: SimpleTranslation
     ammoList: SimpleTranslation
     printAllAmmo: SimpleTranslation
@@ -832,6 +833,13 @@ export const preferenceTitles:PreferenceTitle = {
         it: "Elenco delle armi secondo la LArm Art. 5 come tabella",
         ch: "Register da las armas tenor la LArm Art. 5 sco tabella",
     },
+    printGunsHybrid: {
+        de: "Komplettes Waffenverzeichnis als Tabelle mit WG Art. 5 Eigenschaften",
+        en: "Complete gun list as a table with WA Art. 5 properties",
+        fr: "Liste complète des armes sous forme de tableau avec les caractéristiques de l’art. 5 LArm",
+        it: "Elenco completo delle armi come tabella con le caratteristiche dell’art. 5 LArm",
+        ch: "Register cumplet da las armas sco tabella cun las caracteristicas da l’art. 5 LArm",
+    },
     printGallery:{
         de: "Galerie",
         en: "Gallery",
@@ -953,11 +961,11 @@ export const pdfTitleArt5:SimpleTranslation = {
 }
 
 export const pdfFooter:SimpleTranslation = {
-    de: "Generiert mit der Arsenal Mobile App",
-    en: "Generated using the Arsenal Mobile App",
-    fr: "Généré par l'application mobile d'Arsenal",
-    it: "Generato utilizzando l'app mobile Arsenal",
-    ch: "Generà cun l'applicaziun mobila per Arsenal",
+    de: "Generiert mit der Arsenal Mobile App, Version ",
+    en: "Generated using the Arsenal Mobile App, Version ",
+    fr: "Généré par l'application mobile d'Arsenal, Version",
+    it: "Generato utilizzando l'app mobile Arsenal, Versione ",
+    ch: "Generà cun l'applicaziun mobila per Arsenal, Versiun ",
 }
 
 export const tabBarLabels: TabBarLabels = {
