@@ -65,7 +65,7 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     day: 'numeric',
     hour: "2-digit",
     minute: "2-digit"
-};
+}
 
 export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval"]
 
