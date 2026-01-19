@@ -6,7 +6,6 @@ import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
 import { cleanIntervals, gunDeleteAlert, iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
-import { printSingleItem } from 'functions/printers/printToPDF';
 import { ItemType } from 'lib/interfaces';
 import { alarm, checkDate, generateGradient } from 'functions/utils';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -24,6 +23,7 @@ import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplat
 import { StackActions } from '@react-navigation/native';
 import Item_Accessories from './Item_accessories';
 import Item_details from './Item_details';
+import { printSingleItem } from 'functions/printers/printSingleItem';
 
 export default function Item({navigation}){
 
