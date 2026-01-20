@@ -50,6 +50,14 @@ function checkDates(item: ItemType){
       }
     }
   })
+  
+  Object.keys(parsedItem).forEach(key => {
+    if (parsedItem[key] === key) {
+      console.info(`Sanitizing ghost default value for field: ${key}`)
+      parsedItem[key] = null
+    }
+  })
+
   return parsedItem
 }
 
