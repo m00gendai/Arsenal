@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GunType, AmmoType, ItemType } from '../lib/interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { defaultViewPadding } from '../configs/configs';
+import { cleanIntervalOptions, defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { cleanIntervals, modalTexts, shotLabel } from '../lib/textTemplates';
 import { Dropdown } from 'react-native-paper-dropdown';
@@ -60,8 +60,6 @@ export default function NewText({data, itemData, setItemData, label}: Props){
 
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
-
-    const cleanIntervalOptions:string[] = ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"] 
     
     function setCleanIntervalDisplayValue(){
         const presetString = cleanIntervals[preset].name
