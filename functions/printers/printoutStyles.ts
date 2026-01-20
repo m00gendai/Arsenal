@@ -35,6 +35,8 @@ export const tableStyle: string = `
         position: relative;
         padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
         width: 100%;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
     tr:nth-child(even){
         background-color: #f5f5f5;
