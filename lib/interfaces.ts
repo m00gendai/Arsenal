@@ -49,6 +49,8 @@ export interface LegacyAmmoType{
   originCountry: string | null
   createdAt: number,
   lastModifiedAt: number,
+  bulletType: string,
+  bulletWeight: string,
   headstamp: string | null
   currentStock: string
   lastTopUpAt_unix: number | null
