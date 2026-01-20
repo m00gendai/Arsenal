@@ -3,7 +3,7 @@ import { Checkbox, Text, IconButton } from 'react-native-paper';
 import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, getShortCaliberName } from "functions/utils";
@@ -15,14 +15,26 @@ export default function Item_details(){
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
 
     function getCleanIntervalDisplayValue(){
+        if("cleanIntervalDisplay" in currentItem && !currentItem?.cleanIntervalDisplay){
+            return ""
+        }
         if("cleanIntervalDisplay" in currentItem){
             const [presetString, shotSelectString] = currentItem.cleanIntervalDisplay.split("/").map(s => s.trim())
-            return(
-                presetString && shotSelectString ? 
-                    `${cleanIntervals[presetString][language]} / ${shotSelectString} ${shotLabel[language]}`
-                    :  
-                    `${cleanIntervals[presetString][language]}` || `${shotSelectString} ${shotLabel[language]}` || ""
-            )
+            
+            if(!cleanIntervalOptions.includes(presetString)){
+                return ""
+            }
+
+            if(presetString && shotSelectString){
+                return `${cleanIntervals[presetString][language]} / ${shotSelectString} ${shotLabel[language]}`
+            }
+            
+            if(presetString){
+                return `${cleanIntervals[presetString][language]}` 
+            }
+            if(shotSelectString){
+                return `${shotSelectString} ${shotLabel[language]}`
+            }
         }
         return ""
     }
