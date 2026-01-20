@@ -3,7 +3,7 @@ import { printGunCollection } from "functions/printers/printGunCollectionToPDF";
 import { iosWarningText, preferenceTitles } from "lib/textTemplates";
 import { useState } from "react";
 import { Platform, View } from "react-native";
-import { Button, Dialog, Divider, IconButton, List, Text } from "react-native-paper";
+import { Button, Dialog, Divider, IconButton, List, Portal, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { alarm } from "functions/utils";
 import { ListPrinter } from "lib/interfaces";
@@ -80,19 +80,21 @@ export default function Lists(){
                     </View>
                 </View>
             </List.Accordion>
-        
-            <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
-                <Dialog.Title>
-                    {iosWarningText.title[language]}
-                </Dialog.Title>
-                <Dialog.Content>
-                    <Text>{iosWarningText.text[language]}</Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button onPress={()=>handlePrints(printerSrc)} icon="heart" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{iosWarningText.ok[language]}</Button>
-                    <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
-                </Dialog.Actions>
-            </Dialog>
+            
+            <Portal>
+                <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
+                    <Dialog.Title>
+                        {iosWarningText.title[language]}
+                    </Dialog.Title>
+                    <Dialog.Content>
+                        <Text>{iosWarningText.text[language]}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={()=>handlePrints(printerSrc)} icon="heart" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{iosWarningText.ok[language]}</Button>
+                        <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
         
         </View>
     )
