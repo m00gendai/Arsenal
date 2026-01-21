@@ -35,8 +35,9 @@ export const tableStyle: string = `
         position: relative;
         padding: ${pdfCommonStyles.tableRowVerticalPadding} 0;
         width: 100%;
-        page-break-inside: avoid;
-        break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: auto;
     }
     tr:nth-child(even){
         background-color: #f5f5f5;
@@ -70,5 +71,22 @@ export const tableStyle: string = `
     }
     .hidden{
         color: transparent;
+    }
+    @media print {
+        * {
+            -webkit-print-color-adjust: exact !important;
+        }
+        
+        tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        thead {
+            display: table-header-group !important;
+        }
+        
+        tfoot {
+            display: table-footer-group !important;
+        }
     }
 `
