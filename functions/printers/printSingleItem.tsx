@@ -75,14 +75,26 @@ export async function printSingleItem(item:ItemType, collection: CollectionType,
                                 </tr>`
                             }).join("")}
                             <tr>
-                            <td colspan="2"><strong>${gunRemarks[language]}</td>
+                                <td colspan="2">
+                                    <strong>
+                                        ${gunRemarks[language]}
+                                    </strong>
+                                </td>
                             </tr>
                             <tr>
-                            <td colspan="2">${item.remarks}</td>
+                                <td colspan="2">
+                                    ${item.remarks ? item.remarks : ""}
+                                </td>
                             </tr>
 
                         </tbody>
-                        <tfoot><tr><td colspan="2">${getTitle(item)}: ${pdfFooter[language].replace("{{{A}}}", Application.applicationName).replace("{{{B}}}", Platform.OS)} ${Application.nativeApplicationVersion}, ${generatedDate}</td></tr></tfoot>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2">
+                                    ${getTitle(item)}: ${pdfFooter[language].replace("{{{A}}}", Application.applicationName).replace("{{{B}}}", Platform.OS)} ${Application.nativeApplicationVersion}, ${generatedDate}
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </body>
