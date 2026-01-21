@@ -67,7 +67,7 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     minute: "2-digit"
 }
 
-export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval"]
+export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
