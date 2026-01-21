@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native"
+import { Keyboard, Platform, Pressable, View } from "react-native"
 import { Portal, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
@@ -24,6 +24,7 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
 
     const [rerender, setRerender] = useState(0)
     const [visible, setVisible] = useState<boolean>(true)
+    const [keyboardHeight, setKeyboardHeight] = useState(0)
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -57,6 +58,24 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
         }
     }, [charCount, isFocus, autocompleteData])
 
+    useEffect(() => {
+        const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
+        const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
+
+        const keyboardWillShow = Keyboard.addListener(showEvent, (e) => {
+            setKeyboardHeight(e.endCoordinates.height)
+        })
+        
+        const keyboardWillHide = Keyboard.addListener(hideEvent, () => {
+            setKeyboardHeight(0)
+        })
+
+        return () => {
+            keyboardWillShow.remove()
+            keyboardWillHide.remove()
+        }
+    }, [])
+
     return(
         <Portal>
             {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
@@ -68,6 +87,10 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
                 handleComponent={null}   
                 enableDynamicSizing={false}
                 overDragResistanceFactor={1}
+                bottomInset={Platform.OS === 'ios' ? keyboardHeight : 0}
+                style={{
+                    marginBottom: Platform.OS === 'ios' ? keyboardHeight : 0
+                }}
             >
                 <View 
                     style={{
