@@ -1,6 +1,6 @@
 import { CollectionType, ItemType } from "lib/interfaces";
 import * as FileSystem from 'expo-file-system';
-import { dateLocales, datePickerTriggerFields, dateTimeOptions, legacyDatePickerTriggerFields, pdfCommonStyles, pdfDateOptions, pdfExcludedKeys } from "configs/configs";
+import { dateLocales, datePickerTriggerFields, legacyDatePickerTriggerFields, pdfCommonStyles, pdfDateOptions, pdfExcludedKeys } from "configs/configs";
 import { checkBoxes, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { determineDataTemplate } from "functions/determinators";
 import { newTags, pdfFooter } from "lib/textTemplates";
