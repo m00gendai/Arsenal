@@ -961,11 +961,11 @@ export const pdfTitle_GunCollectionArt5:SimpleTranslation = {
 }
 
 export const pdfFooter:SimpleTranslation = {
-    de: "Generiert mit der Arsenal Mobile App, Version ",
-    en: "Generated using the Arsenal Mobile App, Version ",
-    fr: "Généré par l'application mobile d'Arsenal, Version",
-    it: "Generato utilizzando l'app mobile Arsenal, Versione ",
-    ch: "Generà cun l'applicaziun mobila per Arsenal, Versiun ",
+    de: "Generiert mit der {{{A}}} Mobile App für {{{B}}}, Version",
+    en: "Generated using the {{{A}}} Mobile App for {{{B}}}, Version",
+    fr: "Généré par l'application mobile {{{A}}} pour {{{B}}}, Version",
+    it: "Generato utilizzando l'app mobile {{{A}}} per {{{B}}}, Versione",
+    ch: "Generà cun l'applicaziun mobila per {{{B}}} cun {{{A}}}, Versiun",
 }
 
 export const tabBarLabels: TabBarLabels = {
