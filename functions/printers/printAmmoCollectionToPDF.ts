@@ -92,7 +92,7 @@ export async function printAmmoCollection(language: string, shortCaliber: boolea
             <tfoot>
               <tr>
                 <td colspan=${getHeaderFooterLength(printer)}>
-                  ${pdfFooter[language]}${Application.nativeApplicationVersion}, ${generatedDate}
+                  ${pdfFooter[language].replace("{{{A}}}", Application.applicationName).replace("{{{B}}}", Platform.OS)} ${Application.nativeApplicationVersion}, ${generatedDate}
                 </td>
               </tr>
             </tfoot>
