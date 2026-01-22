@@ -856,11 +856,11 @@ export const preferenceTitles:PreferenceTitle = {
         ch: "Register da muniziun",
     },
     printAllAmmo: {
-        de: "Komplettes Verzeichnis als Tabelle",
-        en: "Complete list as a table",
-        fr: "Liste complète sous forme de tableau",
-        it: "Elenco completo come tabella",
-        ch: "Register cumplet sco tabella",
+        de: "Komplettes Munitionsverzeichnis als Tabelle",
+        en: "Complete list of ammunition as a table",
+        fr: "Liste complète des munitions sous forme de tableau",
+        it: "Elenco completo delle munizioni come tabella",
+        ch: "Register cumplet da muniziun sco tabella",
     },
     settings:{
         de: "Einstellungen",
