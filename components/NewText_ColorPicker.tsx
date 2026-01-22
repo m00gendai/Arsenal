@@ -1,10 +1,10 @@
 import { IconButton, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../interfaces';
+import { GunType, AmmoType, ItemType } from '../lib/interfaces';
 import { View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import ColorPicker, { Panel1, Swatches, Preview, HueSlider, InputWidget } from 'reanimated-color-picker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { defaultViewPadding } from '../configs';
+import { defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { modalTexts } from '../lib/textTemplates';
 import { GetColorName } from 'hex-color-to-color-name';

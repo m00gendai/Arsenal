@@ -1,10 +1,10 @@
 import { IconButton, TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { ItemType } from '../interfaces';
+import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { dateTimeOptions, defaultViewPadding } from '../configs';
+import { dateTimeOptions, defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { modalTexts } from '../lib/textTemplates';
 

@@ -1,11 +1,11 @@
 import { View } from "react-native"
 import { Text, Switch, Checkbox } from "react-native-paper"
 import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { defaultViewPadding } from "../configs";
+import { defaultViewPadding } from "../configs/configs";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import { eq } from 'drizzle-orm';
-import { CollectionType } from "interfaces";
+import { CollectionType } from "lib/interfaces";
 import { determineTagSchema } from "functions/determinators";
 
 interface Props{

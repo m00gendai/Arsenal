@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { AmmoType, CollectionType, DBOperations, GunType, ItemType } from "../interfaces"
+import { AmmoType, CollectionType, DBOperations, GunType, ItemType } from "../lib/interfaces"
 import { emptyAmmoObject } from "../lib/DataTemplates/ammoDataTemplate"
 import { emptyGunObject } from "../lib/DataTemplates/gunDataTemplate"
 

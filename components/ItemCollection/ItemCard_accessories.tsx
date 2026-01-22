@@ -1,12 +1,12 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, CollectionType, ItemType, StackParamList } from 'interfaces';
+import { AmmoType, CollectionType, ItemType, StackParamList } from 'lib/interfaces';
 import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs';
+import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs/configs';
 import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { checkDate } from 'utils';
+import { checkDate } from 'functions/utils';
 import * as FileSystem from 'expo-file-system';
 import { useItemStore } from 'stores/useItemStore';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
@@ -87,7 +87,7 @@ export default function ItemCard_accessories({ item }:Props){
                     width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
-                title={determineCardTitle(itemType, item)}
+                title={determineCardTitle(itemType, item, language)}
                 subtitle={determineCardSubtitle(itemType, item, language, caliberDisplayNameList)} 
                 titleVariant={displaySettings.accessoryView === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings.accessoryView === "compactList" ? "labelSmall" : "bodySmall"}

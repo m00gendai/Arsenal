@@ -43,6 +43,9 @@ interface ViewStore {
 
     developerSettingsVisible: boolean
     setDeveloperSettingsVisible: (status: boolean) => void
+
+    onboardingVisible: boolean
+    setOnboardingVisible: (status: boolean) => void
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -88,4 +91,7 @@ interface ViewStore {
 
     developerSettingsVisible: false,
     setDeveloperSettingsVisible: () => set((state) => ({developerSettingsVisible: !state.developerSettingsVisible})),
+
+    onboardingVisible: false,
+    setOnboardingVisible: (status: boolean) => set({ onboardingVisible: status })
   }))
