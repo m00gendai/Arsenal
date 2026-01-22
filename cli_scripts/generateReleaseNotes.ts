@@ -9,7 +9,7 @@ function generateReleaseNotes() {
   const text_fr = currentVersion.fr.text
   const text_it = currentVersion.it.text
 
-  let xml = `
+  const xml = `
   <de-DE>
   ${text_de}
   </de-DE>
