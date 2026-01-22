@@ -40,12 +40,19 @@ interface PreferenceTitle{
     gunList: SimpleTranslation
     printAllGuns: SimpleTranslation
     printArt5: SimpleTranslation
+    printGunsHybrid: SimpleTranslation
     printGallery: SimpleTranslation
     ammoList: SimpleTranslation
     printAllAmmo: SimpleTranslation
+    settings: SimpleTranslation
     generalSettings: SimpleTranslation
+    displaySettings: SimpleTranslation
+    preferredUnits: SimpleTranslation
     about: SimpleTranslation
     statistics: SimpleTranslation
+    editData: SimpleTranslation
+    editData_Autocomplete: SimpleTranslation
+    versionHistory: SimpleTranslation
 }
 
 interface DatabaseOperation{
@@ -122,12 +129,17 @@ interface TagModal{
 }
 
 interface GeneralSettingsLabels{
-    displayImagesInListViewGun: SimpleTranslation
-    displayImagesInListViewAmmo: SimpleTranslation
     resizeImages: SimpleTranslation
     loginGuard: SimpleTranslation
+    hintsDisplay: SimpleTranslation
+}
+
+interface DisplaySettingsLabels{
+    displayImagesInListViewGun: SimpleTranslation
+    displayImagesInListViewAmmo: SimpleTranslation
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
+    titleBelowImage: SimpleTranslation
 }
 
 interface ModalText{
@@ -146,17 +158,17 @@ interface ModalTextItems{
 ["-", "1 Tag", "7 Tage", "14 Tage", "1 Monat", "3 Monate", "6 Monate", "9 Monate", "1 Jahr", "5 Jahre", "10 Jahre"]
 
 interface CleanIntervals{
-    none: SimpleTranslation
-    day_1: SimpleTranslation
-    day_7: SimpleTranslation
-    day_14: SimpleTranslation
-    month_1: SimpleTranslation
-    month_3: SimpleTranslation
-    month_6: SimpleTranslation
-    month_9: SimpleTranslation
-    year_1: SimpleTranslation
-    year_5: SimpleTranslation
-    year_10: SimpleTranslation
+    none: {name: string} & SimpleTranslation
+    day_1: {name: string} & SimpleTranslation
+    day_7: {name: string} & SimpleTranslation
+    day_14: {name: string} & SimpleTranslation
+    month_1: {name: string} & SimpleTranslation
+    month_3: {name: string} & SimpleTranslation
+    month_6: {name: string} & SimpleTranslation
+    month_9: {name: string} & SimpleTranslation
+    year_1: {name: string} & SimpleTranslation
+    year_5: {name: string} & SimpleTranslation
+    year_10: {name: string} & SimpleTranslation
 }
 
 interface CaliberPickerStrings{
@@ -179,6 +191,13 @@ interface LongPressActions{
     goto: SimpleTranslation
     unmount: SimpleTranslation
     remount: SimpleTranslation
+    clean: SimpleTranslation
+    battery: SimpleTranslation
+}
+
+interface LongPressActionsSuccessMessages{
+    clean: SimpleTranslation
+    battery: SimpleTranslation
 }
 
 interface iosWarning{
@@ -195,6 +214,7 @@ interface ItemViewTabBarLabels{
 
 export const cleanIntervals:CleanIntervals = {
     none: {
+        name: "none",
         de: "-",
         en: "-",
         fr: "-",
@@ -202,6 +222,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "-",
     },
     day_1: {
+        name: "day_1",
         de: "1 Tag",
         en: "1 day",
         fr: "1 jour",
@@ -209,6 +230,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 di",
     },
     day_7: {
+        name: "day_7",
         de: "1 Woche",
         en: "1 week",
         fr: "1 semaine",
@@ -216,6 +238,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 emna",
     },
     day_14: {
+        name: "day_14",
         de: "2 Wochen",
         en: "2 weeks",
         fr: "2 semaines",
@@ -223,6 +246,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "2 emnas",
     },
     month_1:{
+        name: "month_1",
         de: "1 Monat",
         en: "1 month",
         fr: "1 mois",
@@ -230,6 +254,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 mais",
     },
     month_3: {
+        name: "month_3",
         de: "3 Monate",
         en: "3 months",
         fr: "3 mois",
@@ -237,6 +262,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "3 mais",
     },
     month_6: {
+        name: "month_6",
         de: "6 Monate",
         en: "6 months",
         fr: "6 mois",
@@ -244,6 +270,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "6 mais",
     },
     month_9: {
+        name: "month_9",
         de: "9 Monate",
         en: "9 months",
         fr: "9 mois",
@@ -251,6 +278,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "9 mais",
     },
     year_1: {
+        name: "year_1",
         de: "1 Jahr",
         en: "1 year",
         fr: "1 Année",
@@ -258,6 +286,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "1 onn",
     },
     year_5: {
+        name: "year_5",
         de: "5 Jahre",
         en: "5 years",
         fr: "5 ans",
@@ -265,6 +294,7 @@ export const cleanIntervals:CleanIntervals = {
         ch: "5 onns",
     },
     year_10: {
+        name: "year_10",
         de: "10 Jahre",
         en: "10' years",
         fr: "10 ans",
@@ -804,6 +834,13 @@ export const preferenceTitles:PreferenceTitle = {
         it: "Elenco delle armi secondo la LArm Art. 5 come tabella",
         ch: "Register da las armas tenor la LArm Art. 5 sco tabella",
     },
+    printGunsHybrid: {
+        de: "Komplettes Waffenverzeichnis als Tabelle mit WG Art. 5 Eigenschaften",
+        en: "Complete gun list as a table with WA Art. 5 properties",
+        fr: "Liste complète des armes sous forme de tableau avec les caractéristiques de l’art. 5 LArm",
+        it: "Elenco completo delle armi come tabella con le caratteristiche dell’art. 5 LArm",
+        ch: "Register cumplet da las armas sco tabella cun las caracteristicas da l’art. 5 LArm",
+    },
     printGallery:{
         de: "Galerie",
         en: "Gallery",
@@ -825,12 +862,33 @@ export const preferenceTitles:PreferenceTitle = {
         it: "Elenco completo come tabella",
         ch: "Register cumplet sco tabella",
     },
+    settings:{
+        de: "Einstellungen",
+        en: "Settings",
+        fr: "Paramètres",
+        it: "Impostazioni",
+        ch: "Parameters",
+    },
     generalSettings:{
         de: "Allgemeine Einstellungen",
         en: "General settings",
         fr: "Paramètres généraux",
         it: "Impostazioni generali",
         ch: "Parameters generals",
+    },
+    displaySettings: {
+        de: "Anzeigeoptionen",
+        en: "Display settings",
+        fr: "Paramètres d'affichage",   
+        it: "Impostazioni di visualizzazione",
+        ch: "Configuraziuns da visualisaziun" 
+    },
+    preferredUnits: {
+        de: "Masseinheiten",
+        en: "Measurement Units",
+        fr: "Unités de mesure",
+        it: "Unità di misura",
+        ch: "Unitads da mesiraziun",
     },
     about:{
         de: "Über",
@@ -845,6 +903,27 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Statistiques",
         it: "Statistiche",
         ch: "Statisticas",
+    },
+    editData:{
+        de: "Daten bearbeiten",
+        en: "Edit data",
+        fr: "Modifier les données",       
+        it: "Modificare i dati",            
+        ch: "Modifitgar las datas" 
+    },
+    editData_Autocomplete:{
+        de: "Autovervollständigungsdaten bearbeiten",
+        en: "Edit Autocomplete Data",
+        fr: "Modifier les données d’auto-complétion",   
+        it: "Modificare i dati di completamento automatico",
+        ch: "Modifitgar las datas da completaziun automatica"
+    },
+    versionHistory:{
+        de: "Versionshistorie",
+        en: "Version History",
+        fr: "Historique des versions",
+        it: "Storia delle versioni",
+        ch: "Istorgia da las versiuns"
     }
 }
 
@@ -865,7 +944,7 @@ export const databaseOperations:DatabaseOperation = {
     }
 }
 
-export const pdfTitle:SimpleTranslation = {
+export const pdfTitle_GunCollection:SimpleTranslation = {
     de: "Waffenverzeichnis",
     en: "List of weapons",
     fr: "Liste des armes",
@@ -873,7 +952,7 @@ export const pdfTitle:SimpleTranslation = {
     ch: "Register da las armas",
 }
 
-export const pdfTitleAmmo:SimpleTranslation = {
+export const pdfTitle_AmmoCollection:SimpleTranslation = {
     de: "Munitionsverzeichnis",
     en: "List of ammunition",
     fr: "Liste des munitions",
@@ -881,7 +960,7 @@ export const pdfTitleAmmo:SimpleTranslation = {
     ch: "Register da muniziun",
 }
 
-export const pdfTitleArt5:SimpleTranslation = {
+export const pdfTitle_GunCollectionArt5:SimpleTranslation = {
     de: "Waffenverzeichnis gemäss Waffengesetz Artikel 5",
     en: "List of weapons according to Weapons Act article 5",
     fr: "Liste des armes conformément à la loi sur les armes, article 5",
@@ -890,11 +969,11 @@ export const pdfTitleArt5:SimpleTranslation = {
 }
 
 export const pdfFooter:SimpleTranslation = {
-    de: "Generiert mit der Arsenal Mobile App",
-    en: "Generated using the Arsenal Mobile App",
-    fr: "Généré par l'application mobile d'Arsenal",
-    it: "Generato utilizzando l'app mobile Arsenal",
-    ch: "Generà cun l'applicaziun mobila per Arsenal",
+    de: "Generiert mit der {{{A}}} Mobile App für {{{B}}}, Version",
+    en: "Generated using the {{{A}}} Mobile App for {{{B}}}, Version",
+    fr: "Généré par l'application mobile {{{A}}} pour {{{B}}}, Version",
+    it: "Generato utilizzando l'app mobile {{{A}}} per {{{B}}}, Versione",
+    ch: "Generà cun l'applicaziun mobila per {{{B}}} cun {{{A}}}, Versiun",
 }
 
 export const tabBarLabels: TabBarLabels = {
@@ -1337,20 +1416,6 @@ export const tagModal:TagModal ={
 }
 
 export const generalSettingsLabels: GeneralSettingsLabels = {
-    displayImagesInListViewGun: {
-        de: "Bilder in Listenansicht Waffen anzeigen", 
-        en: "Show images in gun list view",
-        fr: "Afficher les images dans la vue en liste armes",
-        it: "Visualizzare le immagini nella vista elenco armi",
-        ch: "Mussar armas cun ina glista"  
-    },
-    displayImagesInListViewAmmo: {
-        de: "Bilder in Listenansicht Munition anzeigen", 
-        en: "Show images in ammunition list view",
-        fr: "Afficher les images dans la vue en liste munitions",
-        it: "Visualizzare le immagini nella vista elenco munizioni",
-        ch: "Mussar maletgs cun ina glista muniziun"  
-    },
     resizeImages: {
         de: "Bildoptimierung",
         en: "Image optimization",
@@ -1365,6 +1430,30 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         it: "Login biometrico",
         ch: "Login biometric"
     },
+    hintsDisplay: {
+        de: "Hinweisbox anzeigen",
+        en: "Show hints box",
+        fr: "Afficher la boîte d’indices",    
+        it: "Mostrare la finestra dei suggerimenti",
+        ch: "Mussar la box d’indizis",         
+    }
+}
+
+export const displaySettingsLabels: DisplaySettingsLabels = {
+    displayImagesInListViewGun: {
+        de: "Bilder in Listenansicht Waffen anzeigen", 
+        en: "Show images in gun list view",
+        fr: "Afficher les images dans la vue en liste armes",
+        it: "Visualizzare le immagini nella vista elenco armi",
+        ch: "Mussar armas cun ina glista"  
+    },
+    displayImagesInListViewAmmo: {
+        de: "Bilder in Listenansicht Munition anzeigen", 
+        en: "Show images in ammunition list view",
+        fr: "Afficher les images dans la vue en liste munitions",
+        it: "Visualizzare le immagini nella vista elenco munizioni",
+        ch: "Mussar maletgs cun ina glista muniziun"  
+    },
     emptyFields: {
         de: "Leere Felder in Einträgen ausblenden",
         en: "Hide empty fields in entries",
@@ -1378,7 +1467,14 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Utiliser des désignations de calibres courtes dans les entrées et les listes PDF",
         it: "Usa etichette di calibro brevi nelle voci e nelle liste PDF",
         ch: "Duvrar nums da caliber curts en inscripziuns e glistas da pdf"
-    }
+    },
+    titleBelowImage: {
+        de: "Text unterhalb des Bildes in der Kachelansicht anzeigen",
+        en: "Show text below image in grid view",
+        fr: "Afficher le texte sous l’image en vue en grille",
+        it: "Mostrare il testo sotto l’immagine nella vista a griglia",
+        ch: "Mussar il text sut l’imatge en la vista da griglia",
+    },
 }
 
 export const aboutText: SimpleTranslation = {
@@ -1495,8 +1591,8 @@ export const modalTexts: ModalText = {
         text:{
             de: `Wähle einen Zeitintervall, nach dem die Waffe wieder geputzt werden müsste.\n\nDies wird anhand des Wertes von "zuletzt geputzt" gerechnet, sofern dieser gesetzt ist.\n\nBei Überschreitung des Intervalls erscheint der Name der Waffe in der Übersicht rot.`,
             en: `Select a time interval after which the weapon should be cleaned again.\n\nThis is calculated based on the value of "last cleaned", if this is set.\n\nIf the interval is exceeded, the name of the weapon appears in red in the overview.`,
-            fr: `Choisir un intervalle de temps après lequel l'arme devrait être nettoyée à nouveau.\nnCeci est calculé en fonction de la valeur de "dernier nettoyé", si celle-ci est définie.\nnSi l'intervalle est dépassé, le nom de l'arme apparaît en rouge dans l'aperçu.`,
-            it: `Selezionare un intervallo di tempo dopo il quale l'arma deve essere pulita di nuovo.\n}Questo viene calcolato in base al valore di "ultima pulizia", se impostato.\n}Se l'intervallo viene superato, il nome dell'arma appare in rosso nella panoramica.`,
+            fr: `Choisir un intervalle de temps après lequel l'arme devrait être nettoyée à nouveau.\n\nCeci est calculé en fonction de la valeur de "dernier nettoyé", si celle-ci est définie.\n\nSi l'intervalle est dépassé, le nom de l'arme apparaît en rouge dans l'aperçu.`,
+            it: `Selezionare un intervallo di tempo dopo il quale l'arma deve essere pulita di nuovo.\n\nQuesto viene calcolato in base al valore di "ultima pulizia", se impostato.\n\nSe l'intervallo viene superato, il nome dell'arma appare in rosso nella panoramica.`,
             ch: `Tscherni in interval da temp, cur che l'arma stuess puspè vegnir nettegiada.\n\nDies vegn quintà vi da la valur da "l'ultima nettegiada", premess che quella saja messa.\n\nBenenen surpassament da l'interval cumpara il num da l'arma en la survista cotschna.`,
         }
     },
@@ -1631,6 +1727,37 @@ export const longPressActions:LongPressActions = {
         fr: "Monter ailleurs",
         it: "Montare altrove",
         ch: "Montar insanua auter",
+    },
+    clean: {
+        de: "Reinigen",
+        en: "Clean",
+        fr: "Nettoyer",
+        it: "Pulire",
+        ch: "Nettar",
+    },
+    battery: {
+        de: "Batterie wechseln",
+        en: "Change Battery",
+        fr: "Changer la batterie",
+        it: "Cambiare la batteria",
+        ch: "Midar la batteria",
+    }
+}
+
+export const longPressActionsSuccessMessages:LongPressActionsSuccessMessages = {
+    clean: {
+        de: "gereinigt",
+        en: "cleaned",
+        fr: "nettoyé",
+        it: "pulito",
+        ch: "nettà",
+    },
+    battery: {
+        de: "Batterie für {{{A}}} gewechselt",
+        en: "Changed battery for {{{A}}}",
+        fr: "Batterie changée pour {{{A}}}",
+        it: "Batteria sostituita per {{{A}}}",
+        ch: "Batteria midada per {{{A}}}",
     }
 }
 

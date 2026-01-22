@@ -1,0 +1,9 @@
+{
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.tree.indent": 30
+      }
+    }
+  }
+}

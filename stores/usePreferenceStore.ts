@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book} from "../interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -20,6 +20,8 @@ interface GeneralSettings{
   loginGuard: boolean
   emptyFields: boolean
   caliberDisplayName: boolean
+  titleBelowImage: boolean
+  hintsDisplay: boolean
 }
 
 interface DisplaySettings{
@@ -65,11 +67,21 @@ interface FilterState{
   literatureCollection_Book: boolean
 }
 
+export interface PreferredUnits{
+  selectedCurrency: string
+  generalWeightUnit: string
+  bulletWeightUnit: string
+  powderWeightUnit: string
+  generalLengthUnit: string
+  barrelLengthUnit: string
+}
+
 interface InitialStoreState {
   language: Languages
   theme: {name: string, colors: Color}
   generalSettings: GeneralSettings
   displaySettings: DisplaySettings
+  preferredUnits: PreferredUnits
   sortBy: SorterSettings
   caliberDisplayNameList: { name: string; displayName?: string }[]
   filterOn: FilterState
@@ -77,6 +89,7 @@ interface InitialStoreState {
   hasCheckedForLegacyAmmoData: boolean
   hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
   hasConvertedLegacyAmmoCaliberFieldToStringArray: boolean
+  hasBeenOnboarded: boolean
 }
 
 const initialState:InitialStoreState = {
@@ -98,6 +111,8 @@ const initialState:InitialStoreState = {
       loginGuard: false,
       emptyFields: false,
       caliberDisplayName: false,
+      titleBelowImage: false,
+      hintsDisplay: true
     },
     displaySettings: {
       gunCollection: "grid",
@@ -112,6 +127,14 @@ const initialState:InitialStoreState = {
       partCollection_Barrel: "grid",
       literatureCollection_Book: "grid",
       accessoryView: "grid"
+    },
+    preferredUnits: {
+      selectedCurrency: "CHF",
+      generalWeightUnit: "gr",
+      bulletWeightUnit: "gr",
+      powderWeightUnit: "g",
+      generalLengthUnit: "cm",
+      barrelLengthUnit: "in",
     },
     sortBy: {
       gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
@@ -144,6 +167,7 @@ const initialState:InitialStoreState = {
     hasCheckedForLegacyAmmoData: false,
     hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
     hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
+    hasBeenOnboarded: false,
   }
 
 
@@ -151,6 +175,7 @@ interface StoreFunctions {
     switchLanguage: (lang: string) => void
     switchTheme: (name: string) => void,
     setGeneralSettings: (settings: GeneralSettings) => void
+    setPreferredUnits: (units: PreferredUnits) => void
     setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
     setDisplaySettings: (settings: DisplaySettings) => void
     setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
@@ -160,6 +185,7 @@ interface StoreFunctions {
     setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => void
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => void
     resetPreferenceStore: () => void
+    setHasBeenOnboarded: (status: boolean) => void
   }
 
   
@@ -169,6 +195,7 @@ interface StoreFunctions {
     switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
     switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
     setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
+    setPreferredUnits: (settings: PreferredUnits) => set((state) => ({preferredUnits: settings})),
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
     setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
     setSortBy: (collection, settings) => set((state) => ({
@@ -182,6 +209,6 @@ interface StoreFunctions {
     setHasCheckedForLegacyAmmoData: (status: boolean) => set((state) => ({hasCheckedForLegacyAmmoData: status})),
     setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
-    resetPreferenceStore: () => {set(initialState);
-  },
+    resetPreferenceStore: () => {set(initialState)},
+    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status}))
 }))

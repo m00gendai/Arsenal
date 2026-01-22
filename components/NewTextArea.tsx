@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
-import { GunType, AmmoType, ItemType } from 'interfaces';
+import { GunType, AmmoType, ItemType } from 'lib/interfaces';
 import { Pressable } from 'react-native';
 
 interface Props{

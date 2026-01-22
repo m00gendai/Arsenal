@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { collectionImportTables, defaultViewPadding } from "configs";
-import { PREFERENCES } from "configs_DB";
+import { collectionImportTables, defaultViewPadding } from "configs/configs";
+import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
 import * as schema from "db/schema"
-import DEV_importLegacyDatabaseAsJSON from "functions/DEV_importLegacyDatabaseAsJSON";
+import DEV_importLegacyDatabaseAsJSON from "functions/legacy/DEV_importLegacyDatabaseAsJSON";
 import { developerSettingsWarning } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";

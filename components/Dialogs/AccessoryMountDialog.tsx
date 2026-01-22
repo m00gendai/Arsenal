@@ -1,5 +1,5 @@
 import ModalContainer from "components/ModalContainer"
-import { defaultViewPadding } from "configs"
+import { defaultViewPadding } from "configs/configs"
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
 import { db } from 'db/client';
@@ -10,7 +10,7 @@ import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { CollectionType, ItemType } from "interfaces";
+import { CollectionType, ItemType } from "lib/interfaces";
 import { useViewStore } from "stores/useViewStore";
 import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";

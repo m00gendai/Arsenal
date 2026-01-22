@@ -1,21 +1,21 @@
-import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView} from 'react-native';
-import { Appbar, Button, Dialog, SegmentedButtons, Snackbar, Text } from 'react-native-paper';
+import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView, ColorValue, Dimensions, TouchableNativeFeedback } from 'react-native';
+import { Appbar, Button, Dialog, IconButton, Snackbar, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
 import "react-native-get-random-values"
 import ImageViewer from "../ImageViewer"
-import { ItemType } from 'interfaces';
+import { ItemType } from 'lib/interfaces';
 import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
-import { editGunTitle, gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
+import { gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system';
-import { imageHandling, itemDataValidation } from 'utils';
+import { generateGradient, imageHandling, itemDataValidation } from 'functions/utils';
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs';
+import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -24,6 +24,12 @@ import NewText_Text from 'components/NewText_Text';
 import { useItemStore } from 'stores/useItemStore';
 import { determineDataTemplate, determineEditItemTitle, determineRemarkDataTemplate } from 'functions/determinators';
 import NewText_MountedOnPicker from 'components/NewText_MountedOnPicker';
+import { v4 as uuidv4 } from 'uuid';
+import { LinearGradient } from 'expo-linear-gradient';
+import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
+import { useSharedValue } from 'react-native-reanimated';
+import { useViewStore } from 'stores/useViewStore';
+import { useTextStore } from 'stores/useTextStore';
 
 
 export default function EditGun({navigation}){
@@ -34,42 +40,41 @@ export default function EditGun({navigation}){
     const [granted, setGranted] = useState<boolean>(false)
     const [itemData, setItemData] = useState<ItemType>(currentItem)
     const [itemDataCompare, setItemDataCompare] = useState<ItemType>(currentItem)
-    const [visible, setVisible] = useState<boolean>(false);
-    const [snackbarText, setSnackbarText] = useState<string>("")
     const [saveState, setSaveState] = useState<boolean | null>(null)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
     const [imageDialogVisible, toggleImageDialogVisible] = useState<boolean>(false)
     const [unsavedVisible, toggleUnsavedDialogVisible] = useState<boolean>(false)
     const [deleteImageIndex, setDeleteImageIndex] = useState<number>(0)
     const [exitAction, setExitAction] = useState(null);
+
     const aboutToDeleteRef = useRef<boolean>(false);
+    const carouselRef = useRef<ICarouselInstance>(null)
+    const progress = useSharedValue<number>(0)
 
     const { language, theme, generalSettings } = usePreferenceStore()
+    const { setAlohaSnackbarVisible } = useViewStore()
+    const { setAlohaSnackbarText } = useTextStore()
 
-  const onToggleSnackBar = () => setVisible(!visible);
-
-  const onDismissSnackBar = () => setVisible(false);
-
-  useEffect(()=>{
-    if(initCheck){
-        setInitCheck(false)
-    }
-    if(!initCheck){
-        setSaveState(null)
-        for(const key in itemData){
-            if(itemData[key] !== itemDataCompare[key]){
-                setSaveState(false)
-                return
-            }
-            if(!itemDataCompare[key] && !itemData[key]){
-                setSaveState(null)
-            }
-            if(!(key in itemDataCompare) && !itemData[key]){
-                setSaveState(null)
+    useEffect(()=>{
+        if(initCheck){
+            setInitCheck(false)
+        }
+        if(!initCheck){
+            setSaveState(null)
+            for(const key in itemData){
+                if(itemData[key] !== itemDataCompare[key]){
+                    setSaveState(false)
+                    return
+                }
+                if(!itemDataCompare[key] && !itemData[key]){
+                    setSaveState(null)
+                }
+                if(!(key in itemDataCompare) && !itemData[key]){
+                    setSaveState(null)
+                }
             }
         }
-    }
-  },[itemData])
+    },[itemData])
 
     async function save(item: ItemType) {
         const validationResult:{field: string, error: string}[] = itemDataValidation(currentCollection, item, language)
@@ -87,15 +92,34 @@ export default function EditGun({navigation}){
         }catch(e){
             console.error(e)
         }
+
+        for (const [key, value] of Object.entries(item)) {
+            if(!fieldsForAutocomplete.includes(key)){
+                continue
+            }
+
+            if(typeof value !== "string"){
+                continue
+            }
+            if(value.trim().length === 0){
+                continue
+            }
+
+            await db.insert(schema.autocomplete).values({
+                id: uuidv4(),
+                label: value,
+                field: key
+            }).onConflictDoNothing();
+        }
         
         setSaveState(true)
-        setSnackbarText(`${"manufacturer" in item && item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : "designation" in item ?  item.designation : item.title} ${toastMessages.changed[language]}`)
-        onToggleSnackBar()
+        setAlohaSnackbarText(`${"manufacturer" in item && item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : "designation" in item ?  item.designation : item.title} ${toastMessages.changed[language]}`)
+        setAlohaSnackbarVisible(true)
         setCurrentItem(item)
-      }
+    }
 
     function deleteImage(indx:number){
-        const currentImages: string[] = selectedImage
+        const currentImages: string[] = [...selectedImage]
         currentImages.splice(indx, 1)
         setSelectedImage(currentImages)
         setItemData({...itemData, images: currentImages})
@@ -118,7 +142,6 @@ export default function EditGun({navigation}){
         })
 
         if(!result.canceled){
-
             // Create a unique file name for the new image
             const newImageUri = result.assets[0].uri
             const manipImage = await imageHandling(result, generalSettings.resizeImages)
@@ -131,23 +154,24 @@ export default function EditGun({navigation}){
                     to: newPath,
                 });
                 
-            const newImage = selectedImage;
-            if (newImage && newImage.length !== 0) {
-                newImage.splice(indx, 1, fileName);
-                setSelectedImage(newImage);
-                setItemData({ ...itemData, images: newImage });
-            } else {
-                setSelectedImage([fileName]);
-                if (itemData && itemData.images && itemData.images.length !== 0) {
-                    setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                const newImage = selectedImage;
+                if (newImage && newImage.length !== 0) {
+                    const newImages = [...selectedImage]
+                    newImages.splice(indx, 1, fileName)
+                    setSelectedImage(newImages)
+                    setItemData({ ...itemData, images: newImages })
                 } else {
-                    setItemData({ ...itemData, images: [fileName] });
+                    setSelectedImage([fileName]);
+                    if (itemData && itemData.images && itemData.images.length !== 0) {
+                        setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                    } else {
+                        setItemData({ ...itemData, images: [fileName] });
+                    }
                 }
+            } catch (error) {
+                console.error('Error saving image:', error);
             }
-        } catch (error) {
-            console.error('Error saving image:', error);
-        }
-    }  
+        }  
     }   
 
     const pickCameraAsync = async (indx:number) =>{
@@ -166,7 +190,6 @@ export default function EditGun({navigation}){
         })
 
         if(!result.canceled){
-
             // Create a unique file name for the new image
             const newImageUri = result.assets[0].uri
             const manipImage = await imageHandling(result, generalSettings.resizeImages)
@@ -179,29 +202,30 @@ export default function EditGun({navigation}){
                     to: newPath,
                 });
 
-            const newImage = selectedImage;
-            if (newImage && newImage.length !== 0) {
-                newImage.splice(indx, 1, fileName);
-                setSelectedImage(newImage);
-                setItemData({ ...itemData, images: newImage });
-            } else {
-                setSelectedImage([newPath]);
-                if (itemData && itemData.images && itemData.images.length !== 0) {
-                    setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                const newImage = selectedImage;
+                if (newImage && newImage.length !== 0) {
+                    const newImages = [...selectedImage]
+                    newImages.splice(indx, 1, fileName)
+                    setSelectedImage(newImages)
+                    setItemData({ ...itemData, images: newImages })
                 } else {
-                    setItemData({ ...itemData, images: [fileName] });
+                    setSelectedImage([newPath]);
+                    if (itemData && itemData.images && itemData.images.length !== 0) {
+                        setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                    } else {
+                        setItemData({ ...itemData, images: [fileName] });
+                    }
                 }
+            } catch (error) {
+                console.error('Error saving image:', error);
             }
-        } catch (error) {
-            console.error('Error saving image:', error);
-        }
-    }  
-} 
+        }  
+    } 
 
     function deleteImagePrompt(index:number){
         setDeleteImageIndex(index)
         toggleImageDialogVisible(true)
-         }
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -227,35 +251,10 @@ export default function EditGun({navigation}){
             alignItems: "center",
             justifyContent: "center"
         },
-        button: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: theme.colors.primaryContainer
-        },
-        buttonDelete: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: theme.colors.primaryContainer
-        },
-        fab: {
-            position: 'absolute',
-            margin: 16,
-            right: 0,
-            bottom: 0,
-          },
-          fab2: {
-            position: 'absolute',
-            margin: 16,
-            left: 0,
-            bottom: 0,
-          },
       });
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-
             if(aboutToDeleteRef.current){
                 return
             }
@@ -267,193 +266,221 @@ export default function EditGun({navigation}){
             }
 
             e.preventDefault()
-    
+
             setExitAction(e.data.action)
-    
+
             toggleUnsavedDialogVisible(true)
-        });
+        })
   
         return unsubscribe;
         
     }, [navigation, saveState])
 
     const handleDiscard = () => {
-        toggleUnsavedDialogVisible(false);
+        toggleUnsavedDialogVisible(false)
         if (exitAction) {
-          navigation.dispatch(exitAction);
+            navigation.dispatch(exitAction)
         }
-      };
+    }
     
-      const handleCancel = () => {
-        toggleUnsavedDialogVisible(false);
-      };
-
-      function handleDeleteItem(item:ItemType){
-        aboutToDeleteRef.current = true;
-      deleteItem(item)
+    const handleCancel = () => {
+        toggleUnsavedDialogVisible(false)
     }
 
+    function handleDeleteItem(item:ItemType){
+        aboutToDeleteRef.current = true
+        deleteItem(item)
+    }
 
     async function deleteItem(item:ItemType){
-        await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, currentItem.id));
+        await db.delete(schema[currentCollection]).where(eq(schema[currentCollection].id, currentItem.id))
         toggleDialogVisible(false)
         navigation.navigate("itemCollection")
         aboutToDeleteRef.current = false
     }
+      
+    const onPressPagination = (index: number) => {
+        carouselRef.current?.scrollTo({
+        /**
+         * Calculate the difference between the current index and the target index
+         * to ensure that the carousel scrolls to the nearest index
+         */
+        count: index - progress.value,
+        animated: true,
+        })
+    }
+
+function swapItems(arr: string[], from: number, to: number){
+    if(to < 0 || to >= arr.length || from > selectedImage.length-1){
+        return
+    } 
+    const copy = [...arr];
+    [copy[from], copy[to]] = [copy[to], copy[from]]
+    setSelectedImage(copy)
+    setItemData({ ...itemData, images: copy })
+}
 
     return(
         <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
-            
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
                 <Appbar.Content title={determineEditItemTitle(currentCollection)[language]} />
                 <Appbar.Action icon="delete" onPress={()=>toggleDialogVisible(!dialogVisible)} color='red'/>
                 <Appbar.Action icon="floppy" onPress={() => save({...itemData, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
             </Appbar>
-        
             <View style={styles.container}>
                 <ScrollView style={{width: "100%"}}>
-                    <View>
-                        <ScrollView horizontal style={{width:"100%", aspectRatio: "23/10"}}>
-                            {Array.from(Array(5).keys()).map((_, index) =>{
-                                return(
-                                    <View style={styles.imageContainer} key={`slide_${index}`}>
-                                        <ImageViewer isLightBox={false} selectedImage={selectedImage[index] != undefined ? selectedImage[index] : null} />
-                                        <View style={{
-                                            position: "absolute",
-                                            bottom: 10,
-                                            display: "flex",
-                                            width: "100%",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center"
-                                        }}>
-                                            <SegmentedButtons
-                                                value={""}
-                                                onValueChange={()=>console.log("i cant leave this function empty so heres a console log")}
-                                                style={{
-                                                    width: "75%"
-                                                }}
-                                                buttons={[
-                                                    {
-                                                        value: 'camera',
-                                                        icon: "camera",
-                                                        style: styles.button,
-                                                        onPress: ()=>pickCameraAsync(index)
-                                                        
-                                                    },
-                                                    {
-                                                        value: 'gallery',
-                                                        icon: 'image-multiple-outline',
-                                                        style: styles.button,
-                                                        onPress: ()=>pickImageAsync(index)
-                                                    },
-                                                    {   value: 'delete', 
-                                                        icon: 'delete',
-                                                        style: styles.buttonDelete,
-                                                        onPress: ()=>deleteImagePrompt(index),
-                                                        disabled: selectedImage[index] ? false : true
-                                                    },
-                                                ]}
-                                            />
-                                        </View>
-                                    </View>
-                                )
-                            })}                  
-                        </ScrollView>
-                    </View>
+                    <LinearGradient 
+                        start={{x: 0.0, y:0.0}} end={{x: 1.0, y: 1.0}} 
+                        colors={generateGradient(currentItem, theme) as [ColorValue, ColorValue, ...ColorValue[]]}
+                    >
+                        <View style={{width: "100%", aspectRatio: "21/10"}}>
+                            <Carousel
+                                loop={false}
+                                width={Dimensions.get("screen").width-(defaultViewPadding)}
+                                snapEnabled={true}
+                                pagingEnabled={true}
+                                onProgressChange={progress}
+                                data={Array.from(Array(5))}
+                                renderItem={({ index }) => 
+                                    {
+                                        return(
+                                            <View key={`slides_${index}`} style={styles.imageContainer} >
+                                                <ImageViewer isLightBox={false} selectedImage={selectedImage[index] != undefined ? selectedImage[index] : null} />
+                                                <View 
+                                                    style={{
+                                                        position: "absolute",
+                                                        bottom: 0,
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        display: "flex",
+                                                        flexDirection: "row",
+                                                        justifyContent: "space-between",
+                                                        alignItems: "flex-end",
+                                                        padding: defaultViewPadding
+                                                    }}
+                                                >
+                                                    <IconButton 
+                                                        icon="camera" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                        onPress={()=>pickCameraAsync(index)}
+                                                    />
+                                                    <IconButton 
+                                                        icon="image-multiple-outline" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                         onPress={()=>pickImageAsync(index)}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-left" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                         onPress={()=>swapItems(selectedImage, index, index-1)}
+                                                         disabled={index === 0 || index > selectedImage.length-1}
+                                                    />
+                                                    <IconButton 
+                                                        icon="chevron-right" 
+                                                        iconColor={theme.colors.onPrimary} 
+                                                        style={{backgroundColor: theme.colors.primary}}
+                                                         onPress={()=>swapItems(selectedImage, index, index+1)}
+                                                         disabled={index >= selectedImage.length-1}
+                                                    />
+                                                    <IconButton 
+                                                        icon="delete" 
+                                                        iconColor={theme.colors.onError} 
+                                                        style={{backgroundColor: theme.colors.error}}
+                                                        onPress={()=>deleteImagePrompt(index)}
+                                                        disabled={selectedImage[index] ? false : true}
+                                                    />
+                                                </View>
+                                            </View>
+                                        )
+                                    }
+                                }
+                            />
+                        </View>
+                        <Pagination.Basic
+                            progress={progress}
+                            data={Array.from(Array(5))}
+                            dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50, height: 5, width: 5 }}
+                            containerStyle={{ gap: 5, marginTop: 0, position: "absolute", bottom: 2.5 }}
+                            onPress={onPressPagination}
+                        />
+                    </LinearGradient>
                     <View style={{
                         height: "100%",
                         width: "100%",
                     }}>
                         <NewChipArea data={"status"} itemData={itemData} setItemData={setItemData}/>
-                        {determineDataTemplate(currentCollection).map(data=>{
-                            return(
-                                <View 
-                                    id={data.name}
-                                    key={data.name}
-                                    style={{
-                                        display: "flex",
-                                        flexWrap: "nowrap",
-                                        flexDirection: "row",
-                                        width: "100%",
-                                        gap: 5,
-                                        
-                                }}>
-                                    {datePickerTriggerFields.includes(data.name) ? 
-                                        <NewText_DatePicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
-                                    colorPickerTriggerFields.includes(data.name) ? 
-                                        <NewText_ColorPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
-                                    caliberPickerTriggerFields.includes(data.name) ?
-                                        <NewText_CaliberPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} multiCaliber={currentCollection === "ammoCollection" ? false : true} /> :
-                                    intervalPickerTriggerFields.includes(data.name) ? 
-                                        <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
-                                    mountedOnTriggerFields.includes(data.name) ?
-                                        <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
-                                        <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
-                                </View>
-                            )
-                        })}
-                         {currentCollection === "gunCollection" ? <NewCheckboxArea itemData={itemData} setItemData={setItemData}/> : null}
+                            {determineDataTemplate(currentCollection).map(data=>{
+                                return(
+                                    <View 
+                                        id={data.name}
+                                        key={data.name}
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "nowrap",
+                                            flexDirection: "row",
+                                            width: "100%",
+                                            gap: 5,
+                                            
+                                    }}>
+                                        {datePickerTriggerFields.includes(data.name) ? 
+                                            <NewText_DatePicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        colorPickerTriggerFields.includes(data.name) ? 
+                                            <NewText_ColorPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        caliberPickerTriggerFields.includes(data.name) ?
+                                            <NewText_CaliberPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} multiCaliber={currentCollection === "ammoCollection" ? false : true} /> :
+                                        intervalPickerTriggerFields.includes(data.name) ? 
+                                            <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        mountedOnTriggerFields.includes(data.name) ?
+                                            <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                            <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
+                                    </View>
+                                )
+                            })}
+                            {currentCollection === "gunCollection" ? <NewCheckboxArea itemData={itemData} setItemData={setItemData}/> : null}
                         <NewTextArea data={determineRemarkDataTemplate(currentCollection).name} itemData={itemData} setItemData={setItemData} label={determineRemarkDataTemplate(currentCollection)[language]}/>
-                        
                     </View>
                 </ScrollView>
-                
             </View>
-            <Snackbar
-                visible={visible}
-                onDismiss={onDismissSnackBar}
-                action={{
-                label: 'OK',
-                onPress: () => {
-                    onDismissSnackBar()
-                },
-                }}>
-                {snackbarText}
-            </Snackbar>
 
             <Dialog visible={imageDialogVisible} onDismiss={()=>toggleImageDialogVisible(false)}>
-            <Dialog.Title>
+                <Dialog.Title>
                     {`${imageDeleteAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Actions>
-                        <Button onPress={()=>deleteImage(deleteImageIndex)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{imageDeleteAlert.yes[language]}</Button>
-                        <Button onPress={()=>toggleImageDialogVisible(false)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{imageDeleteAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+                </Dialog.Title>
+                <Dialog.Actions>
+                    <Button onPress={()=>deleteImage(deleteImageIndex)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{imageDeleteAlert.yes[language]}</Button>
+                    <Button onPress={()=>toggleImageDialogVisible(false)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{imageDeleteAlert.no[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
                    
-
-            
-                <Dialog visible={unsavedVisible} onDismiss={()=>toggleUnsavedDialogVisible(!unsavedVisible)}>
-                    <Dialog.Title>
+            <Dialog visible={unsavedVisible} onDismiss={()=>toggleUnsavedDialogVisible(!unsavedVisible)}>
+                <Dialog.Title>
                     {`${unsavedChangesAlert.title[language]}`}
-                    </Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{`${unsavedChangesAlert.subtitle[language]}`}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={handleDiscard} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{unsavedChangesAlert.yes[language]}</Button>
-                        <Button onPress={handleCancel} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{unsavedChangesAlert.no[language]}</Button>
-                    </Dialog.Actions>
-                </Dialog>
+                </Dialog.Title>
+                <Dialog.Content>
+                    <Text>{`${unsavedChangesAlert.subtitle[language]}`}</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={handleDiscard} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{unsavedChangesAlert.yes[language]}</Button>
+                    <Button onPress={handleCancel} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{unsavedChangesAlert.no[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
 
-
-                        <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
-                            <Dialog.Title>
-                            {`${"model" in currentItem ? currentItem.model : "designation" in currentItem ? currentItem.designation : currentItem.title} ${gunDeleteAlert.title[language]}`}
-                            </Dialog.Title>
-                            <Dialog.Content>
-                                <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
-                            </Dialog.Content>
-                            <Dialog.Actions>
-                                <Button onPress={()=>handleDeleteItem(currentItem)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{gunDeleteAlert.yes[language]}</Button>
-                                <Button onPress={()=>toggleDialogVisible(!dialogVisible)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{gunDeleteAlert.no[language]}</Button>
-                            </Dialog.Actions>
-                        </Dialog>
-              
-                    
-                   
+            <Dialog visible={dialogVisible} onDismiss={()=>toggleDialogVisible(!dialogVisible)}>
+                <Dialog.Title>
+                    {`${"model" in currentItem ? currentItem.model : "designation" in currentItem ? currentItem.designation : currentItem.title} ${gunDeleteAlert.title[language]}`}
+                </Dialog.Title>
+                <Dialog.Content>
+                    <Text>{`${gunDeleteAlert.subtitle[language]}`}</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={()=>handleDeleteItem(currentItem)} icon="delete" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{gunDeleteAlert.yes[language]}</Button>
+                    <Button onPress={()=>toggleDialogVisible(!dialogVisible)} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{gunDeleteAlert.no[language]}</Button>
+                </Dialog.Actions>
+            </Dialog>
         </KeyboardAvoidingView>
     )
 }

@@ -1,4 +1,4 @@
-import { AccessoryMount, PartMount } from "interfaces"
+import { AccessoryMount, PartMount } from "lib/interfaces"
 import { create } from "zustand"
 
 interface DatabaseStore {

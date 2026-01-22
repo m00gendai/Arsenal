@@ -1,31 +1,31 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit } from "interfaces";
-import sortGunCollection from "./sortGunCollection";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit } from "lib/interfaces";
+import sortGunCollection from "./sorters/sortGunCollection";
 import { SorterSettings } from "stores/usePreferenceStore";
-import sortAmmoCollection from "./sortAmmoCollection";
+import sortAmmoCollection from "./sorters/sortAmmoCollection";
 import * as schema from "db/schema"
 import { and, or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs";
-import sortAccessoryCollection_Silencer from "./sortAccessoryCollection_Silencer";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs/configs";
+import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
-import sortAccessoryCollection_Optic from "./sortAccessoryCollection_Optic";
+import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
 import { accessoryDataTemplate_Optic, emptyOpticObject, opticRemarks } from "lib/DataTemplates/accessoryDataTemplate_Optic";
-import sortPartCollection_ConversionKit from "./sortPartCollection_ConversionKit";
+import sortPartCollection_ConversionKit from "./sorters/sortPartCollection_ConversionKit";
 import { conversionKitRemarks, emptyConversionKitObject, partDataTemplate_ConversionKit } from "lib/DataTemplates/partDataTemplate_ConversionKit";
-import sortAccessoryCollection_LightLaser from "./sortAccessoryCollection_LightLaser";
+import sortAccessoryCollection_LightLaser from "./sorters/sortAccessoryCollection_LightLaser";
 import { accessoryDataTemplate_LightLaser, emptyLightLaserObject, lightLaserRemarks } from "lib/DataTemplates/accessoryDataTemplate_LightLaser";
-import sortPartCollection_Barrel from "./sortPartCollection_Barrel";
+import sortPartCollection_Barrel from "./sorters/sortPartCollection_Barrel";
 import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/DataTemplates/partDataTemplate_Barrel";
 import { editAccessoryTitle, editAmmoTitle, editGunTitle, editLiteratureTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newLiteratureTitle, newPartTitle, shotLabel, tabBarLabels } from "lib/textTemplates";
-import sortAccessoryCollection_Scope from "./sortAccessoryCollection_Scope";
+import sortAccessoryCollection_Scope from "./sorters/sortAccessoryCollection_Scope";
 import { accessoryDataTemplate_Scope, emptyScopeObject, scopeRemarks } from "lib/DataTemplates/accessoryDataTemplate_Scope";
-import sortAccessoryCollection_Magazine from "./sortAccessoryCollection_Magazine";
+import sortAccessoryCollection_Magazine from "./sorters/sortAccessoryCollection_Magazine";
 import { accessoryDataTemplate_Magazine, emptyMagazineObject, magazineRemarks } from "lib/DataTemplates/accessoryDataTemplate_Magazine";
-import sortAccessoryCollection_Misc from "./sortAccessoryCollection_Misc";
+import sortAccessoryCollection_Misc from "./sorters/sortAccessoryCollection_Misc";
 import { accessoryDataTemplate_Misc, emptyMiscAccessoryObject, miscAccessoryRemarks } from "lib/DataTemplates/accessoryDataTemplate_Misc";
-import { getShortCaliberName } from "utils";
-import sortLiteratureCollection_Book from "./sortLiteratureCollection_Book";
+import { getShortCaliberName } from "functions/utils";
+import sortLiteratureCollection_Book from "./sorters/sortLiteratureCollection_Book";
 import { bookRemarks, emptyBookObject, literatureDataTemplate_Book } from "lib/DataTemplates/literatureDataTemplate_Book";
 import { dataTemplate_Translations } from "lib/DataTemplates/translations";
 
@@ -515,11 +515,11 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             }
         case "ammoCollection":
             {   const item = itemIn as AmmoType
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+                return item.caliber && item.caliber.length !== 0 ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Silencer":
             {   const item = itemIn as AccessoryType_Silencer
-                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+                return item.caliber && item.caliber.length !== 0 ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
         case "accessoryCollection_Optic":
             {   const item = itemIn as AccessoryType_Optic

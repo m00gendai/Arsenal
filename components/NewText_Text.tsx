@@ -1,8 +1,12 @@
-import { TextInput } from 'react-native-paper';
+import { TextInput, Text, Portal, ThemeProvider } from 'react-native-paper';
 import { useRef, useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../interfaces';
-import { View, Pressable, Platform, Keyboard } from 'react-native';
-import { currencyPrefixFields, numberTextFields, requiredFieldsAmmo, requiredFieldsGun } from '../configs';
+import { ItemType } from '../lib/interfaces';
+import { View, Pressable, Keyboard } from 'react-native';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { ScrollView } from 'react-native-gesture-handler';
+import { usePreferenceStore } from 'stores/usePreferenceStore';
+import Autocomplete from './Autocomplete';
+import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
 
 interface Props{
     data: string
@@ -13,7 +17,19 @@ interface Props{
 
 export default function NewText({data, itemData, setItemData, label}: Props){
 
-    const input = useRef<string|string[]>(itemData && itemData[data] ? itemData[data] : "")
+    const { preferredUnits } = usePreferenceStore()
+
+    function handleConversions(itemData:ItemType, data:string){
+        if(unitFields_Weight.includes(data)){
+            return convertWeightUnitsToPreferredUnit(preferredUnits, data, itemData[data])
+        }
+        if(unitFields_Length.includes(data)){
+            return convertLengthUnitsToPreferredUnit(preferredUnits, data, itemData[data])
+        }
+        return itemData[data]
+    }
+
+    const input = useRef<string>(itemData && itemData[data] ? handleConversions(itemData, data) : "")
 
     const [charCount, setCharCount] = useState(input.current?.length ?? 0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
@@ -21,16 +37,25 @@ export default function NewText({data, itemData, setItemData, label}: Props){
 
     const MAX_CHAR_COUNT: number = 100
 
-    function updateItemData(text:string | string[]){
+    function updateItemData(text:string){
+        let determinedText: string
+        if(unitFields_Weight.includes(data)){
+            determinedText = convertWeightUnitsToMilligram(preferredUnits, data, text)
+        } else if(unitFields_Length.includes(data)){
+            determinedText = convertLengthUnitsToMillimeter(preferredUnits, data, text)
+        }else {
+            determinedText = text
+        }
+        
         if(charCount < MAX_CHAR_COUNT){
             setCharCount(text.length ?? 0)
             input.current = text
-            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
+            setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
         if(charCount >= MAX_CHAR_COUNT && isBackspace){
             setCharCount(text.length ?? 0)
             input.current = text
-            setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
+            setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
     }
 
@@ -47,7 +72,6 @@ export default function NewText({data, itemData, setItemData, label}: Props){
 
     return(
         <View style={{flex: 1}}>
-            
             <Pressable style={{flex: 1}}>
                 <TextInput
                     label={`${label}${requiredFieldsGun.includes(data) ? "*" : requiredFieldsAmmo.includes(data) ? "*" : ""} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
@@ -65,7 +89,18 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         updateItemData(text)
                     }}
                     onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
-                    left={currencyPrefixFields.includes(data) ? <TextInput.Affix text="CHF " /> : null}
+                    left={
+                        currencyPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.selectedCurrency} `} /> 
+                        : 
+                        bulletWeightPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.bulletWeightUnit} `} /> 
+                        :
+                        barrelLengthPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.barrelLengthUnit} `} /> 
+                        :
+                        null
+                    }
                     inputMode={`${numberTextFields.includes(data) ? "decimal" : "text"}`}
                     multiline={false}
                     returnKeyType='done'
@@ -73,7 +108,9 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                     onSubmitEditing={()=>Keyboard.dismiss()}
                 />
             </Pressable>
-           
+            
+            <Autocomplete title={label} data={data} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
+
         </View>
     )
 }
