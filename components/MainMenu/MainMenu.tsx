@@ -10,6 +10,7 @@ import DatabaseOperations from "./DatabaseOperations"
 import Lists from "./Lists"
 import LanguageSelection from "./LanguageSelection"
 import EditData from "./EditData/EditData"
+import VersionHistory from "./VersionHistory/VersionHistory"
 
 export default function MainMenu({navigation}){
 
@@ -60,6 +61,8 @@ export default function MainMenu({navigation}){
                             <Statistics />
 
                             <About />
+
+                            <VersionHistory />
 
                         </ScrollView>
                     </View>
