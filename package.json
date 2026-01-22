@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "ts:check": "tsc"
+    "ts:check": "tsc",
+    "generate:notes": "npx tsx cli_scripts/generateReleaseNotes.ts"
   },
   "dependencies": {
     "@expo/config-plugins": "~10.1.1",
@@ -71,6 +72,7 @@
     "react-native-webview": "13.13.5",
     "react-native-zip-archive": "^7.0.2",
     "reanimated-color-picker": "^3.0.3",
+    "tsx": "^4.21.0",
     "typescript": "~5.8.3",
     "uuid": "^9.0.1",
     "zustand": "^4.5.2"
