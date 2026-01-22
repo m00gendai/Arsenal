@@ -1,4 +1,4 @@
-import { AmmoType, CollectionType, Color, GunType, ItemType, SortingTypes } from "../lib/interfaces";
+import { AmmoType, CollectionType, Color, GunType, ItemType, Languages, SortingTypes } from "../lib/interfaces";
 import { validationErros } from "../lib/textTemplates";
 import { dateTimeOptions, unitFields_Length, unitFields_Weight } from "../configs/configs";
 import * as ImagePicker from "expo-image-picker"
@@ -288,4 +288,17 @@ export function parseDate(date: string){
     return ""
   }
   return new Date(date).toLocaleDateString("de-CH", dateTimeOptions)
+}
+
+export function getLocalesFromLanguage(language:Languages){
+    switch(language){
+        case "de":
+            return "de-DE"
+        case "en":
+            return "en-US"
+        case "fr":
+            return "fr-FR"
+        case "it":
+            return "it-IT"
+    }
 }
