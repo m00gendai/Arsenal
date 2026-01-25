@@ -284,10 +284,14 @@ export function getShortCaliberNameFromArray(calibers:string[], displayNames:{na
 }  
 
 export function parseDate(date: string){
-  if(date === null){
-    return ""
-  }
-  return new Date(date).toLocaleDateString("de-CH", dateTimeOptions)
+    if(date === null){
+        return ""
+    }
+    const checkDate: Date = new Date(date)
+    if (isNaN(checkDate.getTime())) {
+        return `Invalid Date isNaN utils: ${date}`
+    }
+    return checkDate.toLocaleDateString("de-CH", dateTimeOptions)
 }
 
 export function getLocalesFromLanguage(language:Languages){

@@ -71,8 +71,20 @@ export default function Item_details(){
             return getCleanIntervalDisplayValue()
         }
         if(datePickerTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name]){
-            return new Date(currentItem[dataItem.name]).toLocaleDateString("de-CH", dateTimeOptions)
+            let date: Date
+            try {
+                date = new Date(currentItem[dataItem.name])
+                
+                if (isNaN(date.getTime())) {
+                    return `Invalid Date isNaN: ${currentItem[dataItem.name]}`
+                }
+
+                return date.toLocaleDateString("de-CH", dateTimeOptions)
+            } catch (e) {
+                return `Invalid Date catch: ${currentItem[dataItem.name]}`
+            }
         }
+
         return currentItem[dataItem.name]
     }
 
