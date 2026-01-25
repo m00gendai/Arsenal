@@ -1,5 +1,3 @@
-V2.1.0
-
 L’app svizzera per la gestione delle armi: realizzata in Svizzera da collezionisti di armi per collezionisti di armi!
 
 Create una collezione delle vostre armi con foto e molti parametri, tra cui:
@@ -26,10 +24,12 @@ Tenete sotto controllo anche i vostri accessori e le parti d’arma:
 - Collegate una parte d’arma ad un’altra parte o a un’arma, sempre con indicazione visiva
 - Riassegnate o smontate rapidamente un elemento tramite un’azione rapida (QuickMount)
 
+Non dimenticate la vostra collezione di letteratura specializzata!
+
 Create file PDF con la semplice pressione di un tasto:
 - L’intera collezione di armi e/o munizioni in forma tabellare
 - La collezione di armi secondo l’articolo 5 in forma di tabella
-- Una singola arma o una singola voce di munizioni presentata in modo gradevole (p. es. per la bacheca del club)
+- Un singolo elemento della collezione presentato in modo gradevole (p. es. per la bacheca del club)
 
 QuickShot: Avete sparato con un’arma? Con un clic dalla collezione potete regolare il carico di tiro. Le munizioni compatibili vengono mostrate automaticamente e lo stock del calibro selezionato viene aggiornato se aumentate il carico. È anche possibile modificare il carico senza influenzare lo stock.
 
@@ -37,11 +37,17 @@ QuickStock: La vostra scorta di munizioni è cambiata? Modificatela in un clic d
 
 QuickMount: Associate rapidamente un accessorio o una parte d’arma ad un altro elemento, senza dover modificare la voce.
 
+QuickBatt: Avete sostituito la batteria del vostro mirino reflex? Con QuickBatt viene immediatamente registrata la data attuale del cambio batteria.
+
+QuickClean: Avete finalmente pulito un’arma? Con QuickClean viene immediatamente registrata la data attuale della pulizia.
+
 Avviso di scorta: Se definite una quantità critica, venite avvisati visivamente quando lo stock scende al di sotto del valore indicato.
+
+Promemoria di pulizia: Definite gli intervalli di pulizia – tramite intervalli di tempo predefiniti o dopo X colpi sparati. L’app vi avvisa visivamente quando l’intervallo è stato superato.
 
 Salvate e importate i vostri database – come file ZIP completo con database e immagini oppure separatamente per ogni collezione in formato CSV (senza immagini)! Potete anche importare file Excel esistenti (CSV)!
 
-Altre funzionalità: filtro per parole chiave, ricerca, diverse palette di colori (chiara e scura), funzioni di ordinamento, visualizzazione a griglia, a elenco o elenco compatto.
+Altre funzionalità: filtro per parole chiave, ricerca, diverse palette di colori (chiara e scura), funzioni di ordinamento, autocompletamento, visualizzazione a griglia, a elenco o elenco compatto.
 
 Tutto funziona al 100% offline e non richiede alcun accesso a Internet. Tutti i dati sono memorizzati localmente sul dispositivo e possono essere esportati quando necessario. Nessun server, nessuna telemetria (tranne il Play Store).
 
@@ -49,46 +55,3 @@ L’app è disponibile in cinque lingue: tedesco, francese, italiano, inglese e�
 
 Compra una volta, usa per sempre!
 Gli aggiornamenti costano cinque franchi per tutta la durata dell’applicazione. Nessun abbonamento, nessun acquisto in-app, nessuna pubblicità!
-
-V1.0.0 - V2.0.1
-L'app svizzera per la gestione delle armi: realizzata in Svizzera da collezionisti di armi per collezionisti di armi!
-
-Create una collezione delle vostre armi, con foto e molti parametri, tra cui
-- Fino a 5 foto con modalità galleria
-- Calibro (supporta più calibri per arma, ad esempio .357 Magnum, .38 Special) con elenco di selezione facile da usare
-- Data di acquisizione con selezione del calendario
-- Colore con selezione del colore
-- Caratteristiche per le armi ai sensi dell'articolo 5 della Legge sulle armi svizzera.
-- Commenti liberi
-È possibile aggiungere parole chiave personalizzate!
-
-Gestite il vostro stock di munizioni, con foto e molti parametri, tra cui
-- Fino a 5 foto, con modalità galleria
-- Calibro con elenco di selezione facile da usare
-- Modifica dell'ultima quantità con selezione da calendario o automaticamente con QuickShot/QuickStock
-- Quantità critica 
-- Commenti liberi
-Aggiungete anche parole chiave personalizzate!
-
-Creazione di file PDF con la semplice pressione di un tasto:
-- La collezione completa di armi e/o munizioni come panoramica tabellare
-- La collezione di armi in conformità con l'articolo 5 come panoramica tabellare
-- Una singola arma o una singola munizione presentata in modo attraente (ad esempio per la bacheca del club)
-
-QuickShot: avete sparato con un'arma? Con un solo clic dalla collezione di armi, è possibile regolare il carico dei colpi: i tipi di munizioni compatibili dalla scorta di munizioni vengono visualizzati automaticamente, in modo che la scorta di munizioni del calibro selezionato venga regolata automaticamente quando si aumenta il carico dei colpi. Naturalmente, il carico dei pallini può essere regolato anche senza influenzare la scorta.
-
-QuickStock: la scorta di munizioni è cambiata? Con un solo clic dalla panoramica delle munizioni, è possibile regolare il calcio, sia in aumento che in diminuzione.
-
-Avviso di scorta: se avete specificato una quantità critica per un tipo di munizione, la panoramica delle munizioni vi avviserà visivamente se la scorta scende al di sotto di tale quantità.
-
-Salvate e importate i vostri database, separatamente per armi e munizioni, in formato Arsenal o CSV! È anche possibile importare i file Excel esistenti (CSV)!
-
-Altre funzioni: Filtro per parole chiave, funzione di ricerca, diverse palette di colori (chiari e scuri), funzione di ordinamento, visualizzazione a piastrelle o a elenco.
-
-Tutto è 100% offline e non richiede l'accesso a Internet. Tutti i dati sono memorizzati localmente sul dispositivo e possono essere esportati se necessario. Nessun server, nessuna telemetria (a parte il Playstore stesso).
-
-L'applicazione è disponibile in cinque lingue: Tedesco, francese, italiano, 
-inglese e... Rumantsch Grischun! È stata sviluppata in Svizzera e si rivolge alle esigenze dei collezionisti di armi svizzeri, ma può naturalmente essere utilizzata in tutto il mondo.
-
-Compra una volta, usa sempre!
-Gli aggiornamenti sono disponibili a cinque franchi per tutta la durata dell'applicazione. Nessuna rata mensile, nessun acquisto in-app, nessuna pubblicità!
