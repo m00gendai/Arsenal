@@ -87,6 +87,22 @@ export default function ItemCard({ item }:Props){
         return isDanger
     }
 
+    function validateImage(item:ItemType){
+        if(!item.images){
+            return false
+        }
+        if(!Array.isArray(item.images)){
+            return false
+        }
+        if(item.images.length === 0){
+            return false
+        }
+        if(item.images[0].split("/").pop() === ""){
+            return false
+        }
+        return true
+    }
+
     return(
         <View>
             <TouchableNativeFeedback 
@@ -137,7 +153,7 @@ export default function ItemCard({ item }:Props){
                     {displaySettings[currentCollection] === "grid" ? 
                         <View>
                             <Card.Cover 
-                                source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                                source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                                 style={{
                                     height: 100,
                                 }}
@@ -197,7 +213,7 @@ export default function ItemCard({ item }:Props){
                         >
                             {generalSettings.displayImagesInListViewGun ? 
                                 <Card.Cover 
-                                    source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                                    source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                                     style={{
                                         height: "75%",
                                         aspectRatio: "4/3"
