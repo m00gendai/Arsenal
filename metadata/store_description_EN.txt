@@ -9,13 +9,9 @@ Create a collection of your weapons, with photos and many parameters, including
 - Free comments
 You can also add individual keywords!
 
-Manage your ammunition stock, with photos and many parameters, including
-- Up to 5 photos, with gallery mode
-- Caliber with easy to use selection list
+Manage your ammunition stock, too:
 - Last quantity change with calendar selection or automatically with QuickShot/QuickStock
 - Critical quantity 
-- Free comments
-Add individual keywords too!
 
 Keep your accessories and weapon parts under control, too:
 - Multiple subcategories of accessories and weapon parts such as silencers, barrels, optics, etc
@@ -37,13 +33,9 @@ QuickStock: Has your ammunition stock changed? With one click from the ammunitio
 
 QuickMount: Quickly link an accessory or a weapon part to something else without having to edit the entry directly
 
-QuickBatt: Changed your reflex sight battery? With QuickBatt, the current date will be immediately set for the battery change field!
-
-QuickClean: Finally cleaned something? With QuickClean, the current date will be immediately set for the cleaned field!
-
 Stock warning: If you have specified a critical quantity for a type of ammunition, the ammunition overview will give you a visual warning if your stock falls below this quantity.
 
-Cleaning reminder: Define in what intervals you want to be reminded to clean something - choose from predefined time intervals or after X shots fired. The app will give you a visual warning if the interval has been reached.
+Cleaning reminder: Define in what intervals you want to be reminded to clean something - choose from predefined time intervals or after X shots fired. 
 
 Save and import your databases - as a complete ZIP-file with database and images or separately for each collection in CSV-format (without images)! Import your custom Excel files, too (CSV)!
 

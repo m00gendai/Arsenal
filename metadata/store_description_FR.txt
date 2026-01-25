@@ -9,13 +9,9 @@ Créez une collection de vos armes, avec photos et de nombreux paramètres, nota
 - Remarques libres
   Ajoutez également vos propres mots-clés!
 
-Gérez votre stock de munitions, avec photos et de nombreux paramètres, notamment:
-- Jusqu’à 5 photos, avec mode galerie
-- Calibre avec liste de sélection simple
+Gérez votre stock de munitions aussi:
 - Dernière modification de quantité avec sélection du calendrier ou automatiquement avec QuickShot/QuickStock
 - Quantité critique
-- Remarques libres
-  Ajoutez aussi vos propres mots-clés!
 
 Gardez également le contrôle de vos accessoires et pièces d’armes:
 - Plusieurs sous-catégories d’accessoires et de pièces (silencieux, canons interchangeables, optiques, etc.)
@@ -37,13 +33,9 @@ QuickStock: votre stock de munitions a-t-il changé ? En un clic depuis l’aper
 
 QuickMount: associez rapidement un accessoire ou une pièce d’arme à un autre élément, sans modifier l’entrée.
 
-QuickBatt: avez-vous remplacé la batterie de votre viseur reflex ? Avec QuickBatt, la date actuelle est immédiatement enregistrée pour le changement de batterie.
-
-QuickClean: avez-vous enfin nettoyé une arme ? Avec QuickClean, la date actuelle est immédiatement enregistrée comme date de nettoyage.
-
 Avertissement de stock: si vous avez défini une quantité critique pour un type de munitions, l’aperçu vous avertit visuellement lorsque votre stock passe en dessous.
 
-Rappel de nettoyage: définissez les intervalles de nettoyage – à l’aide d’intervalles prédéfinis ou après X coups tirés. L’application vous avertit visuellement lorsque l’intervalle est dépassé.
+Rappel de nettoyage: définissez les intervalles de nettoyage – à l’aide d’intervalles prédéfinis ou après X coups tirés. 
 
 Enregistrez et importez vos bases de données – sous forme de fichier ZIP complet avec base de données et images ou séparément pour chaque collection en format CSV (sans images)! Importez également vos fichiers Excel existants (CSV)!
 

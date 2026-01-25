@@ -9,13 +9,9 @@ Create una collezione delle vostre armi con foto e molti parametri, tra cui:
 - Commenti liberi
   Aggiungete anche parole chiave personalizzate!
 
-Gestite il vostro stock di munizioni, con foto e molti parametri, tra cui:
-- Fino a 5 foto con modalità galleria
-- Calibro con elenco di selezione semplice
+Gestite anche il vostro stock di munizioni:
 - Ultima modifica della quantità con selezione da calendario o automaticamente con QuickShot/QuickStock
 - Quantità critica
-- Commenti liberi
-  Aggiungete anche parole chiave personalizzate!
 
 Tenete sotto controllo anche i vostri accessori e le parti d’arma:
 - Diverse sottocategorie di accessori e parti (silenziatori, canne intercambiabili, ottiche, ecc.)
@@ -37,13 +33,9 @@ QuickStock: La vostra scorta di munizioni è cambiata? Modificatela in un clic d
 
 QuickMount: Associate rapidamente un accessorio o una parte d’arma ad un altro elemento, senza dover modificare la voce.
 
-QuickBatt: Avete sostituito la batteria del vostro mirino reflex? Con QuickBatt viene immediatamente registrata la data attuale del cambio batteria.
-
-QuickClean: Avete finalmente pulito un’arma? Con QuickClean viene immediatamente registrata la data attuale della pulizia.
-
 Avviso di scorta: Se definite una quantità critica, venite avvisati visivamente quando lo stock scende al di sotto del valore indicato.
 
-Promemoria di pulizia: Definite gli intervalli di pulizia – tramite intervalli di tempo predefiniti o dopo X colpi sparati. L’app vi avvisa visivamente quando l’intervallo è stato superato.
+Promemoria di pulizia: Definite gli intervalli di pulizia – tramite intervalli di tempo predefiniti o dopo X colpi sparati. 
 
 Salvate e importate i vostri database – come file ZIP completo con database e immagini oppure separatamente per ogni collezione in formato CSV (senza immagini)! Potete anche importare file Excel esistenti (CSV)!
 

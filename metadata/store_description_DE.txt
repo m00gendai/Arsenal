@@ -9,13 +9,9 @@ Legen Sie eine Sammlung Ihrer Waffen an, mit Fotos und vielen Parametern, unter 
 - Freie Bemerkungen
 Fügen Sie auch individuelle Schlagworte hinzu!
 
-Verwalten Sie Ihren Munitionsbestand, mit Fotos und vielen Parametern, unter anderem:
-- Bis zu 5 Fotos, mit Galeriemodus
-- Kaliber mit einfach zu handhabender Auswahlliste
-- Letzte Mengenänderung mit Kalenderauswahl oder automatisch mit QuickShot/QuickStock
+Verwalten Sie auch Ihren Munitionsbestand:
 - Kritische Menge 
 - Freie Bemerkungen
-Fügen Sie auch individuelle Schlagworte hinzu!
 
 Behalten Sie auch ihr Zubehör und einzelne Waffenbestandteile unter Kontrolle:
 - Mehrere Unterkategorien von Zubehör und Waffenbestandteilen wie Schalldämpfer, Wechselläufe, Optiken, etc
@@ -37,13 +33,9 @@ QuickStock: Hat sich Ihr Munitionsbestand geändert? Mit einem Klick aus der Mun
 
 QuickMount: Ein Zubehör oder Waffenbestandteil schnell etwas anderem zuordnen, ohne den betreffenden Eintrag direkt editieren zu müssen.
 
-QuickBatt: Batterie vom Reflexvisier gewechselt? Mit QuickBatt wird sofort das aktuelle Datum für den Batteriewechsel eingetragen.
-
-QuickClean: Waffe endlich mal gereinigt? Mit QuickClean wird sofort das aktuelle Datum für die Reinigung eingetragen.
-
 Bestandswarnung: Haben Sie eine kritische Menge bei einer Munitionssorte angegeben, so warnt Sie die Munitionsübersicht optisch, wenn Ihr Bestand unter diese Menge fällt.
 
-Reinigungserinnerung: Legen Sie fest, in welchen Intervallen etwas gereinigt werden sollte - mit vorgefertigten Zeitintervallen oder nach X Schuss! Die App warnt optisch, wenn der Intervall überschritten wurde.
+Reinigungserinnerung: Legen Sie fest, in welchen Intervallen etwas gereinigt werden sollte - mit vorgefertigten Zeitintervallen oder nach X Schuss! 
 
 Speichern und Importieren Sie Ihre Datenbanken - als komplette ZIP-Datei mit Datenbank und Bildern oder separat für jede Sammlung im CSV-Format (dann aber ohne Bilder)! Importieren Sie auch Ihre bestehenden Excel-Dateien (CSV)!
 
