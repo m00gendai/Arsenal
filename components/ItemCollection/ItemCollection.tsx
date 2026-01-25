@@ -22,7 +22,7 @@ import OnboardingDialog from 'components/Dialogs/Onboarding/OnboardingDialog';
 import Hints from 'components/Hints/Hints';
 
 export default function ItemCollection({navigation, route}){
-  
+
   const [searchQuery, setSearchQuery] = useState<string>("")
   const { currentCollection, setCurrentItem } = useItemStore()
   const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn, theme, generalSettings } = usePreferenceStore()
@@ -70,10 +70,11 @@ useEffect(() => {
   fabWidth.value = withRepeat(withTiming(1.2, { duration: 1000 }), -1, true);
 
   const pulsate = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: itemData.length === 0 ? fabWidth.value : 1}]
-    };
-  });
+    const count = itemData?.length ?? 0; 
+      return {
+        transform: [{ scale: count === 0 ? fabWidth.value : 1}]
+      }
+  })
 
   function handleFAB(){
     setHideBottomSheet(true)
