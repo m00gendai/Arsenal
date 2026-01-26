@@ -12,7 +12,7 @@
     },
     "releaseCandidate": {
       "android": {
-        "buildType": "app-bundle",
+        "buildType": "apk",
         "autoIncrement": true
       },
       "env": {

@@ -4,7 +4,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { tabBarLabels } from "lib/textTemplates";
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs";
+import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs/configs";
 import { useViewStore } from "stores/useViewStore";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -15,7 +15,7 @@ import { useRef, useState } from "react";
 import BottomBar_AccessoryCollection from "./BottomBar_AccessoryCollection";
 import BottomBar_LiteratureCollection from "./BottomBar_LiteratureCollection";
 import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
-import { CollectionType, Screens, StackParamList } from "interfaces";
+import { CollectionType, Screens, StackParamList } from "lib/interfaces";
 import { useItemStore } from "stores/useItemStore";
 import BottomBar_PartCollection from "./BottomBar_PartCollection";
 import { State } from "react-native-gesture-handler";
@@ -39,7 +39,7 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
 
   const progress = useSharedValue<number>(0);
   
-  const data = ["Accessories", "Parts"] // ["Accessories", "Literature", "Reloading"];
+  const data = ["Accessories", "Parts", "Literature"] // ["Accessories", "Literature", "Reloading"];
   
   const width = Dimensions.get("window").width;
 
@@ -129,10 +129,10 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
             {index === 0 ? 
               <BottomBar_AccessoryCollection handleNavigation={handleNavigation} /> :
               index=== 1 ? 
-              <BottomBar_PartCollection handleNavigation={handleNavigation} /> : null /*
+              <BottomBar_PartCollection handleNavigation={handleNavigation} /> :
               index=== 2 ? 
-              <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> :
-              null*/}
+              <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
+              null}
             </Card>
           )}
         />

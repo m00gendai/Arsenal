@@ -25,7 +25,10 @@ export const gunCollection = sqliteTable('guns', {
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt: text("lastCleanedAt"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
     fullAuto: integer("fullAuto", {mode: "boolean"}).default(false),
@@ -36,6 +39,7 @@ export const gunCollection = sqliteTable('guns', {
     decepticon: integer("decepticon", {mode: "boolean"}).default(false),
     blooptoob: integer("blooptoob", {mode: "boolean"}).default(false),
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const gunTags = sqliteTable("gunTags", {
@@ -57,11 +61,14 @@ export const legacyAmmoCollection = sqliteTable("ammo", {
     originCountry: text("originCountry"),
     caliber: text("caliber"),
     headstamp: text("headstamp"),
+    bulletWeight: text("bulletWeight"),
+    bulletType: text("bulletType"),
     currentStock: text("currentStock"),
     lastTopUpAt: text("lastTopUpAt"),
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const ammoCollection = sqliteTable("ammo", {
@@ -76,11 +83,14 @@ export const ammoCollection = sqliteTable("ammo", {
     originCountry: text("originCountry"),
     caliber: text("caliber", {mode: "json"}),
     headstamp: text("headstamp"),
+    bulletWeight: text("bulletWeight"),
+    bulletType: text("bulletType"),
     currentStock: text("currentStock"),
     lastTopUpAt: text("lastTopUpAt"),
     lastTopUpAt_unix: integer("lastTopUpAt_unix"),
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const ammoTags = sqliteTable("ammoTags", {
@@ -156,9 +166,13 @@ export const partCollection_ConversionKit = sqliteTable("parts_conversionKit", {
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const part_ConversionKitTags = sqliteTable("parts_conversionKitTags", {
@@ -182,7 +196,7 @@ export const partCollection_Barrel = sqliteTable("parts_barrel", {
     caliber: text("caliber", {mode: "json"}),
     serial: text("serial"),
     thread: text("thread"),
-    length: text("length"),
+    barrelLength: text("barrelLength"),
     currentlyMountedOn: text("currentlyMountedOn"),
     permit: text("permit"),
     acquisitionDate_unix: integer("acquisitionDate_unix"),
@@ -192,9 +206,13 @@ export const partCollection_Barrel = sqliteTable("parts_barrel", {
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const part_BarrelTags = sqliteTable("parts_barrelTags", {
@@ -228,10 +246,14 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
@@ -255,6 +277,7 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     serial: text("serial"),
     reticle: text("reticle"),
     reticleColor: text("reticleColor"),
+    footprint: text("footprint"),
     zoom: text("zoom"),
     unit: text("unit"),
     clicksToUnitElevation: text("clicksToUnitElevation"),
@@ -267,11 +290,15 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
@@ -307,11 +334,15 @@ export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_ScopeTags = sqliteTable("accessories_scopeTags", {
@@ -335,6 +366,7 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     serial: text("serial"),
     permit: text("permit"),
     lumen: text("lumen"),
+    candela: text("candela"),
     wavelength: text("wavelength"),
     laserPower: text("laserPower"),
     acquisitionDate_unix: integer("acquisitionDate_unix"),
@@ -346,7 +378,8 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_LightLaserTags = sqliteTable("accessories_lightLaserTags", {
@@ -381,10 +414,14 @@ export const accessoryCollection_Magazine = sqliteTable("accessories_magazine", 
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
     lastCleanedAt_unix: integer("lastCleanedAt_unix"),
-    cleanInterval: text("cleanInterval", {enum: ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"]}),
+    cleanInterval: text("cleanInterval"),
+    cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
+    cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
+    cleanIntervalDisplay: text("cleanIntervalDisplay"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_MagazineTags = sqliteTable("accessories_magazineTags", {
@@ -411,7 +448,9 @@ export const accessoryCollection_Misc = sqliteTable("accessories_misc", {
     marketValue: text("marketValue"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
-    currentlyMountedOn: text("currentlyMountedOn")
+    currentlyMountedOn: text("currentlyMountedOn"),
+    serial: text("serial"),
+    customInventoryDesignation: text("customInventoryDesignation")
 })
 
 export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
@@ -419,6 +458,47 @@ export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
     label: text("label").notNull().unique("miscAccessoryTag_label"),
     color: text("color"),
     active: integer("active", {mode: "boolean"}).default(true),
+})
+
+export const literatureCollection_Book = sqliteTable("literature_book", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    language: text("language"),
+    title: text("title"),
+    subtitle: text("subtitle"),
+    isbn: text("isbn"),
+    publishingDate: text("publishingDate"),
+    author: text("author"),
+    publisher: text("publisher"),
+    edition: text("edition"),
+    series: text("series"),
+    volume: text("volume"),
+    pages: text("pages"),
+    format: text("format"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation")
+})
+
+export const literature_BookTags = sqliteTable("literature_bookTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("bookTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
+export const autocomplete = sqliteTable("autocomplete",{
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull(),
+    label: text("label").notNull().unique(),
+    field: text("field").notNull()
 })
 
 export const gunReminders = sqliteTable("gunReminder",{

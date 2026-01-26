@@ -1,0 +1,601 @@
+TEMPLATE
+
+<de-DE>
+Enter or paste your release notes for de-DE here
+</de-DE>
+<en-US>
+Enter or paste your release notes for en-US here
+</en-US>
+<fr-FR>
+Enter or paste your release notes for fr-FR here
+</fr-FR>
+<it-IT>
+Enter or paste your release notes for it-IT here
+</it-IT>
+
+v3.1.0
+<de-DE>
+Neu:
+- Sammlung: Literatur
+- Neue Felder für Munition, Licht&Laser, Optiken und Verschiedenes
+- Onboarding (setzen von präferierter Währung und Gewichts- und Längenmassen)
+- Hinweis-System
+- Autocomplete
+- Quick Actions: Batteriewechsel und Reinigung
+Verbessert:
+- Bilderreihenfolge veränderbar
+- Bilder drehbar
+- Reinigungsintervall überarbeitet
+- Zuletzt gewählte Kaliber in Kaliberauswahl aufgeführt
+Behoben:
+- CSV Importe/Exporte nur für Waffen und Munition
+- QuickShot hat angebautes Zubehör nicht berücksichtigt
+</de-DE>
+<en-US>
+New:
+- Collection: Literature
+- New fields for Ammunition, Lights&Lasers, Optics, and Miscellaneous
+- Onboarding (setting preferred currency and weight and length units)
+- In-app hint system
+- Autocomplete
+- Quick Actions: Battery replacement and cleaning
+Improved:
+- Image order can be changed
+- Images can be rotated
+- Cleaning interval revised
+- Recently selected calibers are now shown in the caliber selection
+Fixed:
+- CSV imports/exports limited to firearms and ammunition
+- QuickShot now correctly considers attached accessories
+</en-US>
+<fr-FR>
+Nouveautés:
+- Collection: Littérature
+- Nouveaux champs pour les munitions, lumière&laser, optiques et divers
+- Onboarding (définition de la devise préférée et des unités de poids et de longueur)
+- Système d’astuces intégré à l’application
+- Saisie semi-automatique
+- Actions rapides: remplacement de batterie et nettoyage
+Améliorations:
+- L’ordre des images peut être modifié
+- Rotation des images possible
+- Intervalle de nettoyage révisé
+- Les calibres récemment sélectionnés sont désormais affichés dans la sélection des calibres
+Corrections:
+- Import/export CSV limité aux armes et aux munitions
+- QuickShot prend désormais correctement en compte les accessoires montés
+</fr-FR>
+<it-IT>
+Novità:
+- Collezione: Letteratura
+- Nuovi campi per munizioni, luce&laser, ottiche e varie
+- Onboarding (impostazione della valuta preferita e delle unità di peso e lunghezza)
+- Sistema di suggerimenti integrato nell’app
+- Completamento automatico
+- Azioni rapide: sostituzione della batteria e pulizia
+Miglioramenti:
+- L’ordine delle immagini può essere modificato
+- Le immagini possono essere ruotate
+- Intervallo di pulizia rivisto
+- I calibri selezionati di recente sono ora mostrati nella selezione dei calibri
+Correzioni:
+- Importazione/esportazione CSV limitata ad armi e munizioni
+- QuickShot ora tiene correttamente conto degli accessori montati
+</it-IT>
+
+V2.1.0
+<de-DE>
+Neu:
+- Neue Sammlungskategorie: Zubehör
+- Neue Sammlungskategorie: Waffenbestandteile
+- Zubehör und Bestandteile lassen sich untereinander oder zu einer Waffe zuweisen
+- Kompakte Listenansicht
+Behoben:
+- Speichern nur möglich, nachdem ein anderes Eingabefeld ausgewählt wurde
+- Zahlenwerte mit Kommas führten zu kaputten Statistiken
+- Suchfeld in Munitionssamllung nicht sichtbar
+</de-DE>
+<en-US>
+New:
+- New collection category: Accessories
+- New collection category: Weapon parts
+- Accessories and parts can be linked with each other and to guns
+- Compact list view
+Fixed:
+- Saving only possible when another input field has been selected first
+- Number values with commas broke statistics
+- Searchfield in ammunition collection not visible
+</en-US>
+<fr-FR>
+Nouveau:
+- Nouvelle catégorie de collection: Accessoires
+- Nouvelle catégorie de collection: Pièces d’armes
+- Les accessoires et les pièces peuvent être liés entre eux et aux armes
+- Affichage de liste compact
+Correctif:
+- Enregistrement possible uniquement après avoir sélectionné un autre champ de saisie
+- Les valeurs numériques avec des virgules ont perturbé les statistiques
+- Le champ de recherche dans la collection de munitions n’était pas visible
+</fr-FR>
+<it-IT>
+Novità:
+- Nuova categoria di collezioni: Accessori
+- Nuova categoria di collezioni: Parti di armi
+- Accessori e parti possono essere collegati tra loro e alle armi
+- Visualizzazione compatta delle liste
+Risolti:
+- Salvataggio possibile solo dopo aver selezionato un altro campo di input
+- Valori numerici con virgole che causavano problemi con le statistiche
+- Campo di ricerca nella collezione di munizioni non visibi
+</it-IT>
+
+V2.0.1
+<de-DE>
+- Potentielle Out of Memory Fehler beim Export der Arsenal-Datenbank behoben
+- Fehler behoben bei seltenen Fällen, in denen Sammlungen erst dann angezeigt werden, wenn die Sortierreihenfolge manuell geändert wird
+</de-DE>
+<en-US>
+- Fixed potential out of memory errors in exporting Arsenal Database 
+- Fixed rare occasions where collections are not displayed until sorting order is manually changed
+</en-US>
+<fr-FR>
+- Correction d'erreurs potentielles de manque de mémoire lors de l'exportation de la base de données Arsenal 
+- Correction de cas rares où les collections ne sont pas affichées tant que l'ordre de tri n'est pas manuellement modifié
+</fr-FR>
+<it-IT>
+- Corretta la potenziale mancanza di memoria durante l'esportazione della banca dati Arsenal 
+- Corretta la rara situazione in cui le collezioni non vengono visualizzate finché l'ordine di ordinamento non viene cambiato manualmente
+</it-IT>
+
+V2.0.0
+<de-DE>
+Völlig überarbeitete interne Datenbankstruktur
+- Legacy-Importer für Arsenal-Datenbank der Version 1
+
+Weitere Änderungen:
+- Konsolidierte Datenbankoptionen im Hauptmenü
+- Nicht korrekt funktionierende Filter behoben
+- Hinzufügung einiger weiterer Sortierarten
+- Die Datenbankimporter sind viel toleranter gegenüber fehlerhaften Daten
+
+Weitere neue Funktionen werden in Version 2.1.0 eingeführt
+</de-DE>
+<en-US>
+Completely reworked internal database structure
+- Legacy importer for version 1 Arsenal database
+
+Other changes:
+- Consolidated database options in the main menu
+- Fixed some filters that were not working correctly
+- Added some additional sorting options
+- Database importers are much more tolerant to bad data
+
+More new features will be introduced in version 2.1.0
+</en-US>
+<fr-FR>
+Structure de la base de données interne entièrement révisée
+- Importateur de version 1 de la base de données Arsenal
+
+Autres modifications:
+- Options de la base de données consolidées dans le menu principal
+- Correction des filtres qui ne fonctionnaient pas correctement
+- Ajout de quelques autres types de tri
+- Les importateurs de base de données sont beaucoup plus tolérants aux données incorrectes
+
+D'autres nouvelles fonctionnalités seront introduites dans la version 2.1.0
+</fr-FR>
+<it-IT>
+Struttura di database interna completamente rinnovata
+- Legacy-Importer per la versione 1 del database di Arsenal
+
+Altre modifiche:
+- Opzioni di database consolidate nel menu principale
+- Corretti i filtri che non funzionavano correttamente
+- Aggiunte alcune opzioni di ordinamento
+- I database-importer sono molto più tolleranti nei confronti di dati errati
+
+Ulteriori nuove funzionalità saranno introdotte nella versione 2.1.0
+</it-IT>
+
+V1.4.1
+
+<de-DE>
+Kleinere Fehlerbehebungen
+</de-DE>
+<en-US>
+Minor bugfixes
+</en-US>
+<fr-FR>
+Corrections mineures de bogues
+</fr-FR>
+<it-IT>
+Correzioni di bug minori
+</it-IT>
+
+V1.4.0
+
+<de-DE>
+Behoben:
+- Suche mit Sonderzeichen in Munitionsübersicht 
+Neu:
+- Waffen filtern nach zuletzt geschossen und zuletzt gereinigt
+</de-DE>
+<en-US>
+Fixed:
+- Search with special characters in ammunition overview 
+New:
+- Filter weapons for last shot and last cleaned
+</en-US>
+<fr-FR>
+Corrigé:
+- Recherche avec des caractères spéciaux dans l'aperçu des munitions 
+Nouveau:
+- Filtrer les armes selon le dernier tir et le dernier nettoyage
+</fr-FR>
+<it-IT>
+Risolto:
+- Ricerca con caratteri speciali nella panoramica delle munizioni 
+Nuovo:
+- Le armi filtrano dopo l'ultimo sparo e l'ultimo pulito
+</it-IT>
+
+V1.3.0
+
+<de-DE>
+Behoben:
+- Datum immer zweistellig
+- Bild teilen fehlerhaft
+- "Out of Memory" Fehlermeldung bei Datenbankspeicherung
+Verbessert:
+- Kalibersuche überall toleranter
+- Ausgewählte Kaliber in Auswahl direkt löschbar
+- Verkürzte Kaliberbezeichnungen möglich (via Einstellungen)
+</de-DE>
+<en-US>
+Fixed:
+- Date always in two digits
+- Split image incorrect
+- "Out of Memory" error message for database storage
+Improved:
+- Calibre search more tolerant everywhere
+- Selected calibers in selection can be erased directly
+- Abbreviated calibre designations possible (via settings)
+</en-US>
+<fr-FR>
+Corrigé:
+- date toujours à deux chiffres
+- Partage d'image défectueux
+- Message d'erreur "Out of Memory" lors du stockage de la base de données
+Amélioré:
+- Recherche de calibre plus tolérant partout
+- Calibres sélectionnés dans la sélection directement effaçables
+- Désignations de calibres abrégées possibles (via les réglages)
+</fr-FR>
+<it-IT>
+Risolto:
+- Data sempre a due cifre
+- Condivisione immagine errata
+- Messaggio di errore "Out of Memory" durante la memorizzazione di una banca dati
+Migliorato:
+- Ricerca del calibro più tollerante ovunque
+- Calibri selezionati in selezione eliminabili direttamente
+- Denominazioni di calibro abbreviate possibili (tramite impostazioni)
+</it-IT>
+
+V1.2.3
+
+iOS:
+Behoben:
+- Bilder nach Update nicht mehr sichtbar
+- Warnung-Popup für die PDF Funktionen
+
+<de-DE>
+Code-Änderungen, keine sichtbaren Auswirkungen
+</de-DE>
+<en-US>
+Code changes, no visible impact
+</en-US>
+<fr-FR>
+Changements de code, aucune incidence visible
+</fr-FR>
+<it-IT>
+Cambiamenti di codice, nessun impatto visibile
+</it-IT>
+
+V1.2.2
+Removed Herobrine
+
+V1.2.1
+
+<de-DE>
+Behoben:
+- Neues Objekt mit alten Daten
+- Fehlerhafter Farbtext
+- Farbauswahl: Texte teils nicht an Hintergrundfarbe angepasst
+- Unnötige Leerzeichen in Exporten
+- Sortieren nach zuletzt hinzugefügt/zuletzt bearbeitet fehlerhafte Reihenfolge
+- Datumauswahl: Knopf für schnelle Monats- und Jahresauswahl zu wenig sichtbar
+</de-DE>
+<en-US>
+Fixed:
+- New object with old data
+- Incorrect colour text
+- Colour selection: texts not adapted to background colour
+- Unnecessary spaces in exports
+- Sort by last added/last edited incorrect order
+- Date selection: Button for quick month and year selection not visible enough
+</en-US>
+<fr-FR>
+Corrigé:
+- Nouvel objet avec d'anciennes données
+- Texte de couleur erroné
+- Choix des couleurs: Textes partiellement non adaptés à la couleur d'arrière-plan
+- Espaces inutiles dans les exportations
+- Tri par dernier ajout/dernier édité ordre erroné
+- Sélection de date: le bouton pour sélection rapide du mois et de l'année est trop peu visible
+</fr-FR>
+<it-IT>
+Risolto:
+- Nuovo oggetto con dati vecchi
+- Testo a colori errato
+- Selezione colore: testi non adattati al colore di sfondo
+- Spazi inutili nelle esportazioni
+- Ordina per ultimo aggiunto/ultimo modificato ordine errato
+- Selezione data: pulsante per la selezione rapida del mese e dell' anno troppo poco visibile
+</it-IT>
+
+V1.2.0
+
+Detailed Fixes:
+Both platforms
+- Cancel of new object not possible
+- Long keywords display error filter menu
+- Calendar week starts Sunday
+- Weapon: main colour not deletable
+- Ammunition: Current quantity cannot be edited
+- Potential freezing on spreadsheet printing
+- QuickShot negative quantities possible
+iOS
+- Scrolling opens Dialog Windows
+- Keyboard overlap
+
+<de-DE>
+Behoben:
+- Diverse Fehler
+Verbessert:
+- Farbnamen statt Hex-Code (Englisch)
+- Eingabefeld für Farben
+- Mehr Artikel 5
+- Kalibersuche toleranter
+Neu:
+- Luftgewehr/Airsoft Munition
+- Feld für Kaufort
+- Bilder teilen
+- Objekt Klonen (langer Druck in Listenansicht)
+</de-DE>
+<en-US>
+Fixed:
+- Miscellaneous bugs
+Improved:
+- Colour names instead of hex code (English)
+- Input field for colours
+- more Article 5
+- Calibre search more tolerant
+New:
+- Air rifle/Airsoft ammunition
+- field for place of purchase
+- Share pictures
+- Object Clone (long press in list view)
+</en-US>
+<fr-FR>
+Corrigé:
+- Diverses erreurs
+Amélioré:
+- Nom de couleur au lieu du code hexagonal (anglais)
+- Zone de saisie des couleurs
+- Voir article 5
+- recherche de calibre plus tolérant
+Nouveau:
+- Fusil à air comprimé/Munitions Airsoft
+- Champ pour le lieu d'achat
+- Partager des images
+- Clonage d'objets (longue impression en vue liste)
+</fr-FR>
+<it-IT>
+Risolto:
+- Errori vari
+Migliorato:
+- Nome del colore invece del codice esagonale (Inglese)
+- Campo di inserimento dei colori
+- Più articolo 5
+- Ricerca del calibro più tollerante
+Nuovo:
+- Fucili ad aria compressa/Munizioni Airsoft
+- Campo per il luogo di acquisto
+- Condividi immagini
+- Oggetto Clonazione (premere a lungo nella vista a lista)
+</it-IT>
+
+
+V1.1.0
+
+<de-DE>
+Behoben:
+- Darstellungsfehler bei Munition ohne Kaliberangabe
+- Neues Sammlungsobjekt wird nicht an richtiger Position eingefügt
+Verbessert:
+- Suche schliesst Kaliber mit ein
+Neu:
+- Neue Sortieroptionen für Waffen
+- Neues Feld "Aktueller Marktwert"
+- Rudimentäre Statistiken
+</de-DE>
+<en-US>
+Fixed:
+- Display error for ammunition without calibre indication
+- New collection object is not inserted in correct position
+Improved:
+- Search includes calibre
+New:
+- New sorting options for weapons
+- New field "Current Market Value"
+- Rudimentary statistics
+</en-US>
+<fr-FR>
+Corrigé:
+- erreur de présentation pour les munitions sans indication de calibre
+- Le nouvel objet de collection n'est pas inséré au bon endroit
+Amélioré:
+- La recherche inclut le calibre
+Nouveau:
+- Nouvelles options de tri des armes
+- Nouveau champ "Valeur de marché actuelle"
+- Statistiques rudimentaires
+</fr-FR>
+<it-IT>
+Risolto:
+- Errore di rappresentazione delle munizioni senza calibro
+- Impossibilità di inserire il nuovo oggetto nella posizione corretta
+Migliorato:
+- La ricerca include i calibri
+Nuovo:
+- Nuove opzioni di smistamento per le armi
+- Nuova casella "Valore di mercato attuale"
+- Statistiche rudimentali
+</it-IT>
+
+BETA 1.2.0-rc
+
+<de-DE>
+Behoben:
+- Liste merkt sich Scrollposition nicht
+- CSV Import hat Kaliberfeld falsch gesetzt
+- CSV Import hat Status falsch gesetzt
+- Diverse kleinere Darstellungsfehler behoben
+Verbessert:
+- Munition mit Kaliber in der Listen-/Kachelansicht
+- Sortierfunktion genauer
+- Farbrahmen um Waffe ansehnlicher
+- Löschfunktion jetzt auch im Bearbeitungsmodus und besser ersichtlich
+</de-DE>
+<en-US>
+Fixed:
+- List does not remember scroll position
+- CSV import has set caliber field incorrectly
+- CSV import has set status incorrectly
+- Various minor display errors fixed
+Improved:
+- Ammunition with caliber in the list/tile view
+- Sorting function more accurate
+- Color frame around weapon more attractive
+- Delete function now also in edit mode and better visible
+</en-US>
+<fr-FR>
+Correction d'un problème :
+- La liste ne se souvient pas de la position de défilement
+- L'importation CSV ne définissait pas correctement le champ de calibre
+- L'importation CSV a un statut incorrect
+- Correction de diverses petites erreurs d'affichage
+Amélioration de l'affichage :
+- Munitions avec calibre dans la vue liste/carreau
+- Fonction de tri plus précise
+- Cadre de couleur plus visible autour de l'arme
+- Fonction d'effacement maintenant aussi en mode édition et plus visible
+</fr-FR>
+<it-IT>
+Corretto:
+- L'elenco non ricorda la posizione di scorrimento
+- L'importazione CSV ha impostato il campo calibro in modo errato
+- L'importazione CSV ha uno stato sbagliato
+- Corretti vari errori di visualizzazione minori
+Migliorato:
+- Munizioni con calibro nella vista elenco/piastrella
+- Funzione di ordinamento più accurata
+- Cornice di colore intorno all'arma più attraente
+- Funzione di cancellazione ora anche in modalità di modifica e meglio visibile
+</it-IT>
+
+BETA 1.1.1
+
+<de-DE>
+Behoben: 
+- Potentielles Einfrieren der App beim Start
+- Reinigungsintervall auf Waffenliste
+- Galerie-Druck einer Waffe hat Munitionsparameter
+</de-DE>
+<en-US>
+Fixed: 
+- Potential freezing of the app at startup
+- Cleaning interval on weapon list
+- Gallery print of a weapon has ammunition parameters
+</en-US>
+<fr-FR>
+Correction d'un problème : 
+- Gel potentiel de l'application au démarrage
+- Intervalle de nettoyage sur la liste des armes
+- La pression de la galerie d'une arme a des paramètres de munitions
+</fr-FR>
+<it-IT>
+Corretto: 
+- Possibile blocco dell'applicazione all'avvio
+- Intervallo di pulizia nell'elenco delle armi
+- La stampa della galleria di un'arma contiene i parametri delle munizioni
+</it-IT>
+
+BETA 1.1.0
+
+<de-DE>
+Neu:
+- Biometrisches Login
+- Leere Felder in Sammlungsobjekten ausblenden
+- Suche in Kaliberauswahl
+- CSV Import mit oder ohne Kopfzeile
+Behoben:
+- undefined Objekt bei CSV Import
+- Sortierreihenfolge
+</de-DE>
+<en-US>
+New:
+- Biometric login
+- Hide empty fields in collection objects
+- Search in caliber selection
+- CSV import with or without header
+Fixed:
+- undefined object in CSV import
+- Sort order
+</en-US>
+<fr-FR>
+Nouveau :
+- Connexion biométrique
+- Masquer les champs vides dans les objets de collection
+- Recherche dans la sélection de calibres
+- Importation CSV avec ou sans en-tête
+Correction :
+- Objet non défini lors de l'importation CSV
+- Ordre de tri
+</fr-FR>
+<it-IT>
+Nuovo:
+- Accesso biometrico
+- Nascondere i campi vuoti negli oggetti di raccolta
+- Ricerca nella selezione dei calibri
+- Importazione CSV con o senza intestazione
+Corretto:
+- Oggetto non definito nell'importazione CSV
+- Ordinamento
+</it-IT>
+    
+BETA 1.0.0
+
+<de-DE>
+Fehler behoben, der die App abstürzen liess, wenn ein neuer Munitionseintrag erstellt wurde
+</de-DE>
+<en-US>
+Fixed bug that crashed the App if a new ammunition entry was created
+</en-US>
+<fr-FR>
+Correction d'un bug qui faisait planter l'application si une nouvelle entrée de munitions était créée
+</fr-FR>
+<it-IT>
+Corretto un bug che mandava in crash l'app se veniva creata una nuova voce di munizioni
+</it-IT>

@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { GunType } from "../interfaces"
+import { GunType } from "../lib/interfaces"
 
 interface GunStore {
     gunCollection: GunType[]

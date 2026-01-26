@@ -2,8 +2,8 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateTimeOptions, defaultViewPadding } from "../configs";
-import { AmmoType } from "../interfaces";
+import { dateTimeOptions, defaultViewPadding } from "../configs/configs";
+import { AmmoType } from "../lib/interfaces";
 import { ammoQuickUpdate, gunQuickShot } from "../lib/textTemplates";
 import { db } from "../db/client"
 import * as schema from "../db/schema"

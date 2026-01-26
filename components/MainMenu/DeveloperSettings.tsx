@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { collectionImportTables, defaultViewPadding } from "configs";
-import { PREFERENCES } from "configs_DB";
+import { collectionImportTables, defaultViewPadding } from "configs/configs";
+import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
 import * as schema from "db/schema"
-import DEV_importLegacyDatabaseAsJSON from "functions/DEV_importLegacyDatabaseAsJSON";
+import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
+import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";
@@ -128,6 +129,18 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onErrorContainer}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>DEV_importLegacyDatabaseAsJSON("ammo")}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Inject ammo JSON</Text>
+                    <IconButton 
+                        icon="ammunition" 
+                        iconColor={theme.colors.onErrorContainer}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>DEV_injectBadItem_date()}
                     />
                 </View>
 

@@ -1,0 +1,49 @@
+L’app svizzera per la gestione delle armi: realizzata in Svizzera da collezionisti di armi per collezionisti di armi!
+
+Create una collezione delle vostre armi con foto e molti parametri, tra cui:
+- Fino a 5 foto con modalità galleria
+- Calibri (più per arma, p. es. .357 Magnum, .38 Special) con elenco di selezione semplice
+- Data di acquisizione con selezione da calendario
+- Colore con selettore di colore
+- Caratteristiche delle armi secondo la Legge svizzera sulle armi, articolo 5
+- Commenti liberi
+  Aggiungete anche parole chiave personalizzate!
+
+Gestite anche il vostro stock di munizioni:
+- Ultima modifica della quantità con selezione da calendario o automaticamente con QuickShot/QuickStock
+- Quantità critica
+
+Tenete sotto controllo anche i vostri accessori e le parti d’arma:
+- Diverse sottocategorie di accessori e parti (silenziatori, canne intercambiabili, ottiche, ecc.)
+- Ogni sottocategoria ha le proprie caratteristiche
+- Collegate un accessorio ad un altro accessorio, a una parte d’arma o a un’arma, con indicazione visiva nella panoramica della collezione
+- Collegate una parte d’arma ad un’altra parte o a un’arma, sempre con indicazione visiva
+- Riassegnate o smontate rapidamente un elemento tramite un’azione rapida (QuickMount)
+
+Non dimenticate la vostra collezione di letteratura specializzata!
+
+Create file PDF con la semplice pressione di un tasto:
+- L’intera collezione di armi e/o munizioni in forma tabellare
+- La collezione di armi secondo l’articolo 5 in forma di tabella
+- Un singolo elemento della collezione presentato in modo gradevole (p. es. per la bacheca del club)
+
+QuickShot: Avete sparato con un’arma? Con un clic dalla collezione potete regolare il carico di tiro. Le munizioni compatibili vengono mostrate automaticamente e lo stock del calibro selezionato viene aggiornato se aumentate il carico. È anche possibile modificare il carico senza influenzare lo stock.
+
+QuickStock: La vostra scorta di munizioni è cambiata? Modificatela in un clic dalla panoramica, sia in aumento sia in diminuzione.
+
+QuickMount: Associate rapidamente un accessorio o una parte d’arma ad un altro elemento, senza dover modificare la voce.
+
+Avviso di scorta: Se definite una quantità critica, venite avvisati visivamente quando lo stock scende al di sotto del valore indicato.
+
+Promemoria di pulizia: Definite gli intervalli di pulizia – tramite intervalli di tempo predefiniti o dopo X colpi sparati. 
+
+Salvate e importate i vostri database – come file ZIP completo con database e immagini oppure separatamente per ogni collezione in formato CSV (senza immagini)! Potete anche importare file Excel esistenti (CSV)!
+
+Altre funzionalità: filtro per parole chiave, ricerca, diverse palette di colori (chiara e scura), funzioni di ordinamento, autocompletamento, visualizzazione a griglia, a elenco o elenco compatto.
+
+Tutto funziona al 100% offline e non richiede alcun accesso a Internet. Tutti i dati sono memorizzati localmente sul dispositivo e possono essere esportati quando necessario. Nessun server, nessuna telemetria (tranne il Play Store).
+
+L’app è disponibile in cinque lingue: tedesco, francese, italiano, inglese e… rumantsch grischun! Sviluppata in Svizzera per le esigenze dei collezionisti di armi svizzeri, ma utilizzabile ovunque nel mondo.
+
+Compra una volta, usa per sempre!
+Gli aggiornamenti costano cinque franchi per tutta la durata dell’applicazione. Nessun abbonamento, nessun acquisto in-app, nessuna pubblicità!

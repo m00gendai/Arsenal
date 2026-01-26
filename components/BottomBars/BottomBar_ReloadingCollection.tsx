@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
-import { defaultViewPadding, ScreenNames } from "configs";
+import { defaultViewPadding, ScreenNames } from "configs/configs";
 import { useViewStore } from "stores/useViewStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories, tabBarLabels } from "lib/textTemplates";

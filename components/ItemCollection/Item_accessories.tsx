@@ -1,9 +1,9 @@
 import { db } from "db/client";
-import { ItemType } from "interfaces";
+import { ItemType } from "lib/interfaces";
 import { useEffect, useState } from "react";
 import { SectionList, TouchableOpacity, View } from "react-native";
 import { Icon, Text } from 'react-native-paper';
-import { defaultViewPadding } from "configs";
+import { defaultViewPadding } from "configs/configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
 import * as schema from "db/schema"
@@ -11,7 +11,7 @@ import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
 import { tabBarLabels } from "lib/textTemplates";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PREFERENCES } from "configs_DB";
+import { PREFERENCES } from "configs/configs_DB";
 
 interface Props{
     currentItem: ItemType

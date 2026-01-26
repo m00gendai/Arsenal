@@ -1,15 +1,16 @@
-import { ScrollView, View } from "react-native";
+import { AccessibilityInfo, ScrollView, View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, List, Text, TextInput } from "react-native-paper";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateTimeOptions, defaultViewPadding } from "../configs";
+import { dateTimeOptions, defaultViewPadding } from "../configs/configs";
 import { gunQuickShot, shotLabel } from "../lib/textTemplates";
-import { useState } from "react";
-import { AmmoType, GunType, ItemType } from "../interfaces";
+import { useEffect, useState } from "react";
+import { AmmoType, GunType, ItemType } from "../lib/interfaces";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "../db/client"
 import * as schema from "../db/schema"
-import { eq } from 'drizzle-orm';
+import { eq, or, inArray } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore";
+import { access } from "fs";
 
 export default function QuickShot({navigation}){
 
@@ -21,18 +22,128 @@ export default function QuickShot({navigation}){
   const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
   const [negativeAmmoId, setNegativeAmmoId] = useState<string>("")
 
+  const [silencerData, setSilencerData] = useState([])
+  const [opticData, setOpticData] = useState([])
+  const [scopeData, setScopeData] = useState([])
+  const [lightLaserData, setLightLaserData] = useState([])
+  const [magazineData, setMagazineData] = useState([])
+  const [miscAccessoryData, setMiscAccessoryData] = useState([])
+  const [conversionKitData, setConversionKitData] = useState([])
+  const [barrelData, setBarrelData] = useState([])
+  
+useEffect(()=>{
+  async function getAccessoryData(){
+    const mountedData = await db.select()
+      .from(schema.accessoryMount)
+      .where(
+        or(
+          eq(schema.accessoryMount.parentGunId, currentItem.id),
+          eq(schema.accessoryMount.parentAccessoryId, currentItem.id),
+          eq(schema.accessoryMount.parentPartId, currentItem.id)
+        )
+        
+      )
+
+    const mountedIds = mountedData.map(d => d.accessoryId);
+
+    const silencerData = await db.select()
+      .from(schema.accessoryCollection_Silencer)
+      .where(
+        inArray(schema.accessoryCollection_Silencer.id, mountedIds)
+      )
+
+    setSilencerData(silencerData)
+
+    const opticData = await db.select()
+      .from(schema.accessoryCollection_Optic)
+      .where(
+        inArray(schema.accessoryCollection_Optic.id, mountedIds)
+      )
+
+    setOpticData(opticData)
+
+    const scopeData = await db.select()
+      .from(schema.accessoryCollection_Scope)
+      .where(
+        inArray(schema.accessoryCollection_Scope.id, mountedIds)
+      )
+
+    setScopeData(scopeData)
+
+    const lightLaserData = await db.select()
+      .from(schema.accessoryCollection_LightLaser)
+      .where(
+        inArray(schema.accessoryCollection_LightLaser.id, mountedIds)
+      )
+
+    setLightLaserData(lightLaserData)
+
+    const magazineData = await db.select()
+      .from(schema.accessoryCollection_Magazine)
+      .where(
+        inArray(schema.accessoryCollection_Magazine.id, mountedIds)
+      )
+
+    setMagazineData(magazineData)
+
+    const miscAccessoryData = await db.select()
+      .from(schema.accessoryCollection_Misc)
+      .where(
+        inArray(schema.accessoryCollection_Misc.id, mountedIds)
+      )
+
+    setMiscAccessoryData(miscAccessoryData)
+
+  }
+  
+    async function getPartData(){
+      const mountedData = await db.select()
+        .from(schema.partMount)
+        .where(
+          or(
+            eq(schema.partMount.parentGunId, currentItem.id),
+            eq(schema.partMount.parentPartId, currentItem.id)
+          )
+          
+        )
+
+      const mountedIds = mountedData.map(d => d.partId);
+
+      const conversionKitData = await db.select()
+        .from(schema.partCollection_ConversionKit)
+        .where(
+          inArray(schema.partCollection_ConversionKit.id, mountedIds)
+        )
+
+      setConversionKitData(conversionKitData)
+
+      const barrelData = await db.select()
+        .from(schema.partCollection_Barrel)
+        .where(
+          inArray(schema.partCollection_Barrel.id, mountedIds)
+        )
+
+      setBarrelData(barrelData)
+
+    }
+    getAccessoryData()
+    getPartData()
+  },[])
+
   const { data: dataQuery } = useLiveQuery(
     db.select()
     .from(schema.ammoCollection)
   )
 
   const data = (dataQuery as AmmoType[]).filter(ammo => {
-    return "caliber" in  currentItem && currentItem.caliber.includes(ammo.caliber[0])
+    if(ammo.caliber){
+      return "caliber" in  currentItem && currentItem.caliber.includes(ammo.caliber[0])
+    }
   })
 
   async function saveNewStock(id: string, count:number){
     const date:Date = new Date()
-    await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, id))
+    await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt_unix: Date.now()}).where(eq(schema.ammoCollection.id, id))
   }
 
   async function handleShotCount(){
@@ -42,7 +153,33 @@ export default function QuickShot({navigation}){
     const total: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCount
 
     {/*@ts-expect-error*/}
-    await db.update(schema[currentCollection]).set({shotCount: `${total}`, lastShotAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema[currentCollection].id, currentItem.id))
+    await db.update(schema[currentCollection]).set({shotCount: `${total}`, lastShotAt_unix: Date.now()}).where(eq(schema[currentCollection].id, currentItem.id))
+
+    const accessoryData = {
+      accessoryCollection_Silencer: silencerData,
+      accessoryCollection_Optic: opticData,
+      accessoryCollection_Scope: scopeData,
+      accessoryCollection_LightLaser: lightLaserData,
+      accessoryCollection_Magazine: magazineData,
+      accessoryCollection_Misc: miscAccessoryData,
+      partCollection_ConversionKit: conversionKitData,
+      partCollection_Barrel: barrelData,
+    }
+
+    for (const [type, accessories] of Object.entries(accessoryData)) {
+      for (const accessory of accessories) {
+        if ("shotCount" in accessory) {
+          try{
+            const currentShotCountAccessory:number = "shotCount" in accessory ? accessory.shotCount ? Number(accessory.shotCount) : 0 : 0
+            const totalAccessory: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCountAccessory
+            await db.update(schema[type]).set({shotCount: `${totalAccessory}`, lastShotAt_unix: Date.now()}).where(eq(schema[type].id, accessory.id))
+          }catch(e){
+            console.error(e)
+          }
+          }
+      }
+    }
+
 
     if (shotCountFromStock.length !== 0) {
       for (const count of Object.entries(shotCountFromStock)){

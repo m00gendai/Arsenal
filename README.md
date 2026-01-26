@@ -3,68 +3,21 @@
 React Native Application to manage a gun collection.
 Written in TypeScript using SQLite as its core with Drizzle as an ORM.
 
-# Build Profiles
+### Build Profiles
 
 - DEV  (Development Build)
 - PREV (Preview Build - apk)
-- RC   (Release Candidate - aab)
+- RC   (Release Candidate - apk)
 - PROD (Production Build - aab/ipa)
 
+### CLI Scripts
 
-# Project Structure
-
-## assets
-Contain static assets such as images
-
-## components
-Contains the React Native Components
-
-### BottomBars
-Contains the main Bottom Bar and the swipeable sections
-
-### Dialogs
-Contains Dialogs that need to be accessed by different components/functions and cannot be bound to one
-
-### Hooks
-Custom React Hooks (currently in the wrong hierarchy)
-
-### ItemCollection
-Contains the collection agnostic components for the CRUD operations
-
-### MainMenu
-Contains the components that make up the main menu
-
-## db
-Contains the db client and the schemas
-
-## functions
-Dedicated functions that are not classified as helper functions
-
-## lib
-Static templates and data structures
-
-### DataTemplates
-Structure and translation templates on which the collection items are based on
-
-### Text
-Text templates and translations
-
-## stores
-Zustand stores
-
-## Other important files
-
-- App.tsx is the main entry point and contains all the init logic and screen structure
-- configs_DB.ts lists keys for legacy databases and for the preference database. Values should never be amended!
-  The legacy database keys are needed if one updates from < V2.0.0 to < V2.0.0.
-  The preference key is needed to retrieve app preferences.
-  If one needs to reset preferences, instead of incrementing keys, use the Purge function in the Developer Settings in the App.
-- confings.ts lists a variety of configurations, like which text fields trigger what dialogs, required fields per collection, sorting options etc
-- interfaces.ts contains all interfaces in the global scope
-- utils.js containa small helper functions
+- ```npm run generate:notes```
+  
+  Generates Playstore release notes from @components/MainMenu/VersionHistory/releaseNotes.ts
 
 
-# Create a new Collection
+### Create a new Collection
 
 Creating a new collection (category or category item) is done by updating the below relevant files or creating new ones.
 The Screens themselves are agnostic to input, database queries are determined by screen params. This allows new collections to be added relatively comfortable

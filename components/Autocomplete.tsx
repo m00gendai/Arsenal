@@ -1,0 +1,131 @@
+import { Keyboard, Platform, Pressable, View } from "react-native"
+import { Portal, Text } from "react-native-paper"
+import { usePreferenceStore } from "stores/usePreferenceStore"
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq, asc } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useEffect, useRef, useState } from "react"
+import { defaultViewPadding } from "configs/configs"
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+
+interface Props{
+    title: string
+    data: string
+    inputText: string | string[]
+    updateItemData: (text: string) => void
+    charCount: number
+    isFocus: boolean
+}
+
+export default function Autocomplete({title, data, inputText, updateItemData, charCount, isFocus}:Props){
+
+    const { theme } = usePreferenceStore()
+
+    const [rerender, setRerender] = useState(0)
+    const [visible, setVisible] = useState<boolean>(true)
+    const [keyboardHeight, setKeyboardHeight] = useState(0)
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
+
+    const {data: autocompleteData } = useLiveQuery(db.select()
+        .from(schema.autocomplete)
+        .where(
+          eq(
+              schema.autocomplete.field, data
+          )
+        )
+        .orderBy(asc(schema.autocomplete.label))
+    )
+
+    function handleAutocomplete(text: string){
+        updateItemData(text)
+        setRerender(rerender => rerender + 1)
+    }
+
+    function getMatches(){
+        return autocompleteData.some((data) =>
+            data.label.toLowerCase().includes((inputText as string).toLowerCase())
+        )
+    }
+
+    useEffect(() => {
+        const hasMatches = getMatches()
+        if (charCount >= 2 && isFocus && hasMatches) {
+            setVisible(true);
+        } else {
+            setVisible(false);
+        }
+    }, [charCount, isFocus, autocompleteData])
+
+    useEffect(() => {
+        const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
+        const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
+
+        const keyboardWillShow = Keyboard.addListener(showEvent, (e) => {
+            setKeyboardHeight(e.endCoordinates.height)
+        })
+        
+        const keyboardWillHide = Keyboard.addListener(hideEvent, () => {
+            setKeyboardHeight(0)
+        })
+
+        return () => {
+            keyboardWillShow.remove()
+            keyboardWillHide.remove()
+        }
+    }, [])
+
+    return(
+        <Portal>
+            {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
+                ref={bottomSheetRef}
+                snapPoints={[
+                    "5%", "25%", "50%"
+                ]}
+                index={1}
+                handleComponent={null}   
+                enableDynamicSizing={false}
+                overDragResistanceFactor={1}
+                bottomInset={Platform.OS === 'ios' ? keyboardHeight : 0}
+                style={{
+                    marginBottom: Platform.OS === 'ios' ? keyboardHeight : 0
+                }}
+            >
+                <View 
+                    style={{
+                        backgroundColor: theme.colors.primary,
+                        padding: defaultViewPadding,
+                        borderTopLeftRadius: 15,
+                        borderTopRightRadius: 15
+                    }}
+                >
+                    <Text style={{color: theme.colors.onPrimary}}>{`Autocomplete: ${title}`}</Text>
+                </View>
+                
+                <BottomSheetScrollView  
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {autocompleteData.map((data, index) =>{
+                        if(data.label.toLowerCase().includes((inputText as string).toLowerCase())){
+                            return (
+                                <Pressable 
+                                    style={{
+                                        padding: defaultViewPadding, 
+                                        backgroundColor: index%2 === 1 ? theme.colors.surfaceVariant : theme.colors.surface
+                                    }}
+                                    onPress={()=>handleAutocomplete(data.label)}
+                                    key={data.id}
+                                >
+                                    <Text>{data.label}</Text>
+                                </Pressable>
+                            )
+                        }
+                        return null
+                    })}
+                </BottomSheetScrollView >
+
+            </BottomSheet> : null}
+        </Portal>
+    )
+}
