@@ -61,7 +61,7 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
     }
 
     function addTagFromList(tag:string){
-        if(currentItem.tags){
+        if(currentItem && currentItem.tags){
             if(currentItem.tags.includes(tag)){
                 return
             }
