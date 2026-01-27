@@ -45,8 +45,10 @@ export default function Statistics(){
             const roundsTotal = rounds.reduce((acc, curr) => acc + Number(curr.value), 0)
             setStatistics(prev => ({...prev, roundCount: roundsTotal}))
 
-            const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection)
-            const uniqueCalibers = Array.from(new Set(ammoCalibers.filter(caliber => caliber.value !== "" ).map(caliber => caliber.value)))
+            const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection) as {value: string}[]
+            const normalizedArray:string[] = ammoCalibers.map(caliber => caliber.value)
+            const filteredArray:string[] = normalizedArray.filter(caliber => caliber && caliber.length !== 0)
+            const uniqueCalibers = Array.from(new Set(filteredArray.flat()))
             setStatistics(prev => ({...prev, uniqueCalibers: uniqueCalibers.length}))
         }
         getStatistics()
