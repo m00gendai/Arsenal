@@ -67,6 +67,8 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     minute: "2-digit"
 }
 
+export const imageFileExtensions:string[]= [".apg", ".png", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".svg", ".webp"]
+
 export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 
 export const requiredFieldsGun:string[] = ["model"]
