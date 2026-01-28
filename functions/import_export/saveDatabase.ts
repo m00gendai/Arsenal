@@ -78,7 +78,7 @@ export default async function saveDatabase(
               const sourceUri = new File(Paths.document, fileName)
               try {
                 const fileInfo = sourceUri.exists
-                if (fileInfo && !Paths.info(`${Paths.document}${fileName}`)) {
+                if (fileInfo && !Paths.info(sourceUri.uri)) {
                   await FileSystem.cp(`${Paths.document}${fileName}`, `${collectionImagesFolder.uri}${fileName}`)
                 }
               }catch(e){
