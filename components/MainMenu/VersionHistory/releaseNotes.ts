@@ -10,6 +10,29 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+    "title": "V4.0.1",
+    "de": {
+      "text": `Behoben:\n-App stürtzt ab wenn Schlagwort bei neuem Eintrag gewählt wird\n-Statistiken: Anzahl verschiedener Kaliber inkorrekt\nVerbessert:\n-Statistiken: Bei inkorrekten Daten wird ein Hinweis angezeigt, welcher zeigt wo die inkorrekten Daten sind`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": "Fixed:\n-App crashes if tag is selected on anew entry\n-Statistics: Number of different Calibers not correct\nImproved:\n-Statistics: If there is incorrect data, a visual hint is displayed which shows where the incorrect data is",
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": "Corrigé:\n-L'application se bloque si un mot-clé est sélectionné dans une nouvelle entrée\n-Statistiques: Nombre de calibres différents incorrect\nAmélioré:\n-Statistiques: Si des données sont incorrectes, un indice visuel est affiché indiquant où se trouvent les données incorrectes",
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": "Corretto:\n-L'app si blocca se viene selezionata una parola chiave in una nuova voce\n-Statistiche: Numero di calibri diversi non corretto\nMigliorato:\n-Statistiche: Se ci sono dati errati, viene mostrato un suggerimento visivo che indica dove si trovano i dati errati",
+      "ios": null,
+      "android": null
+    }
+  },
+  {
     "title": "V4.0.0",
     "de": {
       "text": `Neu:\n- Sammlung: Literatur\n- Neue Felder für Munition, Licht&Laser, Optiken und Verschiedenes\n- Onboarding (setzen von präferierter Währung und Gewichts- und Längenmassen)\n- Hinweis-System\n- Autocomplete\n- Quick Actions: Batteriewechsel und Reinigung\n\nVerbessert:\n- Bilderreihenfolge veränderbar\n- Bilder drehbar\n- Reinigungsintervall überarbeitet\n- Zuletzt gewählte Kaliber in Kaliberauswahl aufgeführt\n\nBehoben:\n- CSV Importe/Exporte nur für Waffen und Munition\n- QuickShot hat angebautes Zubehör nicht berücksichtigt`,
