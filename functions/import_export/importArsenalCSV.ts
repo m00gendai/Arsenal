@@ -56,7 +56,8 @@ export default async function importArsenalCSV(data: CollectionType){
                 ...unitem, 
                 createdAt: unitem.createdAt === null ? new Date().getTime() : unitem.createdAt,
                 images: [],
-                tags: filterEmptyTags
+                tags: filterEmptyTags,
+                ...("caliber" in unitem && unitem.caliber && { caliber: Array.isArray(unitem.caliber) ? unitem.caliber : (unitem.caliber as string).split(",") })
             }
 
             return readyItem
