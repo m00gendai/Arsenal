@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import Papa from 'papaparse';
 import { unflatten } from 'flat'
 import { CollectionType, ItemType } from 'lib/interfaces';

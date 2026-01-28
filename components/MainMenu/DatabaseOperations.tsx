@@ -16,7 +16,7 @@ import { useTextStore } from "stores/useTextStore";
 import { useViewStore } from "stores/useViewStore";
 import { alarm } from "functions/utils";
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import Papa from 'papaparse';
 import exportArsenalCSV from "functions/import_export/exportArsenalCSV";
 import importDatabase from "functions/import_export/importDatabase";
