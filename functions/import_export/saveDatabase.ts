@@ -4,9 +4,9 @@ import { Directory, Paths } from 'expo-file-system/next';
 import { FileSystem } from 'react-native-file-access';
 import { zip } from 'react-native-zip-archive'
 import * as schema from "../../db/schema";
-import { GunType, ItemType } from "../../lib/interfaces";
+import { ItemType } from "../../lib/interfaces";
 import * as ExpoFS from "expo-file-system";
-import { collectionExportDirectories } from "../../configs/configs";
+import { collectionExportDirectories, imageFileExtensions } from "../../configs/configs";
 import * as Sharing from 'expo-sharing';
 import { Platform } from "react-native";
 
@@ -20,6 +20,18 @@ export default async function saveDatabase(
 
   let tempDir: Directory;
   let imagesFolder: Directory
+
+  function getItemDescription(item: ItemType){
+    if("model" in item){
+      return `${item.manufacturer} ${item.model}`
+    }
+    if("designation" in item){
+      return `${item.manufacturer} ${item.designation}`
+    }
+    if("title" in item){
+      return `${item.title}`
+    }
+  }
   
   try {
     tempDir = new Directory(Paths.document, 'tmp_rsnl_bckp')
@@ -57,11 +69,21 @@ export default async function saveDatabase(
         for (const entry of itemsWithImages) {
           if (entry.images?.length) {
             for (const imagePath of entry.images) {
-              const fileName = imagePath.split("/").pop();
-              const sourceUri = `${ExpoFS.documentDirectory}${fileName}`;
-              const fileInfo = await ExpoFS.getInfoAsync(sourceUri);
-              if (fileInfo.exists) {
-                await FileSystem.cp(sourceUri, `${collectionImagesFolder.uri}${fileName}`)
+              if(!imageFileExtensions.some(extension => imagePath.endsWith(extension))){
+                throw new Error(`\nImage file extension mismatch:\n${imagePath}\ndoes not have any of ${imageFileExtensions.join(", ")}\nin ${item}: ${getItemDescription(entry)}`)
+              }
+              const fileName = imagePath.startsWith("file://") ? imagePath.split("/").pop() : imagePath
+              if(!fileName){
+                continue
+              }
+              const sourceUri = `${ExpoFS.documentDirectory}${fileName}`
+              try {
+                const fileInfo = await ExpoFS.getInfoAsync(sourceUri)
+                if (fileInfo.exists && !fileInfo.isDirectory) {
+                  await FileSystem.cp(sourceUri, `${collectionImagesFolder.uri}${fileName}`)
+                }
+              }catch(e){
+                throw new Error(`Processing Images for DB export: ${e}`)
               }
             }
           }

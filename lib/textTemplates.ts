@@ -212,6 +212,15 @@ interface ItemViewTabBarLabels{
     accessories: SimpleTranslation
 }
 
+interface StatisticsAlert{
+    gunPrice: SimpleTranslation
+    gunCount: SimpleTranslation
+    gunValue: SimpleTranslation
+    ammoCount: SimpleTranslation
+    roundCount: SimpleTranslation
+    uniqueCalibers: SimpleTranslation
+}
+
 export const cleanIntervals:CleanIntervals = {
     none: {
         name: "none",
@@ -1848,5 +1857,50 @@ export const itemViewTabBarLabels: ItemViewTabBarLabels = {
         fr: "Accessoires",
         it: "Accessori",
         ch: "Airi"
+    },
+}
+
+export const statisticsAlert: StatisticsAlert = {
+    gunCount: {
+        de: "Es konnten nicht alle Waffen gezählt werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all guns could be counted. Please check the following entries:",
+        fr: "Toutes les armes n’ont pas pu être comptées. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile contare tutte le armi. Verifica le seguenti voci:",
+        ch: "Betg tut las armas han pudì vegnir dumbradas. Controllescha las suandantas vuschs:"
+    }, 
+gunPrice: {
+        de: "Es konnten nicht alle Preise zusammengerechnet werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all prices could be calculated. Please check the following entries:",
+        fr: "Tous les prix n’ont pas pu être calculés. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile calcolare tutti i prezzi. Verifica le seguenti voci:",
+        ch: "Betg tut ils pretschs han pudì vegnir calculads. Controllescha las suandantas vuschs:"
+    },
+gunValue: {
+        de: "Es konnten nicht alle Preise zusammengerechnet werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all prices could be calculated. Please check the following entries:",
+        fr: "Tous les prix n’ont pas pu être calculés. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile calcolare tutti i prezzi. Verifica le seguenti voci:",
+        ch: "Betg tut ils pretschs han pudì vegnir calculads. Controllescha las suandantas vuschs:"
+    },
+ammoCount: {
+        de: "Es konnte nicht alle Munition gezählt werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all ammo could be counted. Please check the following entries:",
+        fr: "Toutes les munitions n’ont pas pu être comptées. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile contare tutte le munizioni. Verifica le seguenti voci:",
+        ch: "Betg tut la muniziun ha pudì vegnir dumbrada. Controllescha las suandantas vuschs:"
+    },
+roundCount: {
+        de: "Es konnte nicht alle Munitionsmengen gezählt werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all ammo stock could be counted. Please check the following entries:",
+        fr: "Toutes les quantités de munitions n’ont pas pu être comptées. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile contare tutte le quantità di munizioni. Verifica le seguenti voci:",
+        ch: "Betg tut las quantitads da muniziun han pudì vegnir dumbradas. Controllescha las suandantas vuschs:"
+    },
+uniqueCalibers: {
+        de: "Es konnten nicht alle Kalibr gezählt werden. Bitte überprüfe folgende Einträge:",
+        en: "Not all calibers could be counted. Please check the following entries:",
+        fr: "Tous les calibres n’ont pas pu être comptés. Veuillez vérifier les entrées suivantes:",
+        it: "Non è stato possibile contare tutti i calibri. Verifica le seguenti voci:",
+        ch: "Betg tut ils calibers han pudì vegnir dumbrads. Controllescha las suandantas vuschs:"
     },
 }
