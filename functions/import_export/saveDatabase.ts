@@ -1,11 +1,10 @@
 import { db, expo } from "../../db/client";
 import { DB_NAME, ZIP_NAME } from "../../configs/configs_DB";
-import { Directory, Paths } from 'expo-file-system/next';
+import { Directory, Paths, File } from 'expo-file-system';
 import { FileSystem } from 'react-native-file-access';
 import { zip } from 'react-native-zip-archive'
 import * as schema from "../../db/schema";
 import { ItemType } from "../../lib/interfaces";
-import * as ExpoFS from "expo-file-system";
 import { collectionExportDirectories, imageFileExtensions } from "../../configs/configs";
 import * as Sharing from 'expo-sharing';
 import { Platform } from "react-native";
@@ -76,11 +75,11 @@ export default async function saveDatabase(
               if(!fileName){
                 continue
               }
-              const sourceUri = `${ExpoFS.documentDirectory}${fileName}`
+              const sourceUri = new File(Paths.document, fileName)
               try {
-                const fileInfo = await ExpoFS.getInfoAsync(sourceUri)
-                if (fileInfo.exists && !fileInfo.isDirectory) {
-                  await FileSystem.cp(sourceUri, `${collectionImagesFolder.uri}${fileName}`)
+                const fileInfo = sourceUri.exists
+                if (fileInfo && !Paths.info(`${Paths.document}${fileName}`)) {
+                  await FileSystem.cp(`${Paths.document}${fileName}`, `${collectionImagesFolder.uri}${fileName}`)
                 }
               }catch(e){
                 throw new Error(`Processing Images for DB export: ${e}`)
