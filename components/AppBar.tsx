@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions, View } from 'react-native';
-import { Appbar, Menu, Searchbar } from 'react-native-paper';
+import { Appbar, Menu, Portal, Searchbar } from 'react-native-paper';
 import FilterMenu from './FilterMenu';
 import { useState } from 'react';
 import { MenuVisibility, SortingTypes, StackParamList } from 'lib/interfaces';
@@ -13,6 +13,7 @@ import { defaultSearchBarHeight, defaultViewPadding } from 'configs/configs';
 import { search, sorting } from 'lib/textTemplates';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { determineSortingOptions } from 'functions/determinators';
+import Scanner from './Scanner';
 
 interface Props{
   collection: any
@@ -25,6 +26,7 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
   const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
   const [menuVisibility, setMenuVisibility] = useState<MenuVisibility>({sortBy: false, filterBy: false});
+  const [scannerVisible, setScannerVisible] = useState<boolean>(false)
   const [searchBannerVisible, toggleSearchBannerVisible] = useState<boolean>(false)
 
   const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn } = usePreferenceStore()
@@ -130,6 +132,10 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
     }, searchBannerVisible ? 400 : 50)
   }
 
+  function handleScan(){
+    setScannerVisible(true)
+  }
+console.log(scannerVisible)
     return(
       <View>
         <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
@@ -137,6 +143,7 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
           <Appbar.Action icon={"menu"} onPress={()=>navigation.navigate("MainMenu")} />
         </View>
         <View  style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+          <Appbar.Action icon="qrcode-scan" onPress={()=>handleScan()}/>
           <Appbar.Action icon="magnify" onPress={()=>handleSearch()}/>
           <Appbar.Action icon="filter" onPress={() =>{handleMenu("filterBy", true)}} />
           <Menu
@@ -163,6 +170,11 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
         </View>
       </Appbar>
       <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{searchBannerVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQuery} value={searchQuery} /> : null}</Animated.View>
+      
+      {scannerVisible ? <Portal>
+        <Scanner setScannerVisible={setScannerVisible}/>
+      </Portal> : null}
+      
       </View>
     )
 }

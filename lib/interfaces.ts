@@ -26,6 +26,7 @@ export interface GunTypeDetails{
   cleanInterval_ShotCount: null | string
   cleanIntervalDisplay: null | string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface GunTypeStatus{
@@ -59,6 +60,7 @@ export interface LegacyAmmoType{
   images: string[]
   remarks: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AmmoType{
@@ -79,6 +81,7 @@ export interface AmmoType{
   images: string[]
   remarks: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_Silencer{
@@ -112,6 +115,7 @@ export interface AccessoryType_Silencer{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_Optic{
@@ -149,6 +153,7 @@ export interface AccessoryType_Optic{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_Scope{
@@ -185,6 +190,7 @@ export interface AccessoryType_Scope{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_LightLaser{
@@ -214,6 +220,7 @@ export interface AccessoryType_LightLaser{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_Magazine{
@@ -248,6 +255,7 @@ export interface AccessoryType_Magazine{
   currentlyMountedOn: string
   currentStock: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface AccessoryType_Misc{
@@ -269,6 +277,7 @@ export interface AccessoryType_Misc{
   currentlyMountedOn: string
   serial: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface PartType_ConversionKit{
@@ -299,6 +308,7 @@ export interface PartType_ConversionKit{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface PartType_Barrel{
@@ -331,6 +341,7 @@ export interface PartType_Barrel{
   remarks: string
   currentlyMountedOn: string
   customInventoryDesignation: null | string
+  qrCode: null | string
 }
 
 export interface LiteratureType_Book{
@@ -357,6 +368,7 @@ export interface LiteratureType_Book{
     marketValue: string
     remarks: string
     customInventoryDesignation: null | string
+    qrCode: null | string
 }
 
 export type ItemType =  | GunType 

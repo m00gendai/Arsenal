@@ -61,6 +61,7 @@ interface DataTemplateTranslations {
     bulletWeight: DataTemplateTranslation
     footprint: DataTemplateTranslation
     customInventoryDesignation: DataTemplateTranslation
+    qrCode: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -543,6 +544,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Désignation d’inventaire personnalisée",
         it: "Designazione inventariale personalizzata",
         ch: "Designaziun d’inventari persunalisada"
+    },
+    "qrCode": {
+        name: "qrCode",
+        de: "QR-Code",
+        en: "QR-Code",
+        fr: "QR-Code",
+        it: "QR-Code", 
+        ch: "QR-Code"
     }
 }
 

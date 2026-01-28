@@ -33,6 +33,7 @@ export const emptyBookObject:LiteratureType_Book = {
     marketValue: null,
     remarks: null,
     customInventoryDesignation: null,
+    qrCode: null
 }
 
 export const literatureDataTemplate_Book:TemplateItem[] = Object.keys(emptyBookObject)

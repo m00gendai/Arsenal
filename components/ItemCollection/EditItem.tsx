@@ -15,7 +15,7 @@ import { generateGradient, imageHandling, itemDataValidation } from 'functions/u
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs/configs';
+import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -30,6 +30,7 @@ import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated
 import { useSharedValue } from 'react-native-reanimated';
 import { useViewStore } from 'stores/useViewStore';
 import { useTextStore } from 'stores/useTextStore';
+import NewText_CodeScanner from 'components/NewText_CodeScanner';
 
 
 export default function EditGun({navigation}){
@@ -436,6 +437,8 @@ function swapItems(arr: string[], from: number, to: number){
                                             <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         mountedOnTriggerFields.includes(data.name) ?
                                             <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        codeTriggerFields.includes(data.name) ?
+                                            <NewText_CodeScanner data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                             <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
                                     </View>
                                 )

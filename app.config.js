@@ -72,7 +72,14 @@ export default {
           },
           "imageWidth": 200
         }
-      ]
+      ],
+      [
+      "react-native-vision-camera",
+      {
+        "cameraPermissionText": "Arsenal needs access to your Camera.",
+        "enableCodeScanner": true
+      }
+    ]
     ],
     "extra": {
       "eas": {

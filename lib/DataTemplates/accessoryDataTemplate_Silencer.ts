@@ -39,7 +39,8 @@ export const emptySilencerObject:AccessoryType_Silencer= {
     decibelRating: null,
     material: null,
     currentlyMountedOn: null,
-    customInventoryDesignation: null
+    customInventoryDesignation: null,
+    qrCode: null
 }
 
 export const accessoryDataTemplate_Silencer:TemplateItem[] = Object.keys(emptySilencerObject)

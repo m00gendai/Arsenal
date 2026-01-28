@@ -39,6 +39,7 @@ export const emptyBarrelObject:PartType_Barrel= {
     cleanIntervalDisplay: null,
     currentlyMountedOn: null,
     customInventoryDesignation: null,
+    qrCode: null
 }
 
 export const partDataTemplate_Barrel:TemplateItem[] = Object.keys(emptyBarrelObject)
