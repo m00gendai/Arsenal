@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { AmmoType, CollectionType, GunType, ItemType } from '../../lib/interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
 import { manipulateAsync } from "expo-image-manipulator"

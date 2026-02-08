@@ -7,7 +7,7 @@ import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { checkDate, checkShotCount } from 'functions/utils';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';
 import { useDatabaseStore } from 'stores/useDatabaseStore';

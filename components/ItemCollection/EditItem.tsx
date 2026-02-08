@@ -10,7 +10,7 @@ import NewCheckboxArea from 'components/NewCheckboxArea';
 import { gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { generateGradient, imageHandling, itemDataValidation } from 'functions/utils';
 import { db } from "db/client"
 import * as schema from "db/schema"

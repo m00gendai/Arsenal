@@ -1,7 +1,7 @@
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { ListPrinter } from 'lib/interfaces';
 import { checkBoxes, gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
 import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'lib/textTemplates';

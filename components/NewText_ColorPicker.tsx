@@ -8,6 +8,7 @@ import { defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { modalTexts } from '../lib/textTemplates';
 import { GetColorName } from 'hex-color-to-color-name';
+import { scheduleOnRN  } from "react-native-worklets"
 
 interface Props{
     data: string
@@ -45,17 +46,25 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     const onSelectColor = ({ hex }) => {
-        if(hex.length === 9){
-            setColor(hex.substring(0,7))
+        'worklet';
+        scheduleOnRN(updateColor, hex);
+    }
+
+    function updateColor(hex) {
+        if (hex.length === 9) {
+            setColor(hex.substring(0,7));
         } else {
-            setColor(hex)
+            setColor(hex);
         }
-        
-    };
+    }
 
     function handleColorConfirm(){
+        try{
         updateItemData(color)
         setShowModal(false)
+        }catch(e){
+            throw new Error(`handleColorConfirm: ${e}`)
+        }
     }
 
     function handleColorCancel(){
@@ -85,7 +94,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     }
 
     function checkColor(color:string){
-
+try{
         if(color === undefined){
             return ""
         }
@@ -96,6 +105,9 @@ export default function NewText({data, itemData, setItemData, label}: Props){
             return color.substring(0,7)
         }
         return color
+    }catch(e){
+        throw new Error(`checkColor: ${e}`)
+    }
     }
 
     return(

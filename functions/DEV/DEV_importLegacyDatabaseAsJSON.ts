@@ -1,7 +1,7 @@
 // This is to test the migration of existing data <V2.0.0 to the new DB structure
 // It is not used for anything else than testing
 
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as DocumentPicker from 'expo-document-picker';
 import { AmmoType, GunType } from '../../lib/interfaces';
 import { getImageSize, sanitizeFileName } from '../utils';
