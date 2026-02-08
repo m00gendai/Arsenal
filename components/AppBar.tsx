@@ -171,10 +171,8 @@ console.log(scannerVisible)
       </Appbar>
       <Animated.View style={[{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding}, animatedStyle]}>{searchBannerVisible ? <Searchbar placeholder={search[language]} onChangeText={setSearchQuery} value={searchQuery} /> : null}</Animated.View>
       
-      {scannerVisible ? <Portal>
-        <Scanner setScannerVisible={setScannerVisible}/>
-      </Portal> : null}
-      
+      <Scanner scannerVisible={scannerVisible} setScannerVisible={setScannerVisible}/>
+
       </View>
     )
 }
