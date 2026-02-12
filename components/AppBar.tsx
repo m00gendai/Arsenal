@@ -135,7 +135,7 @@ export default function AppBar({collection, searchQuery, setSearchQuery}){
   function handleScan(){
     setScannerVisible(true)
   }
-console.log(scannerVisible)
+
     return(
       <View>
         <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
