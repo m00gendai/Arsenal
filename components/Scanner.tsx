@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { Button, IconButton, Modal, Portal, RadioButton, Text, TextInput } from "react-native-paper"
+import { View } from 'react-native';
+import { IconButton, RadioButton, Text, TextInput } from "react-native-paper"
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import * as schema from "db/schema"
 import { db } from "db/client"
@@ -9,9 +9,10 @@ import { useItemStore } from 'stores/useItemStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackParamList } from 'lib/interfaces';
-import { defaultModalBackdrop, defaultViewPadding, screenNameParamsAll } from 'configs/configs';
+import { defaultViewPadding, screenNameParamsAll } from 'configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ModalContainer from './ModalContainer';
+import { scannerNavigate } from 'lib/Text/textTemplates_scanner';
 
 interface Props{
   scannerVisible: boolean
@@ -28,8 +29,8 @@ export default function Scanner({scannerVisible, setScannerVisible}:Props){
     const [errorTextVisible, setErrorTextVisible] = useState<boolean>(false)
     
 
-    const { currentCollection, setCurrentItem } = useItemStore()
-    const { theme } = usePreferenceStore()
+    const { setCurrentItem } = useItemStore()
+    const { theme, language } = usePreferenceStore()
     
 
   if (!hasPermission) {
@@ -67,16 +68,28 @@ const codeScanner = useCodeScanner({
     if(target && target.length !== 0){
       setCurrentItem(target[0])
       navigation.navigate("item")
+      setErrorTextVisible(false)
       setScannerVisible(false)
     } else {
       setErrorTextVisible(true)
     }
   }
 
+  function handleScanTarget(target: "id" | "qrCode"){
+    setErrorTextVisible(false)
+    setScanTarget(target)
+  }
+
+  function handleCancel(){
+    setScannerResult(null)
+    setErrorTextVisible(false)
+    setScannerVisible(false)
+  }
+
   return (
     <ModalContainer visible={scannerVisible} setVisible={setScannerVisible}
-                title={"QR Scanner"}
-                subtitle={`Scan a QR code and select if the app should navigate to an entry based on its ID or on the "QR Code" Field entry"`}
+                title={scannerNavigate.title[language]}
+                subtitle={scannerNavigate.subtitle[language]}
                 content={
                   <View style={{padding: defaultViewPadding}}>
                     <View style={{position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: 20, overflow: "hidden"}}>
@@ -89,48 +102,23 @@ const codeScanner = useCodeScanner({
                     </View>
                     <View style={{position: "relative", width: "100%", flex: 1, marginTop: defaultViewPadding}}>
                       <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: 50}}>
-                          <TouchableNativeFeedback onPress={()=>setScanTarget("id")}>
-                              <View style={{
-                                  borderTopLeftRadius: 15, 
-                                  borderBottomLeftRadius: 15, 
-                                  position: "relative", 
-                                  width: "50%", 
-                                  height: "100%", 
-                                  backgroundColor: scanTarget === "id" ? theme.colors.primary : "transparent", 
-                                  borderWidth: 1, 
-                                  borderColor: scanTarget === "qrCode" ? theme.colors.primary : "transparent", 
-                                  display: "flex", 
-                                  justifyContent: "flex-start", 
-                                  flexDirection: "row", 
-                                  alignItems: "center", 
-                                  paddingLeft: defaultViewPadding
-                              }}>
-                                  <Text style={{color: scanTarget === "id" ? theme.colors.onPrimary : theme.colors.onBackground}}>
-                                      ID
-                                  </Text>
-                              </View>
-                          </TouchableNativeFeedback>
-                          <TouchableNativeFeedback onPress={()=>setScanTarget("qrCode")}>
-                              <View style={{
-                                  borderTopRightRadius: 15, 
-                                  borderBottomRightRadius: 15, 
-                                  position: "relative", 
-                                  width: "50%", 
-                                  height: "100%", 
-                                  backgroundColor: scanTarget === "qrCode" ? theme.colors.primary : "transparent", 
-                                  borderWidth: 1, 
-                                  borderColor: scanTarget === "id" ? theme.colors.primary : "transparent", 
-                                  display: "flex", 
-                                  justifyContent: "flex-end", 
-                                  flexDirection: "row", 
-                                  alignItems: "center", 
-                                  paddingRight: defaultViewPadding
-                              }}>
-                                  <Text style={{color: scanTarget === "qrCode" ? theme.colors.onPrimary : theme.colors.onBackground}}>
-                                      QR Code
-                                  </Text>
-                              </View>
-                          </TouchableNativeFeedback>
+                        <View style={{display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}>
+                          <RadioButton
+                            value="id"
+                            status={ scanTarget === 'id' ? 'checked' : 'unchecked' }
+                            onPress={() => handleScanTarget('id')}
+                          />
+                          <Text>ID</Text>
+                        </View>
+                        <View style={{display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}>
+                          <Text>QR Code</Text>
+                          <RadioButton
+                            value="qrCode"
+                            status={ scanTarget === 'qrCode' ? 'checked' : 'unchecked' }
+                            onPress={() => handleScanTarget('qrCode')}
+                          />
+                          
+                        </View>
                       </View>
                       <View style={{marginTop: defaultViewPadding}}>
                         <TextInput
@@ -141,12 +129,12 @@ const codeScanner = useCodeScanner({
                           placeholder='Scan QR code...'
                         />
                       </View>
-                      <Text>{errorTextVisible ? `No valid navigation found for ${scanTarget}: ${scannerResult}` : ``}</Text>
+                      <Text>{errorTextVisible ? `${scannerNavigate.error[language].replace("{{{A}}}", scanTarget)} ${scannerResult}` : ``}</Text>
                     </View>
                   </View>
                 }
                 buttonACK={<IconButton icon="check" onPress={() => navigateTo()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
-                buttonCNL={<IconButton icon="cancel" onPress={() => setScannerVisible(false)} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
                 buttonDEL={null} 
         />
   )
