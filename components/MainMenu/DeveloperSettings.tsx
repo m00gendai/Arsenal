@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { collectionImportTables, defaultViewPadding } from "configs/configs";
+import { collectionImportTables, defaultViewPadding, imageFileExtensions, screenNameParamsAll } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
 import * as schema from "db/schema"
+import { eq } from "drizzle-orm/sql";
 import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
 import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
@@ -46,6 +47,26 @@ export default function DeveloperSettings(){
         await db.delete(schema[dropTable])
         setAlohaSnackbarText(`Purged Table ${dropTable}`)
         setAlohaSnackbarVisible(true)
+    }
+
+    function nullFaultyImages(){
+        screenNameParamsAll.forEach(async table => {
+            const collection = db.select().from(schema[table]).all()
+            collection.forEach(async item => {
+                if(item.images !== null){
+                    if(Array.isArray(item.images)){
+                        const cleanedImages = item.images.filter(image =>{
+                            if(imageFileExtensions.some(extension => image.endsWith(extension))){
+                                return image
+                            }
+                        })
+                        await db.update(schema[table]).set({images: cleanedImages}).where((eq(schema[table].id, item.id)))
+                    } else {
+                        await db.update(schema[table]).set({images: null}).where((eq(schema[table].id, item.id)))
+                    }
+                }
+            })
+        })
     }
     
     return(
@@ -135,12 +156,24 @@ export default function DeveloperSettings(){
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
 
                 <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                    <Text style={{flex: 7}}>Inject ammo JSON</Text>
+                    <Text style={{flex: 7}}>Inject Bad Item Date</Text>
                     <IconButton 
-                        icon="ammunition" 
+                        icon="calendar-range" 
                         iconColor={theme.colors.onErrorContainer}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>DEV_injectBadItem_date()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Null Faulty Images</Text>
+                    <IconButton 
+                        icon="image-sync-outline" 
+                        iconColor={theme.colors.onErrorContainer}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>nullFaultyImages()}
                     />
                 </View>
 
