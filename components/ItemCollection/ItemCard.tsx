@@ -97,6 +97,9 @@ export default function ItemCard({ item }:Props){
         if(item.images.length === 0){
             return false
         }
+        if(!item.images[0]){
+            return false
+        }
         if(item.images[0].split("/").pop() === ""){
             return false
         }
