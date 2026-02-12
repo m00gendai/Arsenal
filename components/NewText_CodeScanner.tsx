@@ -8,6 +8,7 @@ import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import ModalContainer from './ModalContainer';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Props{
     data: string
@@ -136,14 +137,14 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                 content={
                     <View style={{width: "100%", height: "100%", position: "relative", padding: defaultViewPadding}}>
                         <Camera
-                        style={{width: "100%", height: "80%", position: "relative"}}
+                        style={{width: "100%", aspectRatio: "1/1", position: "relative"}}
                             device={device}
                             isActive={true}
                             codeScanner={codeScanner}
                         />
-                        <View style={{width: "100%", height: "20%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <ScrollView style={{width: "100%", height: 20, display: "flex",}}>
                             <Text>{qrCode}</Text>
-                        </View>
+                        </ScrollView>
                     </View>
                 }
                 buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
