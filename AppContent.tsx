@@ -49,6 +49,7 @@ import migrateLegacyDateAndCaliberFields from 'functions/legacy/migrateLegacyDat
 import { snapshot } from 'node:test';
 import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
 import Statistics from 'components/MainMenu/Statistics/Statistics';
+import GenerateQRCodes from 'components/MainMenu/QRCodes/GenerateQRCodes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -491,6 +492,12 @@ const { bottom } = useSafeAreaInsets();
               <Stack.Screen
                 name="EditAutocomplete"
                 component={EditAutocomplete}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
+
+              <Stack.Screen
+                name="GenerateQRCodes"
+                component={GenerateQRCodes}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 

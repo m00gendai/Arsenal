@@ -613,6 +613,7 @@ export type StackParamList = {
   QuickMount: {item: ItemType}
   EditAutocomplete: undefined
   Statistics: undefined
+  GenerateQRCodes: {collection: CollectionType}
 }
 
 export interface Tag {

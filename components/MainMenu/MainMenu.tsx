@@ -11,6 +11,7 @@ import Lists from "./Lists"
 import LanguageSelection from "./LanguageSelection"
 import EditData from "./EditData/EditData"
 import VersionHistory from "./VersionHistory/VersionHistory"
+import QRCodes from "./QRCodes/QRCodes"
 
 export default function MainMenu({navigation}){
 
@@ -57,6 +58,8 @@ export default function MainMenu({navigation}){
                             <Settings />
 
                             <EditData />
+
+                            <QRCodes />
 
                             <Statistics />
 
