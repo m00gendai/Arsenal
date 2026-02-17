@@ -53,6 +53,7 @@ interface PreferenceTitle{
     editData: SimpleTranslation
     editData_Autocomplete: SimpleTranslation
     versionHistory: SimpleTranslation
+    generateQRCodes: SimpleTranslation
 }
 
 interface DatabaseOperation{
@@ -926,6 +927,13 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Modifier les données d’auto-complétion",   
         it: "Modificare i dati di completamento automatico",
         ch: "Modifitgar las datas da completaziun automatica"
+    },
+    generateQRCodes:{
+        de: "QR-Codes generieren",
+        en: "Generate QR Codes",
+        fr: "Générer des codes QR",   
+        it: "Generare codici QR",
+        ch: "Generar codes QR"
     },
     versionHistory:{
         de: "Versionshistorie",
