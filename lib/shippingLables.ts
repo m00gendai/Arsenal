@@ -1,0 +1,243 @@
+export type LabelTemplate = {
+  id: string
+  name: string
+  region: string
+  pageWidth: number
+  pageHeight: number
+  unit: "mm" | "in"
+  marginTop: number
+  marginLeft: number
+  labelWidth: number
+  labelHeight: number
+  horizontalPitch: number
+  verticalPitch: number
+  columns: number
+  rows: number
+}
+
+export const shippingLabelData: LabelTemplate[] = [
+  {
+    "id": "avery-l7160",
+    "name": "Avery L7160 (A4 Address 21 per sheet)",
+    "region": "EU",
+    "unit": "mm",
+    "pageWidth": 210,
+    "pageHeight": 297,
+    "marginTop": 15,
+    "marginLeft": 7,
+    "labelWidth": 63.5,
+    "labelHeight": 38.1,
+    "horizontalPitch": 66,
+    "verticalPitch": 38.1,
+    "columns": 3,
+    "rows": 7
+  },
+  {
+    "id": "avery-l7163",
+    "name": "Avery L7163 (A4 Shipping 14 per sheet)",
+    "region": "EU",
+    "unit": "mm",
+    "pageWidth": 210,
+    "pageHeight": 297,
+    "marginTop": 15,
+    "marginLeft": 5,
+    "labelWidth": 99.1,
+    "labelHeight": 38.1,
+    "horizontalPitch": 101.6,
+    "verticalPitch": 38.1,
+    "columns": 2,
+    "rows": 7
+  },
+  {
+    "id": "zweckform-3659",
+    "name": "Zweckform 3659 (A4 Large Shipping 4 per sheet)",
+    "region": "EU",
+    "unit": "mm",
+    "pageWidth": 210,
+    "pageHeight": 297,
+    "marginTop": 15,
+    "marginLeft": 7,
+    "labelWidth": 99.1,
+    "labelHeight": 139,
+    "horizontalPitch": 101.6,
+    "verticalPitch": 139,
+    "columns": 2,
+    "rows": 2
+  },
+  {
+    id: "zweckform-j4774-10",
+    name: "Zweckform J4774‑10 (A4 99.1x139 mm, 4/EU)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 15,
+    marginLeft: 7,
+    labelWidth: 99.1,
+    labelHeight: 139,
+    horizontalPitch: 101.6,
+    verticalPitch: 139,
+    columns: 2,
+    rows: 2
+  },
+  {
+    id: "zweckform-6174",
+    name: "Zweckform 6174 (A4 70x42.3 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 15,
+    marginLeft: 15,
+    labelWidth: 70,
+    labelHeight: 42.3,
+    horizontalPitch: 70,
+    verticalPitch: 42.3,
+    columns: 3,
+    rows: 7
+  },
+  {
+    id: "zweckform-3658",
+    name: "Zweckform 3658 (A4 64.6x33.8 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 15,
+    marginLeft: 15,
+    labelWidth: 64.6,
+    labelHeight: 33.8,
+    horizontalPitch: 66,
+    verticalPitch: 33.8,
+    columns: 3,
+    rows: 8
+  },
+  {
+    id: "zweckform-3423",
+    name: "Zweckform 3423 (A4 105x35 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 15,
+    marginLeft: 15,
+    labelWidth: 105,
+    labelHeight: 35,
+    horizontalPitch: 105,
+    verticalPitch: 35,
+    columns: 2,
+    rows: 8
+  },
+  {
+    id: "zweckform-546930-3666",
+    name: "Zweckform 3666 (A4 38x21.2 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 12,
+    marginLeft: 12,
+    labelWidth: 38,
+    labelHeight: 21.2,
+    horizontalPitch: 40,
+    verticalPitch: 21.2,
+    columns: 5,
+    rows: 13
+  },
+  {
+    id: "zweckform-546930-3657",
+    name: "Zweckform 3657 (A4 48.5x25.4 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 12,
+    marginLeft: 12,
+    labelWidth: 48.5,
+    labelHeight: 25.4,
+    horizontalPitch: 50,
+    verticalPitch: 25.4,
+    columns: 4,
+    rows: 11
+  },
+  {
+    id: "zweckform-3427",
+    name: "Zweckform 3427 (A4 74x105 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 15,
+    marginLeft: 15,
+    labelWidth: 74,
+    labelHeight: 105,
+    horizontalPitch: 74,
+    verticalPitch: 105,
+    columns: 2,
+    rows: 2
+  },
+  {
+    id: "zweckform-6135",
+    name: "Zweckform 6135 (A4 210x148 mm)",
+    region: "EU",
+    unit: "mm",
+    pageWidth: 210,
+    pageHeight: 297,
+    marginTop: 10,
+    marginLeft: 0,
+    labelWidth: 210,
+    labelHeight: 148,
+    horizontalPitch: 210,
+    verticalPitch: 148,
+    columns: 1,
+    rows: 2
+  },
+  {
+    "id": "shipping-4x6",
+    "name": "4x6 Thermal Shipping Label",
+    "region": "EU/US",
+    "unit": "in",
+    "pageWidth": 4,
+    "pageHeight": 6,
+    "marginTop": 0,
+    "marginLeft": 0,
+    "labelWidth": 4,
+    "labelHeight": 6,
+    "horizontalPitch": 4,
+    "verticalPitch": 6,
+    "columns": 1,
+    "rows": 1
+  },
+  {
+    "id": "avery-5160",
+    "name": "Avery 5160 (US Address 30 per sheet)",
+    "region": "US",
+    "unit": "in",
+    "pageWidth": 8.5,
+    "pageHeight": 11,
+    "marginTop": 0.5,
+    "marginLeft": 0.1875,
+    "labelWidth": 2.625,
+    "labelHeight": 1.0,
+    "horizontalPitch": 2.75,
+    "verticalPitch": 1.0,
+    "columns": 3,
+    "rows": 10
+  },
+  {
+    "id": "avery-5163",
+    "name": "Avery 5163 (US Shipping 10 per sheet)",
+    "region": "US",
+    "unit": "in",
+    "pageWidth": 8.5,
+    "pageHeight": 11,
+    "marginTop": 0.5,
+    "marginLeft": 0.15625,
+    "labelWidth": 4.0,
+    "labelHeight": 2.0,
+    "horizontalPitch": 4.1875,
+    "verticalPitch": 2.0,
+    "columns": 2,
+    "rows": 5
+  },
+]
