@@ -1,5 +1,5 @@
-import { Dimensions, FlatList, TouchableNativeFeedback, View } from "react-native"
-import { Appbar, Button, Checkbox, Divider, Icon, IconButton, List, RadioButton, Switch, Text } from "react-native-paper"
+import { Dimensions, FlatList, View } from "react-native"
+import { Appbar, Button, Checkbox, Icon, IconButton, List, RadioButton, Switch, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
@@ -16,6 +16,7 @@ import { LabelTemplate, shippingLabelData } from "lib/shippingLables"
 import { useCallback, useState } from "react"
 import QRCodeStyled from 'react-native-qrcode-styled';
 import QRCode from 'react-native-qrcode-skia';
+import { printLabelsToPDF } from "functions/printers/printLabelsToPDF"
 
 interface RouteParams {
   collection: CollectionType  
@@ -26,14 +27,14 @@ export default function GenerateQRCodes({navigation}){
     const route = useRoute()
     const params = route.params as RouteParams
 
-    const { theme, language } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
 
     const [contentIndex, setContentIndex] = useState<number>(0)
     const [selectedLabel, setSelectedLabel] = useState<string>(shippingLabelData[0].id)
     const [selectedGuns, setSelectedGuns] = useState(new Set<string>());
     const [qrCodeEnabled, setQrCodeEnabled] = useState<boolean>(true)
     const [textEnabled, setTextEnabled] = useState<boolean>(true)
-    const [fontSize, setFontSize] = useState<number>(1)
+    const [fontSize, setFontSize] = useState<number>(14)
 
     const collectionItems = db.select().from(schema[params.collection]).all()
 
@@ -57,11 +58,23 @@ export default function GenerateQRCodes({navigation}){
         })
     }, [])
 
+    function selectAll(){
+        
+            setSelectedGuns(prev => {
+                const newSet = new Set(prev);
+                collectionItems.forEach(item => {
+                    if (!newSet.has(item.id)) {
+                        newSet.add(item.id);
+                    } 
+                })
+            return newSet;
+        })
+    }
+
     function getWidthHeight(){
         const label:LabelTemplate[] = shippingLabelData.filter(shippingLabel =>{
             return shippingLabel.id === selectedLabel
         })
-        console.log({height: label[0].labelHeight, width: label[0].labelWidth})
 
         const displayWidth = Dimensions.get("window").width-(defaultViewPadding*2)
         const factor = displayWidth/label[0].labelWidth
@@ -71,6 +84,30 @@ export default function GenerateQRCodes({navigation}){
     function getSelectedItemsFromDatabase(){
         const items = collectionItems.filter(item => selectedGuns.has(item.id)) as ItemType[]
         return items
+    }
+
+    function generatePDF(){
+        const label:LabelTemplate[] = shippingLabelData.filter(shippingLabel =>{
+            return shippingLabel.id === selectedLabel
+        })
+
+        const itemArray = Array.from(selectedGuns)
+
+        const qrCodeWidthHeight = getWidthHeight()
+
+        printLabelsToPDF(
+            language, 
+            generalSettings.caliberDisplayName, 
+            caliberDisplayNameList, 
+            preferredUnits, 
+            label[0],
+            qrCodeEnabled,
+            textEnabled,
+            fontSize,
+            itemArray,
+            params.collection,
+            qrCodeWidthHeight
+        )
     }
 
     return(
@@ -91,6 +128,7 @@ export default function GenerateQRCodes({navigation}){
             :
             contentIndex === 1 ? 
                 <View style={{flex: 1}}>
+                    <Button onPress={()=>selectAll()}>Select All</Button>
                     <FlatList
                         data={collectionItems}
                         keyExtractor={(item, index) => `label_${index}`}
@@ -116,26 +154,27 @@ export default function GenerateQRCodes({navigation}){
                             alignSelf: "center",
                             display: "flex",
                             flexDirection: "row",
+                            overflow: "hidden"
                             }}
                         >
-                            {qrCodeEnabled ? <View style={{padding: defaultViewPadding, display: "flex", alignItems: "center", alignContent: "center", flexDirection: "row"}}>
+                            {qrCodeEnabled ? <View style={{padding: defaultViewPadding, display: "flex", justifyContent: "center", alignItems: "center", alignContent: "center", flexDirection: "row", flex: 1}}>
                                 <QRCode
                                     value="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                                     size={(getWidthHeight().width/3)-10}
                                 />
                             </View> : null}
-                            {textEnabled ? <View style={{padding: defaultViewPadding, flexDirection: 'column', flex: 1, flexShrink: 1}}>
+                            {textEnabled ? <View style={{padding: defaultViewPadding, flexDirection: 'column', flex: 2, flexShrink: 1}}>
                                 <View>
                                     <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.manufacturer[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={2} >{`${getSelectedItemsFromDatabase()[0].manufacturer}`}</Text>
+                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].manufacturer}`}</Text>
                                 </View>
                                 <View>
                                     <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.model[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={2} >{`${getSelectedItemsFromDatabase()[0].model}`}</Text>
+                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].model}`}</Text>
                                 </View>
                                 <View>
                                     <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.serial[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={2} >{`${getSelectedItemsFromDatabase()[0].serial}`}</Text>
+                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].serial}`}</Text>
                                 </View>
                             </View> : null}
                         </View>
@@ -148,6 +187,12 @@ export default function GenerateQRCodes({navigation}){
                                 <Text>With Text</Text>
                                 <Switch value={textEnabled} onValueChange={()=> setTextEnabled(prev => !prev)} />
                             </View>
+                            <View style={{width: "50%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                <Text>Font Size</Text>
+                                <IconButton size={14} mode={"contained"} icon={"minus"} onPress={() => fontSize >= 2 ? setFontSize(prev => prev-1) : null} />
+                                <Text>{fontSize}</Text>
+                                <IconButton size={14} mode={"contained"} icon={"plus"} onPress={() => setFontSize(prev => prev+1)} />
+                            </View>
                         </View>
                 </View>
             :
@@ -156,7 +201,11 @@ export default function GenerateQRCodes({navigation}){
 
             <View style={{backgroundColor: "red"}}>
                 {contentIndex !== 0 ? <Button onPress={()=> setContentIndex(contentIndex => contentIndex-1)}>Previous</Button> : null}
-                <Button onPress={()=> setContentIndex(contentIndex => contentIndex+1)}>Next</Button>
+                {contentIndex === 2 ? 
+                    <Button onPress={()=> generatePDF()}>Generate PDF</Button> 
+                : 
+                    <Button onPress={()=> contentIndex === 1 && selectedGuns.size === 0 ? null : setContentIndex(contentIndex => contentIndex+1)}>Next</Button>
+                }
             </View>
         </View>
     )
