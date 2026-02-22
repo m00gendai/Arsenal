@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core';
 
 export const gunCollection = sqliteTable('guns', {
     db_id: integer('id').primaryKey().notNull(),
@@ -570,3 +570,23 @@ export const partsMountRelations = relations(partMount, ({ one }) => ({
         references: [partCollection.id],
     }),
 }));
+
+export const customShippingLabels = sqliteTable("customShippingLabels", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    name: text("name"),
+    pageFormat: text("pageFormat)"),
+    pageWidth: real("pageWidth"),
+    pageHeight: real("pageHeight"),
+    unit: text("unit"),
+    marginTop: real("marginTop"),
+    marginLeft: real("marginLeft"),
+    labelWidth: real("labelWidth"),
+    labelHeight: real("labelHeight"),
+    horizontalPitch: real("horizontalPitch"),
+    verticalPitch: real("verticalPitch"),
+    columns: real("columns"),
+    rows: real("rows"),
+    radius: real("radius")
+})
