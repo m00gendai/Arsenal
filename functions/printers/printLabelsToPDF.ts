@@ -5,13 +5,14 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { dateLocales, defaultViewPadding, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { Platform } from 'react-native';
 import { LabelTemplate } from 'lib/shippingLables';
-import { PreferredUnits } from 'stores/usePreferenceStore';
+import { PreferredUnits, SorterSettings } from 'stores/usePreferenceStore';
 import { db } from 'db/client';
 import * as schema from "db/schema"
 import { CollectionType } from 'lib/interfaces';
 import { inArray } from "drizzle-orm";
 import QRCodeSVG from "qrcode-svg";
 import { dataTemplate_Translations } from 'lib/DataTemplates/translations';
+import { determineSortingFunction } from 'functions/determinators';
 
 export async function printLabelsToPDF(
   language: string, 
@@ -24,10 +25,11 @@ export async function printLabelsToPDF(
   fontSize: number,
   selectedItems: string[],
   collection: CollectionType,
-  qrCodeWidthHeight: {height: number; width: number;}
+  qrCodeWidthHeight: {height: number; width: number;},
+  sortBy: SorterSettings
 ){
 try{
-  const items = await db.select().from(schema[collection]).where(inArray(schema[collection].id, selectedItems))
+  const items = await db.select().from(schema[collection]).where(inArray(schema[collection].id, selectedItems)).orderBy(determineSortingFunction(collection, sortBy))
 
   // 1. Calculate labels per page
 const labelsPerPage = label.columns * label.rows;
@@ -57,9 +59,12 @@ const pagesHtml = pages.map((pageItems) => {
         ${qrCodeEnabled ? `<div class="qr">${qrSvg}</div>` : ""}
         ${textEnabled ? `
           <div class="text">
-            <p>${dataTemplate_Translations.manufacturer[language]}: <strong>${item.manufacturer ?? ""}</strong></p>
-            <p>${dataTemplate_Translations.model[language]}: <strong>${item.model ?? ""}</strong></p>
-            <p>${dataTemplate_Translations.serial[language]}: <strong>${item.serial ?? ""}</strong></p>
+            <p>${dataTemplate_Translations.manufacturer[language]}:</p>
+            <p><strong>${item.manufacturer ?? ""}</strong></p>
+            <p>${dataTemplate_Translations.model[language]}:</p>
+            <p><strong>${item.model ?? ""}</strong></p>
+            <p>${dataTemplate_Translations.serial[language]}:</p>
+            <p><strong>${item.serial ?? ""}</strong></p>
           </div>` : ""}
       </div>`;
   }).join("");
@@ -82,8 +87,8 @@ const pagesHtml = pages.map((pageItems) => {
   margin: 0;
 }
 body{
-          width: "100%";
-          height: "100%";
+          width: 100%;
+          height: 100%;
           margin: 0;
           padding: 0;
         }
@@ -93,15 +98,14 @@ body{
           height: ${label.pageHeight}mm;
           padding-left: ${label.marginLeft}mm;
           padding-top: ${label.marginTop}mm;
-          display: flex;
-          justify-content: flex-start;
-          align-items: flex-start;
-          align-content: flex-start;
-          flex-direction: row;
-          flex-wrap: wrap;
+          display: grid;
+  grid-template-columns: repeat(${label.columns}, ${label.labelWidth}mm);
+  grid-auto-rows: ${label.labelHeight}mm;
+
+  column-gap: ${label.horizontalPitch - label.labelWidth}mm;
+  row-gap: ${label.verticalPitch - label.labelHeight}mm;
           page-break-after: always;
           break-after: page;
-          background: yellow;
           box-sizing: border-box;
         }
 
@@ -116,6 +120,7 @@ body{
   justify-content: flex-start;
   page-break-inside: avoid;
   break-inside: avoid;
+  border-radius: ${label.radius}%;
 }
 
 .qr {
@@ -124,7 +129,7 @@ body{
   align-items: center;
   justify-content: center;
   padding: 2mm;
-  height: calc(100% - 4mm);
+  height: calc(${label.radius === 100 ? "70.71% - 4mm" : "100% - 4mm"});
 }
 
 .qr svg {
@@ -148,13 +153,14 @@ padding: 2mm;
 .text p{
 position: relative;
   width: 100%;
-  font-size:${fontSize/2}pt;
+  font-size:${(25.4/96)*fontSize}mm;
   margin: 0;
 }
       </style>
         
     </html>
   `
+// 2.83465 is the conversion from points to mm
 
   if (Platform.OS === 'ios') {
     const file = await Print.printToFileAsync({
@@ -167,7 +173,7 @@ position: relative;
     await shareAsync(file.uri)
   
   } else if(Platform.OS === "android"){
-    const { uri } = await Print.printToFileAsync({html, height:842, width:label.pageWidth * 2.83465, margins: { left: 0, top: 0, right: 0, bottom: 0 }});
+    const { uri } = await Print.printToFileAsync({html, height:label.pageHeight * 2.83465, width:label.pageWidth * 2.83465, margins: { left: 0, top: 0, right: 0, bottom: 0 }});
     const cUri = await FileSystem.getContentUriAsync(uri)
     
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
