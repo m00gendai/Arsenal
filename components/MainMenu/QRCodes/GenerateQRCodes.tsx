@@ -39,7 +39,7 @@ export default function GenerateQRCodes({navigation}){
     const collectionItems = db.select().from(schema[params.collection]).all()
 
     const labelOptions = shippingLabelData.map(label => {
-        return {label: `${label.region}: ${label.name} ${label.labelWidth}x${label.labelHeight}${label.unit}`, value: label.id}
+        return {label: `${label.name}\n${label.labelWidth}x${label.labelHeight}${label.unit}\n${label.rows*label.columns} per ${label.region === "EU" ? "A4" : "Letter"}`, value: label.id}
     })
 
     const titles = [
