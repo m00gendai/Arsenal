@@ -1,10 +1,10 @@
 export type LabelTemplate = {
   id: string
   name: string
-  pageFormat: "A4" | "US Letter"
+  pageFormat: string
   pageWidth: number
   pageHeight: number
-  unit: "mm" | "in"
+  unit: string
   marginTop: number
   marginLeft: number
   labelWidth: number
@@ -13,9 +13,10 @@ export type LabelTemplate = {
   verticalPitch: number
   columns: number
   rows: number
+  radius: number
 }
 
-export const shippingLabelData: LabelTemplate[] = [
+export const shippingLabelData_ISO: LabelTemplate[] = [
   {
     "id": "avery-3490",
     "name": "Avery Zweckform 3490",
@@ -30,7 +31,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 70,
     "verticalPitch": 36,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
    {
     "id": "avery-3422",
@@ -46,7 +48,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 70,
     "verticalPitch": 35,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
    {
     "id": "avery-L4736REV",
@@ -62,7 +65,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 48.3,
     "verticalPitch": 21.2,
     "columns": 4,
-    "rows": 12
+    "rows": 12,
+    "radius": 0
   },
   {
     "id": "avery-6126",
@@ -78,7 +82,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 48.5,
     "verticalPitch": 25.4,
     "columns": 4,
-    "rows": 10
+    "rows": 10,
+    "radius": 0
   },
    {
     "id": "avery-L7912",
@@ -94,7 +99,25 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 66,
     "verticalPitch": 33.9,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
+  },
+     {
+    "id": "avery-L3415",
+    "name": "Avery Zweckform L3415",
+    "pageFormat": "A4",
+    "unit": "mm",
+    "pageWidth": 210,
+    "pageHeight": 297,
+    "marginTop": 13.5,
+    "marginLeft": 16,
+    "labelWidth": 40,
+    "labelHeight": 40,
+    "horizontalPitch": 46,
+    "verticalPitch": 46,
+    "columns": 4,
+    "rows": 6,
+    "radius": 100
   },
     {
     "id": "avery-LR3475",
@@ -110,7 +133,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 70,
     "verticalPitch": 36,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
     {
     "id": "avery-3454",
@@ -126,7 +150,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 105,
     "verticalPitch": 37.1,
     "columns": 2,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
     {
     "id": "avery-4781",
@@ -142,7 +167,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 97,
     "verticalPitch": 42.3,
     "columns": 2,
-    "rows": 6
+    "rows": 6,
+    "radius": 0
   },
     {
     "id": "avery-L4772",
@@ -158,7 +184,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 101.6,
     "verticalPitch": 42.3,
     "columns": 2,
-    "rows": 6
+    "rows": 6,
+    "radius": 0
   },
    {
     "id": "avery-L6041",
@@ -174,7 +201,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 48.3,
     "verticalPitch": 21.2,
     "columns": 4,
-    "rows": 12
+    "rows": 12,
+    "radius": 0
   },
    {
     "id": "avery-L6004",
@@ -190,7 +218,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 66,
     "verticalPitch": 29.6,
     "columns": 3,
-    "rows": 9
+    "rows": 9,
+    "radius": 0
   },
    {
     "id": "avery-J4721",
@@ -206,7 +235,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 66,
     "verticalPitch": 29.6,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
    {
     "id": "avery-L4732REV",
@@ -222,7 +252,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 38.1,
     "verticalPitch": 16.9,
     "columns": 5,
-    "rows": 16
+    "rows": 16,
+    "radius": 0
   },
    {
     "id": "avery-L7160",
@@ -238,7 +269,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 66,
     "verticalPitch": 38.1,
     "columns": 3,
-    "rows": 7
+    "rows": 7,
+    "radius": 0
   },
    {
     "id": "avery-L6021REV",
@@ -254,7 +286,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 48.3,
     "verticalPitch": 16.9,
     "columns": 4,
-    "rows": 16
+    "rows": 16,
+    "radius": 0
   },
    {
     "id": "avery-L7651",
@@ -270,7 +303,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 40.6,
     "verticalPitch": 21.2,
     "columns": 5,
-    "rows": 13
+    "rows": 13,
+    "radius": 0
   },
    {
     "id": "avery-L6048",
@@ -286,7 +320,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 27.9,
     "verticalPitch": 10,
     "columns": 7,
-    "rows": 27
+    "rows": 27,
+    "radius": 0
   },
    {
     "id": "avery-C6080",
@@ -302,7 +337,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 66,
     "verticalPitch": 50.8,
     "columns": 3,
-    "rows": 5
+    "rows": 5,
+    "radius": 0
   },
    {
     "id": "avery-3451",
@@ -318,7 +354,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 70,
     "verticalPitch": 37.1,
     "columns": 3,
-    "rows": 8
+    "rows": 8,
+    "radius": 0
   },
    {
     "id": "avery-L7263",
@@ -334,7 +371,8 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 101.6,
     "verticalPitch": 38.1,
     "columns": 2,
-    "rows": 7
+    "rows": 7,
+    "radius": 0
   },
    {
     "id": "avery-L6145",
@@ -350,13 +388,17 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 48.3,
     "verticalPitch": 25.4,
     "columns": 4,
-    "rows": 10
+    "rows": 10,
+    "radius": 0
   },
-   {
+]
+
+export const shippingLabelData_US: LabelTemplate[] = [
+  {
     "id": "avery-5160",
     "name": "Avery 5160",
     "pageFormat": "US Letter",
-    "unit": "mm",
+    "unit": "in",
     "pageWidth": 215.9,
     "pageHeight": 279.4,
     "marginTop": 12.7,
@@ -366,6 +408,58 @@ export const shippingLabelData: LabelTemplate[] = [
     "horizontalPitch": 69.8,
     "verticalPitch": 25.4,
     "columns": 3,
-    "rows": 10
+    "rows": 10,
+    "radius": 0
+  },
+  {
+    "id": "avery-8160",
+    "name": "Avery 8160",
+    "pageFormat": "US Letter",
+    "unit": "in",
+    "pageWidth": 215.9,
+    "pageHeight": 279.4,
+    "marginTop": 12.7,
+    "marginLeft": 4.8,
+    "labelWidth": 66.8,
+    "labelHeight": 25.4,
+    "horizontalPitch": 69.8,
+    "verticalPitch": 25.4,
+    "columns": 3,
+    "rows": 10,
+    "radius": 0
+  },
+  {
+    "id": "avery-5260",
+    "name": "Avery 5260",
+    "pageFormat": "US Letter",
+    "unit": "in",
+    "pageWidth": 215.9,
+    "pageHeight": 279.4,
+    "marginTop": 12.7,
+    "marginLeft": 4.8,
+    "labelWidth": 66.8,
+    "labelHeight": 25.4,
+    "horizontalPitch": 69.8,
+    "verticalPitch": 25.4,
+    "columns": 3,
+    "rows": 10,
+    "radius": 0
+  },
+  {
+    "id": "avery-5161",
+    "name": "Avery 5161",
+    "pageFormat": "US Letter",
+    "unit": "in",
+    "pageWidth": 215.9,
+    "pageHeight": 279.4,
+    "marginTop": 12.7,
+    "marginLeft": 4.2,
+    "labelWidth": 101.6,
+    "labelHeight": 25.4,
+    "horizontalPitch": 106.3,
+    "verticalPitch": 25.4,
+    "columns": 2,
+    "rows": 10,
+    "radius": 0
   },
 ]
