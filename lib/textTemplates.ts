@@ -73,7 +73,7 @@ interface TabBarLabels{
     magazineCollection: SimpleTranslation
     miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
-    printMagazineCollection: SimpleTranslation
+    /*printMagazineCollection: SimpleTranslation
     swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
     diesCollection: SimpleTranslation
@@ -81,7 +81,7 @@ interface TabBarLabels{
     caseCollection: SimpleTranslation
     primerCollection: SimpleTranslation
     powderCollection: SimpleTranslation
-    reloadingMiscCollection: SimpleTranslation
+    reloadingMiscCollection: SimpleTranslation*/
 }
 
 interface AmmoQuickUpdate{
@@ -1070,7 +1070,7 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Livres",
         it: "Libri",
         ch: "Cudeschs",
-    },
+    }, /*
     printMagazineCollection: {
         de: "Magazine",
         en: "Magazines",
@@ -1133,7 +1133,7 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Divers",
         it: "Varie",
         ch: "Diverses", 
-    }
+    } */
 }
 
 interface MainCollectionCategories {
