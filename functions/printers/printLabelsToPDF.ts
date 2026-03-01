@@ -13,6 +13,7 @@ import { inArray } from "drizzle-orm";
 import QRCodeSVG from "qrcode-svg";
 import { dataTemplate_Translations } from 'lib/DataTemplates/translations';
 import { determineSortingFunction } from 'functions/determinators';
+import { getShortCaliberNameFromArray } from 'functions/utils';
 
 export async function printLabelsToPDF(
   language: string, 
@@ -26,11 +27,12 @@ export async function printLabelsToPDF(
   selectedItems: string[],
   collection: CollectionType,
   qrCodeWidthHeight: {height: number; width: number;},
-  sortBy: SorterSettings
+  sortBy: SorterSettings,
+  selectedFields: string[]
 ){
 try{
   const items = await db.select().from(schema[collection]).where(inArray(schema[collection].id, selectedItems)).orderBy(determineSortingFunction(collection, sortBy))
-
+console.log(label)
   // 1. Calculate labels per page
 const labelsPerPage = label.columns * label.rows;
 
@@ -59,12 +61,11 @@ const pagesHtml = pages.map((pageItems) => {
         ${qrCodeEnabled ? `<div class="qr">${qrSvg}</div>` : ""}
         ${textEnabled ? `
           <div class="text">
-            <p>${dataTemplate_Translations.manufacturer[language]}:</p>
-            <p><strong>${item.manufacturer ?? ""}</strong></p>
-            <p>${dataTemplate_Translations.model[language]}:</p>
-            <p><strong>${item.model ?? ""}</strong></p>
-            <p>${dataTemplate_Translations.serial[language]}:</p>
-            <p><strong>${item.serial ?? ""}</strong></p>
+          ${selectedFields.map(field => {
+            if(item[field]){
+              return `<p>${dataTemplate_Translations[field][language]}:</p><p><strong>${field === "caliber" ? getShortCaliberNameFromArray(item[field], caliberDisplayNameList, shortCaliber) : item[field]}</strong></p>`
+            }
+            }).join("")}
           </div>` : ""}
       </div>`;
   }).join("");
@@ -83,7 +84,7 @@ const pagesHtml = pages.map((pageItems) => {
 
       <style>
       @page {
-  size:  ${label.pageWidth}mm ${label.pageHeight}mm;
+  size:  ${label.unit === "mm" ? label.pageWidth : label.pageWidth*25.4}mm ${label.unit === "mm" ? label.pageHeight : label.pageHeight*25.4}mm;
   margin: 0;
 }
 body{
@@ -94,24 +95,24 @@ body{
         }
         
         .container{
-          width: ${label.pageWidth}mm;
-          height: ${label.pageHeight}mm;
-          padding-left: ${label.marginLeft}mm;
-          padding-top: ${label.marginTop}mm;
+          width: ${label.unit === "mm" ? label.pageWidth : label.pageWidth*25.4}mm;
+          height: ${label.unit === "mm" ? label.pageHeight : label.pageHeight*25.4}mm;
+          padding-left: ${label.unit === "mm" ? label.marginLeft : label.marginLeft*25.4}mm;
+          padding-top: ${label.unit === "mm" ? label.marginTop : label.marginTop*25.4}mm;
           display: grid;
   grid-template-columns: repeat(${label.columns}, ${label.labelWidth}mm);
-  grid-auto-rows: ${label.labelHeight}mm;
+  grid-auto-rows: ${label.unit === "mm" ? label.labelHeight : label.labelHeight*25.4}mm;
 
-  column-gap: ${label.horizontalPitch - label.labelWidth}mm;
-  row-gap: ${label.verticalPitch - label.labelHeight}mm;
+  column-gap: ${label.unit === "mm" ? label.horizontalPitch - label.labelWidth : (label.horizontalPitch*25.4) - (label.labelWidth*25.4)}mm;
+  row-gap: ${label.unit === "mm" ? label.verticalPitch - label.labelHeight : (label.verticalPitch*25.4) - (label.labelHeight*25.4)}mm;
           page-break-after: always;
           break-after: page;
           box-sizing: border-box;
         }
 
 .label {
-  width: ${label.labelWidth}mm;
-  height: ${label.labelHeight}mm;
+  width: ${label.unit === "mm" ? label.labelWidth : label.labelWidth*25.4}mm;
+  height: ${label.unit === "mm" ? label.labelHeight : label.labelHeight*25.4}mm;
   display: flex;
   border: 1px solid black;
   box-sizing: border-box;
@@ -165,15 +166,19 @@ position: relative;
   if (Platform.OS === 'ios') {
     const file = await Print.printToFileAsync({
       html: html,
-      height:label.pageHeight * 2.83465,
-      width:label.pageWidth * 2.83465, 
+      height: (label.unit === "mm" ? label.pageHeight : label.pageHeight*25.4)* 2.83465,
+      width: (label.unit === "mm" ? label.pageWidth : label.pageWidth*25.4)* 2.83465, 
       margins: { left: 0, top: 0, right: 0, bottom: 0 }
     })
 
     await shareAsync(file.uri)
   
   } else if(Platform.OS === "android"){
-    const { uri } = await Print.printToFileAsync({html, height:label.pageHeight * 2.83465, width:label.pageWidth * 2.83465, margins: { left: 0, top: 0, right: 0, bottom: 0 }});
+    const { uri } = await Print.printToFileAsync({
+      html, 
+      height: (label.unit === "mm" ? label.pageHeight : label.pageHeight*25.4)* 2.83465,
+      width: (label.unit === "mm" ? label.pageWidth : label.pageWidth*25.4)* 2.83465, 
+      margins: { left: 0, top: 0, right: 0, bottom: 0 }});
     const cUri = await FileSystem.getContentUriAsync(uri)
     
     await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
