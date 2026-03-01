@@ -5,23 +5,28 @@ import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, inArray } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { defaultViewPadding } from "configs/configs"
+import { customLabelFieldsFormat, customLabelFieldsNumbers, customLabelFieldsText, customLabelFieldsUnit, defaultViewPadding, excludedKeysForDataTemplates } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
 import { preferenceTitles, tabBarLabels } from "lib/textTemplates"
-import { CollectionType, ItemType } from "lib/interfaces"
+import { CollectionType, CustomLabel, ItemType } from "lib/interfaces"
 import { useRoute } from "@react-navigation/native"
 import { Dropdown } from "react-native-paper-dropdown"
 import { LabelTemplate, shippingLabelData_ISO, shippingLabelData_US } from "lib/shippingLables"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import QRCodeStyled from 'react-native-qrcode-styled';
 import QRCode from 'react-native-qrcode-skia';
 import { printLabelsToPDF } from "functions/printers/printLabelsToPDF"
 import ModalContainer from "components/ModalContainer"
 import { devNull } from "node:os"
+import { determineCardSubtitle, determineCardTitle, determineEmptyObject } from "functions/determinators"
+import { useViewStore } from "stores/useViewStore"
+import CustomShippingLabelDialog from "components/Dialogs/CustomShippingLabelDialog"
+import { generateQRcodeText, screenTitles } from "lib/Text/textTemplates_generateQRcodes"
 
 interface RouteParams {
-  collection: CollectionType  
+  collection: CollectionType,
+  label: string
 }
 
 export default function GenerateQRCodes({navigation}){
@@ -30,17 +35,20 @@ export default function GenerateQRCodes({navigation}){
     const params = route.params as RouteParams
 
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
-    
+    const { setCustomShippingLabelVisible } = useViewStore()
+
     const customLabels = db.select().from(schema.customShippingLabels).all()
     const shippingLabelData = [...shippingLabelData_ISO, ...shippingLabelData_US, ...customLabels]
 
     const [contentIndex, setContentIndex] = useState<number>(0)
     const [selectedLabel, setSelectedLabel] = useState<string>(shippingLabelData[0].id)
     const [selectedGuns, setSelectedGuns] = useState(new Set<string>());
+    const [selectedFields, setSelectedFields] = useState(new Set<string>())
     const [qrCodeEnabled, setQrCodeEnabled] = useState<boolean>(true)
     const [textEnabled, setTextEnabled] = useState<boolean>(true)
     const [fontSize, setFontSize] = useState<number>(14)
-    const [customModalVisible, setCustomModalVisible] = useState<boolean>(false)
+    const [selectAllItems, setSelectAllItems] = useState<boolean>(false)
+    
 
     const collectionItems = db.select().from(schema[params.collection]).all()
 
@@ -53,12 +61,10 @@ export default function GenerateQRCodes({navigation}){
     })
 
     const labelOptions_Custom = customLabels.map(label =>{
-        return {label: `${label.name}\n${(label.labelWidth/25.4).toFixed(2)}x${(label.labelHeight/25.5).toFixed(2)} ${label.unit}\n${label.rows*label.columns} per ${label.pageFormat}`, value: label.id}
+        return {label: `${label.name}\n${label.labelWidth}x${label.labelHeight} ${label.unit}\n${label.rows*label.columns} per ${label.pageFormat}`, value: label.id}
     })
 
-    const titles = [
-        "Select Label Format", "Select Items", "Adjust Label"
-    ]
+    const titles = screenTitles.map(title => title[language])
 
     const handleCheckboxPress = useCallback((id: string) => {
         setSelectedGuns(prev => {
@@ -72,16 +78,33 @@ export default function GenerateQRCodes({navigation}){
         })
     }, [])
 
+    const handleFieldCheckboxPress = useCallback((item: string) => {
+        setSelectedFields(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(item)) {
+                newSet.delete(item);
+            } else {
+                newSet.add(item);
+            }
+            return newSet;
+        })
+    }, [])
+
     function selectAll(){
-        
-            setSelectedGuns(prev => {
+        setSelectAllItems(selectAllItems => !selectAllItems)
+
+        setSelectedGuns(prev => {
+            if(!selectAllItems){
                 const newSet = new Set(prev);
                 collectionItems.forEach(item => {
                     if (!newSet.has(item.id)) {
                         newSet.add(item.id);
                     } 
                 })
-            return newSet;
+                return newSet;
+            } else {
+                return new Set()
+            }
         })
     }
 
@@ -147,25 +170,25 @@ export default function GenerateQRCodes({navigation}){
             itemArray,
             params.collection,
             qrCodeWidthHeight,
-            sortBy
+            sortBy,
+            Array.from(selectedFields)
         )
     }
 
-    function handleConfirm(){
-
+    function forward(){
+        setContentIndex(contentIndex => contentIndex+1)
     }
-
-    function handleCancel(){
-        setCustomModalVisible(false)
+    function backward(){
+        setContentIndex(contentIndex => contentIndex-1)
     }
 
     return(
         <View style={{flex: 1, paddingBottom: defaultViewPadding}}>
             <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Appbar.Content title={tabBarLabels[params.collection][language]}/>
+                <Appbar.Content title={tabBarLabels[params.label][language]}/>
             </Appbar>
-            <View><Text variant="titleMedium">{titles[contentIndex]}</Text></View>
+            <View style={{padding: defaultViewPadding}}><Text variant="titleMedium">{titles[contentIndex]}</Text></View>
             {contentIndex === 0 ? 
                 <ScrollView style={{flex: 1}}>
                     <RadioButton.Group onValueChange={value => setSelectedLabel(value)} value={selectedLabel}>
@@ -177,7 +200,8 @@ export default function GenerateQRCodes({navigation}){
                                         justifyContent: "flex-start",
                                         alignItems: "center",
                                         flexDirection: "row",
-                                        width: "100%"
+                                        width: "100%",
+                                        padding: defaultViewPadding
                                     }}
                                 >
                                     <View 
@@ -207,7 +231,8 @@ export default function GenerateQRCodes({navigation}){
                                         justifyContent: "flex-start",
                                         alignItems: "center",
                                         flexDirection: "row",
-                                        width: "100%"
+                                        width: "100%",
+                                        padding: defaultViewPadding
                                     }}
                                 >
                                     <View 
@@ -229,7 +254,7 @@ export default function GenerateQRCodes({navigation}){
                             /></View>
                         </View>
                     })}</List.Accordion>
-                    <List.Accordion title="Custom">{labelOptions_Custom.map((label, index) => {
+                    <List.Accordion title={generateQRcodeText.customLabel[language]}>{labelOptions_Custom.map((label, index) => {
                         return <View 
                                     key={`label_${index}`}
                                     style={{
@@ -262,18 +287,25 @@ export default function GenerateQRCodes({navigation}){
                         
                     })}</List.Accordion>
                     </RadioButton.Group>
-                    <Button onPress={()=>setCustomModalVisible(true)}>Create Custom Label</Button>
+                    <View><Button style={{backgroundColor: theme.colors.primary, alignSelf: "center"}} textColor={theme.colors.onPrimary} onPress={()=>setCustomShippingLabelVisible(true)}>{generateQRcodeText.createCustomLabel[language]}</Button></View>
                 </ScrollView> 
             :
             contentIndex === 1 ? 
                 <View style={{flex: 1}}>
-                    <Button onPress={()=>selectAll()}>Select All</Button>
+                    <Checkbox.Item
+                                label={generateQRcodeText.selectAll[language]}
+                                status={selectAllItems ? "checked" : "unchecked"}
+                                onPress={() => selectAll()}
+                                mode="android"
+                                style={{marginBottom: defaultViewPadding*2}}
+                                labelStyle={{textAlign: "right"}}
+                            />
                     <FlatList
                         data={collectionItems}
                         keyExtractor={(item, index) => `label_${index}`}
                         renderItem={({ item }) => (
                             <Checkbox.Item
-                                label={`${"manufacturer" in item ? item.manufacturer : ""}${"manufacturer" in item ? " " : ""}${item.model}`}
+                                label={`${determineCardTitle(params.collection, item as ItemType, language)}\n${determineCardSubtitle(params.collection, item as ItemType, language, caliberDisplayNameList)}`}
                                 status={selectedGuns.has(item.id) ? "checked" : "unchecked"}
                                 onPress={() => handleCheckboxPress(item.id)}
                                 mode="android"
@@ -282,7 +314,23 @@ export default function GenerateQRCodes({navigation}){
                     />
                 </View> 
             :
-            contentIndex === 2 ? 
+            contentIndex === 2 ?
+                <View style={{flex: 1}}>
+                    <FlatList
+                        data={Object.keys(determineEmptyObject(params.collection)).filter(item => !excludedKeysForDataTemplates.includes(item) && dataTemplate_Translations[item])}
+                        keyExtractor={(item, index) => `label_${index}`}
+                        renderItem={({ item }) => (
+                            <Checkbox.Item
+                                label={dataTemplate_Translations[item][language]}
+                                status={selectedFields.has(item) ? "checked" : "unchecked"}
+                                onPress={() => handleFieldCheckboxPress(item)}
+                                mode="android"
+                            />
+                        )}
+                    />
+                </View> 
+            :
+            contentIndex === 3 ? 
                 <View style={{flex: 1}}>
                     <View 
                         style={{
@@ -304,35 +352,35 @@ export default function GenerateQRCodes({navigation}){
                                 />
                             </View> : null}
                             {textEnabled ? <View style={{padding: defaultViewPadding, flexDirection: 'column', flex: 2, flexShrink: 1}}>
-                                <View>
-                                    <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.manufacturer[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].manufacturer}`}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.model[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].model}`}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations.serial[language]}:`}</Text>
-                                    <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0].serial}`}</Text>
-                                </View>
+                                {Array.from(selectedFields).map((field, index) =>{
+                                    if(getSelectedItemsFromDatabase()[0][field]){
+                                        return( 
+                                            <View key={`selectedFields_${field}_${index}`}>
+                                                <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations[field][language]}:`}</Text>
+                                                <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0][field]}`}</Text>
+                                            </View>
+                                        )
+                                    }
+                                })}
                             </View> : null}
                         </View>
-                        <View>
-                            <View><Text style={{fontStyle: "italic"}}>This Preview is only for illustrative purposes. Actual label may look slightly different, especially font size.</Text></View>
-                            <View style={{width: "50%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                <Text>With QR Code</Text>
-                                <Switch value={qrCodeEnabled} onValueChange={()=> setQrCodeEnabled(prev => !prev)} />
-                            </View>
-                            <View style={{width: "50%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                <Text>With Text</Text>
-                                <Switch value={textEnabled} onValueChange={()=> setTextEnabled(prev => !prev)} />
-                            </View>
-                            <View style={{width: "50%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                                <Text>Font Size</Text>
-                                <IconButton size={14} mode={"contained"} icon={"minus"} onPress={() => fontSize >= 2 ? setFontSize(prev => prev-1) : null} />
-                                <Text>{fontSize}</Text>
-                                <IconButton size={14} mode={"contained"} icon={"plus"} onPress={() => setFontSize(prev => prev+1)} />
+                        <View style={{padding: defaultViewPadding}}>
+                            <Text style={{fontStyle: "italic"}}>{generateQRcodeText.previewNotice[language]}</Text>
+                            <View style={{marginTop: defaultViewPadding*2}}>
+                                <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                    <Text>{generateQRcodeText.withQRcode[language]}</Text>
+                                    <Switch value={qrCodeEnabled} onValueChange={()=> setQrCodeEnabled(prev => !prev)} />
+                                </View>
+                                <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                    <Text>{generateQRcodeText.withText[language]}</Text>
+                                    <Switch value={textEnabled} onValueChange={()=> setTextEnabled(prev => !prev)} />
+                                </View>
+                                <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                    <Text>{generateQRcodeText.fontSize[language]}</Text>
+                                    <IconButton size={14} mode={"contained"} icon={"minus"} onPress={() => fontSize >= 2 ? setFontSize(prev => prev-1) : null} />
+                                    <Text>{fontSize}</Text>
+                                    <IconButton size={14} mode={"contained"} icon={"plus"} onPress={() => setFontSize(prev => prev+1)} />
+                                </View>
                             </View>
                         </View>
                 </View>
@@ -340,39 +388,34 @@ export default function GenerateQRCodes({navigation}){
             null
             }
 
-            <View style={{backgroundColor: "red"}}>
-                {contentIndex !== 0 ? <Button onPress={()=> setContentIndex(contentIndex => contentIndex-1)}>Previous</Button> : null}
-                {contentIndex === 2 ? 
-                    <Button onPress={()=> generatePDF()}>Generate PDF</Button> 
-                : 
-                    <Button onPress={()=> contentIndex === 1 && selectedGuns.size === 0 ? null : setContentIndex(contentIndex => contentIndex+1)}>Next</Button>
-                }
+            <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", padding: defaultViewPadding}}>
+                            {contentIndex !== 0 ? <IconButton
+                                icon="chevron-left"
+                                iconColor={theme.colors.onPrimary}
+                                size={25}
+                                onPress={() => backward()}
+                                style={{backgroundColor: theme.colors.primary}}
+                            /> : <IconButton
+                                icon=""
+                                iconColor={theme.colors.onPrimary}
+                                size={25}
+                                onPress={null}
+                            />}
+                            {contentIndex !== 3 ? <IconButton
+                                icon="chevron-right"
+                                iconColor={theme.colors.onPrimary}
+                                size={25}
+                                onPress={() => forward()}
+                                style={{backgroundColor: theme.colors.primary}}
+                            /> : <IconButton
+                                icon="file-pdf-box"
+                                iconColor={theme.colors.onPrimary}
+                                size={25}
+                                onPress={() => generatePDF()}
+                                style={{backgroundColor: theme.colors.primary}}
+                            />}
+                        </View>
+                        <CustomShippingLabelDialog />
             </View>
-            <ModalContainer
-                            title={"Custom Shipping Label"}
-                            subtitle={"Create Custom Shipping Label Dimensions"}
-                            visible={customModalVisible}
-                            setVisible={setCustomModalVisible}
-                            content={<ScrollView style={{width: "100%", height: "100%", padding: defaultViewPadding}}>
-                                <View><Text>All entries in Milimeters! </Text></View>
-                                <View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Page Width" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Page Height" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Margin Top" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Margin Left" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Label Width" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Label Height" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Horizontal Pitch" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Vertical Pitch" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Columns" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Rows" /></View>
-                                <View style={{width: "100%", marginBottom: defaultViewPadding}} ><TextInput inputMode="decimal" label="Radius" /></View>
-                                </View>
-                            </ScrollView>}
-                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
-                buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
-                buttonDEL={null}
-            />
-        </View>
     )
 }
