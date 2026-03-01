@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { defaultViewPadding } from "configs/configs";
+import { determineSchemaStringFromTabBarLabel } from "functions/determinators";
 import { CollectionType, StackParamList } from "lib/interfaces";
 import { preferenceTitles, tabBarLabels } from "lib/textTemplates";
 import { View } from "react-native";
@@ -15,9 +16,9 @@ export default function QRCodes(){
 
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
-    function handleEditDataNavigation(collection: CollectionType){
+    function handleEditDataNavigation(collection: CollectionType, label: string){
         setHideBottomSheet(true)
-        navigation.navigate("GenerateQRCodes", {collection: collection})
+        navigation.navigate("GenerateQRCodes", {collection: collection, label: label})
     }
 
     return(
@@ -32,7 +33,7 @@ export default function QRCodes(){
                                     icon={"chevron-right"} 
                                     iconColor={theme.colors.onPrimary} 
                                     style={{backgroundColor: theme.colors.primary}} 
-                                    onPress={() => handleEditDataNavigation(tabBar[0] as CollectionType)}
+                                    onPress={() => handleEditDataNavigation(determineSchemaStringFromTabBarLabel(tabBar[0]), tabBar[0])}
                                 />
                             </View>
                         )})}
