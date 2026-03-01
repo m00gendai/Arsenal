@@ -613,7 +613,7 @@ export type StackParamList = {
   QuickMount: {item: ItemType}
   EditAutocomplete: undefined
   Statistics: undefined
-  GenerateQRCodes: {collection: CollectionType}
+  GenerateQRCodes: {collection: CollectionType, label: string}
 }
 
 export interface Tag {
@@ -648,3 +648,20 @@ export interface PartMount{
 }
 
 export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection"
+
+export interface CustomLabel{
+  name: string
+  pageFormat: string
+  pageWidth: number
+  pageHeight: number
+  unit: string
+  marginTop: number
+  marginLeft: number
+  labelWidth: number
+  labelHeight: number
+  horizontalPitch: number
+  verticalPitch: number
+  columns: number
+  rows: number
+  radius: number
+}
