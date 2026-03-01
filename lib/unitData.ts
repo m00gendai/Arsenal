@@ -266,7 +266,7 @@ interface DistUnit{
     iso: string
     base: number
 }
-// lengths all have their relation to milimeter. All length data is stored in milimeters and displayed according to the chosen unit
+// lengths all have their relation to millimeter. All length data is stored in millimeters and displayed according to the chosen unit
 export const distUnits:DistUnit[] = [
     {
         name: "millimeter", 
