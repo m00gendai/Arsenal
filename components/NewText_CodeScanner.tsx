@@ -9,6 +9,7 @@ import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, conv
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import ModalContainer from './ModalContainer';
 import { ScrollView } from 'react-native-gesture-handler';
+import { scannerInfo } from 'lib/Text/textTemplates_scanner';
 
 interface Props{
     data: string
@@ -131,7 +132,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
             
             <ModalContainer
                 title={`QR Code Scanner`}
-                subtitle={`Scan your existing QR-Codes to bind them to this item. You can access an item by scanning the code in the collection view directly`}
+                subtitle={scannerInfo[language]}
                 visible={showModalCaliber}
                 setVisible={setShowModalCaliber}
                 content={
