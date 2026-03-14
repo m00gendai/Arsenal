@@ -108,7 +108,7 @@ const codeScanner = useCodeScanner({
                             status={ scanTarget === 'id' ? 'checked' : 'unchecked' }
                             onPress={() => handleScanTarget('id')}
                           />
-                          <Text>ID</Text>
+                          <Text>Arsenal Code</Text>
                         </View>
                         <View style={{display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}>
                           <Text>QR Code</Text>
