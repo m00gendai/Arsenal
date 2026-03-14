@@ -227,18 +227,18 @@ export interface customLabelNumberFields{
 
 export const helperText: customLabelNumberFields = {
     pageHeight: {
-        de: "Gelb: Die Höhe der Seite, auf welcher die Etiketten sind",
-        en: "Yellow: The height of the page that contains the labels",
-        fr: "Jaune: La hauteur de la page contenant les étiquettes",
-        it: "Giallo: L’altezza della pagina che contiene le etichette",
-        ch: "Mellen: L’autezza da la pagina che cuntegna las etichettas"
+        de: "Gelb: Die Höhe der Seite, auf welcher die Etiketten sind. Für Etikettendrucker mit Papierrollen ist jedes Etikett als eine eigene Seite anzusehen.",
+        en: "Yellow: The height of the page that contains the labels. For label printers with continuous paper rolls, each label is considered its own page.",
+        fr: "Jaune: La hauteur de la page contenant les étiquettes. Pour les imprimantes d’étiquettes avec rouleaux de papier continus, chaque étiquette est considérée comme une page à part entière.",
+        it: "Giallo: L’altezza della pagina che contiene le etichette. Per le stampanti di etichette con rotoli di carta continui, ogni etichetta è considerata una pagina a sé.",
+        ch: "Mellen: L’autezza da la pagina che cuntegna las etichettas. En cas da stampaders cun rollas da palpiri percurrentas vala mintga etichetta sco atgna pagina."
     },
     pageWidth: {
-        de: "Gelb: Die Breite der Seite, auf welcher die Etiketten sind",
-        en: "Yellow: The width of the page that contains the labels",
-        fr: "Jaune: La largeur de la page contenant les étiquettes",
-        it: "Giallo:La larghezza della pagina che contiene le etichette",
-        ch: "Mellen: La vastadad da la pagina che cuntegna las etichettas"
+        de: "Gelb: Die Breite der Seite, auf welcher die Etiketten sind. Für Etikettendrucker mit Papierrollen ist jedes Etikett als eine eigene Seite anzusehen.",
+        en: "Yellow: The width of the page that contains the labels. For label printers with continuous paper rolls, each label is considered its own page.",
+        fr: "Jaune: La largeur de la page contenant les étiquettes. Pour les imprimantes d’étiquettes avec rouleaux de papier continus, chaque étiquette est considérée comme une page à part entière.",
+        it: "Giallo:La larghezza della pagina che contiene le etichette. Per le stampanti di etichette con rotoli di carta continui, ogni etichetta è considerata una pagina a sé.",
+        ch: "Mellen: La vastadad da la pagina che cuntegna las etichettas. En cas da stampaders cun rollas da palpiri percurrentas vala mintga etichetta sco atgna pagina."
     },
     marginTop: {
         de: "Blau: Der Abstand vom oberen Rand der Seite, auf welcher die Etiketten sind, bis zum oberen Rand der ersten Etikette",
