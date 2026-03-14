@@ -52,7 +52,9 @@ interface PreferenceTitle{
     statistics: SimpleTranslation
     editData: SimpleTranslation
     editData_Autocomplete: SimpleTranslation
+    editData_customLabels: SimpleTranslation
     versionHistory: SimpleTranslation
+    generateQRCodes: SimpleTranslation
 }
 
 interface DatabaseOperation{
@@ -72,7 +74,7 @@ interface TabBarLabels{
     magazineCollection: SimpleTranslation
     miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
-    printMagazineCollection: SimpleTranslation
+    /*printMagazineCollection: SimpleTranslation
     swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
     diesCollection: SimpleTranslation
@@ -80,7 +82,7 @@ interface TabBarLabels{
     caseCollection: SimpleTranslation
     primerCollection: SimpleTranslation
     powderCollection: SimpleTranslation
-    reloadingMiscCollection: SimpleTranslation
+    reloadingMiscCollection: SimpleTranslation*/
 }
 
 interface AmmoQuickUpdate{
@@ -927,6 +929,20 @@ export const preferenceTitles:PreferenceTitle = {
         it: "Modificare i dati di completamento automatico",
         ch: "Modifitgar las datas da completaziun automatica"
     },
+    editData_customLabels:{
+        de: "Eigene Etiketten bearbeiten",
+        en: "Edit Custom Labels",
+        fr: "Modifier les étiquettes personnalisées",   
+        it: "Modificare le etichette personalizzate",
+        ch: "Modifitgar atgnas etichettas"
+    },
+    generateQRCodes:{
+        de: "QR-Codes generieren",
+        en: "Generate QR Codes",
+        fr: "Générer des codes QR",   
+        it: "Generare codici QR",
+        ch: "Generar codes QR"
+    },
     versionHistory:{
         de: "Versionshistorie",
         en: "Version History",
@@ -1062,7 +1078,7 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Livres",
         it: "Libri",
         ch: "Cudeschs",
-    },
+    }, /*
     printMagazineCollection: {
         de: "Magazine",
         en: "Magazines",
@@ -1125,7 +1141,7 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Divers",
         it: "Varie",
         ch: "Diverses", 
-    }
+    } */
 }
 
 interface MainCollectionCategories {

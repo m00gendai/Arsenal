@@ -141,6 +141,20 @@
       "when": 1769069973623,
       "tag": "0019_absent_norman_osborn",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "6",
+      "when": 1769433277314,
+      "tag": "0020_sturdy_corsair",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1773522624585,
+      "tag": "0021_wide_celestials",
+      "breakpoints": true
     }
   ]
 }

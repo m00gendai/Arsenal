@@ -146,9 +146,9 @@ export default function Statistics(){
 
     async function getUniqueCalibers(){
         const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection) as {value: string}[]
-        console.log(ammoCalibers)
+
         const normalizedArray:string[] = ammoCalibers.map(caliber => caliber.value)
-        console.log(normalizedArray)
+
         const filteredArray:string[] = normalizedArray.filter(caliber => caliber && caliber.length !== 0)
         const uniqueCalibers = Array.from(new Set(filteredArray.flat()))
         

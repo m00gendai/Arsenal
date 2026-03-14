@@ -68,8 +68,12 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
 }
 
 export const imageFileExtensions:string[]= [".apg", ".png", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".svg", ".webp"]
+export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "qrCode"]
 
-export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
+export const customLabelFieldsText = ["name"]
+export const customLabelFieldsFormat = ["pageFormat"]
+export const customLabelFieldsUnit = ["unit"]
+export const customLabelFieldsNumbers = ["pageHeight", "pageWidth", "marginTop", "marginLeft", "labelWidth", "labelHeight", "horizontalPitch", "verticalPitch", "columns", "rows", "radius"]
 
 export const requiredFieldsGun:string[] = ["model"]
 export const requiredFieldsAmmo:string[] = ["designation"]
@@ -99,8 +103,9 @@ export const colorPickerTriggerFields: string[] = ["mainColor", "reticleColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanIntervalDisplay"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
+export const codeTriggerFields: string[] = ["qrCode"]
 
-export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields]
+export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
 export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "cleanInterval"]
 export const cleanIntervalOptions:string[] = ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"] 

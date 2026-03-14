@@ -27,6 +27,7 @@ export const emptyAmmoObject:AmmoType = {
     images: [],
     customInventoryDesignation: null,
     remarks: null,
+    qrCode: null
 }
 
 export const ammoDataTemplate:TemplateItem[] = Object.keys(emptyAmmoObject)
