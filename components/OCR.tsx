@@ -50,8 +50,8 @@ export default function Scanner({ocrVisible, setOcrVisible}:Props){
   const updateResult = useRunOnJS((data: any, frameWidth: number, frameHeight: number) => {
     setScannerResult(data.blocks)
     setFrameSize({ width: frameWidth, height: frameHeight });
-    console.log("frameSize from frame:", frameWidth, frameHeight)
-    console.log("first block:", JSON.stringify(data.blocks?.[0]?.blockFrame))
+    // console.log("frameSize from frame:", frameWidth, frameHeight)
+    // console.log("first block:", JSON.stringify(data.blocks?.[0]?.blockFrame))
   }, []);
 
   const frameProcessor = useFrameProcessor((frame) => {
@@ -86,7 +86,7 @@ export default function Scanner({ocrVisible, setOcrVisible}:Props){
             style={{position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: 20, overflow: "hidden"}} 
             onLayout={(e) => {
               const { width, height } = e.nativeEvent.layout;
-              console.log("camera layout", width, height);
+              // console.log("camera layout", width, height);
               setCameraLayout({ width, height });
             }}
           >

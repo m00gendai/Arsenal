@@ -68,7 +68,6 @@ export default function customShippingLabelDialog(){
         setHelpDialogVisible(true)
     }
 
-console.log(customLabelObject)
     return (<Portal>
         <ModalContainer
                             title={createQRcodeDialogText.title[language]}

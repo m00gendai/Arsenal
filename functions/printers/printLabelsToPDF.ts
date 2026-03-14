@@ -32,7 +32,7 @@ export async function printLabelsToPDF(
 ){
 try{
   const items = await db.select().from(schema[collection]).where(inArray(schema[collection].id, selectedItems)).orderBy(determineSortingFunction(collection, sortBy))
-console.log(label)
+
   // 1. Calculate labels per page
 const labelsPerPage = label.columns * label.rows;
 
