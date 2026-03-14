@@ -22,7 +22,7 @@ export default function QRCodes(){
     }
 
     return(
-        <List.Accordion left={props => <List.Icon {...props} icon="playlist-edit" />} title={preferenceTitles.generateQRCodes[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
+        <List.Accordion left={props => <List.Icon {...props} icon="qrcode-plus" />} title={preferenceTitles.generateQRCodes[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
             <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                 <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                     {Object.entries(tabBarLabels).map((tabBar, index) => {
