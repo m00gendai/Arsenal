@@ -612,6 +612,7 @@ export type StackParamList = {
   QuickShot: undefined
   QuickMount: {item: ItemType}
   EditAutocomplete: undefined
+  EditCustomLabels: undefined
   Statistics: undefined
   GenerateQRCodes: {collection: CollectionType, label: string}
 }

@@ -52,6 +52,7 @@ interface PreferenceTitle{
     statistics: SimpleTranslation
     editData: SimpleTranslation
     editData_Autocomplete: SimpleTranslation
+    editData_customLabels: SimpleTranslation
     versionHistory: SimpleTranslation
     generateQRCodes: SimpleTranslation
 }
@@ -927,6 +928,13 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Modifier les données d’auto-complétion",   
         it: "Modificare i dati di completamento automatico",
         ch: "Modifitgar las datas da completaziun automatica"
+    },
+    editData_customLabels:{
+        de: "Eigene Etiketten bearbeiten",
+        en: "Edit Custom Labels",
+        fr: "Modifier les étiquettes personnalisées",   
+        it: "Modificare le etichette personalizzate",
+        ch: "Modifitgar atgnas etichettas"
     },
     generateQRCodes:{
         de: "QR-Codes generieren",

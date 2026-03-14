@@ -48,6 +48,7 @@ import checkLegacyAmmoData from 'functions/legacy/checkLegacyAmmoData';
 import migrateLegacyDateAndCaliberFields from 'functions/legacy/migrateLegacyDateAndCaliberFields';
 import { snapshot } from 'node:test';
 import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
+import EditCustomLabels from 'components/MainMenu/EditData/EdiCustomLabels';
 import Statistics from 'components/MainMenu/Statistics/Statistics';
 import GenerateQRCodes from 'components/MainMenu/QRCodes/GenerateQRCodes';
 
@@ -492,6 +493,12 @@ const { bottom } = useSafeAreaInsets();
               <Stack.Screen
                 name="EditAutocomplete"
                 component={EditAutocomplete}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
+
+              <Stack.Screen
+                name="EditCustomLabels"
+                component={EditCustomLabels}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 
