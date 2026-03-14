@@ -103,7 +103,7 @@ const codeScanner = useCodeScanner({
                     <View style={{position: "relative", width: "100%", flex: 1, marginTop: defaultViewPadding}}>
                       <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", height: 50}}>
                         <View style={{display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}>
-                          <RadioButton
+                          <RadioButton.Android
                             value="id"
                             status={ scanTarget === 'id' ? 'checked' : 'unchecked' }
                             onPress={() => handleScanTarget('id')}
@@ -112,7 +112,7 @@ const codeScanner = useCodeScanner({
                         </View>
                         <View style={{display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}>
                           <Text>QR Code</Text>
-                          <RadioButton
+                          <RadioButton.Android
                             value="qrCode"
                             status={ scanTarget === 'qrCode' ? 'checked' : 'unchecked' }
                             onPress={() => handleScanTarget('qrCode')}
