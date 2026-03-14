@@ -100,7 +100,7 @@ body{
           padding-left: ${label.unit === "mm" ? label.marginLeft : label.marginLeft*25.4}mm;
           padding-top: ${label.unit === "mm" ? label.marginTop : label.marginTop*25.4}mm;
           display: grid;
-  grid-template-columns: repeat(${label.columns}, ${label.labelWidth}mm);
+  grid-template-columns: repeat(${label.columns}, ${label.unit === "mm" ? label.labelWidth : label.labelWidth*25.4}mm);
   grid-auto-rows: ${label.unit === "mm" ? label.labelHeight : label.labelHeight*25.4}mm;
 
   column-gap: ${label.unit === "mm" ? label.horizontalPitch - label.labelWidth : (label.horizontalPitch*25.4) - (label.labelWidth*25.4)}mm;
