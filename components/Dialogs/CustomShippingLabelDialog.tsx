@@ -4,20 +4,25 @@ import { db } from "db/client";
 import { alarm } from "functions/utils";
 import { CustomLabel } from "lib/interfaces";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { IconButton, TextInput, Text, Portal } from "react-native-paper";
+import { IconButton, TextInput, Text, Portal, Dialog, Button } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
 import { v4 as uuidv4 } from 'uuid';
 import * as schema from "db/schema"
-import { createQRcodeDialogText, generateQRcodeText } from "lib/Text/textTemplates_generateQRcodes";
+import { createQRcodeDialogText, customLabelNumberFields, generateQRcodeText, helperText } from "lib/Text/textTemplates_generateQRcodes";
 
 export default function customShippingLabelDialog(){
 
     const { language, theme } = usePreferenceStore()
     const { customShippingLabelVisible, setCustomShippingLabelVisible } = useViewStore()
+    const [helpDialogVisible, setHelpDialogVisible] = useState<boolean>(false)
+    const [helpDialogText, setHelpDialogText] = useState<string>("")
+
+    const reference = require("../../assets/labelMeasurements.jpg");
+    const [imageHeight, setImageHeight] = useState(200);
 
     const [customLabelObject, setCustomLabelObject] = useState<CustomLabel>(
         {
@@ -58,13 +63,19 @@ export default function customShippingLabelDialog(){
         setCustomShippingLabelVisible(false)
     }
 
+    function toggleHelpDialog(field: keyof customLabelNumberFields){
+        setHelpDialogText(helperText[field][language])
+        setHelpDialogVisible(true)
+    }
+
 console.log(customLabelObject)
-    return (<Portal><ModalContainer
+    return (<Portal>
+        <ModalContainer
                             title={createQRcodeDialogText.title[language]}
                             subtitle={createQRcodeDialogText.subtitle[language]}
                             visible={customShippingLabelVisible}
                             setVisible={setCustomShippingLabelVisible}
-                            content={<ScrollView style={{width: "100%", height: "100%", padding: defaultViewPadding}}>
+                            content={<View><ScrollView style={{width: "100%", height: "100%", padding: defaultViewPadding}}>
                                 <View>
                                     {customLabelFieldsText.map((field, index) =>{
                                         return(
@@ -167,6 +178,7 @@ console.log(customLabelObject)
                                             }} 
                                         >
                                             <Text style={{width: "50%"}}>{createQRcodeDialogText[field][language]}</Text>
+                                            
                                             <TextInput 
                                                 inputMode="decimal" 
                                                 label="" 
@@ -180,13 +192,38 @@ console.log(customLabelObject)
                                                 
                                                 ))}}
                                             />
+                                            <IconButton icon="help-circle-outline" onPress={()=>toggleHelpDialog(field as keyof customLabelNumberFields)}/>
                                         </View>)})}
                                 </View>
-                            </ScrollView>}
+                                
+                            </ScrollView><Dialog visible={helpDialogVisible}>
+                         <Dialog.Content>
+                           <Text variant="bodyMedium">{helpDialogText}</Text>
+                           <View
+      style={{ width: "100%" }}
+      onLayout={(e) => {
+        const { width, height } = Image.resolveAssetSource(reference);
+        setImageHeight(e.nativeEvent.layout.width * (height / width));
+      }}
+    >
+      <Image
+        source={reference}
+        style={{ width: "100%", height: imageHeight }}
+        resizeMode="contain"
+      />
+    </View>
+
+                         </Dialog.Content>
+                         <Dialog.Actions>
+                      <Button onPress={() => setHelpDialogVisible(false)}>OK</Button>
+                    </Dialog.Actions>
+                         </Dialog></View>}
                 buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
                 buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
                 buttonDEL={null}
-            /></Portal>
+            />
+            
+            </Portal>
 
                                 )
     
