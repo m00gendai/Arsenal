@@ -68,7 +68,7 @@ export default function CSVImportModal(){
     }
 
     async function setImportedCSV(){
-
+        
         toggleImportCSVVisible()
         setImportSize(CSVBody.length)
         const indexMapCSV: {[key: string]: number} = {}
@@ -96,7 +96,7 @@ export default function CSVImportModal(){
                 } else if(entry[0] === "createdAt"){
                     mapped[entry[0]] = entry[1] === -1 ? new Date().getTime() : parseDate(items[entry[1]])
                 } else if(entry[0] === "caliber"){
-                    mapped[entry[0]] = entry[1] === -1 ? "" : items[entry[1]] !== undefined ? items[entry[1]].split(", ") : items[entry[1]]
+                    mapped[entry[0]] = entry[1] === -1 ? "" : items[entry[1]] !== undefined ? items[entry[1]].split(",") : items[entry[1]]
                 } else if(datePickerTriggerFields.includes(entry[0])){
                     mapped[entry[0]] = entry[1] === -1 ? null : parseDate(items[entry[1]])
                 } else {
@@ -122,7 +122,7 @@ export default function CSVImportModal(){
 
         setDbCollectionType("")
         setMapCSVItem(null)
-        
+
     }
 
     return(

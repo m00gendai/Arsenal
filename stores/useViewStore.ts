@@ -46,6 +46,10 @@ interface ViewStore {
 
     onboardingVisible: boolean
     setOnboardingVisible: (status: boolean) => void
+
+    customShippingLabelVisible: boolean
+    setCustomShippingLabelVisible: (status: boolean) => void
+
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -93,5 +97,8 @@ interface ViewStore {
     setDeveloperSettingsVisible: () => set((state) => ({developerSettingsVisible: !state.developerSettingsVisible})),
 
     onboardingVisible: false,
-    setOnboardingVisible: (status: boolean) => set({ onboardingVisible: status })
+    setOnboardingVisible: (status: boolean) => set({ onboardingVisible: status }),
+
+    customShippingLabelVisible: false,
+    setCustomShippingLabelVisible: (status: boolean) => set({ customShippingLabelVisible: status })
   }))

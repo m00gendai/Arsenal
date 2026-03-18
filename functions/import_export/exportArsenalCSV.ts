@@ -3,7 +3,7 @@ import * as schema from "../../db/schema"
 import { db } from "../../db/client"
 import Papa from 'papaparse';
 import { flatten } from 'flat'
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system/legacy";
 import { Platform } from "react-native";
 import * as Sharing from 'expo-sharing';
 import * as Application from 'expo-application';

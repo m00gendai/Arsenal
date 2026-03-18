@@ -12,10 +12,10 @@ import NewCheckboxArea from 'components/NewCheckboxArea';
 import { imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { caliberPickerTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
+import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -29,6 +29,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import { useSharedValue } from 'react-native-reanimated';
 import { useTextStore } from 'stores/useTextStore';
+import NewText_CodeScanner from 'components/NewText_CodeScanner';
 
 
 export default function NewItem({navigation}){
@@ -429,6 +430,8 @@ export default function NewItem({navigation}){
                                             <NewText_IntervalPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         mountedOnTriggerFields.includes(data.name) ?
                                             <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        codeTriggerFields.includes(data.name) ?
+                                            <NewText_CodeScanner data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                             <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
                                     </View>
                                 )

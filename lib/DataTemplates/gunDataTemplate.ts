@@ -44,6 +44,7 @@ export const emptyGunObject:GunType= {
     blooptoob: false,
     grandfather: false,
     customInventoryDesignation: null,
+    qrCode: null
 }
 
 export const checkBoxes: DataTemplateTranslation[] = Object.entries(dataTemplate_TranslationCheckboxes).map(checkbox =>{

@@ -148,9 +148,11 @@ export default function Item_details(){
 
                         <View style={{flex: 1, flexDirection: "column"}} >
                             {currentCollection === "gunCollection" ? checkBoxes.map(checkBox=>{
-                                return(
-                                    <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
-                                )
+                                if(!generalSettings.emptyFields){
+                                    return <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
+                                } else {
+                                    return currentItem[checkBox.name] ? <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/> : null
+                                }
                             }) : null}
                         </View>
                         <View style={{flex: 1, flexDirection: "column"}} >

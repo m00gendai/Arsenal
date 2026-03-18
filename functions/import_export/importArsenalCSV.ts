@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import Papa from 'papaparse';
 import { unflatten } from 'flat'
 import { CollectionType, ItemType } from 'lib/interfaces';
@@ -56,7 +56,8 @@ export default async function importArsenalCSV(data: CollectionType){
                 ...unitem, 
                 createdAt: unitem.createdAt === null ? new Date().getTime() : unitem.createdAt,
                 images: [],
-                tags: filterEmptyTags
+                tags: filterEmptyTags,
+                ...("caliber" in unitem && unitem.caliber && { caliber: Array.isArray(unitem.caliber) ? unitem.caliber : (unitem.caliber as string).split(",") })
             }
 
             return readyItem

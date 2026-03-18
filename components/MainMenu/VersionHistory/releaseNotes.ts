@@ -10,6 +10,52 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+    "title": "V4.1.1",
+    "de": {
+      "text": `Behoben:\n- Daten in QR Etiketten wurden als Unix Zeitstempel statt lokalisiertem Datumsformat angezeigt\n-Leere Artikel 5 Kästchen wurden angezeigt, obwohl "leere Felder in Einträgen ausblenden" eingeschaltet war\n- Möglichkeit, Etikettengitteranzeige auszuschalten fehlte`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": `Fixed:\n- Dates in QR labels were shown as Unix timestamps instead of localized date format\n- Empty article 5 boxes were shown even if “hide empty fields in entries” was turned on\n- Option to turn off label grid display was missing`,
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": `Correction:\n- Les dates dans les étiquettes QR étaient affichées en tant que timestamp Unix au lieu d’un format de date localisé\n- Des cases vides de 5 articles étaient affichées même si l’option «Masquer les cases vides dans les entrées» était activée\n- Il n’était pas possible de désactiver l’affichage des grilles d’étiquettes`,
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": `Risolto:\n- Le date nelle etichette QR venivano visualizzate come timbri temporali Unix invece che nel formato di data locale\n- Quando era attivata l’opzione «Nascondi i campi vuoti nelle voci», venivano visualizzati 5 campi vuoti\n- Mancava la possibilità di disattivare la visualizzazione della griglia delle etichette`,
+      "ios": null,
+      "android": null
+    }
+  },
+  {
+    "title": "V4.1.0",
+    "de": {
+      "text": `QR Codes integriert:\n- Eigene bestehende QR Codes können Einträgen zugewiesen werden\n- Direkte Navigation zu Eintrag durch Scannen von zugewiesenem QR Code\n- Generierung von QR Codes für Einträge direkt in der App zum Ausdrucken auf Etikettpapier\n- Vorgefertigte Etikettformate und Möglichkeit zur definierung eigener Formate`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": `QR Codes integrated:\n- Existing QR Codes can be assigned to entries\n- Direct navigation to entry by scanning the assigned QR Code\n- Generation of QR Codes for entries directly in the app for printing on label paper\n- Pre-made label formats and the possibility to define your own formats`,
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": `Codes QR intégrés: \n- Possibilité d’attribuer vos propres codes QR existants aux entrées\n- Navigation directe vers une entrée en scannant le code QR attribué\n- Génération de codes QR pour les entrées directement dans l’application pour impression sur papier autocollant\n- Modèles d’étiquettes prédéfinis et possibilité de créer vos propres modèles`,
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": `QR Code integrati:\n- Possibilità di assegnare QR Code esistenti agli articoli\n- Navigazione diretta all’articolo scansionando il QR Code assegnato\n- Generazione di QR Code per gli articoli direttamente dall’app per la stampa su etichette\n- Formati di etichette predefiniti e possibilità di definire formati personalizzati`,
+      "ios": null,
+      "android": null
+    }
+  },
+  {
     "title": "V4.0.1",
     "de": {
       "text": `Behoben:\n-App stürtzt ab wenn Schlagwort bei neuem Eintrag gewählt wird\n-Statistiken: Anzahl verschiedener Kaliber inkorrekt\nVerbessert:\n-Statistiken: Bei inkorrekten Daten wird ein Hinweis angezeigt, welcher zeigt wo die inkorrekten Daten sind`,

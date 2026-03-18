@@ -56,6 +56,33 @@ export function determineSchema(collection:CollectionType){
     }
 }
 
+export function determineSchemaStringFromTabBarLabel(collection:string){
+    switch(collection){
+        case "gunCollection":
+            return "gunCollection"
+        case "ammoCollection":
+            return "ammoCollection"
+        case "silencerCollection":
+            return "accessoryCollection_Silencer"
+        case "opticCollection":
+            return "accessoryCollection_Optic"
+        case "scopeCollection":
+            return "accessoryCollection_Scope"
+        case "lightLaserCollection":
+            return "accessoryCollection_LightLaser"
+        case "magazineCollection":
+            return "accessoryCollection_Magazine"
+        case "miscAccessoryCollection":
+            return "accessoryCollection_Misc"
+        case "conversionCollection":
+            return "partCollection_ConversionKit"
+        case "barrelCollection":
+            return "partCollection_Barrel"
+        case "bookCollection":
+            return "literatureCollection_Book"
+    }
+}
+
 export function determineTagSchema(collection:CollectionType){
     switch(collection){
         case "gunCollection":

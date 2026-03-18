@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { colord } from "colord";
 import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs/configs';
 import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';

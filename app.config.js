@@ -6,7 +6,7 @@ export default {
   "expo": {
     "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
-    "version": "4.0.1",
+    "version": "4.1.1",
     "orientation": "portrait",
     "icon": "./assets/appIconC.png",
     "userInterfaceStyle": "light",
@@ -42,6 +42,7 @@ export default {
       "expo-secure-store",
       "expo-asset",
       "expo-local-authentication",
+      "expo-web-browser",
       [
         "./plugins/withAndroidMainActivityAttributes",
         {
@@ -71,7 +72,14 @@ export default {
           },
           "imageWidth": 200
         }
-      ]
+      ],
+      [
+      "react-native-vision-camera",
+      {
+        "cameraPermissionText": "Arsenal needs access to your Camera.",
+        "enableCodeScanner": true
+      }
+    ]
     ],
     "extra": {
       "eas": {

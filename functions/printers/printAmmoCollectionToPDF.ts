@@ -1,7 +1,7 @@
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { ListPrinter } from 'lib/interfaces';
 import { pdfFooter, pdfTitle_AmmoCollection } from 'lib/textTemplates';
 import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';

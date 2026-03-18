@@ -1,12 +1,15 @@
-import { TextInput, Text, Portal, ThemeProvider, IconButton } from 'react-native-paper';
+import { Text, IconButton, TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
-import { View, Pressable, Keyboard } from 'react-native';
+import { View, Pressable, Keyboard, Platform } from 'react-native';
 import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
-import { ScrollView } from 'react-native-gesture-handler';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
+import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
+import ModalContainer from './ModalContainer';
+import { ScrollView } from 'react-native-gesture-handler';
+import { scannerInfo } from 'lib/Text/textTemplates_scanner';
 
 interface Props{
     data: string
@@ -34,6 +37,11 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const [charCount, setCharCount] = useState(input.current?.length ?? 0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
+    const [showModalCaliber, setShowModalCaliber] = useState<boolean>(false)
+    const [qrCode, setQrCode] = useState<string>(itemData && itemData[data] ? itemData[data] : "")
+    const device = useCameraDevice('back')
+    const { hasPermission, requestPermission } = useCameraPermission()
+    const { language, theme } = usePreferenceStore()
 
     const MAX_CHAR_COUNT: number = 100
 
@@ -70,11 +78,41 @@ export default function NewText({data, itemData, setItemData, label}: Props){
         }
     }
 
+    function handleInputPress(){
+        Keyboard.dismiss()
+        setShowModalCaliber(true)
+    }
+
+    function handleConfirm(){
+        if(qrCode){
+            updateItemData(qrCode)
+            setShowModalCaliber(false)
+        }
+    }
+
+    function handleCancel(){
+        setQrCode(itemData && itemData[data] ? itemData[data] : "")
+        setShowModalCaliber(false)
+    }
+
+    function handleDelete(){
+        setQrCode("")
+        updateItemData("")
+        setShowModalCaliber(false)
+    }
+
+    const codeScanner = useCodeScanner({
+      codeTypes: ['qr', 'ean-13'],
+      onCodeScanned: (codes) => {
+        setQrCode(codes[0].value)
+      }
+    })
+
     return(
         <View style={{flex: 1}}>
-            <Pressable style={{flex: 1}}>
+            <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
                 <TextInput
-                    label={`${label}${requiredFieldsGun.includes(data) ? "*" : requiredFieldsAmmo.includes(data) ? "*" : ""} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                    label={`QR-Code`} 
                     style={{
                         flex: 1,
                     }}
@@ -83,33 +121,38 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                         setFocus(false)
                     }}
                     value={input.current ? input.current.toString() : ""}
-                    editable={true}
-                    showSoftInputOnFocus={true}
-                    onChangeText={(text) => {
-                        updateItemData(text)
-                    }}
-                    onKeyPress={({nativeEvent}) => setIsBackspace(nativeEvent.key === "Backspace" ? true : false)}
-                    left={
-                        currencyPrefixFields.includes(data) ? 
-                        <TextInput.Affix text={`${preferredUnits.selectedCurrency} `} /> 
-                        : 
-                        bulletWeightPrefixFields.includes(data) ? 
-                        <TextInput.Affix text={`${preferredUnits.bulletWeightUnit} `} /> 
-                        :
-                        barrelLengthPrefixFields.includes(data) ? 
-                        <TextInput.Affix text={`${preferredUnits.barrelLengthUnit} `} /> 
-                        :
-                        null
-                    }
-                    inputMode={`${numberTextFields.includes(data) ? "decimal" : "text"}`}
+                    editable={false}
+                    onPress={()=>{Platform.OS === "ios" ? handleInputPress() : null}}
                     multiline={false}
                     returnKeyType='done'
                     returnKeyLabel='OK'
                     onSubmitEditing={()=>Keyboard.dismiss()}
                 />
             </Pressable>
+            
+            <ModalContainer
+                title={`QR Code Scanner`}
+                subtitle={scannerInfo[language]}
+                visible={showModalCaliber}
+                setVisible={setShowModalCaliber}
+                content={
+                    <View style={{width: "100%", height: "100%", position: "relative", padding: defaultViewPadding}}>
+                        <Camera
+                        style={{width: "100%", aspectRatio: "1/1", position: "relative"}}
+                            device={device}
+                            isActive={true}
+                            codeScanner={codeScanner}
+                        />
+                        <ScrollView style={{width: "100%", height: 20, display: "flex",}}>
+                            <Text>{qrCode}</Text>
+                        </ScrollView>
+                    </View>
+                }
+                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
+                buttonDEL={<IconButton mode="contained" onPress={()=>handleDelete()} icon={"delete"} style={{width: 50, backgroundColor: theme.colors.errorContainer}} iconColor={theme.colors.onErrorContainer}/>}
+            />
 
-            <Autocomplete title={label} data={data} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
         </View>
     )
 }
