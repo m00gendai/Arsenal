@@ -33,10 +33,7 @@ export default function Scanner({scannerVisible, setScannerVisible}:Props){
     const { theme, language } = usePreferenceStore()
     
 
-  if (!hasPermission) {
-    requestPermission()
-    return <View />;
-  }
+  
 
 const codeScanner = useCodeScanner({
   codeTypes: ['qr', 'ean-13'],
@@ -84,6 +81,11 @@ const codeScanner = useCodeScanner({
     setScannerResult(null)
     setErrorTextVisible(false)
     setScannerVisible(false)
+  }
+
+  if (!hasPermission) {
+    requestPermission()
+    return <View />;
   }
 
   return (
