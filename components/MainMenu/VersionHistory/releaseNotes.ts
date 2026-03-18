@@ -10,6 +10,29 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+    "title": "V4.1.1",
+    "de": {
+      "text": `Behoben:\n- Daten in QR Etiketten wurden als Unix Zeitstempel statt lokalisiertem Datumsformat angezeigt\n-Leere Artikel 5 Kästchen wurden angezeigt, obwohl "leere Felder in Einträgen ausblenden" eingeschaltet war\n- Möglichkeit, Etikettengitteranzeige auszuschalten fehlte`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": `Fixed:\n- Dates in QR labels were shown as Unix timestamps instead of localized date format\n- Empty article 5 boxes were shown even if “hide empty fields in entries” was turned on\n- Option to turn off label grid display was missing`,
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": `Correction:\n- Les dates dans les étiquettes QR étaient affichées en tant que timestamp Unix au lieu d’un format de date localisé\n- Des cases vides de 5 articles étaient affichées même si l’option «Masquer les cases vides dans les entrées» était activée\n- Il n’était pas possible de désactiver l’affichage des grilles d’étiquettes`,
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": `Risolto:\n- Le date nelle etichette QR venivano visualizzate come timbri temporali Unix invece che nel formato di data locale\n- Quando era attivata l’opzione «Nascondi i campi vuoti nelle voci», venivano visualizzati 5 campi vuoti\n- Mancava la possibilità di disattivare la visualizzazione della griglia delle etichette`,
+      "ios": null,
+      "android": null
+    }
+  },
+  {
     "title": "V4.1.0",
     "de": {
       "text": `QR Codes integriert:\n- Eigene bestehende QR Codes können Einträgen zugewiesen werden\n- Direkte Navigation zu Eintrag durch Scannen von zugewiesenem QR Code\n- Generierung von QR Codes für Einträge direkt in der App zum Ausdrucken auf Etikettpapier\n- Vorgefertigte Etikettformate und Möglichkeit zur definierung eigener Formate`,
