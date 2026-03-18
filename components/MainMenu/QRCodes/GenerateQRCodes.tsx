@@ -5,7 +5,7 @@ import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, inArray } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { customLabelFieldsFormat, customLabelFieldsNumbers, customLabelFieldsText, customLabelFieldsUnit, defaultViewPadding, excludedKeysForDataTemplates } from "configs/configs"
+import { customLabelFieldsFormat, customLabelFieldsNumbers, customLabelFieldsText, customLabelFieldsUnit, datePickerTriggerFields, defaultViewPadding, excludedKeysForDataTemplates } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
 import { preferenceTitles, tabBarLabels } from "lib/textTemplates"
@@ -23,6 +23,7 @@ import { determineCardSubtitle, determineCardTitle, determineEmptyObject } from 
 import { useViewStore } from "stores/useViewStore"
 import CustomShippingLabelDialog from "components/Dialogs/CustomShippingLabelDialog"
 import { generateQRcodeText, screenTitles } from "lib/Text/textTemplates_generateQRcodes"
+import { parseDate } from "functions/utils"
 
 interface RouteParams {
   collection: CollectionType,
@@ -46,6 +47,7 @@ export default function GenerateQRCodes({navigation}){
     const [selectedFields, setSelectedFields] = useState(new Set<string>())
     const [qrCodeEnabled, setQrCodeEnabled] = useState<boolean>(true)
     const [textEnabled, setTextEnabled] = useState<boolean>(true)
+    const [gridEnabled, setGridEnabled] = useState<boolean>(false)
     const [fontSize, setFontSize] = useState<number>(14)
     const [selectAllItems, setSelectAllItems] = useState<boolean>(false)
     
@@ -166,6 +168,7 @@ export default function GenerateQRCodes({navigation}){
             label[0],
             qrCodeEnabled,
             textEnabled,
+            gridEnabled,
             fontSize,
             itemArray,
             params.collection,
@@ -357,7 +360,7 @@ export default function GenerateQRCodes({navigation}){
                                         return( 
                                             <View key={`selectedFields_${field}_${index}`}>
                                                 <Text style={{fontSize: fontSize}}>{`${dataTemplate_Translations[field][language]}:`}</Text>
-                                                <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${getSelectedItemsFromDatabase()[0][field]}`}</Text>
+                                                <Text style={{fontSize: fontSize, fontWeight: "bold"}} numberOfLines={1} >{`${datePickerTriggerFields.includes(field) ? parseDate(getSelectedItemsFromDatabase()[0][field]) : getSelectedItemsFromDatabase()[0][field]}`}</Text>
                                             </View>
                                         )
                                     }
@@ -374,6 +377,10 @@ export default function GenerateQRCodes({navigation}){
                                 <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                                     <Text>{generateQRcodeText.withText[language]}</Text>
                                     <Switch value={textEnabled} onValueChange={()=> setTextEnabled(prev => !prev)} />
+                                </View>
+                                <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                                    <Text>{generateQRcodeText.withGrid[language]}</Text>
+                                    <Switch value={gridEnabled} onValueChange={()=> setGridEnabled(prev => !prev)} />
                                 </View>
                                 <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
                                     <Text>{generateQRcodeText.fontSize[language]}</Text>

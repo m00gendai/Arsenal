@@ -2,7 +2,7 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system/legacy';
-import { dateLocales, defaultViewPadding, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
+import { dateLocales, datePickerTriggerFields, defaultViewPadding, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { Platform } from 'react-native';
 import { LabelTemplate } from 'lib/shippingLables';
 import { PreferredUnits, SorterSettings } from 'stores/usePreferenceStore';
@@ -13,7 +13,7 @@ import { inArray } from "drizzle-orm";
 import QRCodeSVG from "qrcode-svg";
 import { dataTemplate_Translations } from 'lib/DataTemplates/translations';
 import { determineSortingFunction } from 'functions/determinators';
-import { getShortCaliberNameFromArray } from 'functions/utils';
+import { getShortCaliberNameFromArray, parseDate } from 'functions/utils';
 
 export async function printLabelsToPDF(
   language: string, 
@@ -23,6 +23,7 @@ export async function printLabelsToPDF(
   label: LabelTemplate,
   qrCodeEnabled: boolean,
   textEnabled: boolean,
+  gridEnabled: boolean,
   fontSize: number,
   selectedItems: string[],
   collection: CollectionType,
@@ -63,7 +64,7 @@ const pagesHtml = pages.map((pageItems) => {
           <div class="text">
           ${selectedFields.map(field => {
             if(item[field]){
-              return `<p>${dataTemplate_Translations[field][language]}:</p><p><strong>${field === "caliber" ? getShortCaliberNameFromArray(item[field], caliberDisplayNameList, shortCaliber) : item[field]}</strong></p>`
+              return `<p>${dataTemplate_Translations[field][language]}:</p><p><strong>${field === "caliber" ? getShortCaliberNameFromArray(item[field], caliberDisplayNameList, shortCaliber) : datePickerTriggerFields.includes(field) ? parseDate(item[field]) : item[field]}</strong></p>`
             }
             }).join("")}
           </div>` : ""}
@@ -114,7 +115,7 @@ body{
   width: ${label.unit === "mm" ? label.labelWidth : label.labelWidth*25.4}mm;
   height: ${label.unit === "mm" ? label.labelHeight : label.labelHeight*25.4}mm;
   display: flex;
-  border: 1px solid black;
+  border: ${gridEnabled ? "1px solid black" : "none"};
   box-sizing: border-box;
   flex-direction: row; 
   align-items: center;

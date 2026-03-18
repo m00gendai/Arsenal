@@ -66,6 +66,13 @@ export const generateQRcodeText = {
         it: "Mostrare testo",
         ch: "Mussar il text"
     },  
+    withGrid: {
+        de: "Gitter anzeigen",
+        en: "Show Grid",
+        fr: "Afficher la grille",
+        it: "Mostrare griglia",
+        ch: "Mussar ina rait da giatter"
+    }, 
     fontSize: {
         de: "Schriftgrösse ändern (falls nötig)",
         en: "Change Font Size (if necessary)",

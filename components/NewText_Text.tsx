@@ -7,7 +7,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
-import OCR from './OCR';
 
 interface Props{
     data: string
@@ -19,7 +18,6 @@ interface Props{
 export default function NewText({data, itemData, setItemData, label}: Props){
 
     const { preferredUnits } = usePreferenceStore()
-    const [ocrVisible, setOcrVisible] = useState<boolean>(false)
 
     function handleConversions(itemData:ItemType, data:string){
         if(unitFields_Weight.includes(data)){
@@ -109,11 +107,9 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                     returnKeyLabel='OK'
                     onSubmitEditing={()=>Keyboard.dismiss()}
                 />
-                {/*<IconButton icon="text-recognition" style={{position: "absolute", right: 0}} onPress={()=>setOcrVisible(true)}/>*/}
             </Pressable>
 
             <Autocomplete title={label} data={data} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
-            <OCR ocrVisible={ocrVisible} setOcrVisible={setOcrVisible}/>
         </View>
     )
 }
