@@ -9,10 +9,14 @@ import { alarm } from "functions/utils";
 import { ListPrinter } from "lib/interfaces";
 import { determineAccessoryIcons } from "functions/determinators";
 import { printAmmoCollection } from "functions/printers/printAmmoCollectionToPDF";
+import { printCustomCollection } from "functions/printers/printCustomCollectionToPDF";
+import { useViewStore } from "stores/useViewStore";
+import CustomPDFPrintDialog from "components/Dialogs/CustomPDFPrintDialog";
 
 export default function Lists(){
 
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
 
     const [printerSrc, setPrinterSrc] = useState<ListPrinter>(null)
     const [iosWarning, toggleiosWarning] = useState<boolean>(false)
@@ -35,6 +39,9 @@ export default function Lists(){
             }catch(e){
                 console.error(`Print Ammo Collection Error: ${e}`)
             }
+        }
+        if(printer === "custom"){
+            setCustomPDFPrintVisible(true)
         }
     }
 
@@ -76,11 +83,20 @@ export default function Lists(){
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
                             <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
+
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
+                            <Text style={{width: "80%"}}>{"Custom"}</Text>
+                            <IconButton icon={"shape-plus"} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                        </View>
                         
                     </View>
                 </View>
             </List.Accordion>
             
+            <CustomPDFPrintDialog />
+
             <Portal>
                 <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
                     <Dialog.Title>
