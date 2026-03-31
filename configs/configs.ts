@@ -68,7 +68,7 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
 }
 
 export const imageFileExtensions:string[]= [".apg", ".png", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".svg", ".webp"]
-export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "qrCode"]
+export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "qrCode", "customInventoryDesignation"]
 
 export const customLabelFieldsText = ["name"]
 export const customLabelFieldsFormat = ["pageFormat"]
@@ -129,7 +129,7 @@ export const screenNameParamsPart:CollectionType[] = ["partCollection_Conversion
 export const screenNameParamsLiterature: CollectionType[] = ["literatureCollection_Book"]
 export const screenNameParamsReloading:CollectionType[] = []
 
-export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
+export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ]//...screenNameParamsReloading]
 
 export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount"]
 
