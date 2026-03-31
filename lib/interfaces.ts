@@ -648,7 +648,7 @@ export interface PartMount{
     parentPartType: CollectionType
 }
 
-export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection"
+export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection" | "custom"
 
 export interface CustomLabel{
   name: string
