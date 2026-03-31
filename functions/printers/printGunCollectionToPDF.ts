@@ -39,7 +39,8 @@ const excludedKeys = [
     "lastShotAt_unix", 
     "marketValue", 
     "boughtFrom",
-    "customInventoryDesignation"
+    "customInventoryDesignation",
+    "qrCode"
   ]
 
 function sortGuns(gunCollection, printer: ListPrinter){
