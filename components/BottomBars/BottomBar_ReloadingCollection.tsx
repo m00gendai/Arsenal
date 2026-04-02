@@ -1,9 +1,10 @@
-import { TouchableOpacity, View } from "react-native";
+/* import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
 import { defaultViewPadding, ScreenNames } from "configs/configs";
 import { useViewStore } from "stores/useViewStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { mainCollectionCategories, tabBarLabels } from "lib/textTemplates";
+import { mainCollectionCategories } from "lib/textTemplates";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 
 interface Props{
     handleNavigation:(target:ScreenNames)=>void
@@ -58,3 +59,4 @@ export default function BottomBar_ReloadingCollection({handleNavigation}:Props){
         </View>
     )
 }
+    */
