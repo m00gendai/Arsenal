@@ -35,6 +35,7 @@ interface GeneralSettingsLabels{
     resizeImages: SimpleTranslation
     loginGuard: SimpleTranslation
     hintsDisplay: SimpleTranslation
+    scanBeep: SimpleTranslation
 }
 
 interface DisplaySettingsLabels{
@@ -265,6 +266,13 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Afficher la boîte d’indices",    
         it: "Mostrare la finestra dei suggerimenti",
         ch: "Mussar la box d’indizis",         
+    },
+    scanBeep: {
+        de: "Ton abspielen bei QR-Code Scan",
+        en: "Play sound when scanning QR code",
+        fr: "Jouer un son lors du scan d’un code QR",
+        it: "Riprodurre un suono quando si scansiona un codice QR",
+        ch: "Duvrar in tun cura che vegn scaneà in code QR"
     }
 }
 

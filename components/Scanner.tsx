@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { IconButton, RadioButton, Text, TextInput } from "react-native-paper"
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
@@ -13,6 +13,9 @@ import { defaultViewPadding, screenNameParamsAll } from 'configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ModalContainer from './ModalContainer';
 import { scannerNavigate } from 'lib/Text/textTemplates_scanner';
+import { useAudioPlayer } from 'expo-audio';
+
+const audioSource = require('../assets/beep.wav');
 
 interface Props{
   scannerVisible: boolean
@@ -27,19 +30,47 @@ export default function Scanner({scannerVisible, setScannerVisible}:Props){
     const [scannerResult, setScannerResult] = useState<string>("")
     const [scanTarget, setScanTarget] = useState<"id" | "qrCode">("id")
     const [errorTextVisible, setErrorTextVisible] = useState<boolean>(false)
-    
+    const isScanning = useRef(false)
+    const lastScannedValue = useRef<string | null>(null);
 
     const { setCurrentItem } = useItemStore()
-    const { theme, language } = usePreferenceStore()
+    const { theme, language, generalSettings } = usePreferenceStore()
     
+    const player = useAudioPlayer(audioSource);
 
+    useEffect(() => {
+  if (scannerVisible) {
+    isScanning.current = false;
+    lastScannedValue.current = null;
+  }
+}, [scannerVisible]);
   
 
 const codeScanner = useCodeScanner({
   codeTypes: ['qr', 'ean-13'],
   onCodeScanned: (codes) => {
-    setErrorTextVisible(false)
-    setScannerResult(codes[0].value)
+    if (isScanning.current) return;
+    isScanning.current = true;  // lock immediately
+
+    const value = codes[0]?.value;
+    if (!value) {
+      isScanning.current = false;
+      return;
+    }
+
+    if (lastScannedValue.current !== value) {
+      lastScannedValue.current = value;
+      if(generalSettings.scanBeep){
+        player.seekTo(0);
+        player.play();
+      } 
+      setScannerResult(value);
+      setErrorTextVisible(false);
+    }
+
+    setTimeout(() => {
+      isScanning.current = false;
+    }, 1000)
   }
 })
 
@@ -78,9 +109,11 @@ const codeScanner = useCodeScanner({
   }
 
   function handleCancel(){
-    setScannerResult(null)
-    setErrorTextVisible(false)
-    setScannerVisible(false)
+  isScanning.current = false;
+  lastScannedValue.current = null;
+  setScannerResult(null)
+  setErrorTextVisible(false)
+  setScannerVisible(false)
   }
 
   if (!hasPermission) {
