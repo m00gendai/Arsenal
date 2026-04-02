@@ -1,17 +1,16 @@
 import { defaultViewPadding } from "configs/configs";
 import { printGunCollection } from "functions/printers/printGunCollectionToPDF";
-import { iosWarningText, preferenceTitles } from "lib/textTemplates";
+import { iosWarningText } from "lib/textTemplates";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 import { Button, Dialog, Divider, IconButton, List, Portal, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { alarm } from "functions/utils";
 import { ListPrinter } from "lib/interfaces";
 import { determineAccessoryIcons } from "functions/determinators";
 import { printAmmoCollection } from "functions/printers/printAmmoCollectionToPDF";
-import { printCustomCollection } from "functions/printers/printCustomCollectionToPDF";
 import { useViewStore } from "stores/useViewStore";
 import CustomPDFPrintDialog from "components/Dialogs/CustomPDFPrintDialog";
+import { preferenceTitles } from "lib/Text/text_settings";
 
 export default function Lists(){
 
@@ -87,7 +86,7 @@ export default function Lists(){
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{"Custom"}</Text>
+                            <Text style={{width: "80%"}}>{preferenceTitles.printCustomList[language]}</Text>
                             <IconButton icon={"shape-plus"} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
                         
