@@ -12,6 +12,7 @@ interface TabBarLabels{
     magazineCollection: SimpleTranslation
     miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
+    dieCollection: SimpleTranslation
     /*printMagazineCollection: SimpleTranslation
     swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
@@ -121,14 +122,14 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Divers",
         it: "Varie",
         ch: "Diverses", 
-    },
-    diesCollection:{
+    },*/
+    dieCollection:{
         de: "Matritzen",
         en: "Dies",
         fr: "Recharger des cartouches",
         it: "Ricaricare le cartucce",
         ch: "Matriza", 
-    },
+    },/*
     bulletCollection: {
         de: "Geschosse",
         en: "Bullets",

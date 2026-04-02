@@ -79,3 +79,19 @@ export const editLiteratureTitle:SimpleTranslation = {
     it: "Edit Letteratura",
     ch: "Edì litteratura",
 }
+
+export const newReloadingTitle:SimpleTranslation = {
+    de: "Neues Wiederladezubehör",
+    en: "New Reloading Accessory",
+    fr: "Nouvel accessoire de rechargement",
+    it: "Nuovo accessorio per la ricarica",
+    ch: "Nov accessori da reload"
+}
+
+export const editReloadingTitle:SimpleTranslation = {
+    de: "Wiederladezubehör bearbeiten",
+    en: "Edit Reloading Accessory",
+    fr: "Modifier l’accessoire de rechargement",
+    it: "Modificare l’accessorio per la ricarica",
+    ch: "Modifitgar l’accessori da reload"
+}

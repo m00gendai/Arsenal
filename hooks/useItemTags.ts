@@ -59,6 +59,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.literature_BookTags)
     )
 
+    const { data: reloadingTags_Die } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_DieTags)
+    )
+
     switch(type){
         case "gunCollection":
             return gunTags
@@ -82,5 +87,7 @@ export function useItemTags(type: CollectionType) {
             return partTags_Barrel
         case "literatureCollection_Book":
             return literatureTags_Book
+        case "reloadingCollection_Die":
+            return reloadingTags_Die
     }
 }

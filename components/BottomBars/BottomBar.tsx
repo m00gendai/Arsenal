@@ -17,6 +17,7 @@ import { useItemStore } from "stores/useItemStore";
 import BottomBar_PartCollection from "./BottomBar_PartCollection";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { tabBarLabels } from "lib/Text/text_tabBarLabels";
+import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
 
 interface Props{
   screen?: string
@@ -36,7 +37,7 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
 
   const progress = useSharedValue<number>(0);
   
-  const data = ["Accessories", "Parts", "Literature"] // ["Accessories", "Literature", "Reloading"];
+  const data = ["Accessories", "Parts", "Literature", "Reloading"]
   
   const width = Dimensions.get("window").width;
 
@@ -129,6 +130,8 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
               <BottomBar_PartCollection handleNavigation={handleNavigation} /> :
               index=== 2 ? 
               <BottomBar_LiteratureCollection handleNavigation={handleNavigation} /> :
+              index=== 3 ? 
+              <BottomBar_ReloadingCollection handleNavigation={handleNavigation} /> :
               null}
             </Card>
           )}
