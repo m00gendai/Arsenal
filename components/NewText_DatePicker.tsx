@@ -6,7 +6,7 @@ import DateTimePicker from 'react-native-ui-datepicker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { dateTimeOptions, defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
-import { modalTexts } from '../lib/textTemplates';
+import { modalTexts } from 'lib/Text/text_modals';
 
 interface Props{
     data: string

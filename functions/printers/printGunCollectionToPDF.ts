@@ -4,15 +4,16 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system/legacy';
 import { ListPrinter } from 'lib/interfaces';
 import { checkBoxes, gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
-import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'lib/textTemplates';
 import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { Platform } from 'react-native';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { checkConversionFields, getShortCaliberNameFromArray, parseDate } from 'functions/utils';
+import { checkConversionFields, parseDate } from 'functions/utils';
 import * as Application from 'expo-application';
 import { tableStyle } from './printoutStyles';
 import { PreferredUnits } from 'stores/usePreferenceStore';
+import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'lib/Text/text_pdf';
+import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 

@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultViewPadding } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
-import { generalSettingsLabels, loginGuardAlert, preferenceTitles, resizeImageAlert } from "lib/textTemplates";
 import { View } from "react-native";
 import { Dialog, Divider, List, Switch, Text, Button } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore"
 import * as LocalAuthentication from 'expo-local-authentication';
+import { generalSettingsLabels, preferenceTitles } from "lib/Text/text_settings";
+import { loginGuardAlert, resizeImageAlert } from "lib/Text/text_alerts";
 
 export default function Settings_General(){
 

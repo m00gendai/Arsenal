@@ -1,24 +1,26 @@
 import ModalContainer from "components/ModalContainer";
 import { defaultViewPadding, screenNameParamsAll } from "configs/configs";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { IconButton, TextInput, Text, Portal, Dialog, Button, Checkbox } from "react-native-paper";
+import { IconButton, Text, Portal, Checkbox } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
-import { createQRcodeDialogText, customLabelNumberFields, generateQRcodeText, helperText } from "lib/Text/textTemplates_generateQRcodes";
+import { createQRcodeDialogText } from "lib/Text/textTemplates_generateQRcodes";
 import { printCustomCollection } from "functions/printers/printCustomCollectionToPDF";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useEffect, useState } from "react";
 import { CollectionType } from "lib/interfaces";
-import { determineDataTemplate, determineEmptyObject, determineTabBarLabel } from "functions/determinators";
+import { determineEmptyObject, determineTabBarLabel } from "functions/determinators";
 import { dataTemplate_Translations } from "lib/DataTemplates/translations";
+import { modalTexts } from "lib/Text/text_modals";
+import { selectCollection } from "lib/textTemplates";
 
 export default function customShippingLabelDialog(){
 
     const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
 
-    const [selectedScreen, setSelectedScreen] = useState<string>("gunCollection")
+    const [selectedScreen, setSelectedScreen] = useState<CollectionType>("gunCollection")
     const [selectedAttributes, setSelectedAttributes] = useState(new Set<string>());
 
     useEffect(()=>{
@@ -40,7 +42,9 @@ export default function customShippingLabelDialog(){
             selectedScreen as CollectionType, 
             Array.from(selectedAttributes), 
             preferredUnits,
-        "Custom List")
+        determineTabBarLabel(selectedScreen)[language])
+        setSelectedAttributes(new Set())
+        setCustomPDFPrintVisible(false)
         }catch(e){
             console.error(`Print Ammo Collection Error: ${e}`)
         } 
@@ -48,6 +52,7 @@ export default function customShippingLabelDialog(){
 
     function handleCancel(){
         setCustomPDFPrintVisible(false)
+        setSelectedAttributes(new Set())
     }
 
     function handleCheckboxPress(data:string){
@@ -66,15 +71,15 @@ export default function customShippingLabelDialog(){
 
     return (<Portal>
         <ModalContainer
-                            title={"Print custom list"}
-                            subtitle={createQRcodeDialogText.subtitle[language]}
+                            title={modalTexts.customPDFPrinter.title[language]}
+                            subtitle={modalTexts.customPDFPrinter.text[language]}
                             visible={customPDFPrintVisible}
                             setVisible={setCustomPDFPrintVisible}
                             content={
                                 <View style={{ padding: defaultViewPadding, display: "flex", height: "100%", flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-start", alignItems: "flex-start", alignContent: "flex-start" }}>
                                     <View style={{width: "100%"}}>
                                         <Dropdown
-                                            label={"select collection"}
+                                            label={selectCollection[language]}
                                             options={screenData}
                                             value={selectedScreen}
                                             onSelect={setSelectedScreen}

@@ -9,7 +9,6 @@ import { ItemType, ItemTypeWithDbId } from 'lib/interfaces';
 import { generateGradient, imageHandling, itemDataValidation } from 'functions/utils';
 import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
-import { imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -30,6 +29,10 @@ import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated
 import { useSharedValue } from 'react-native-reanimated';
 import { useTextStore } from 'stores/useTextStore';
 import NewText_CodeScanner from 'components/NewText_CodeScanner';
+import { imageDeleteAlert, unsavedChangesAlert, validationFailedAlert } from 'lib/Text/text_alerts';
+import { toastMessages } from 'lib/Text/text_toastMessages';
+import { eq, asc, inArray } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 
 export default function NewItem({navigation}){
@@ -79,6 +82,12 @@ export default function NewItem({navigation}){
             }
         }
     },[itemData])
+
+    const { data: allAutocompleteData } = useLiveQuery(
+    db.select()
+    .from(schema.autocomplete)
+    .where(inArray(schema.autocomplete.field, fieldsForAutocomplete))
+)
 
     async function save(value:ItemTypeWithDbId) {
         const validationResult:{field: string, error: string}[] = itemDataValidation(currentCollection, value, language)
@@ -198,9 +207,9 @@ export default function NewItem({navigation}){
         }
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            quality: 1
-        })
+    allowsEditing: true,
+    quality: 1
+})
 
         if(!result.canceled){
             // Create a unique file name for the new image
@@ -432,7 +441,7 @@ export default function NewItem({navigation}){
                                             <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         codeTriggerFields.includes(data.name) ?
                                             <NewText_CodeScanner data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
-                                            <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
+                                            <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} autocompleteData={allAutocompleteData?.filter(d => d.field === data.name) ?? []}/>}
                                     </View>
                                 )
                             })}

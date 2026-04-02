@@ -2,19 +2,18 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system/legacy';
-import { CollectionType, ListPrinter } from 'lib/interfaces';
-import { pdfFooter, pdfTitle_AmmoCollection } from 'lib/textTemplates';
+import { CollectionType } from 'lib/interfaces';
 import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
-import { ammoDataTemplate } from 'lib/DataTemplates/ammoDataTemplate';
 import { Platform } from 'react-native';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { checkConversionFields, getShortCaliberNameFromArray, parseDate } from 'functions/utils';
+import { checkConversionFields, parseDate } from 'functions/utils';
 import * as Application from 'expo-application';
 import { tableStyle } from './printoutStyles';
 import { PreferredUnits } from 'stores/usePreferenceStore';
-import { useState } from 'react';
 import { determineDataTemplate } from 'functions/determinators';
+import { pdfFooter } from 'lib/Text/text_pdf';
+import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
 
 export async function printCustomCollection(
   language: string, 
@@ -26,8 +25,7 @@ export async function printCustomCollection(
   title: string
 ){
 
-  console.log(includedKeys)
-  console.log(collection)
+
   const customCollection = db.select().from(schema[collection]).all()
   const customTemplate = determineDataTemplate(collection)
 

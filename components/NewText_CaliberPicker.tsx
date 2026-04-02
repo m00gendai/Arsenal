@@ -1,14 +1,15 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip } from 'react-native-paper';
-import { act, useEffect, useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../lib/interfaces';
+import { useEffect, useState } from 'react';
+import { ItemType } from '../lib/interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
-import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
+import { caliberPickerStrings } from '../lib/textTemplates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PREFERENCES } from 'configs/configs_DB';
+import { modalTexts } from 'lib/Text/text_modals';
 
 interface Props{
     data: string

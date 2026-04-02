@@ -1,20 +1,17 @@
 import { View, TouchableNativeFeedback, ScrollView } from "react-native"
-import { deleteTagFromListAlert, newTags, tagModal } from "../lib/textTemplates"
+import { newTags, tagModal } from "../lib/textTemplates"
 import { usePreferenceStore } from "../stores/usePreferenceStore"
-import { useGunStore } from "../stores/useGunStore"
-import { useAmmoStore } from "../stores/useAmmoStore"
 import { Button, Chip, IconButton, TextInput, Text, Dialog, Surface, Modal, Portal } from "react-native-paper"
-import { GunType, AmmoType, ItemType } from "../lib/interfaces"
+import { ItemType } from "../lib/interfaces"
 import { useState } from "react"
 import { defaultViewPadding } from "../configs/configs"
 import ModalContainer from "./ModalContainer"
-import * as schema from "../db/schema"
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
 import {db} from "../db/client"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore"
 import { useItemTags } from "../hooks/useItemTags"
 import { determineTagSchema } from "functions/determinators"
+import { deleteTagFromListAlert } from "lib/Text/text_alerts"
 
 interface Props{
     data: string
@@ -34,6 +31,7 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
     const [tagDeleteDialogVisible, toggleTagDeleteDialogVisible] = useState<boolean>(false)
 
     async function saveNewTag(tag: string | null){
+
         const tagText:string = tag !== null ? tag : text
 
         if(tag === null && text === ""){
@@ -50,8 +48,9 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
 
         setItemData({...itemData, tags: [...itemData.tags, tagText]})
         await db.insert(determineTagSchema(currentCollection)).values({label: tagText}).onConflictDoNothing()
-      
+
         setText("")
+
     }
 
     function deleteTag(tag:string){

@@ -1,10 +1,10 @@
 import { Platform, View } from "react-native";
 import { Divider, List, Text } from "react-native-paper";
-import { preferenceTitles } from "lib/textTemplates";
 import { defaultViewPadding } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { versionHistory } from "./releaseNotes";
 import { Languages } from "lib/interfaces";
+import { preferenceTitles } from "lib/Text/text_settings";
 
 
 export default function VersionHistory(){
