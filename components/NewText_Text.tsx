@@ -1,21 +1,25 @@
-import { TextInput, Text, Portal, ThemeProvider, IconButton } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Keyboard } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
-import { ScrollView } from 'react-native-gesture-handler';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, fieldsForAutocomplete, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
+import * as schema from "db/schema"
+import { db } from "db/client"
+import { eq, asc } from 'drizzle-orm';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 interface Props{
     data: string
     itemData?: ItemType
     setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     label: string
+    autocompleteData?: {id: string, label: string, field: string}[]
 }
 
-export default function NewText({data, itemData, setItemData, label}: Props){
+export default function NewText({data, itemData, setItemData, label, autocompleteData}: Props){
 
     const { preferredUnits } = usePreferenceStore()
 
@@ -108,8 +112,10 @@ export default function NewText({data, itemData, setItemData, label}: Props){
                     onSubmitEditing={()=>Keyboard.dismiss()}
                 />
             </Pressable>
+{fieldsForAutocomplete.includes(data) && isFocus && 
 
-            <Autocomplete title={label} data={data} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
+            <Autocomplete title={label} data={data} autocompleteData={autocompleteData} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
+}
         </View>
     )
 }
