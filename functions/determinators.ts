@@ -3,7 +3,7 @@ import sortGunCollection from "./sorters/sortGunCollection";
 import { SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
 import * as schema from "db/schema"
-import { and, or, like, sql } from 'drizzle-orm';
+import { or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
 import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit } from "configs/configs";
@@ -17,17 +17,19 @@ import sortAccessoryCollection_LightLaser from "./sorters/sortAccessoryCollectio
 import { accessoryDataTemplate_LightLaser, emptyLightLaserObject, lightLaserRemarks } from "lib/DataTemplates/accessoryDataTemplate_LightLaser";
 import sortPartCollection_Barrel from "./sorters/sortPartCollection_Barrel";
 import { barrelRemarks, emptyBarrelObject, partDataTemplate_Barrel } from "lib/DataTemplates/partDataTemplate_Barrel";
-import { editAccessoryTitle, editAmmoTitle, editGunTitle, editLiteratureTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newLiteratureTitle, newPartTitle, shotLabel, tabBarLabels } from "lib/textTemplates";
 import sortAccessoryCollection_Scope from "./sorters/sortAccessoryCollection_Scope";
 import { accessoryDataTemplate_Scope, emptyScopeObject, scopeRemarks } from "lib/DataTemplates/accessoryDataTemplate_Scope";
 import sortAccessoryCollection_Magazine from "./sorters/sortAccessoryCollection_Magazine";
 import { accessoryDataTemplate_Magazine, emptyMagazineObject, magazineRemarks } from "lib/DataTemplates/accessoryDataTemplate_Magazine";
 import sortAccessoryCollection_Misc from "./sorters/sortAccessoryCollection_Misc";
 import { accessoryDataTemplate_Misc, emptyMiscAccessoryObject, miscAccessoryRemarks } from "lib/DataTemplates/accessoryDataTemplate_Misc";
-import { getShortCaliberName } from "functions/utils";
 import sortLiteratureCollection_Book from "./sorters/sortLiteratureCollection_Book";
 import { bookRemarks, emptyBookObject, literatureDataTemplate_Book } from "lib/DataTemplates/literatureDataTemplate_Book";
 import { dataTemplate_Translations } from "lib/DataTemplates/translations";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
+import { editAccessoryTitle, editAmmoTitle, editGunTitle, editLiteratureTitle, editPartTitle, newAccessoryTitle, newAmmoTitle, newGunTitle, newLiteratureTitle, newPartTitle } from "lib/Text/text_edit_new_item";
+import { shotLabel } from "lib/textTemplates";
+import { getShortCaliberName } from "./getShortCaliber";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){

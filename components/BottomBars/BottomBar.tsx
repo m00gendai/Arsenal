@@ -3,23 +3,20 @@ import { Card, Icon, IconButton, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { tabBarLabels } from "lib/textTemplates";
 import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs/configs";
-import { useViewStore } from "stores/useViewStore";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import BottomBar_AccessoryCollection from "./BottomBar_AccessoryCollection";
 import BottomBar_LiteratureCollection from "./BottomBar_LiteratureCollection";
-import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
 import { CollectionType, Screens, StackParamList } from "lib/interfaces";
 import { useItemStore } from "stores/useItemStore";
 import BottomBar_PartCollection from "./BottomBar_PartCollection";
-import { State } from "react-native-gesture-handler";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 
 interface Props{
   screen?: string
