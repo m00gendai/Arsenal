@@ -1,10 +1,8 @@
-import { defaultViewPadding, languageSelection } from "configs/configs";
-import { Languages } from "lib/interfaces";
+import { defaultViewPadding } from "configs/configs";
 import { SimpleTranslation } from "lib/textTemplates";
 import { currencies } from "lib/unitData";
-import { useState } from "react";
 import { View } from "react-native";
-import { RadioButton, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 

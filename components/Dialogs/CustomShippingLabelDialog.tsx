@@ -12,7 +12,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
 import { v4 as uuidv4 } from 'uuid';
 import * as schema from "db/schema"
-import { createQRcodeDialogText, customLabelNumberFields, generateQRcodeText, helperText } from "lib/Text/textTemplates_generateQRcodes";
+import { createQRcodeDialogText, customLabelNumberFields, helperText } from "lib/Text/textTemplates_generateQRcodes";
 
 export default function customShippingLabelDialog(){
 

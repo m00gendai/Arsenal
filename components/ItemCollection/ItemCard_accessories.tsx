@@ -1,11 +1,9 @@
-import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AmmoType, CollectionType, ItemType, StackParamList } from 'lib/interfaces';
-import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
+import { Dimensions, View } from 'react-native';
+import { CollectionType, ItemType } from 'lib/interfaces';
+import { Card, IconButton } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding } from 'configs/configs';
+import { defaultGridGap, defaultViewPadding } from 'configs/configs';
 import { useViewStore } from 'stores/useViewStore';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { checkDate } from 'functions/utils';
 import * as FileSystem from 'expo-file-system/legacy';
 import { useItemStore } from 'stores/useItemStore';
@@ -14,7 +12,7 @@ import MountedIconBar from './MountedIconBar';
 import { determineCardSubtitle, determineCardTitle } from 'functions/determinators';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { useEffect, useState } from 'react';
 
 interface Props{
@@ -28,7 +26,7 @@ export default function ItemCard_accessories({ item }:Props){
     const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const { accessoryMount, partMount } = useDatabaseStore()
-    const [itemType, setItemtype] = useState<CollectionType>(null)
+    const [itemType, setItemtype] = useState<CollectionType>("gunCollection")
 
     const attachedAccessories = accessoryMount.filter(accessory => accessory.parentGunId === item.id || accessory.parentAccessoryId === item.id || accessory.parentPartId === item.id)
     const attachedParts = partMount.filter(part => part.parentGunId === item.id || part.parentPartId === item.id)

@@ -2,9 +2,8 @@ import { Text, IconButton, TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Keyboard, Platform } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { defaultViewPadding, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import ModalContainer from './ModalContainer';

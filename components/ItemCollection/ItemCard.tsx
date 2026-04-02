@@ -1,6 +1,6 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
 import { AccessoryType_Magazine, AmmoType, ItemType, StackParamList } from 'lib/interfaces';
-import { Badge, Card, Icon, IconButton, TouchableRipple } from 'react-native-paper';
+import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs/configs';
 import { useViewStore } from 'stores/useViewStore';

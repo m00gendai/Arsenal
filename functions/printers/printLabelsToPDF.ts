@@ -2,7 +2,7 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system/legacy';
-import { dateLocales, datePickerTriggerFields, defaultViewPadding, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
+import { datePickerTriggerFields } from 'configs/configs';
 import { Platform } from 'react-native';
 import { LabelTemplate } from 'lib/shippingLables';
 import { PreferredUnits, SorterSettings } from 'stores/usePreferenceStore';
@@ -13,7 +13,8 @@ import { inArray } from "drizzle-orm";
 import QRCodeSVG from "qrcode-svg";
 import { dataTemplate_Translations } from 'lib/DataTemplates/translations';
 import { determineSortingFunction } from 'functions/determinators';
-import { getShortCaliberNameFromArray, parseDate } from 'functions/utils';
+import { parseDate } from 'functions/utils';
+import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
 
 export async function printLabelsToPDF(
   language: string, 

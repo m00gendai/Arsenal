@@ -1,4 +1,4 @@
-import { CollectionType, DBOperations } from "../../lib/interfaces"
+import { CollectionType } from "../../lib/interfaces"
 import * as schema from "../../db/schema"
 import { db } from "../../db/client"
 import Papa from 'papaparse';

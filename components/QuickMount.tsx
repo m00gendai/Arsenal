@@ -1,17 +1,7 @@
-import { ScrollView, View } from "react-native";
-import { Button, Dialog, HelperText, IconButton, List, Text, TextInput } from "react-native-paper";
+import { View } from "react-native";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
-import { dateLocales, dateTimeOptions, defaultViewPadding } from "../configs/configs";
-import { gunQuickShot, shotLabel } from "../lib/textTemplates";
-import { useGunStore } from "../stores/useGunStore";
-import { useAmmoStore } from "../stores/useAmmoStore";
 import { useEffect, useState } from "react";
-import { AmmoType, GunType, ItemType } from "../lib/interfaces";
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite"
-import { db } from "../db/client"
-import * as schema from "../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import { useItemStore } from "stores/useItemStore";
+import { ItemType } from "../lib/interfaces";
 import AccessoryMountDialog from "./Dialogs/AccessoryMountDialog";
 import { useRoute } from "@react-navigation/native";
 

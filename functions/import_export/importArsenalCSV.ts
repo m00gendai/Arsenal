@@ -6,7 +6,7 @@ import { CollectionType, ItemType } from 'lib/interfaces';
 import * as schema from "db/schema"
 import { db } from "db/client"
 import * as Application from 'expo-application';
-import { determineEmptyObject, determineEmptyObjectReturns } from '../determinators';
+import { determineEmptyObjectReturns } from '../determinators';
 import { alarm } from 'functions/utils';
 
 

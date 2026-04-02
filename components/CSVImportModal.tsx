@@ -4,19 +4,15 @@ import { usePreferenceStore } from "stores/usePreferenceStore"
 import { View, ScrollView, Platform } from "react-native"
 import { datePickerTriggerFields, defaultViewPadding } from "configs/configs"
 import { mainMenu_DatabaseOperations } from "lib/Text/mainMenu_DatabaseOperations"
-import { ammoDataTemplate, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate"
 import { Picker } from "@react-native-picker/picker"
 import { useImportExportStore } from "stores/useImportExportStore"
-import { AmmoType, GunType, GunTypeStatus, ItemType } from "lib/interfaces"
+import { ItemType } from "lib/interfaces"
 import { v4 as uuidv4 } from 'uuid';
-import { useGunStore } from "stores/useGunStore"
-import { useAmmoStore } from "stores/useAmmoStore"
-import { emptyGunObject, gunDataTemplate } from "lib/DataTemplates/gunDataTemplate"
 import ModalContainer from "./ModalContainer"
 import { useState } from "react"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { determineDataTemplate, determineEmptyObject, determineEmptyObjectReturns } from "functions/determinators"
+import { determineDataTemplate, determineEmptyObjectReturns } from "functions/determinators"
 import { Dropdown } from 'react-native-paper-dropdown';
 
 export default function CSVImportModal(){
