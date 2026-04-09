@@ -160,7 +160,7 @@ export default function NewItem({navigation}){
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            quality: 1
+            quality: 0.8
         })
 
         if(!result.canceled){
@@ -192,9 +192,9 @@ export default function NewItem({navigation}){
                 }
             } catch (error) {
                 console.error('Error saving image:', error);
-            }
-        }  
-    }   
+            } 
+        }   
+    }
     
     const pickCameraAsync = async (indx:number) =>{
         const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
@@ -208,7 +208,9 @@ export default function NewItem({navigation}){
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
     allowsEditing: true,
-    quality: 1
+    quality: 0.8,
+            base64: false,
+            exif: false,
 })
 
         if(!result.canceled){
@@ -240,7 +242,14 @@ export default function NewItem({navigation}){
                 }
             } catch (error) {
                 console.error('Error saving image:', error);
-            }
+            } finally {
+                // Always clean up the original camera temp file
+
+                if (newImageUri && newImageUri !== newPath) {
+                    await FileSystem.deleteAsync(newImageUri, { idempotent: true })
+                }
+                console.info("Released image Cache")
+            }  
         }  
     } 
 
