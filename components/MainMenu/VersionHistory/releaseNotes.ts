@@ -10,6 +10,29 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+    "title": "V4.2.0",
+    "de": {
+      "text": `Behoben:\n- Datenbankexport hat Bilder ignoriert\n- Autocomplete wurde durch Tastatur verdeckt\n- Cache Overflow mit Kamerafunktion\n- Schlagworte bei Literatur nicht gespeichert\n\nNeu:\n- PDF Exporte mit selbst wählbaren Attributen für alle Sammlungen\n- Neue Sammlung: Wiederladen - Matrizen`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": `Fixed:\n- Database export was ignoring images\n- Autocomplete was hidden behind keyboard\n- Cache overflow with camera function\n- Keywords not being saved for literature entries\n\nNew:\n- PDF exports with selectable attributes for all collections\n- New collection: Reloading - Dies`,
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": `Corrigé:\n- L'export de la base de données ignorait les images\n- La saisie automatique était masquée par le clavier\n- Débordement du cache avec la fonction appareil photo\n- Les mots-clés des entrées bibliographiques n'étaient pas enregistrés\n\nNouveautés:\n- Exports PDF avec attributs sélectionnables pour toutes les collections\n- Nouvelle collection: Rechargement - Matrices`,
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": `Corretto:\n- L'esportazione del database ignorava le immagini\n- Il completamento automatico era nascosto dalla tastiera\n- Overflow della cache con la funzione fotocamera\n- Le parole chiave delle voci bibliografiche non venivano salvate\n\nNovità:\n- Esportazioni PDF con attributi selezionabili per tutte le collezioni\n- Nuova collezione: Ricarica - Matrici`,
+      "ios": null,
+      "android": null
+    }
+  },
+  {
     "title": "V4.1.1",
     "de": {
       "text": `Behoben:\n- Daten in QR Etiketten wurden als Unix Zeitstempel statt lokalisiertem Datumsformat angezeigt\n-Leere Artikel 5 Kästchen wurden angezeigt, obwohl "leere Felder in Einträgen ausblenden" eingeschaltet war\n- Möglichkeit, Etikettengitteranzeige auszuschalten fehlte`,
