@@ -126,7 +126,7 @@ export const tabBarLabels: TabBarLabels = {
     dieCollection:{
         de: "Matritzen",
         en: "Dies",
-        fr: "Recharger des cartouches",
+        fr: "Outils",
         it: "Ricaricare le cartucce",
         ch: "Matriza", 
     },/*

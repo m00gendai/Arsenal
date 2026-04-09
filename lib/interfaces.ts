@@ -380,6 +380,10 @@ export interface ReloadingType_Die{
     manufacturer: string
     model: string
     caliber: string[]
+    dieSeries: string
+    group: string
+    partNumber: string
+    shellHolder: string
     acquisitionDate_unix: number | null
     paidPrice: string
     boughtFrom: string
