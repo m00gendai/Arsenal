@@ -479,6 +479,8 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.bookCollection
         case "reloadingCollection_Die":
             return tabBarLabels.dieCollection
+        default:
+            return ""
     }
 }
 
