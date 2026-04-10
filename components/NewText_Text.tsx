@@ -1,8 +1,8 @@
 import { TextInput } from 'react-native-paper';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
-import { View, Pressable, Keyboard } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, fieldsForAutocomplete, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { View, Pressable, Keyboard, Platform } from 'react-native';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, fieldsForAutocomplete, maxCharCountText, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
@@ -38,8 +38,7 @@ export default function NewText({data, itemData, setItemData, label, autocomplet
     const [charCount, setCharCount] = useState(input.current?.length ?? 0)
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
-
-    const MAX_CHAR_COUNT: number = 100
+    const [keyboardHeight, setKeyboardHeight] = useState(0)
 
     function updateItemData(text:string){
         let determinedText: string
@@ -51,12 +50,12 @@ export default function NewText({data, itemData, setItemData, label, autocomplet
             determinedText = text
         }
         
-        if(charCount < MAX_CHAR_COUNT){
+        if(charCount < maxCharCountText){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        if(charCount >= maxCharCountText && isBackspace){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
@@ -74,11 +73,30 @@ export default function NewText({data, itemData, setItemData, label, autocomplet
         }
     }
 
+
+
+useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
+
+    const keyboardWillShow = Keyboard.addListener(showEvent, (e) => {
+        setKeyboardHeight(e.endCoordinates.height)
+    })
+    const keyboardWillHide = Keyboard.addListener(hideEvent, () => {
+        setKeyboardHeight(0)
+    })
+
+    return () => {
+        keyboardWillShow.remove()
+        keyboardWillHide.remove()
+    }
+}, [])
+
     return(
         <View style={{flex: 1}}>
             <Pressable style={{flex: 1}}>
                 <TextInput
-                    label={`${label}${requiredFieldsGun.includes(data) ? "*" : requiredFieldsAmmo.includes(data) ? "*" : ""} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                    label={`${label}${requiredFieldsGun.includes(data) ? "*" : requiredFieldsAmmo.includes(data) ? "*" : ""} ${isFocus ? `${charCount}/${maxCharCountText}` : ``}`} 
                     style={{
                         flex: 1,
                     }}
@@ -114,7 +132,7 @@ export default function NewText({data, itemData, setItemData, label, autocomplet
             </Pressable>
 {fieldsForAutocomplete.includes(data) && isFocus && 
 
-            <Autocomplete title={label} data={data} autocompleteData={autocompleteData} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus}/>
+            <Autocomplete title={label} data={data} autocompleteData={autocompleteData} inputText={input.current} updateItemData={updateItemData} charCount={charCount} isFocus={isFocus} keyboardHeight={keyboardHeight}/>
 }
         </View>
     )

@@ -17,15 +17,15 @@ interface Props{
     updateItemData: (text: string) => void
     charCount: number
     isFocus: boolean
+    keyboardHeight: number
 }
 
-export default function Autocomplete({title, data, autocompleteData,inputText, updateItemData, charCount, isFocus}:Props){
+export default function Autocomplete({title, data, autocompleteData,inputText, updateItemData, charCount, isFocus, keyboardHeight}:Props){
 
     const { theme } = usePreferenceStore()
 
     const [rerender, setRerender] = useState(0)
     const [visible, setVisible] = useState<boolean>(true)
-    const [keyboardHeight, setKeyboardHeight] = useState(0)
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -49,24 +49,6 @@ export default function Autocomplete({title, data, autocompleteData,inputText, u
         }
     }, [charCount, isFocus, autocompleteData])
 
-    useEffect(() => {
-        const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        const keyboardWillShow = Keyboard.addListener(showEvent, (e) => {
-            setKeyboardHeight(e.endCoordinates.height)
-        })
-        
-        const keyboardWillHide = Keyboard.addListener(hideEvent, () => {
-            setKeyboardHeight(0)
-        })
-
-        return () => {
-            keyboardWillShow.remove()
-            keyboardWillHide.remove()
-        }
-    }, [])
-
     return(
         <Portal>
             {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
@@ -81,7 +63,7 @@ export default function Autocomplete({title, data, autocompleteData,inputText, u
                 keyboardBehavior="interactive"        // follows keyboard up
                 keyboardBlurBehavior="restore"        // snaps back down on dismiss
                 android_keyboardInputMode="adjustResize"
-                bottomInset={keyboardHeight + ((PixelRatio.getFontScale()*14)+defaultViewPadding)}
+                bottomInset={keyboardHeight + (Platform.OS === 'android' ? 50 : 0)}
             >
                 <View 
                     style={{
