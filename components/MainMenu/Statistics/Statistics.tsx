@@ -1,14 +1,17 @@
 import { Dialog, Divider, List, Text, Button, IconButton, TouchableRipple, Icon, Portal } from "react-native-paper";
-import { dateLocales, defaultViewPadding } from "configs/configs";
+import { dateLocales, defaultViewPadding, screenNameParamsAll } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { View } from "react-native";
 import { db } from "db/client";
-import { count } from "drizzle-orm";
+import { ConsoleLogWriter, count } from "drizzle-orm";
 import * as schema from "db/schema"
 import { useEffect, useState } from "react";
 import { intlNumberFormatOptions } from "functions/utils";
 import { preferenceTitles } from "lib/Text/text_settings";
 import { statisticItems, statisticsAlert } from "lib/Text/text_statistics";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
+import { determineTabBarLabel } from "functions/determinators";
+import { CollectionType } from "lib/interfaces";
 
 interface BadDataValues{
     value: string
@@ -45,17 +48,17 @@ export default function Statistics(){
     })
 
     const [statistics, setStatistics] = useState({
-        gunCount: 0,
-        gunPrice: 0,
-        gunValue: 0,
-        ammoCount: 0,
-        roundCount: 0,
-        uniqueCalibers: 0
+        
     })
 
     async function getCollectionSize(){
-        const collectionSize = await db.select({ count: count() }).from(schema.gunCollection)
-        setStatistics(prev => ({...prev, gunCount: collectionSize[0].count}))
+        for(const collection of screenNameParamsAll){
+            const collectionSize = await db.select({ count: count() }).from(schema[collection])
+            
+            setStatistics(prev => ({...prev, [collection]: collectionSize[0].count}))
+        }
+        
+        
     }
 
     async function getCollectionValue(){
@@ -159,11 +162,11 @@ export default function Statistics(){
     useEffect(()=>{
         async function getStatistics(){
             await getCollectionSize()
-            await getCollectionValue()
-            await getCollectionMarketValue()
-            await getAmmoSize()
-            await getRoundCount()
-            await getUniqueCalibers()
+        //    await getCollectionValue()
+        //    await getCollectionMarketValue()
+        //    await getAmmoSize()
+        //    await getRoundCount()
+        //    await getUniqueCalibers()
         }
         getStatistics()
     },[])
@@ -180,10 +183,10 @@ export default function Statistics(){
                     return(
                         <View key={`statistic_${index}`}>
                             <View style={{paddingTop: defaultViewPadding, paddingBottom: 5, display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                                <Text>{`${statisticItems[statistic[0]][language]}`}</Text>
+                                <Text>{`${determineTabBarLabel(statistic[0] as CollectionType)[language]}`}</Text>
                                 <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
                                     <Text>{`${new Intl.NumberFormat(dateLocales[language], intlNumberFormatOptions(statistics[statistic[0]])).format(statistics[statistic[0]])}`}</Text>
-                                    {badData[statistic[0]].length !== 0 ? 
+                                    {badData[statistic[0]]?.length !== 0 ? 
                                         <TouchableRipple
                                             onPress={() => handleAlertPress(statistic[0] as BadDataTitle)}
                                             style={{
