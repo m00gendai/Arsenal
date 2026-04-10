@@ -92,9 +92,10 @@ export default function customShippingLabelDialog(){
                                                 if(dataTemplate_Translations[data[0]]){
                                                     return (
                                                         <View key={`${data[0]}_${index}`} style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
-                                                            <Checkbox
+                                                            <Checkbox.Android
                                                                 status={selectedAttributes.has(data[0]) ? 'checked' : 'unchecked'}
                                                                 onPress={() => handleCheckboxPress(data[0])}
+                                                                
                                                             />
                                                             <Text>{dataTemplate_Translations[data[0]][language]}</Text>
                                                         </View>
