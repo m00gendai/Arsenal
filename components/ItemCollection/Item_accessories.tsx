@@ -9,9 +9,9 @@ import ItemCard_accessories from "./ItemCard_accessories";
 import * as schema from "db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useViewStore } from "stores/useViewStore";
-import { tabBarLabels } from "lib/textTemplates";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PREFERENCES } from "configs/configs_DB";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 
 interface Props{
     currentItem: ItemType
@@ -167,10 +167,6 @@ const DATA:Section[] = [
   {
     title: tabBarLabels.silencerCollection[language],
     data: silencerData,
-  },
-  {
-    title: tabBarLabels.conversionCollection[language],
-    data: null,
   },
   {
     title: tabBarLabels.lightLaserCollection[language],

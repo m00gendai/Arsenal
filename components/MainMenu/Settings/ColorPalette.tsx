@@ -5,8 +5,8 @@ import * as SystemUI from "expo-system-ui"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { colorThemes } from "lib/colorThemes"
 import { PREFERENCES } from "configs/configs_DB"
-import { preferenceTitles } from "lib/textTemplates"
 import { defaultViewPadding } from "configs/configs"
+import { preferenceTitles } from "lib/Text/text_settings"
 
 export default function ColorPalette(){
     

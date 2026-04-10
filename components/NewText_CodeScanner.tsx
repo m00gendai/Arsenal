@@ -2,9 +2,8 @@ import { Text, IconButton, TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Keyboard, Platform } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, defaultViewPadding, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { defaultViewPadding, maxCharCountText, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
 import { Camera, useCameraDevice, useCameraPermission, useCodeScanner } from 'react-native-vision-camera'
 import ModalContainer from './ModalContainer';
@@ -43,8 +42,6 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const { hasPermission, requestPermission } = useCameraPermission()
     const { language, theme } = usePreferenceStore()
 
-    const MAX_CHAR_COUNT: number = 100
-
     function updateItemData(text:string){
         let determinedText: string
         if(unitFields_Weight.includes(data)){
@@ -55,12 +52,12 @@ export default function NewText({data, itemData, setItemData, label}: Props){
             determinedText = text
         }
         
-        if(charCount < MAX_CHAR_COUNT){
+        if(charCount < maxCharCountText){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})
         }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        if(charCount >= maxCharCountText && isBackspace){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(determinedText) ? determinedText : determinedText.trim()})

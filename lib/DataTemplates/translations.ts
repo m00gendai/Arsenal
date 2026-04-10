@@ -62,6 +62,10 @@ interface DataTemplateTranslations {
     footprint: DataTemplateTranslation
     customInventoryDesignation: DataTemplateTranslation
     qrCode: DataTemplateTranslation
+    dieSeries: DataTemplateTranslation
+    group: DataTemplateTranslation
+    partNumber: DataTemplateTranslation
+    shellHolder: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -552,7 +556,39 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "QR-Code",
         it: "QR-Code", 
         ch: "QR-Code"
-    }
+    },
+    "dieSeries":{
+        name: "dieSeries",
+        de: "Edition",
+        en: "Series",
+        fr: "Série",
+        it: "Serie",
+        ch: "Seria",
+    },
+    "group":{
+        name: "group",
+        de: "Gruppe",
+        en: "Group",
+        fr: "Groupe",
+        it: "Gruppo", 
+        ch: "Gruppa"
+    },
+    "partNumber": {
+        name: "partNumber",
+        de: "Teilenummer",
+        en: "Part Number",
+        fr: "Référence",
+        it: "Numero di parte", 
+        ch: "Numer da part"
+    },
+    "shellHolder": {
+        name: "shellHolder",
+        de: "Hülsenhalter",
+        en: "Shell Holder",
+        fr: "Griffe de maintien d'étui",
+        it: "Porta bossolo", 
+        ch: "Tegnider da cartutsch"
+    },
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {

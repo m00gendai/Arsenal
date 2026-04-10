@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { FAB, Icon, ThemeProvider } from 'react-native-paper';
+import { FAB, Icon } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs/configs';
 import { AccessoryMount, ItemType, PartMount, Tag } from 'lib/interfaces';
 import { useViewStore } from 'stores/useViewStore';
@@ -10,7 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } fr
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { and, eq } from 'drizzle-orm';
+import { and } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
 import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
@@ -21,7 +21,7 @@ import { useDatabaseStore } from 'stores/useDatabaseStore';
 import OnboardingDialog from 'components/Dialogs/Onboarding/OnboardingDialog';
 import Hints from 'components/Hints/Hints';
 
-export default function ItemCollection({navigation, route}){
+export default function ItemCollection({navigation}){
 
   const [searchQuery, setSearchQuery] = useState<string>("")
   const { currentCollection, setCurrentItem } = useItemStore()

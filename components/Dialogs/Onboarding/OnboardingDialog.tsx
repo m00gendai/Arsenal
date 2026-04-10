@@ -1,9 +1,7 @@
-import { defaultModalBackdrop, defaultViewPadding, languageSelection } from "configs/configs";
-import { Languages } from "lib/interfaces";
-import { SimpleTranslation } from "lib/textTemplates";
+import { defaultModalBackdrop, defaultViewPadding } from "configs/configs";
 import { useState } from "react";
 import { Dimensions, View } from "react-native";
-import { Icon, IconButton, Modal, Portal, RadioButton, Text } from "react-native-paper";
+import { Icon, IconButton, Modal, Portal, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import Onboarding_LanguageSelect from "./Onboarding_LanguageSelect";
 import Onboarding_CurrencySelect from "./Onboarding_CurrencySelect";

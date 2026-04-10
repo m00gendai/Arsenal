@@ -3,14 +3,16 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { dateLocales, datePickerTriggerFields, legacyDatePickerTriggerFields, pdfCommonStyles, pdfDateOptions, pdfExcludedKeys } from "configs/configs";
 import { checkBoxes, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { determineDataTemplate } from "functions/determinators";
-import { newTags, pdfFooter } from "lib/textTemplates";
-import { getShortCaliberNameFromArray, parseDate } from "functions/utils";
+import { newTags } from "lib/textTemplates";
+import { parseDate } from "functions/utils";
 import { Platform } from "react-native";
 import * as Print from 'expo-print';
 import { shareAsync } from "expo-sharing";
 import * as IntentLauncher from 'expo-intent-launcher';
 import { galleryStyle } from "./printoutStyles";
 import * as Application from 'expo-application';
+import { pdfFooter } from "lib/Text/text_pdf";
+import { getShortCaliberNameFromArray } from "functions/getShortCaliber";
 
 
 export async function printSingleItem(item:ItemType, collection: CollectionType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){

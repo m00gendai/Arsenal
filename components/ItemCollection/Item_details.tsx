@@ -6,8 +6,9 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
-import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, getShortCaliberName } from "functions/utils";
+import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit } from "functions/utils";
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
+import { getShortCaliberName } from "functions/getShortCaliber";
 
 export default function Item_details(){
 

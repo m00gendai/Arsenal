@@ -5,7 +5,7 @@ import { db } from "db/client"
 import { eq } from 'drizzle-orm';
 import { determineCardOptions } from "functions/determinators";
 import { ItemType, StackParamList } from "lib/interfaces";
-import { gunDeleteAlert, longPressActions, longPressActionsSuccessMessages, sorting } from "lib/textTemplates";
+import { longPressActions, longPressActionsSuccessMessages } from "lib/textTemplates";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { Button, Card, Dialog, Icon, Modal, Portal, Text } from "react-native-paper";
@@ -13,6 +13,7 @@ import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
 import { useTextStore } from "stores/useTextStore";
+import { gunDeleteAlert } from "lib/Text/text_alerts";
 
 
 export default function CardOptionsMenu(){

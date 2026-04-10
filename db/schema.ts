@@ -506,6 +506,36 @@ export const literature_BookTags = sqliteTable("literature_bookTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const reloadingCollection_Die = sqliteTable("reloading_die", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    caliber: text("caliber", {mode: "json"}),
+    dieSeries: text("dieSeries"),
+    group: text("group"),
+    partNumber: text("partNumber"),
+    shellHolder: text("shellHolder"),
+    acquisitionDate_unix: integer("acquisitionDate_unix"),
+    paidPrice: text("paidPrice"),
+    boughtFrom: text("boughtFrom"),
+    marketValue: text("marketValue"),
+    remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation"),
+    qrCode: text("qrCode")
+})
+
+export const reloading_DieTags = sqliteTable("reloading_dieTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("dieTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const autocomplete = sqliteTable("autocomplete",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),

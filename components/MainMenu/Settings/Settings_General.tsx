@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultViewPadding } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
-import { generalSettingsLabels, loginGuardAlert, preferenceTitles, resizeImageAlert } from "lib/textTemplates";
 import { View } from "react-native";
 import { Dialog, Divider, List, Switch, Text, Button } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore"
 import * as LocalAuthentication from 'expo-local-authentication';
+import { generalSettingsLabels, preferenceTitles } from "lib/Text/text_settings";
+import { loginGuardAlert, resizeImageAlert } from "lib/Text/text_alerts";
 
 export default function Settings_General(){
 
@@ -68,7 +69,14 @@ export default function Settings_General(){
                             <Text style={{flex: 7}}>{generalSettingsLabels.hintsDisplay[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.hintsDisplay} onValueChange={()=>handleSwitches("hintsDisplay")} />
                         </View>
+{/*
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.scanBeep[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.scanBeep} onValueChange={()=>handleSwitches("scanBeep")} />
+                        </View>
+                        */}
                     </View>
                 </View>
             </List.Accordion>

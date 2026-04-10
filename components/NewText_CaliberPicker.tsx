@@ -1,14 +1,15 @@
 import { IconButton, List, TextInput, Text, Searchbar, Chip } from 'react-native-paper';
-import { act, useEffect, useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../lib/interfaces';
+import { useEffect, useState } from 'react';
+import { ItemType } from '../lib/interfaces';
 import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { calibers } from '../lib/caliberData';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { defaultViewPadding } from '../configs/configs';
+import { defaultViewPadding, maxCharCountText } from '../configs/configs';
 import ModalContainer from './ModalContainer';
-import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
+import { caliberPickerStrings } from '../lib/textTemplates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PREFERENCES } from 'configs/configs_DB';
+import { modalTexts } from 'lib/Text/text_modals';
 
 interface Props{
     data: string
@@ -76,8 +77,6 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const MAX_CHAR_COUNT: number = 100
-
     useEffect(()=>{
         async function getLastUsedCaliber(){
             let isPreferences 
@@ -103,12 +102,12 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
     // Convert to appropriate format based on multiCaliber
     let finalValue: string[] = input;
 
-    if(charCount < MAX_CHAR_COUNT){
+    if(charCount < maxCharCountText){
         setCharCount(0)
         setInput(finalValue)
         setItemData({...itemData, [data]: finalValue})
     }
-    if(charCount >= MAX_CHAR_COUNT && isBackspace){
+    if(charCount >= maxCharCountText && isBackspace){
         setCharCount(0)
         setInput(finalValue)
         setItemData({...itemData, [data]: finalValue})
@@ -170,7 +169,7 @@ export default function NewText({data, itemData, setItemData, label, multiCalibe
         <View style={{flex: 1}}>
             <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
                 <TextInput
-                    label={`${label} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                    label={`${label} ${isFocus ? `${charCount}/${maxCharCountText}` : ``}`} 
                     style={{
                         flex: 1,
                     }}
