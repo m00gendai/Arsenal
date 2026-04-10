@@ -43,8 +43,7 @@ export default function Lists(){
             setCustomPDFPrintVisible(true)
         }
     }
-
-
+    
     async function handleIOSprints(printer: ListPrinter){
         setPrinterSrc(printer)
         toggleiosWarning(true)
@@ -59,35 +58,35 @@ export default function Lists(){
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllGuns[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollection") : handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>   
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printArt5[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionArt5") : handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>   
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printGunsHybrid[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionHybrid") : handlePrints("gunCollectionHybrid")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>  handlePrints("gunCollectionHybrid")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View> 
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=> handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printCustomList[language]}</Text>
-                            <IconButton icon={"shape-plus"} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={"shape-plus"} onPress={()=> handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
                         
                     </View>
