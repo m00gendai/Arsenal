@@ -2,6 +2,7 @@ import { TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 import { ItemType } from 'lib/interfaces';
 import { Pressable } from 'react-native';
+import { maxCharCountRemark } from 'configs/configs';
 
 interface Props{
     data: string
@@ -18,15 +19,13 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const MAX_CHAR_COUNT: number = 1000
-
    function updateItemData(text:string | string[]){
-        if(charCount < MAX_CHAR_COUNT){
+        if(charCount < maxCharCountRemark){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
         }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        if(charCount >= maxCharCountRemark && isBackspace){
             setCharCount(text.length ?? 0)
             input.current = text
             setItemData({...itemData, [data]: Array.isArray(text) ? text : text.trim()})
@@ -47,7 +46,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     return(
         <Pressable style={{flex: 1, height: 200}}>
             <TextInput
-                label={`${label} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                label={`${label} ${isFocus ? `${charCount}/${maxCharCountRemark}` : ``}`} 
                 style={{
                     height: 200
                 }}

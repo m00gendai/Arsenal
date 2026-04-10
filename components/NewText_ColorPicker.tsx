@@ -4,7 +4,7 @@ import { ItemType } from '../lib/interfaces';
 import { View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import ColorPicker, { Panel1, Swatches, Preview, HueSlider, InputWidget } from 'reanimated-color-picker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { defaultViewPadding } from '../configs/configs';
+import { defaultViewPadding, maxCharCountText } from '../configs/configs';
 import ModalContainer from './ModalContainer';
 import { GetColorName } from 'hex-color-to-color-name';
 import { scheduleOnRN  } from "react-native-worklets"
@@ -30,15 +30,13 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const MAX_CHAR_COUNT: number = 100
-
     function updateItemData(input:string | string[]){
-        if(charCount < MAX_CHAR_COUNT){
+        if(charCount < maxCharCountText){
             setCharCount(input !== undefined ? input.length : 0)
             setInput(Array.isArray(input) ? input.join("\n") : input)
             setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
         }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        if(charCount >= maxCharCountText && isBackspace){
             setCharCount(input !== undefined ? input.length : 0)
             setInput(Array.isArray(input) ? input.join("\n") : input)
             setItemData({...itemData, [data]: Array.isArray(input) ? input : input.trim()})
@@ -115,7 +113,7 @@ try{
             
             <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
                 <TextInput
-                    label={`${label} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                    label={`${label} ${isFocus ? `${charCount}/${maxCharCountText}` : ``}`} 
                     style={{
                         flex: 1,
                     }}

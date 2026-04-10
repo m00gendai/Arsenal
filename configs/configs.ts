@@ -66,6 +66,8 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit"
 }
+export const maxCharCountText = 200
+export const maxCharCountRemark = 5000
 
 export const imageFileExtensions:string[]= [".apg", ".png", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".svg", ".webp"]
 export const pdfExcludedKeys = ["db_id", "images", "createdAt", "lastModifiedAt", "status", "id", "tags", "remarks", "lastCleanedAt", "lastShotAt", "cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "qrCode", "customInventoryDesignation"]
