@@ -82,15 +82,6 @@ export default {
         "enableCodeScanner": true
       }
     ],
-    [
-        "expo-audio",
-        {
-          "microphonePermission": false,
-          "recordAudioAndroid": false,
-          "enableBackgroundPlayback": false,
-          "enableBackgroundRecording": false
-        }
-      ]
     ],
     "extra": {
       "eas": {

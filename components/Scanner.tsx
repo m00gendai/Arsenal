@@ -13,9 +13,6 @@ import { defaultViewPadding, screenNameParamsAll } from 'configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import ModalContainer from './ModalContainer';
 import { scannerNavigate } from 'lib/Text/textTemplates_scanner';
-import { useAudioPlayer } from 'expo-audio';
-
-const audioSource = require('../assets/beep.wav');
 
 interface Props{
   scannerVisible: boolean
@@ -35,8 +32,6 @@ export default function Scanner({scannerVisible, setScannerVisible}:Props){
 
     const { setCurrentItem } = useItemStore()
     const { theme, language, generalSettings } = usePreferenceStore()
-    
-    const player = useAudioPlayer(audioSource);
 
     useEffect(() => {
   if (scannerVisible) {
@@ -61,8 +56,7 @@ const codeScanner = useCodeScanner({
     if (lastScannedValue.current !== value) {
       lastScannedValue.current = value;
       if(generalSettings.scanBeep){
-        player.seekTo(0);
-        player.play();
+        // placeholder for beep or wwwwwwt or whatever
       } 
       setScannerResult(value);
       setErrorTextVisible(false);
