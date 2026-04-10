@@ -35,7 +35,7 @@ export default function Autocomplete({title, data, autocompleteData,inputText, u
     }
 
     function getMatches(){
-        return autocompleteData.some((data) =>
+        return autocompleteData?.some((data) =>
             data.label.toLowerCase().includes((inputText as string).toLowerCase())
         )
     }
@@ -51,8 +51,9 @@ export default function Autocomplete({title, data, autocompleteData,inputText, u
 
     return(
         <Portal>
-            {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
+            {charCount >= 2 && isFocus && autocompleteData?.length > 0 && visible ? <BottomSheet
                 ref={bottomSheetRef}
+
                 snapPoints={[
                     "12.5%", "25%", "50%"
                 ]}
