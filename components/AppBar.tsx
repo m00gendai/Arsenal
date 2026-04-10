@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions, View } from 'react-native';
-import { Appbar, Menu, Portal, Searchbar } from 'react-native-paper';
+import { Appbar, Menu, Searchbar } from 'react-native-paper';
 import FilterMenu from './FilterMenu';
 import { useState } from 'react';
 import { MenuVisibility, SortingTypes, StackParamList } from 'lib/interfaces';
@@ -10,10 +10,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PREFERENCES } from 'configs/configs_DB';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { defaultSearchBarHeight, defaultViewPadding } from 'configs/configs';
-import { search, sorting } from 'lib/textTemplates';
+import { search } from 'lib/textTemplates';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { determineSortingOptions } from 'functions/determinators';
 import Scanner from './Scanner';
+import { sorting } from 'lib/Text/text_sorting';
 
 interface Props{
   collection: any

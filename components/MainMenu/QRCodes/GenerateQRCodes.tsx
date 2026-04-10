@@ -1,29 +1,23 @@
-import { Dimensions, FlatList, PixelRatio, View } from "react-native"
-import { Appbar, Button, Checkbox, Icon, IconButton, List, RadioButton, Switch, Text, TextInput } from "react-native-paper"
+import { Dimensions, FlatList, View } from "react-native"
+import { Appbar, Button, Checkbox, IconButton, List, RadioButton, Switch, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { eq, asc, inArray } from 'drizzle-orm';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { customLabelFieldsFormat, customLabelFieldsNumbers, customLabelFieldsText, customLabelFieldsUnit, datePickerTriggerFields, defaultViewPadding, excludedKeysForDataTemplates } from "configs/configs"
+import { datePickerTriggerFields, defaultViewPadding, excludedKeysForDataTemplates } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
-import { preferenceTitles, tabBarLabels } from "lib/textTemplates"
-import { CollectionType, CustomLabel, ItemType } from "lib/interfaces"
+import { CollectionType, ItemType } from "lib/interfaces"
 import { useRoute } from "@react-navigation/native"
-import { Dropdown } from "react-native-paper-dropdown"
 import { LabelTemplate, shippingLabelData_ISO, shippingLabelData_US } from "lib/shippingLables"
-import { useCallback, useEffect, useState } from "react"
-import QRCodeStyled from 'react-native-qrcode-styled';
+import { useCallback, useState } from "react"
 import QRCode from 'react-native-qrcode-skia';
 import { printLabelsToPDF } from "functions/printers/printLabelsToPDF"
-import ModalContainer from "components/ModalContainer"
-import { devNull } from "node:os"
 import { determineCardSubtitle, determineCardTitle, determineEmptyObject } from "functions/determinators"
 import { useViewStore } from "stores/useViewStore"
 import CustomShippingLabelDialog from "components/Dialogs/CustomShippingLabelDialog"
 import { generateQRcodeText, screenTitles } from "lib/Text/textTemplates_generateQRcodes"
 import { parseDate } from "functions/utils"
+import { tabBarLabels } from "lib/Text/text_tabBarLabels"
 
 interface RouteParams {
   collection: CollectionType,

@@ -1,5 +1,5 @@
-import { TouchableNativeFeedback, View } from "react-native"
-import { Appbar, Divider, Icon, IconButton, List, Text } from "react-native-paper"
+import { View } from "react-native"
+import { Appbar, Divider, IconButton, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
@@ -7,8 +7,7 @@ import { eq, asc } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { defaultViewPadding } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
-import { dataTemplate_Translations } from "lib/DataTemplates/translations"
-import { preferenceTitles } from "lib/textTemplates"
+import { preferenceTitles } from "lib/Text/text_settings"
 
 export default function EditAutocomplete({navigation}){
 

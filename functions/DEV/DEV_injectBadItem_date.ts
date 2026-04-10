@@ -1,7 +1,6 @@
-import { emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { AmmoType, GunType } from "lib/interfaces";
+import { GunType } from "lib/interfaces";
 import { v4 as uuidv4 } from 'uuid';
 import { emptyGunObject } from "lib/DataTemplates/gunDataTemplate";
 

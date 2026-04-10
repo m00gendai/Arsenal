@@ -1,18 +1,8 @@
-import { IconButton, List, TextInput, Text, Searchbar, Chip, RadioButton } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../lib/interfaces';
-import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
-import { calibers } from '../lib/caliberData';
+import { ItemType } from '../lib/interfaces';
+import { View, Pressable, Platform, Keyboard } from 'react-native';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
-import { defaultViewPadding } from '../configs/configs';
-import ModalContainer from './ModalContainer';
-import { caliberPickerStrings, modalTexts } from '../lib/textTemplates';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { db } from 'db/client';
-import * as schema from "db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid';
-import { useItemStore } from 'stores/useItemStore';
 import AccessoryMountDialog from './Dialogs/AccessoryMountDialog';
 
 interface Props{

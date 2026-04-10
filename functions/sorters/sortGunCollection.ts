@@ -1,5 +1,5 @@
 import * as schema from "../../db/schema"
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { asc, desc, sql } from 'drizzle-orm';
 import { SortingTypesGun } from "../../lib/interfaces";
 
 export default function sortGunCollection(direction: "asc" | "desc", sortBy:SortingTypesGun){

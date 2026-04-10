@@ -1,14 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultViewPadding } from "configs/configs";
-import { preferenceTitles, SimpleTranslation } from "lib/textTemplates";
+import { SimpleTranslation } from "lib/textTemplates";
 import { View } from "react-native";
-import { Divider, List } from "react-native-paper";
+import { List } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { useViewStore } from "stores/useViewStore"
 import { currencies, distUnits, weightUnits } from "lib/unitData";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useEffect, useState } from "react";
 import { PREFERENCES } from "configs/configs_DB";
+import { preferenceTitles } from "lib/Text/text_settings";
 
 export default function Settings_Units(){
 

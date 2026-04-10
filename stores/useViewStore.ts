@@ -50,6 +50,9 @@ interface ViewStore {
     customShippingLabelVisible: boolean
     setCustomShippingLabelVisible: (status: boolean) => void
 
+    customPDFPrintVisible: boolean
+    setCustomPDFPrintVisible: (status: boolean) => void
+
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -100,5 +103,8 @@ interface ViewStore {
     setOnboardingVisible: (status: boolean) => set({ onboardingVisible: status }),
 
     customShippingLabelVisible: false,
-    setCustomShippingLabelVisible: (status: boolean) => set({ customShippingLabelVisible: status })
+    setCustomShippingLabelVisible: (status: boolean) => set({ customShippingLabelVisible: status }),
+
+    customPDFPrintVisible: false,
+    setCustomPDFPrintVisible: (status: boolean) => set({ customPDFPrintVisible: status })
   }))

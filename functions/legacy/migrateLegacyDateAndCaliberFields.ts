@@ -5,7 +5,6 @@ import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from "drizzle-orm"
 import { AmmoType, GunType, ItemType } from "lib/interfaces"
-import { usePreferenceStore } from "stores/usePreferenceStore"
 import { alarm } from "functions/utils"
 
 function parseDate(inDate: string | number) {

@@ -1,5 +1,4 @@
 import { Dialog, Divider, List, Text, Button, IconButton, TouchableRipple, Icon, Portal } from "react-native-paper";
-import { preferenceTitles, statisticItems, statisticsAlert } from "lib/textTemplates";
 import { dateLocales, defaultViewPadding } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { View } from "react-native";
@@ -8,6 +7,8 @@ import { count } from "drizzle-orm";
 import * as schema from "db/schema"
 import { useEffect, useState } from "react";
 import { intlNumberFormatOptions } from "functions/utils";
+import { preferenceTitles } from "lib/Text/text_settings";
+import { statisticItems, statisticsAlert } from "lib/Text/text_statistics";
 
 interface BadDataValues{
     value: string

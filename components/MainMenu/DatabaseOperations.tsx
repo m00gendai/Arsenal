@@ -6,7 +6,7 @@ import { count } from "drizzle-orm";
 import saveDatabase from "functions/import_export/saveDatabase";
 import { CollectionType, DBOperations } from "lib/interfaces";
 import { mainMenu_DatabaseOperations } from "lib/Text/mainMenu_DatabaseOperations";
-import { databaseExportAlert, databaseImportAlert, databaseOperations, importExportSelectionLabel, preferenceTitles, tabBarLabels, toastMessages } from "lib/textTemplates";
+import { databaseOperations, importExportSelectionLabel } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";
 import { ActivityIndicator, Button, Dialog, Divider, IconButton, List, Modal, Portal, Text } from "react-native-paper";
@@ -24,6 +24,10 @@ import importArsenalCSV from "functions/import_export/importArsenalCSV";
 import { importLegacyGunDatabase } from "functions/import_export/importLegacyGunDatabase";
 import { Dropdown } from "react-native-paper-dropdown";
 import { determineTabBarLabel } from "functions/determinators";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
+import { toastMessages } from "lib/Text/text_toastMessages";
+import { preferenceTitles } from "lib/Text/text_settings";
+import { databaseExportAlert, databaseImportAlert } from "lib/Text/text_alerts";
 
 export default function DatabaseOperations(){
 

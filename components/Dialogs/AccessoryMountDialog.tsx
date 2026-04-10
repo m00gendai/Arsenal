@@ -1,10 +1,9 @@
 import ModalContainer from "components/ModalContainer"
 import { defaultViewPadding } from "configs/configs"
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { eq, lt, gte, ne, and, or, like, asc, desc, exists, isNull, sql, inArray } from 'drizzle-orm';
+import { eq, ne, asc, sql } from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
-import { modalTexts, snackbarText, tabBarLabels } from "lib/textTemplates"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
 import { IconButton, List, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
@@ -16,6 +15,9 @@ import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";
 import { useTextStore } from "stores/useTextStore";
 import { determineAccessoryIcons, determineCardSubtitle, determineCardTitle } from "functions/determinators";
+import { toastMessages } from "lib/Text/text_toastMessages";
+import { modalTexts } from "lib/Text/text_modals";
+import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 
 interface Props{
     data: string
@@ -219,7 +221,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         }
         setShowModal(false)
         setAlohaSnackbarVisible(true)
-        setAlohaSnackbarText(snackbarText.mountAccessory[language].replace("{{{A}}}", itemName))
+        setAlohaSnackbarText(toastMessages.mountAccessory[language].replace("{{{A}}}", itemName))
     }
 
     function handleCancel(){

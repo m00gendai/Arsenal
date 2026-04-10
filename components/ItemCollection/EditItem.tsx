@@ -1,5 +1,5 @@
-import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView, ColorValue, Dimensions, TouchableNativeFeedback } from 'react-native';
-import { Appbar, Button, Dialog, IconButton, Snackbar, Text } from 'react-native-paper';
+import { StyleSheet, View, ScrollView, Alert, Platform, KeyboardAvoidingView, ColorValue, Dimensions } from 'react-native';
+import { Appbar, Button, Dialog, IconButton, Text } from 'react-native-paper';
 import * as ImagePicker from "expo-image-picker"
 import { useEffect, useRef, useState } from 'react';
 import "react-native-get-random-values"
@@ -7,7 +7,6 @@ import ImageViewer from "../ImageViewer"
 import { ItemType } from 'lib/interfaces';
 import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
-import { gunDeleteAlert, imageDeleteAlert, toastMessages, unsavedChangesAlert, validationFailedAlert } from 'lib/textTemplates';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -31,6 +30,8 @@ import { useSharedValue } from 'react-native-reanimated';
 import { useViewStore } from 'stores/useViewStore';
 import { useTextStore } from 'stores/useTextStore';
 import NewText_CodeScanner from 'components/NewText_CodeScanner';
+import { gunDeleteAlert, imageDeleteAlert, unsavedChangesAlert, validationFailedAlert } from 'lib/Text/text_alerts';
+import { toastMessages } from 'lib/Text/text_toastMessages';
 
 
 export default function EditGun({navigation}){
@@ -187,7 +188,9 @@ export default function EditGun({navigation}){
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            quality: 1
+            quality: 0.8,
+            base64: false,
+            exif: false,
         })
 
         if(!result.canceled){
@@ -219,7 +222,14 @@ export default function EditGun({navigation}){
                 }
             } catch (error) {
                 console.error('Error saving image:', error);
-            }
+            } finally {
+                // Always clean up the original camera temp file
+
+                if (newImageUri && newImageUri !== newPath) {
+                    await FileSystem.deleteAsync(newImageUri, { idempotent: true })
+                }
+                console.info("Released image Cache")
+            }  
         }  
     } 
 

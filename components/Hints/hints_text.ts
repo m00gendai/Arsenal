@@ -1,5 +1,5 @@
 import { SimpleTranslation } from "lib/Text/interfaces_text";
-import { generalSettingsLabels, preferenceTitles } from "lib/textTemplates";
+import { generalSettingsLabels, preferenceTitles } from "lib/Text/text_settings";
 
 export const hintsTitle:SimpleTranslation = {
     de: "Willkommen in der Arsenal App!",

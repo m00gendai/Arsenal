@@ -4,9 +4,9 @@ import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
-import { dateTimeOptions, defaultViewPadding } from '../configs/configs';
+import { dateTimeOptions, defaultViewPadding, maxCharCountText } from '../configs/configs';
 import ModalContainer from './ModalContainer';
-import { modalTexts } from '../lib/textTemplates';
+import { modalTexts } from 'lib/Text/text_modals';
 
 interface Props{
     data: string
@@ -28,15 +28,13 @@ export default function NewText({data, itemData, setItemData, label}: Props){
     const [isBackspace, setIsBackspace] = useState<boolean>(false)
     const [isFocus, setFocus] = useState<boolean>(false)
 
-    const MAX_CHAR_COUNT: number = 100
-
     function updateItemData(input: number){
-        if(charCount < MAX_CHAR_COUNT){
+        if(charCount < maxCharCountText){
             setCharCount(0)
             setInput(input)
             setItemData({...itemData, [data]: input})
         }
-        if(charCount >= MAX_CHAR_COUNT && isBackspace){
+        if(charCount >= maxCharCountText && isBackspace){
             setCharCount(0)
             setInput(input)
             setItemData({...itemData, [data]: input})
@@ -88,7 +86,7 @@ export default function NewText({data, itemData, setItemData, label}: Props){
           <View style={{flex: 1}}>
                 <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
                     <TextInput
-                        label={`${label} ${isFocus ? `${charCount}/${MAX_CHAR_COUNT}` : ``}`} 
+                        label={`${label} ${isFocus ? `${charCount}/${maxCharCountText}` : ``}`} 
                         style={{
                             flex: 1,
                         }}

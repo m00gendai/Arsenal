@@ -1,16 +1,14 @@
-import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions, ColorValue, SectionList } from 'react-native';
-import { Button, Appbar, Icon, Checkbox, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
-import { checkBoxes } from "lib/DataTemplates/gunDataTemplate"
+import { StyleSheet, View, ScrollView, TouchableNativeFeedback, Pressable, Platform, Dimensions, ColorValue } from 'react-native';
+import { Button, Appbar, Icon, Chip, Text, Portal, Dialog, Modal, IconButton } from 'react-native-paper';
 import { useEffect, useRef, useState} from "react"
 import ImageViewer from "components/ImageViewer"
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { useViewStore } from 'stores/useViewStore';
-import { cleanIntervals, gunDeleteAlert, iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
+import { iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
 import { ItemType } from 'lib/interfaces';
-import { alarm, checkDate, generateGradient } from 'functions/utils';
+import { alarm, generateGradient } from 'functions/utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colord } from "colord";
-import { accessoryExceptions, caliberPickerTriggerFields, colorPickerTriggerFields, currencyPrefixFields, defaultViewPadding } from 'configs/configs';
+import { accessoryExceptions, defaultViewPadding } from 'configs/configs';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as schema from "db/schema"
@@ -19,11 +17,11 @@ import { eq } from 'drizzle-orm';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import { useSharedValue } from 'react-native-reanimated';
 import { useItemStore } from 'stores/useItemStore';
-import { determineDataTemplate, determineEmptyObject, determineRemarkDataTemplate } from 'functions/determinators';
-import { StackActions } from '@react-navigation/native';
+import { determineEmptyObject } from 'functions/determinators';
 import Item_Accessories from './Item_accessories';
 import Item_details from './Item_details';
 import { printSingleItem } from 'functions/printers/printSingleItem';
+import { gunDeleteAlert } from 'lib/Text/text_alerts';
 
 export default function Item({navigation}){
 

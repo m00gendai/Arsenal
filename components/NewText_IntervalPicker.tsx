@@ -1,13 +1,14 @@
-import { IconButton, TextInput, Text, RadioButton, Divider } from 'react-native-paper';
-import { useEffect, useRef, useState } from 'react';
-import { GunType, AmmoType, ItemType } from '../lib/interfaces';
-import { TouchableNativeFeedback, View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
+import { IconButton, TextInput, Text, Divider } from 'react-native-paper';
+import { useRef, useState } from 'react';
+import { ItemType } from '../lib/interfaces';
+import { View, ScrollView, Pressable, Platform, Keyboard } from 'react-native';
 import { usePreferenceStore } from '../stores//usePreferenceStore';
 import { cleanIntervalOptions, defaultViewPadding } from '../configs/configs';
 import ModalContainer from './ModalContainer';
-import { cleanIntervals, modalTexts, shotLabel } from '../lib/textTemplates';
+import { cleanIntervals, shotLabel } from '../lib/textTemplates';
 import { Dropdown } from 'react-native-paper-dropdown';
 import { currentShotCountDataLabel, nextShotIntervalDataLabel, preferedShotCountDataLabel, presetDataLabel, shotCountDataLabel } from 'lib/Text/textTemplates_intervalPicker';
+import { modalTexts } from 'lib/Text/text_modals';
 
 interface Props{
     data: string

@@ -4,13 +4,14 @@ import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq } from 'drizzle-orm';
 import { StackParamList } from "lib/interfaces";
-import { longPressActions, snackbarText } from "lib/textTemplates";
+import { longPressActions } from "lib/textTemplates";
 import { Pressable, View } from "react-native";
 import { Card, Icon, Modal, Portal, Text } from "react-native-paper";
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
 import { useTextStore } from "stores/useTextStore";
+import { toastMessages } from "lib/Text/text_toastMessages";
 
 
 export default function CardOptionsMenu_accessories(){
@@ -53,7 +54,7 @@ export default function CardOptionsMenu_accessories(){
         setCardOptionsMenuVisible_accessories(false)
         setAlohaSnackbarVisible(true)
         if("model" in currentAccessory){ // this is always true, only ammoCollection uses "designation" instead of model and ammo is not in the accessories family
-            setAlohaSnackbarText(snackbarText.removeAccessory[language].replace("{{{A}}}", currentAccessory.model))
+            setAlohaSnackbarText(toastMessages.removeAccessory[language].replace("{{{A}}}", currentAccessory.model))
         }
 
     }

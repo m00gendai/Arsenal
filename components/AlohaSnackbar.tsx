@@ -1,4 +1,4 @@
-import { defaultBottomBarHeight, defaultViewPadding } from 'configs/configs';
+import { defaultBottomBarHeight } from 'configs/configs';
 import { Snackbar } from 'react-native-paper';
 import { useTextStore } from 'stores/useTextStore';
 import { useViewStore } from 'stores/useViewStore';

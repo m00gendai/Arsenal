@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { defaultViewPadding } from "configs/configs";
 import { StackParamList } from "lib/interfaces";
-import { preferenceTitles } from "lib/textTemplates";
+import { preferenceTitles } from "lib/Text/text_settings";
 import { View } from "react-native";
 import { Divider, IconButton, List, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";

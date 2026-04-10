@@ -371,6 +371,28 @@ export interface LiteratureType_Book{
     qrCode: null | string
 }
 
+export interface ReloadingType_Die{
+    id: string
+    createdAt: number
+    lastModifiedAt: number
+    images: string[]
+    tags: string[]
+    manufacturer: string
+    model: string
+    caliber: string[]
+    dieSeries: string
+    group: string
+    partNumber: string
+    shellHolder: string
+    acquisitionDate_unix: number | null
+    paidPrice: string
+    boughtFrom: string
+    marketValue: string
+    remarks: string
+    customInventoryDesignation: null | string
+    qrCode: null | string
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
@@ -382,6 +404,7 @@ export type ItemType =  | GunType
                         | PartType_ConversionKit
                         | PartType_Barrel
                         | LiteratureType_Book
+                        | ReloadingType_Die
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -394,6 +417,7 @@ export type CollectionType =  | "gunCollection"
                               | "partCollection_ConversionKit"
                               | "partCollection_Barrel"
                               | "literatureCollection_Book"
+                              | "reloadingCollection_Die"
 
 export type Screens = "itemCollection"
 
@@ -573,6 +597,14 @@ export type SortingTypesLiterature_Book = | "alphabetical"
                                           | "acquisitionDate" 
                                           | "pages" 
 
+export type SortingTypesReloading_Die = | "alphabetical" 
+                                        | "createdAt" 
+                                        | "lastModifiedAt" 
+                                        | "caliber" 
+                                        | "paidPrice" 
+                                        | "marketValue"
+                                        | "acquisitionDate" 
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
@@ -584,6 +616,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesPart_ConversionKit
                             | SortingTypesPart_Barrel
                             | SortingTypesLiterature_Book
+                            | SortingTypesReloading_Die
 
                             
 export type Languages = | "de" 
@@ -648,7 +681,7 @@ export interface PartMount{
     parentPartType: CollectionType
 }
 
-export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection"
+export type ListPrinter = null | "gunCollection" | "gunCollectionArt5" | "gunCollectionHybrid" | "ammoCollection" | "custom"
 
 export interface CustomLabel{
   name: string

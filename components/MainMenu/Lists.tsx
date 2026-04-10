@@ -1,18 +1,21 @@
 import { defaultViewPadding } from "configs/configs";
 import { printGunCollection } from "functions/printers/printGunCollectionToPDF";
-import { iosWarningText, preferenceTitles } from "lib/textTemplates";
+import { iosWarningText } from "lib/textTemplates";
 import { useState } from "react";
 import { Platform, View } from "react-native";
 import { Button, Dialog, Divider, IconButton, List, Portal, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { alarm } from "functions/utils";
 import { ListPrinter } from "lib/interfaces";
 import { determineAccessoryIcons } from "functions/determinators";
 import { printAmmoCollection } from "functions/printers/printAmmoCollectionToPDF";
+import { useViewStore } from "stores/useViewStore";
+import CustomPDFPrintDialog from "components/Dialogs/CustomPDFPrintDialog";
+import { preferenceTitles } from "lib/Text/text_settings";
 
 export default function Lists(){
 
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
 
     const [printerSrc, setPrinterSrc] = useState<ListPrinter>(null)
     const [iosWarning, toggleiosWarning] = useState<boolean>(false)
@@ -36,9 +39,11 @@ export default function Lists(){
                 console.error(`Print Ammo Collection Error: ${e}`)
             }
         }
+        if(printer === "custom"){
+            setCustomPDFPrintVisible(true)
+        }
     }
-
-
+    
     async function handleIOSprints(printer: ListPrinter){
         setPrinterSrc(printer)
         toggleiosWarning(true)
@@ -53,34 +58,43 @@ export default function Lists(){
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllGuns[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollection") : handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>   
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printArt5[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionArt5") : handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>   
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printGunsHybrid[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("gunCollectionHybrid") : handlePrints("gunCollectionHybrid")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>  handlePrints("gunCollectionHybrid")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View> 
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=>Platform.OS === "ios" ? handleIOSprints("ammoCollection") : handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                            <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=> handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                        </View>
+
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
+                            <Text style={{width: "80%"}}>{preferenceTitles.printCustomList[language]}</Text>
+                            <IconButton icon={"shape-plus"} onPress={()=> handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
                         
                     </View>
                 </View>
             </List.Accordion>
             
+            <CustomPDFPrintDialog />
+
             <Portal>
                 <Dialog visible={iosWarning} onDismiss={()=>toggleiosWarning(false)}>
                     <Dialog.Title>

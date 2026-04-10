@@ -1,4 +1,4 @@
-import { Keyboard, Platform, Pressable, View } from "react-native"
+import { Keyboard, PixelRatio, Platform, Pressable, View } from "react-native"
 import { Portal, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
@@ -12,31 +12,22 @@ import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 interface Props{
     title: string
     data: string
+    autocompleteData: {id: string, label: string, field: string}[]
     inputText: string | string[]
     updateItemData: (text: string) => void
     charCount: number
     isFocus: boolean
+    keyboardHeight: number
 }
 
-export default function Autocomplete({title, data, inputText, updateItemData, charCount, isFocus}:Props){
+export default function Autocomplete({title, data, autocompleteData,inputText, updateItemData, charCount, isFocus, keyboardHeight}:Props){
 
     const { theme } = usePreferenceStore()
 
     const [rerender, setRerender] = useState(0)
     const [visible, setVisible] = useState<boolean>(true)
-    const [keyboardHeight, setKeyboardHeight] = useState(0)
 
     const bottomSheetRef = useRef<BottomSheet>(null);
-
-    const {data: autocompleteData } = useLiveQuery(db.select()
-        .from(schema.autocomplete)
-        .where(
-          eq(
-              schema.autocomplete.field, data
-          )
-        )
-        .orderBy(asc(schema.autocomplete.label))
-    )
 
     function handleAutocomplete(text: string){
         updateItemData(text)
@@ -58,39 +49,21 @@ export default function Autocomplete({title, data, inputText, updateItemData, ch
         }
     }, [charCount, isFocus, autocompleteData])
 
-    useEffect(() => {
-        const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        const keyboardWillShow = Keyboard.addListener(showEvent, (e) => {
-            setKeyboardHeight(e.endCoordinates.height)
-        })
-        
-        const keyboardWillHide = Keyboard.addListener(hideEvent, () => {
-            setKeyboardHeight(0)
-        })
-
-        return () => {
-            keyboardWillShow.remove()
-            keyboardWillHide.remove()
-        }
-    }, [])
-
     return(
         <Portal>
             {charCount >= 2 && isFocus && autocompleteData.length > 0 && visible ? <BottomSheet
                 ref={bottomSheetRef}
                 snapPoints={[
-                    "5%", "25%", "50%"
+                    "12.5%", "25%", "50%"
                 ]}
                 index={1}
                 handleComponent={null}   
                 enableDynamicSizing={false}
                 overDragResistanceFactor={1}
-                bottomInset={Platform.OS === 'ios' ? keyboardHeight : 0}
-                style={{
-                    marginBottom: Platform.OS === 'ios' ? keyboardHeight : 0
-                }}
+                keyboardBehavior="interactive"        // follows keyboard up
+                keyboardBlurBehavior="restore"        // snaps back down on dismiss
+                android_keyboardInputMode="adjustResize"
+                bottomInset={keyboardHeight + (Platform.OS === 'android' ? 50 : 0)}
             >
                 <View 
                     style={{
