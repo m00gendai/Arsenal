@@ -69,14 +69,14 @@ export default function Settings_General(){
                             <Text style={{flex: 7}}>{generalSettingsLabels.hintsDisplay[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.hintsDisplay} onValueChange={()=>handleSwitches("hintsDisplay")} />
                         </View>
-
+{/*
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.scanBeep[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.scanBeep} onValueChange={()=>handleSwitches("scanBeep")} />
                         </View>
-                        
+                        */}
                     </View>
                 </View>
             </List.Accordion>
