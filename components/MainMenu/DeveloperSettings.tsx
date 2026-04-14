@@ -68,6 +68,21 @@ export default function DeveloperSettings(){
             })
         })
     }
+
+    function migrateCaliberToArray(){
+        screenNameParamsAll.forEach(async table => {
+            const collection = db.select().from(schema[table]).all()
+            collection.forEach(async item => {
+                if("caliber" in item && item.caliber !== null){
+                    if(!Array.isArray(item.caliber)){
+                        const stringCaliber = item.caliber as string
+                        const arrayedCaliber = stringCaliber.split(",")
+                        await db.update(schema[table]).set({caliber: arrayedCaliber}).where((eq(schema[table].id, item.id)))
+                    }
+                }
+            })
+        })
+    }
     
     return(
         <List.Accordion 
@@ -174,6 +189,18 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onErrorContainer}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>nullFaultyImages()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Force Caliber Array</Text>
+                    <IconButton 
+                        icon="code-array" 
+                        iconColor={theme.colors.onErrorContainer}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>migrateCaliberToArray()}
                     />
                 </View>
 
