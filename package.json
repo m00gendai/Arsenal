@@ -92,7 +92,8 @@
     "@react-native-community/cli": "latest",
     "@types/pdfmake": "^0.2.12",
     "@types/react-native-datepicker": "^1.7.6",
-    "drizzle-kit": "^0.31.7"
+    "drizzle-kit": "^0.31.7",
+    "typescript": "~5.9.2"
   },
   "private": true
 }
