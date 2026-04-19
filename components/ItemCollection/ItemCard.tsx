@@ -138,11 +138,11 @@ export default function ItemCard({ item }:Props){
 
                             }}
                             titleStyle={{
-                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                                 color: checkDangerState(item) ? theme.colors.error : theme.colors.onSurfaceVariant
                             }}
                             subtitleStyle={{
-                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                                 color: theme.colors.onSurfaceVariant,
                             }}
                             title={determineCardTitle(currentCollection, item, language)}
@@ -214,7 +214,7 @@ export default function ItemCard({ item }:Props){
                                 flexDirection: "row"
                             }}
                         >
-                            {generalSettings.displayImagesInListViewGun ? 
+                            {generalSettings.displayImagesInListView ? 
                                 <Card.Cover 
                                     source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                                     style={{
@@ -324,11 +324,11 @@ export default function ItemCard({ item }:Props){
 
                             }}
                             titleStyle={{
-                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                                 color: checkDangerState(item) ? theme.colors.error : theme.colors.onSurfaceVariant
                             }}
                             subtitleStyle={{
-                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                                width: displaySettings[currentCollection] === "grid" ? "100%" : displaySettings[currentCollection] === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                                 color: theme.colors.onSurfaceVariant,
                             }}
                             title={determineCardTitle(currentCollection, item, language)}

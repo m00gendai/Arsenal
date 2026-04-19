@@ -28,15 +28,8 @@ export default function Settings_Display(){
                 <View style={{padding: defaultViewPadding, backgroundColor: theme.colors.tertiaryContainer, borderColor: theme.colors.primary}}>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListViewGun[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewGun} onValueChange={()=>handleSwitches("displayImagesInListViewGun")} />
-                        </View>
-                        
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
-                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListViewAmmo[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewAmmo} onValueChange={()=>handleSwitches("displayImagesInListViewAmmo")} />
+                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListView[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListView} onValueChange={()=>handleSwitches("displayImagesInListView")} />
                         </View>
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />

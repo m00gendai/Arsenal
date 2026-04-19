@@ -5,6 +5,7 @@ import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccess
 export type DisplayVariants = "grid" | "list" | "compactList"
 
 interface GeneralSettings{
+  displayImagesInListView: boolean
   displayImagesInListViewGun: boolean
   displayImagesInListViewAmmo: boolean
   displayImagesInListViewAccessory_Silencer: boolean
@@ -101,6 +102,7 @@ const initialState:InitialStoreState = {
     language: "de",
     theme: { name: "default", colors: colorThemes.default },
     generalSettings: {
+      displayImagesInListView: true,
       displayImagesInListViewGun: true,
       displayImagesInListViewAmmo: true,
       displayImagesInListViewAccessory_Silencer: true,

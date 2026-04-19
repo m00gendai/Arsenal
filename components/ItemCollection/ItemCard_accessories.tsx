@@ -78,11 +78,11 @@ export default function ItemCard_accessories({ item }:Props){
 
                 }}
                 titleStyle={{
-                    width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                    width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                     color: checkDate(item) ? theme.colors.error : theme.colors.onSurfaceVariant
                 }}
                 subtitleStyle={{
-                    width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListViewGun ? "60%" : "80%" : "80%",
+                    width: displaySettings.accessoryView === "grid" ? "100%" : displaySettings.accessoryView === "list" ? generalSettings.displayImagesInListView ? "60%" : "80%" : "80%",
                     color: theme.colors.onSurfaceVariant,
                 }}
                 title={determineCardTitle(itemType, item, language)}
@@ -151,7 +151,7 @@ export default function ItemCard_accessories({ item }:Props){
                     flexDirection: "row"
                 }}
             >
-                {generalSettings.displayImagesInListViewGun ? <Card.Cover 
+                {generalSettings.displayImagesInListView ? <Card.Cover 
                     source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
                     style={{
                         height: "75%",

@@ -41,6 +41,7 @@ interface GeneralSettingsLabels{
 interface DisplaySettingsLabels{
     displayImagesInListViewGun: SimpleTranslation
     displayImagesInListViewAmmo: SimpleTranslation
+    displayImagesInListView: SimpleTranslation
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
     titleBelowImage: SimpleTranslation
@@ -290,6 +291,13 @@ export const displaySettingsLabels: DisplaySettingsLabels = {
         fr: "Afficher les images dans la vue en liste munitions",
         it: "Visualizzare le immagini nella vista elenco munizioni",
         ch: "Mussar maletgs cun ina glista muniziun"  
+    },
+    displayImagesInListView: {
+        de: "Bilder in Listenansicht anzeigen", 
+        en: "Show images in list view",
+        fr: "Afficher les images dans la vue en liste",
+        it: "Visualizzare le immagini nella vista elenco",
+        ch: "Mussar las imagens en la vista da glista"  
     },
     emptyFields: {
         de: "Leere Felder in Einträgen ausblenden",
