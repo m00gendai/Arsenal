@@ -18,7 +18,7 @@ import { selectCollection } from "lib/textTemplates";
 export default function customShippingLabelDialog(){
 
     const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
-    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
 
     const [selectedScreen, setSelectedScreen] = useState<CollectionType>("gunCollection")
     const [selectedAttributes, setSelectedAttributes] = useState(new Set<string>());
@@ -42,9 +42,12 @@ export default function customShippingLabelDialog(){
             selectedScreen as CollectionType, 
             Array.from(selectedAttributes), 
             preferredUnits,
-        determineTabBarLabel(selectedScreen)[language])
-        setSelectedAttributes(new Set())
-        setCustomPDFPrintVisible(false)
+            determineTabBarLabel(selectedScreen)[language],
+            sortBy
+        ),
+            setSelectedAttributes(new Set())
+            setCustomPDFPrintVisible(false)
+
         }catch(e){
             console.error(`Print Ammo Collection Error: ${e}`)
         } 
