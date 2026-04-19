@@ -34,23 +34,23 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
 
         const tagText:string = tag !== null ? tag : text
 
-        if(tag === null && text === ""){
+        if(tagText === ""){
             return
         }
 
-        if(itemData.tags && itemData.tags.length !== 0){
-            if(currentItem !== null){
-                if(itemData.tags.includes(tagText)){
-                    return
-                }
-            }
+        const currentTags: string[] = itemData.tags ?? []
+
+        if (currentTags.includes(tagText)) return
+
+        try{
+            setItemData({...itemData, tags: [...currentTags, tagText]})
+        }catch(e){
+            console.warn(e)
         }
 
-        setItemData({...itemData, tags: [...itemData.tags, tagText]})
         await db.insert(determineTagSchema(currentCollection)).values({label: tagText}).onConflictDoNothing()
 
         setText("")
-
     }
 
     function deleteTag(tag:string){
