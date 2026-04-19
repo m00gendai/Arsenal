@@ -24,8 +24,8 @@ export default function Settings_Display(){
 
     return( 
         <View style={{backgroundColor: theme.colors.tertiaryContainer}}>
-            <List.Accordion left={props => <List.Icon {...props} icon="monitor-dashboard" />} title={preferenceTitles.displaySettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
-                <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+            <List.Accordion left={props => <List.Icon {...props} icon="monitor-dashboard" />} title={preferenceTitles.displaySettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onSecondaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                <View style={{padding: defaultViewPadding, backgroundColor: theme.colors.tertiaryContainer, borderColor: theme.colors.primary}}>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListViewGun[language]}</Text>
