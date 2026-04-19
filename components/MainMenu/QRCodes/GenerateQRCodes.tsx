@@ -346,6 +346,7 @@ export default function GenerateQRCodes({navigation}){
                                 <QRCode
                                     value="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                                     size={getQRCodeSizeForPreview()}
+                                    color={`${theme.colors.onBackground}`}
                                 />
                             </View> : null}
                             {textEnabled ? <View style={{padding: defaultViewPadding, flexDirection: 'column', flex: 2, flexShrink: 1}}>
