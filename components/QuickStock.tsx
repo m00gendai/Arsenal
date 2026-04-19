@@ -29,7 +29,7 @@ export default function QuickStock({navigation}){
         const currentValue:number = parseInt(ammo.currentStock) ? parseInt(ammo.currentStock) : 0
         const increase:number = Number(input)
         const total:number = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
-        await db.update(schema.ammoCollection).set({currentStock: `${total}`, lastTopUpAt: date.toLocaleDateString("de-CH", dateTimeOptions)}).where(eq(schema.ammoCollection.id, currentAmmo.id))
+        await db.update(schema.ammoCollection).set({currentStock: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema.ammoCollection.id, currentAmmo.id))
         navigation.goBack()
         displayError(false)
       }
