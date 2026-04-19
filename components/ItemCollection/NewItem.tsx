@@ -11,7 +11,7 @@ import NewTextArea from 'components/NewTextArea';
 import NewCheckboxArea from 'components/NewCheckboxArea';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import NewChipArea from 'components/NewChipArea';
-import * as FileSystem from 'expo-file-system/legacy';
+import { File, Directory, Paths } from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
@@ -160,42 +160,63 @@ export default function NewItem({navigation}){
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            quality: 0.8
+            quality: 0.8,
+            base64: false,
+            exif: false,
         })
 
         if(!result.canceled){
-            // Create a unique file name for the new image
-            const newImageUri = result.assets[0].uri
+
             const manipImage = await imageHandling(result, generalSettings.resizeImages)
-            const fileName = newImageUri.split('/').pop();
-            const newPath = `${FileSystem.documentDirectory}${fileName}`;
-            // Move the image to a permanent directory
+           
+            const file = new File(manipImage.uri)
+            const destination = new Directory(Paths.document)
+
             try {
-                await FileSystem.moveAsync({
-                    from: manipImage.uri,
-                    to: newPath,
-                });
-                
+                file.move(destination)
+            
+                const fileName = manipImage.uri.split('/').pop()
+                const permanentUri = `${Paths.document.uri}${fileName}`
+
                 const newImage = selectedImage;
                 if (newImage && newImage.length !== 0) {
                     const newImages = [...selectedImage]
-                    newImages.splice(indx, 1, fileName)
+                    newImages.splice(indx, 1, permanentUri)
                     setSelectedImage(newImages)
                     setItemData({ ...itemData, images: newImages })
                 } else {
-                    setSelectedImage([fileName]);
+                    setSelectedImage([permanentUri]);
                     if (itemData && itemData.images && itemData.images.length !== 0) {
-                        setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                        setItemData({ ...itemData, images: [...itemData.images, permanentUri] });
                     } else {
-                        setItemData({ ...itemData, images: [fileName] });
+                        setItemData({ ...itemData, images: [permanentUri] });
                     }
                 }
             } catch (error) {
                 console.error('Error saving image:', error);
-            } 
+            } finally{
+                try {
+                    const imageManipulatorCache = new Directory(`${Paths.cache.uri}ImageManipulator/`)
+                    const imagePickerCache = new Directory(`${Paths.cache.uri}ImagePicker/`)
+                    console.log(`Cache Size Image Manipulator pre clear: ${imageManipulatorCache.size}`)
+                    console.log(`Cache Size Image Picker pre clear: ${imagePickerCache.size}`)
+                    if(imageManipulatorCache.exists){
+                        imageManipulatorCache.delete()
+                        console.info("Cleared Image Manipulator Cache")
+                    } 
+                    if(imagePickerCache.exists){
+                        imagePickerCache.delete()
+                        console.info("Cleared Image Picker Cache")
+                    }
+                    console.log(`Cache Size Image Manipulator post clear: ${imageManipulatorCache.size}`)
+                    console.log(`Cache Size Image Picker pre post: ${imagePickerCache.size}`)
+                } catch (cacheError) {
+                    console.warn("Failed to clear image cache:", cacheError)
+                }
+            }
         }   
     }
-    
+
     const pickCameraAsync = async (indx:number) =>{
         const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
 
@@ -207,48 +228,60 @@ export default function NewItem({navigation}){
         }
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
-    allowsEditing: true,
-    quality: 0.8,
+            allowsEditing: true,
+            quality: 0.8,
             base64: false,
             exif: false,
-})
+        })
 
         if(!result.canceled){
-            // Create a unique file name for the new image
-            const newImageUri = result.assets[0].uri
+
             const manipImage = await imageHandling(result, generalSettings.resizeImages)
-            const fileName = newImageUri.split('/').pop();
-            const newPath = `${FileSystem.documentDirectory}${fileName}`;
-            // Move the image to a permanent directory
+            
+            const file = new File(manipImage.uri)
+            const destination = new Directory(Paths.document)
+   
             try {
-                await FileSystem.moveAsync({
-                    from: manipImage.uri,
-                    to: newPath,
-                });
+                file.move(destination)
+
+                const fileName = manipImage.uri.split('/').pop()
+                const permanentUri = `${Paths.document.uri}${fileName}`
 
                 const newImage = selectedImage;
                 if (newImage && newImage.length !== 0) {
                     const newImages = [...selectedImage]
-                    newImages.splice(indx, 1, fileName)
+                    newImages.splice(indx, 1, permanentUri)
                     setSelectedImage(newImages)
                     setItemData({ ...itemData, images: newImages })
                 } else {
-                    setSelectedImage([fileName]);
+                    setSelectedImage([permanentUri]);
                     if (itemData && itemData.images && itemData.images.length !== 0) {
-                        setItemData({ ...itemData, images: [...itemData.images, fileName] });
+                        setItemData({ ...itemData, images: [...itemData.images, permanentUri] });
                     } else {
-                        setItemData({ ...itemData, images: [fileName] });
+                        setItemData({ ...itemData, images: [permanentUri] });
                     }
                 }
             } catch (error) {
                 console.error('Error saving image:', error);
             } finally {
-                // Always clean up the original camera temp file
-
-                if (newImageUri && newImageUri !== newPath) {
-                    await FileSystem.deleteAsync(newImageUri, { idempotent: true })
+                try {
+                    const imageManipulatorCache = new Directory(`${Paths.cache.uri}ImageManipulator/`)
+                    const imagePickerCache = new Directory(`${Paths.cache.uri}ImagePicker/`)
+                    console.log(`Cache Size Image Manipulator pre clear: ${imageManipulatorCache.size}`)
+                    console.log(`Cache Size Image Picker pre clear: ${imagePickerCache.size}`)
+                    if(imageManipulatorCache.exists){
+                        imageManipulatorCache.delete()
+                        console.info("Cleared Image Manipulator Cache")
+                    } 
+                    if(imagePickerCache.exists){
+                        imagePickerCache.delete()
+                        console.info("Cleared Image Picker Cache")
+                    }
+                    console.log(`Cache Size Image Manipulator post clear: ${imageManipulatorCache.size}`)
+                    console.log(`Cache Size Image Picker pre post: ${imagePickerCache.size}`)
+                } catch (cacheError) {
+                    console.warn("Failed to clear image cache:", cacheError)
                 }
-                console.info("Released image Cache")
             }  
         }  
     } 
