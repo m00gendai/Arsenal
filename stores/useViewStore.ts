@@ -53,6 +53,9 @@ interface ViewStore {
     customPDFPrintVisible: boolean
     setCustomPDFPrintVisible: (status: boolean) => void
 
+    sellDialogVisible: boolean
+    setSellDialogVisible: (status: boolean) => void
+
   }
 
   export const useViewStore = create<ViewStore>((set) => ({
@@ -106,5 +109,8 @@ interface ViewStore {
     setCustomShippingLabelVisible: (status: boolean) => set({ customShippingLabelVisible: status }),
 
     customPDFPrintVisible: false,
-    setCustomPDFPrintVisible: (status: boolean) => set({ customPDFPrintVisible: status })
+    setCustomPDFPrintVisible: (status: boolean) => set({ customPDFPrintVisible: status }),
+
+    sellDialogVisible: false,
+    setSellDialogVisible: (status: boolean) => set({ sellDialogVisible: status })
   }))
