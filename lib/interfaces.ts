@@ -27,6 +27,12 @@ export interface GunTypeDetails{
   cleanIntervalDisplay: null | string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface GunTypeStatus{
