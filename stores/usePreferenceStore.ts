@@ -26,6 +26,7 @@ interface GeneralSettings{
   hintsDisplay: boolean
   scanBeep: boolean
   rememberLastScreen: boolean
+  displaySoldItems: boolean
 }
 
 interface DisplaySettings{
@@ -123,7 +124,8 @@ const initialState:InitialStoreState = {
       titleBelowImage: false,
       hintsDisplay: true,
       scanBeep: false,
-      rememberLastScreen: true
+      rememberLastScreen: true,
+      displaySoldItems: true
     },
     displaySettings: {
       gunCollection: "grid",
