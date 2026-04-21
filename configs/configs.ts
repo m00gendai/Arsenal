@@ -110,7 +110,8 @@ export const codeTriggerFields: string[] = ["qrCode"]
 
 export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
-export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "cleanInterval", "sold_isSold", "sold_buyerName", "sold_sellPrice", "sold_buyerPermit", "sold_sellDate_unix", "sold_remarks"]
+export const soldKeys = ["sold_isSold", "sold_buyerName", "sold_sellPrice", "sold_buyerPermit", "sold_sellDate_unix", "sold_remarks"]
+export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "cleanInterval", ...soldKeys]
 export const cleanIntervalOptions:string[] = ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"] 
 
 export const cardActionsGun: string[] = ["delete", "clone", "quickShot", "quickClean"]
