@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ModalContainer from "components/ModalContainer";
 import { collectionImportTables, defaultViewPadding, imageFileExtensions, screenNameParamsAll } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
@@ -9,6 +10,7 @@ import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
 import { useState } from "react";
 import { View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Divider, IconButton, List, Text } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { usePreferenceStore } from "stores/usePreferenceStore";
@@ -22,8 +24,15 @@ export default function DeveloperSettings(){
     const { setAlohaSnackbarText } = useTextStore()
 
     const [dropTable, setDropTable] = useState<string>("gunCollection")
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false)
+    const [dialogTitle, setDialogTitle] = useState<string>("")
+    const [dialogContent, setDialogContent] = useState<string>("")
 
     const dropTableOptions = collectionImportTables.map(table => {return {label: `${table}`, value: `${table}`}})
+
+    function closeDialog(){
+        setDialogVisible(false)
+    }
 
     async function purgePreferences(){
         console.info("Purge Preferences")
@@ -83,6 +92,15 @@ export default function DeveloperSettings(){
             })
         })
     }
+
+    async function listAsyncStorage(){
+        setDialogTitle("AsyncStorage")
+        const entries = await AsyncStorage.getItem(PREFERENCES)
+        console.log(entries)
+        const pretty = JSON.stringify(JSON.parse(entries), null, 2)
+        setDialogContent(pretty)
+        setDialogVisible(true)
+    }
     
     return(
         <List.Accordion 
@@ -108,7 +126,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Purge Preferences</Text>
                     <IconButton 
                         icon="cog-off-outline" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>purgePreferences()}
                     />
@@ -120,7 +138,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Purge Database</Text>
                     <IconButton 
                         icon="database-off-outline" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>purgeDatabase()}
                     />
@@ -138,7 +156,7 @@ export default function DeveloperSettings(){
                         /></View>
                     <IconButton 
                         icon="table-off" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>purgeTable()}
                     />
@@ -150,7 +168,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Inject gun JSON</Text>
                     <IconButton 
                         icon="pistol" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>DEV_importLegacyDatabaseAsJSON("gun")}
                     />
@@ -162,7 +180,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Inject ammo JSON</Text>
                     <IconButton 
                         icon="ammunition" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>DEV_importLegacyDatabaseAsJSON("ammo")}
                     />
@@ -174,7 +192,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Inject Bad Item Date</Text>
                     <IconButton 
                         icon="calendar-range" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>DEV_injectBadItem_date()}
                     />
@@ -186,7 +204,7 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Null Faulty Images</Text>
                     <IconButton 
                         icon="image-sync-outline" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>nullFaultyImages()}
                     />
@@ -198,13 +216,39 @@ export default function DeveloperSettings(){
                     <Text style={{flex: 7}}>Force Caliber Array</Text>
                     <IconButton 
                         icon="code-array" 
-                        iconColor={theme.colors.onErrorContainer}
+                        iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>migrateCaliberToArray()}
                     />
                 </View>
 
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>List AsyncStorage</Text>
+                    <IconButton 
+                        icon="code-block-braces" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>listAsyncStorage()}
+                    />
+                </View>
+
             </View>
+
+            <ModalContainer
+                visible={dialogVisible}
+                setVisible={setDialogVisible}
+                title={dialogTitle}
+                subtitle={""}
+                content={
+                    <View><ScrollView><Text>{dialogContent}</Text></ScrollView></View>
+                }
+                buttonACK={<IconButton icon="check" onPress={() => closeDialog()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={null}
+                buttonDEL={null}
+            />
+
         </List.Accordion>
     )
 }
