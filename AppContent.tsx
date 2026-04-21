@@ -103,7 +103,7 @@ export default function AppContent() {
     setHasConvertedLegacyDateFieldsToUnixTimeStamp
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet, setOnboardingVisible } = useViewStore()
-  const { currentCollection } = useItemStore()
+  const { currentCollection, setCurrentCollection } = useItemStore()
 
 const { bottom } = useSafeAreaInsets();
 
@@ -370,6 +370,11 @@ const { bottom } = useSafeAreaInsets();
           })
         }
         setCaliberDisplayNameList(shortCalibers)
+        if(isPreferences?.generalSettings?.rememberLastScreen){
+          if(isPreferences?.currentCollection){
+            setCurrentCollection(isPreferences?.currentCollection)
+          }
+        }
       }catch(e){
         alarm("General Preferences Error", e)
       }

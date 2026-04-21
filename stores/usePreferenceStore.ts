@@ -25,6 +25,7 @@ interface GeneralSettings{
   titleBelowImage: boolean
   hintsDisplay: boolean
   scanBeep: boolean
+  rememberLastScreen: boolean
 }
 
 interface DisplaySettings{
@@ -121,7 +122,8 @@ const initialState:InitialStoreState = {
       caliberDisplayName: false,
       titleBelowImage: false,
       hintsDisplay: true,
-      scanBeep: false
+      scanBeep: false,
+      rememberLastScreen: true
     },
     displaySettings: {
       gunCollection: "grid",
