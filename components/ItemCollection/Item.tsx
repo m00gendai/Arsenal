@@ -22,6 +22,7 @@ import Item_Accessories from './Item_accessories';
 import Item_details from './Item_details';
 import { printSingleItem } from 'functions/printers/printSingleItem';
 import { gunDeleteAlert } from 'lib/Text/text_alerts';
+import SellDialog from 'components/Dialogs/SellDialog';
 
 export default function Item({navigation}){
 
@@ -30,7 +31,7 @@ export default function Item({navigation}){
     const [activeTab, setActiveTab] = useState<"details" | "accessories">("details")
     const [rotation, setRotation] = useState<number>(0)
 
-    const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet } = useViewStore()
+    const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet, sellDialogVisible, setSellDialogVisible } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()
 
@@ -182,8 +183,9 @@ useEffect(() => {
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={handleGoBack} />
                 <Appbar.Content title={`${"manufacturer" in currentItem && currentItem.manufacturer ? currentItem.manufacturer : "title" in currentItem && currentItem.title ? currentItem.title : ""} ${"model" in currentItem ? currentItem.model : "designation" in currentItem && currentItem.designation ? currentItem.designation : ""}`} />
+                <Appbar.Action icon="currency-usd" onPress={()=> setSellDialogVisible(true)}/>
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
-                <Appbar.Action icon="pencil" onPress={()=>handleEdit()} />
+                <Appbar.Action icon="pencil" onPress={()=>handleEdit()} disabled={currentItem.sold_isSold ? true : false} />
             </Appbar>
         
             <View style={styles.container}>   
@@ -358,6 +360,9 @@ useEffect(() => {
                     <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
                 </Dialog.Actions>
             </Dialog>
+
+            <SellDialog />
+
         </View>
     )
 }
