@@ -40,7 +40,13 @@ export const gunCollection = sqliteTable('guns', {
     blooptoob: integer("blooptoob", {mode: "boolean"}).default(false),
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const gunTags = sqliteTable("gunTags", {
