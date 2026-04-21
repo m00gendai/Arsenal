@@ -14,6 +14,7 @@ import { PreferredUnits, SorterSettings } from 'stores/usePreferenceStore';
 import { determineDataTemplate, determineSortingFunction, determineSortingOptions } from 'functions/determinators';
 import { pdfFooter } from 'lib/Text/text_pdf';
 import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
+import { ne } from 'drizzle-orm';
 
 export async function printCustomCollection(
   language: string, 
@@ -26,7 +27,7 @@ export async function printCustomCollection(
   sortBy: SorterSettings
 ){
 
-  const customCollection = db.select().from(schema[collection]).orderBy(determineSortingFunction(collection, sortBy)).all()
+  const customCollection = db.select().from(schema[collection]).where(ne(schema[collection].sold_isSold, true )).orderBy(determineSortingFunction(collection, sortBy)).all()
   const customTemplate = determineDataTemplate(collection)
 
   const date:Date = new Date()

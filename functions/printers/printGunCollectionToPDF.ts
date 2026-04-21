@@ -14,6 +14,7 @@ import { tableStyle } from './printoutStyles';
 import { PreferredUnits } from 'stores/usePreferenceStore';
 import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'lib/Text/text_pdf';
 import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
+import { ne } from 'drizzle-orm';
 
 const art5Keys = checkBoxes.map(checkBox => checkBox.name)
 
@@ -107,7 +108,7 @@ function getTitle(printer:ListPrinter){
 
 export async function printGunCollection(language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[], printer: ListPrinter, preferredUnits: PreferredUnits){
 
-  const gunCollection = db.select().from(schema.gunCollection).all()
+  const gunCollection = db.select().from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true )).all()
   const guns = sortGuns(gunCollection, printer) 
 
   const date:Date = new Date()
