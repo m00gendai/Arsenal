@@ -1,7 +1,7 @@
 import { excludedKeysForDataTemplates } from "configs/configs";
 import { AccessoryType_Magazine } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
-import { dataTemplate_TranslationRemarks, dataTemplate_Translations, DataTemplateTranslation } from "./translations";
+import { dataTemplate_TranslationRemarks, dataTemplate_Translations, dataTemplate_TranslationSoldisSold, dataTemplate_TranslationSoldTranslations, DataTemplateTranslation } from "./translations";
 
 type TemplateKeys = keyof Omit<AccessoryType_Magazine, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
@@ -41,7 +41,13 @@ export const emptyMagazineObject:AccessoryType_Magazine= {
     material: null,
     currentlyMountedOn: null,
     customInventoryDesignation: null,
-    qrCode: null
+    qrCode: null,
+    sold_isSold: false,
+    sold_sellDate_unix: null,
+    sold_buyerName: null,
+    sold_sellPrice: null,
+    sold_buyerPermit: null,
+    sold_remarks: null,
 }
 
 export const accessoryDataTemplate_Magazine:TemplateItem[] = Object.keys(emptyMagazineObject)
@@ -55,4 +61,4 @@ export const magazineRemarks: DataTemplateTranslation = dataTemplate_Translation
 
 // This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
 // This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
-const _check: Record<TemplateKeys, any> = dataTemplate_Translations;
+const _check: Record<TemplateKeys, any> = {...dataTemplate_Translations, ...dataTemplate_TranslationSoldTranslations, ...dataTemplate_TranslationSoldisSold};

@@ -1,7 +1,7 @@
 import { excludedKeysForDataTemplates } from "configs/configs";
 import { AccessoryType_Optic } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
-import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks } from "./translations";
+import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks, dataTemplate_TranslationSoldTranslations, dataTemplate_TranslationSoldisSold } from "./translations";
 
 type TemplateKeys = keyof Omit<AccessoryType_Optic, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
@@ -44,7 +44,13 @@ export const emptyOpticObject:AccessoryType_Optic= {
     currentlyMountedOn: null,
     batteryLastChangedAt_unix: null,
     customInventoryDesignation: null,
-    qrCode: null
+    qrCode: null,
+    sold_isSold: false,
+    sold_sellDate_unix: null,
+    sold_buyerName: null,
+    sold_sellPrice: null,
+    sold_buyerPermit: null,
+    sold_remarks: null,
 }
 
 export const accessoryDataTemplate_Optic:TemplateItem[] = Object.keys(emptyOpticObject)
@@ -58,4 +64,4 @@ export const opticRemarks: DataTemplateTranslation = dataTemplate_TranslationRem
 
 // This is a compile time check if all the keys in the emptyObject are present in dataTemplate_Translations.
 // This is important because a runtime check is for naught; There must be a guarantee that all keys are present.
-const _check: Record<TemplateKeys, any> = dataTemplate_Translations;
+const _check: Record<TemplateKeys, any> = {...dataTemplate_Translations, ...dataTemplate_TranslationSoldTranslations, ...dataTemplate_TranslationSoldisSold};
