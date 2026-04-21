@@ -36,6 +36,7 @@ interface GeneralSettingsLabels{
     loginGuard: SimpleTranslation
     hintsDisplay: SimpleTranslation
     scanBeep: SimpleTranslation
+    rememberLastScreen: SimpleTranslation
 }
 
 interface DisplaySettingsLabels{
@@ -274,6 +275,13 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Jouer un son lors du scan d’un code QR",
         it: "Riprodurre un suono quando si scansiona un codice QR",
         ch: "Duvrar in tun cura che vegn scaneà in code QR"
+    },
+    rememberLastScreen: {
+        de: "App mit zuletzt angeschauter Sammlung starten",
+        en: "Start app with last viewed collection",
+        fr: "Démarrer l'app avec la dernière collection consultée",
+        it: "Avvia l'app con l'ultima collezione visualizzata",
+        ch: "Aviar l'app cun l'ultima collecziun visualisada"
     }
 }
 
