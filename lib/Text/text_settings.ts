@@ -46,6 +46,7 @@ interface DisplaySettingsLabels{
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
     titleBelowImage: SimpleTranslation
+    displaySoldItems: SimpleTranslation
 }
 
 export const preferenceTitles:PreferenceTitle = {
@@ -328,6 +329,13 @@ export const displaySettingsLabels: DisplaySettingsLabels = {
         it: "Mostrare il testo sotto l’immagine nella vista a griglia",
         ch: "Mussar il text sut l’imatge en la vista da griglia",
     },
+    displaySoldItems: {
+        de: "Verkaufte Sachen in Sammlung anzeigen",
+        en: "Display sold things in collection",
+        fr: "Afficher les objets vendus dans la collection",
+        it: "Mostra gli oggetti venduti nella collezione",
+        ch: "Mussar las chosas vendidas en la collecziun",
+    }
 }
 
 export const aboutText: SimpleTranslation = {
