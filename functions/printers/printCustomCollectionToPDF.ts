@@ -26,7 +26,6 @@ export async function printCustomCollection(
   sortBy: SorterSettings
 ){
 
-  console.log(sortBy)
   const customCollection = db.select().from(schema[collection]).orderBy(determineSortingFunction(collection, sortBy)).all()
   const customTemplate = determineDataTemplate(collection)
 
