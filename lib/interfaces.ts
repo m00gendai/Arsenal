@@ -67,6 +67,12 @@ export interface LegacyAmmoType{
   remarks: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AmmoType{
@@ -88,6 +94,12 @@ export interface AmmoType{
   remarks: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_Silencer{
@@ -122,6 +134,12 @@ export interface AccessoryType_Silencer{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_Optic{
@@ -160,6 +178,12 @@ export interface AccessoryType_Optic{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_Scope{
@@ -197,6 +221,12 @@ export interface AccessoryType_Scope{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_LightLaser{
@@ -227,6 +257,12 @@ export interface AccessoryType_LightLaser{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_Magazine{
@@ -262,6 +298,12 @@ export interface AccessoryType_Magazine{
   currentStock: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface AccessoryType_Misc{
@@ -284,6 +326,12 @@ export interface AccessoryType_Misc{
   serial: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface PartType_ConversionKit{
@@ -315,6 +363,12 @@ export interface PartType_ConversionKit{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface PartType_Barrel{
@@ -348,55 +402,73 @@ export interface PartType_Barrel{
   currentlyMountedOn: string
   customInventoryDesignation: null | string
   qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface LiteratureType_Book{
-    id: string
-    createdAt: number
-    lastModifiedAt: number
-    images: string[]
-    tags: string[]
-    language: string
-    title: string
-    subtitle: string
-    isbn: string
-    publishingDate: string
-    author: string
-    publisher: string
-    edition: string
-    series: string
-    volume: string
-    pages: string
-    format: string
-    acquisitionDate_unix: number | null
-    paidPrice: string
-    boughtFrom: string
-    marketValue: string
-    remarks: string
-    customInventoryDesignation: null | string
-    qrCode: null | string
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string[]
+  language: string
+  title: string
+  subtitle: string
+  isbn: string
+  publishingDate: string
+  author: string
+  publisher: string
+  edition: string
+  series: string
+  volume: string
+  pages: string
+  format: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  remarks: string
+  customInventoryDesignation: null | string
+  qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export interface ReloadingType_Die{
     id: string
     createdAt: number
     lastModifiedAt: number
-    images: string[]
-    tags: string[]
-    manufacturer: string
-    model: string
-    caliber: string[]
-    dieSeries: string
-    group: string
-    partNumber: string
-    shellHolder: string
-    acquisitionDate_unix: number | null
-    paidPrice: string
-    boughtFrom: string
-    marketValue: string
-    remarks: string
-    customInventoryDesignation: null | string
-    qrCode: null | string
+  images: string[]
+  tags: string[]
+  manufacturer: string
+  model: string
+  caliber: string[]
+  dieSeries: string
+  group: string
+  partNumber: string
+  shellHolder: string
+  acquisitionDate_unix: number | null
+  paidPrice: string
+  boughtFrom: string
+  marketValue: string
+  remarks: string
+  customInventoryDesignation: null | string
+  qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
 }
 
 export type ItemType =  | GunType 
