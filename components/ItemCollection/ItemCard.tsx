@@ -105,7 +105,7 @@ export default function ItemCard({ item }:Props){
         }
         return true
     }
-
+    const opacity = item.sold_isSold ? 0.2 : 1
     return(
         <View>
             <TouchableNativeFeedback 
@@ -119,12 +119,14 @@ export default function ItemCard({ item }:Props){
                         borderRadius: 0,
                         marginBottom: Number(`-${defaultViewPadding}`),
                         borderBottomWidth: 1,
-                        backgroundColor: theme.colors.background
+                        backgroundColor: theme.colors.background,
+                        opacity: opacity
 
                     } : {
                         width: setCardWith(),
                         backgroundColor: theme.colors.surfaceVariant,
-                        paddingBottom: displaySettings[currentCollection] === "list" ? 5 : 0
+                        paddingBottom: displaySettings[currentCollection] === "list" ? 5 : 0,
+                        opacity: opacity
                     }}
                     
                 >
@@ -166,7 +168,7 @@ export default function ItemCard({ item }:Props){
                                 : 
                                 null
                             }
-                            {numberBadgeCollections.includes(currentCollection) ? 
+                            {item.sold_isSold ? null : numberBadgeCollections.includes(currentCollection) ? 
                                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                                     <Badge
                                         style={{
@@ -230,7 +232,7 @@ export default function ItemCard({ item }:Props){
                                 : 
                                 null
                             }
-                            {numberBadgeCollections.includes(currentCollection) ? 
+                            {item.sold_isSold ? null : numberBadgeCollections.includes(currentCollection) ? 
                                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                                     <Badge
                                         style={{
@@ -280,7 +282,7 @@ export default function ItemCard({ item }:Props){
                                 flexDirection: "row"
                             }}
                         >
-                            {numberBadgeCollections.includes(currentCollection) ? 
+                            {item.sold_isSold ? null : numberBadgeCollections.includes(currentCollection) ? 
                                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0}}>
                                     <Badge
                                         style={{
