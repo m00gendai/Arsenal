@@ -23,6 +23,7 @@ import Item_details from './Item_details';
 import { printSingleItem } from 'functions/printers/printSingleItem';
 import { gunDeleteAlert } from 'lib/Text/text_alerts';
 import SellDialog from 'components/Dialogs/SellDialog';
+import SoldDetails from 'components/SoldDetails';
 
 export default function Item({navigation}){
 
@@ -183,7 +184,7 @@ useEffect(() => {
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={handleGoBack} />
                 <Appbar.Content title={`${"manufacturer" in currentItem && currentItem.manufacturer ? currentItem.manufacturer : "title" in currentItem && currentItem.title ? currentItem.title : ""} ${"model" in currentItem ? currentItem.model : "designation" in currentItem && currentItem.designation ? currentItem.designation : ""}`} />
-                <Appbar.Action icon="currency-usd" onPress={()=> setSellDialogVisible(true)}/>
+                <Appbar.Action icon="currency-usd" onPress={()=> setSellDialogVisible(true)} disabled={currentItem.sold_isSold ? true : false} />
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
                 <Appbar.Action icon="pencil" onPress={()=>handleEdit()} disabled={currentItem.sold_isSold ? true : false} />
             </Appbar>
@@ -277,7 +278,10 @@ useEffect(() => {
 
 {activeTab === "details" ? 
                     // DETAILS PAGE
-                    <Item_details />
+                    <>
+                        {currentItem.sold_isSold ? <SoldDetails /> : null}
+                        <Item_details />
+                    </>
 :
                     // ACCESSORIES PAGE        
                     <Item_Accessories currentItem={currentItem}/>
