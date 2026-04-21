@@ -10,7 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } fr
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { and } from 'drizzle-orm';
+import { and, eq, or } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
 import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
@@ -29,17 +29,23 @@ export default function ItemCollection({navigation}){
   const { mainMenuOpen, setHideBottomSheet } = useViewStore()
   const { setAccessoryMount, setPartMount } = useDatabaseStore()
 
-  const { data: itemData } = useLiveQuery(
-    db.select()
-    .from(determineSchema(currentCollection))
+const currentSchema = determineSchema(currentCollection);
+const soldColumn = 'sold_isSold' in currentSchema ? currentSchema.sold_isSold : undefined;
+
+const { data: itemData } = useLiveQuery(
+  db.select()
+    .from(currentSchema)
     .where(
       and(
-          determineSearchQueryFields(currentCollection, searchQuery)
+        determineSearchQueryFields(currentCollection, searchQuery),
+        !generalSettings.displaySoldItems && soldColumn
+          ? eq(soldColumn, false)
+          : undefined
       )
     )
     .orderBy(determineSortingFunction(currentCollection, sortBy)),
-    [searchQuery, sortBy, currentCollection]
-  )
+  [searchQuery, sortBy, currentCollection, generalSettings.displaySoldItems]
+)
 
   const { data: accessoryData } = useLiveQuery(
             db.select()
