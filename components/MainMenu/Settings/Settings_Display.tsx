@@ -47,10 +47,17 @@ export default function Settings_Display(){
                         </View>
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
+    
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{displaySettingsLabels.caliberDisplayName[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.caliberDisplayName} onValueChange={()=>handleSwitches("caliberDisplayName")} />
+                        </View>
+
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+ 
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{displaySettingsLabels.displaySoldItems[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displaySoldItems} onValueChange={()=>handleSwitches("displaySoldItems")} />
                         </View>
                         
                     </View>
