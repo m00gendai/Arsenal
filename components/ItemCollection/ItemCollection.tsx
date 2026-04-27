@@ -10,7 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } fr
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { db } from "db/client"
 import * as schema from "db/schema"
-import { and, eq, or } from 'drizzle-orm';
+import { and, eq, count, ne } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
 import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
@@ -21,12 +21,15 @@ import { useDatabaseStore } from 'stores/useDatabaseStore';
 import OnboardingDialog from 'components/Dialogs/Onboarding/OnboardingDialog';
 import Hints from 'components/Hints/Hints';
 import * as StoreReview from 'expo-store-review';
+import { alarm } from 'functions/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PREFERENCES } from 'configs/configs_DB';
 
 export default function ItemCollection({navigation}){
 
   const [searchQuery, setSearchQuery] = useState<string>("")
   const { currentCollection, setCurrentItem } = useItemStore()
-  const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn, theme, generalSettings } = usePreferenceStore()
+  const { displaySettings, setDisplaySettings, sortBy, setSortBy, language, filterOn, theme, generalSettings, hasSeenReviewRequest, setHasSeenReviewRequest } = usePreferenceStore()
   const { mainMenuOpen, setHideBottomSheet } = useViewStore()
   const { setAccessoryMount, setPartMount } = useDatabaseStore()
 
@@ -71,15 +74,43 @@ useEffect(() => {
 
 useEffect(()=>{
   async function requestReview(){
-    if (await StoreReview.hasAction()) {
-      console.log("has action")
-      await StoreReview.requestReview()
-    } else {
-      console.log("doesnt have action")
+    console.log(hasSeenReviewRequest)
+    if(!hasSeenReviewRequest){
+      if (await StoreReview.hasAction()) {
+        console.log("has action")
+        if(currentCollection === "gunCollection"){
+          const collectionSize = await db.select({ count: count() }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
+          const amount = collectionSize[0].count
+          console.log(amount)
+          if(amount >= 5){
+            try{
+              await StoreReview.requestReview()
+            }catch(e){
+              alarm("RequestReview:", e)
+            }
+            let isPreferences 
+            try{
+              const preferences:string = await AsyncStorage.getItem(PREFERENCES)
+              isPreferences = preferences ? JSON.parse(preferences) : null;
+            } catch(e){
+              throw new Error(`RequestReview: Get Preferences: ${e}`)
+            }
+            try{
+              const newPreferences = {...isPreferences, hasSeenReviewRequest: true}
+              await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
+              setHasSeenReviewRequest(true)
+            }catch(e){
+              throw new Error(`RequestReview: Set Preferences: ${e}`)
+            }
+          }
+        } else {
+          console.log("doesnt have action")
+        }
+      }
     }
   }
   requestReview()
-},[])
+},[currentCollection])
 
 
   const itemTags = useItemTags(currentCollection) as Tag[]
