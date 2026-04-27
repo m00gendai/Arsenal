@@ -114,7 +114,7 @@ export async function printGunCollection(language: string, shortCaliber: boolean
   const date:Date = new Date()
 
   const generatedDate:string = date.toLocaleDateString(dateLocales[language], pdfDateOptions)
-    
+ 
   const html = `
     <html>
       <body>
@@ -124,6 +124,9 @@ export async function printGunCollection(language: string, shortCaliber: boolean
               <tr>
                 <th colspan=${getHeaderFooterLength(printer)}>${getTitle(printer)[language]}</th>
               </tr>
+              ${printer === "gunCollectionArt5" || printer === "gunCollectionHybrid" ? `<tr>
+                <td class="legend" colspan=${getHeaderFooterLength(printer)}>${checkBoxes.map((box, index) => `${index+1}: ${box[language]}`).join(", ")}<td>
+              </tr>` : ""}
               <tr>
                 ${gunDataTemplate.map(data=>{return excludedKeys.includes(data.name) ? "" : `<th>${data[language]}</th>`}).join("")}${checkForCheckboxes(printer) ? checkBoxes.map((box, index) => `<th>${index+1}</th>`).join("") : ""}
               </tr>
