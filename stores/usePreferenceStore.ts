@@ -98,6 +98,7 @@ interface InitialStoreState {
   hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
   hasConvertedLegacyAmmoCaliberFieldToStringArray: boolean
   hasBeenOnboarded: boolean
+  hasSeenReviewRequest: boolean
 }
 
 const initialState:InitialStoreState = {
@@ -184,6 +185,7 @@ const initialState:InitialStoreState = {
     hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
     hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
     hasBeenOnboarded: false,
+    hasSeenReviewRequest: false
   }
 
 
@@ -202,6 +204,7 @@ interface StoreFunctions {
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => void
     resetPreferenceStore: () => void
     setHasBeenOnboarded: (status: boolean) => void
+    setHasSeenReviewRequest: (status: boolean) => void
   }
 
   
@@ -226,5 +229,6 @@ interface StoreFunctions {
     setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
     resetPreferenceStore: () => {set(initialState)},
-    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status}))
+    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status})),
+    setHasSeenReviewRequest: (status: boolean) => set((state) => ({hasSeenReviewRequest: status}))
 }))

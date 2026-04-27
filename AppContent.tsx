@@ -100,7 +100,8 @@ export default function AppContent() {
     setHasCheckedForLegacyAmmoData,
     setHasCheckedForLegacyGunData,
     setHasConvertedLegacyAmmoCaliberFieldToStringArray,
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp,
+    setHasSeenReviewRequest
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet, setOnboardingVisible } = useViewStore()
   const { currentCollection, setCurrentCollection } = useItemStore()
@@ -375,6 +376,7 @@ const { bottom } = useSafeAreaInsets();
             setCurrentCollection(isPreferences?.currentCollection)
           }
         }
+        setHasSeenReviewRequest(isPreferences?.hasSeenReviewRequest ?? false)
       }catch(e){
         alarm("General Preferences Error", e)
       }
