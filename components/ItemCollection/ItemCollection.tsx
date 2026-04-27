@@ -20,6 +20,7 @@ import CardOptionsMenu_accessories from 'components/CardOptionsMenu_accessories'
 import { useDatabaseStore } from 'stores/useDatabaseStore';
 import OnboardingDialog from 'components/Dialogs/Onboarding/OnboardingDialog';
 import Hints from 'components/Hints/Hints';
+import * as StoreReview from 'expo-store-review';
 
 export default function ItemCollection({navigation}){
 
@@ -67,6 +68,19 @@ useEffect(() => {
     setPartMount(data);
   }
 }, [accessoryData, partData]);
+
+useEffect(()=>{
+  async function requestReview(){
+    if (await StoreReview.hasAction()) {
+      console.log("has action")
+      await StoreReview.requestReview()
+    } else {
+      console.log("doesnt have action")
+    }
+  }
+  requestReview()
+},[])
+
 
   const itemTags = useItemTags(currentCollection) as Tag[]
 
