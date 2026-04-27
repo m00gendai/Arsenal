@@ -1,5 +1,5 @@
 import ModalContainer from "components/ModalContainer";
-import { defaultViewPadding, screenNameParamsAll } from "configs/configs";
+import { defaultViewPadding, pdfExcludedKeys, screenNameParamsAll } from "configs/configs";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { IconButton, Text, Portal, Checkbox } from "react-native-paper";
@@ -92,7 +92,7 @@ export default function customShippingLabelDialog(){
                                     <View style={{width: "100%", paddingTop: defaultViewPadding, paddingBottom: defaultViewPadding}}>
                                         <ScrollView style={{marginBottom: defaultViewPadding*5}}>
                                             {Object.entries(determineEmptyObject(selectedScreen)).map((data, index) =>{
-                                                if(dataTemplate_Translations[data[0]]){
+                                                if(!pdfExcludedKeys.includes(data[0]) && dataTemplate_Translations[data[0]]){
                                                     return (
                                                         <View key={`${data[0]}_${index}`} style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
                                                             <Checkbox.Android
