@@ -4,7 +4,7 @@ import { collectionImportTables, defaultViewPadding, imageFileExtensions, screen
 import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
 import * as schema from "db/schema"
-import { eq } from "drizzle-orm/sql";
+import { eq, ne } from "drizzle-orm/sql";
 import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
 import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
@@ -100,6 +100,15 @@ export default function DeveloperSettings(){
         const pretty = JSON.stringify(JSON.parse(entries), null, 2)
         setDialogContent(pretty)
         setDialogVisible(true)
+    }
+
+    function reset_isSold(){
+        screenNameParamsAll.forEach(async table => {
+            const collection = db.select().from(schema[table]).where(ne(schema[table].sold_isSold, false)).all()
+            collection.forEach(async item => {
+                await db.update(schema[table]).set({sold_isSold: false}).where((eq(schema[table].id, item.id)))
+            })
+        })
     }
     
     return(
@@ -231,6 +240,18 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>listAsyncStorage()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Reset sold_isSold</Text>
+                    <IconButton 
+                        icon="currency-usd" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>reset_isSold()}
                     />
                 </View>
 
