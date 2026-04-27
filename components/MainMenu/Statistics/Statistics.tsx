@@ -3,7 +3,7 @@ import { dateLocales, defaultViewPadding } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { View } from "react-native";
 import { db } from "db/client";
-import { count } from "drizzle-orm";
+import { count, ne } from "drizzle-orm";
 import * as schema from "db/schema"
 import { useEffect, useState } from "react";
 import { intlNumberFormatOptions } from "functions/utils";
@@ -54,7 +54,7 @@ export default function Statistics(){
     })
 
     async function getCollectionSize(){
-        const collectionSize = await db.select({ count: count() }).from(schema.gunCollection)
+        const collectionSize = await db.select({ count: count() }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
         setStatistics(prev => ({...prev, gunCount: collectionSize[0].count}))
     }
 
@@ -63,7 +63,7 @@ export default function Statistics(){
             value: schema.gunCollection.paidPrice, 
             manufacturer: schema.gunCollection.manufacturer,
             model: schema.gunCollection.model
-        }).from(schema.gunCollection)
+        }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
         
         const collectionValuesTotal = collectionValues.reduce((acc, curr) => {
             let val
@@ -91,7 +91,7 @@ export default function Statistics(){
             value: schema.gunCollection.marketValue, 
             manufacturer: schema.gunCollection.manufacturer,
             model: schema.gunCollection.model
-        }).from(schema.gunCollection)
+        }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
         
         const collectionMarketValueTotal = collectionMarketValue.reduce((acc, curr) => {
             let val
@@ -114,7 +114,7 @@ export default function Statistics(){
     }
 
     async function getAmmoSize(){
-        const ammoSize = await db.select({ count: count() }).from(schema.ammoCollection)
+        const ammoSize = await db.select({ count: count() }).from(schema.ammoCollection).where(ne(schema.ammoCollection.sold_isSold, true))
         setStatistics(prev => ({...prev, ammoCount: ammoSize[0].count}))
     }
 
@@ -123,7 +123,7 @@ export default function Statistics(){
             value: schema.ammoCollection.currentStock, 
             manufacturer: schema.ammoCollection.manufacturer,
             model: schema.ammoCollection.designation
-        }).from(schema.ammoCollection)
+        }).from(schema.ammoCollection).where(ne(schema.ammoCollection.sold_isSold, true))
                 
         const roundsTotal = rounds.reduce((acc, curr) => {
             let val
@@ -146,7 +146,7 @@ export default function Statistics(){
     }
 
     async function getUniqueCalibers(){
-        const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection) as {value: string}[]
+        const ammoCalibers = await db.select({value: schema.ammoCollection.caliber}).from(schema.ammoCollection).where(ne(schema.ammoCollection.sold_isSold, true)) as {value: string}[]
 
         const normalizedArray:string[] = ammoCalibers.map(caliber => caliber.value)
 
