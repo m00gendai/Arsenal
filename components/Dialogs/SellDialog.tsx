@@ -19,12 +19,12 @@ export default function customShippingLabelDialog(){
     const { currentCollection, currentItem } = useItemStore()
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
 
-    const [buyerName, setBuyerName] = useState<string>("")
-    const [initialSellDate, setInitialSellDate] = useState<number>(null)
-    const [sellDate, setSellDate] = useState<number>(null)
-    const [sellPrice, setSellPrice] = useState<string>(null)
-    const [buyerPermit, setBuyerPermit] = useState<string>("")
-    const [soldRemarks, setSoldRemarks] = useState<string>("")
+    const [buyerName, setBuyerName] = useState<string>(currentItem.sold_buyerName ?? null)
+    const [initialSellDate, setInitialSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
+    const [sellDate, setSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
+    const [sellPrice, setSellPrice] = useState<string>(currentItem.sold_sellPrice ?? null)
+    const [buyerPermit, setBuyerPermit] = useState<string>(currentItem.sold_buyerPermit ?? null)
+    const [soldRemarks, setSoldRemarks] = useState<string>(currentItem.sold_remarks ?? null)
     
     const [showDateTime, setShowDateTime] = useState<boolean>(false)
 
