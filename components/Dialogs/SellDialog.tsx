@@ -12,11 +12,12 @@ import { useItemStore } from "stores/useItemStore";
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
+import { dataTemplate_TranslationSoldTranslations } from "lib/DataTemplates/translations";
 
 export default function customShippingLabelDialog(){
 
     const { sellDialogVisible, setSellDialogVisible } = useViewStore()
-    const { currentCollection, currentItem } = useItemStore()
+    const { currentCollection, currentItem, setCurrentItem } = useItemStore()
     const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
 
     const [buyerName, setBuyerName] = useState<string>(currentItem.sold_buyerName ?? null)
@@ -64,6 +65,7 @@ export default function customShippingLabelDialog(){
         }catch(e){
             console.error(e)
         }
+        setCurrentItem(item)
         setSellDialogVisible(false)
     }
 
@@ -79,8 +81,8 @@ export default function customShippingLabelDialog(){
     return (
         <Portal>
             <ModalContainer
-                title={"Sell Item"}
-                subtitle={modalTexts.customPDFPrinter.text[language]}
+                title={modalTexts.sellItem.title[language]}
+                subtitle={modalTexts.sellItem.text[language]}
                 visible={sellDialogVisible}
                 setVisible={setSellDialogVisible}
                 content={
@@ -91,14 +93,14 @@ export default function customShippingLabelDialog(){
                         <View style={{width: "100%", paddingTop: defaultViewPadding, paddingBottom: defaultViewPadding}}>
                             <ScrollView style={{marginBottom: defaultViewPadding*5}}>
                                 <TextInput
-                                    label="Buyer"
+                                    label={dataTemplate_TranslationSoldTranslations.sold_buyerName[language]}
                                     value={buyerName}
                                     onChangeText={text => setBuyerName(text)}
                                 />
                                 <View style={{flex: 1}}>
                                     <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
                                         <TextInput
-                                            label="Sell Date"
+                                            label={dataTemplate_TranslationSoldTranslations.sold_sellDate_unix[language]}
                                             editable={false}
                                             value={sellDate === null ? "" : new Date(sellDate).toLocaleDateString("de-CH", dateTimeOptions)}
                                             onPress={()=>{Platform.OS === "ios" ? handleInputPress() : null}}
@@ -106,19 +108,19 @@ export default function customShippingLabelDialog(){
                                     </Pressable>
                                 </View>
                                 <TextInput
-                                    label="Sell Price"
+                                    label={dataTemplate_TranslationSoldTranslations.sold_sellPrice[language]}
                                     value={sellPrice ? sellPrice.toString() : ""}
                                     inputMode={"decimal"}
                                     onChangeText={text => setSellPrice(text)}
                                 />
                                  <TextInput
-                                    label="Buyer Permit"
+                                    label={dataTemplate_TranslationSoldTranslations.sold_buyerPermit[language]}
                                     value={buyerPermit}
                                     onChangeText={text => setBuyerPermit(text)}
                                 />
                                 <Pressable style={{flex: 1, height: 200}}>
                                             <TextInput
-                                                label={`Remarks`} 
+                                                label={dataTemplate_TranslationSoldTranslations.sold_remarks[language]}
                                                 style={{
                                                     height: 200
                                                 }}
