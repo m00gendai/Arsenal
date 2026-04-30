@@ -1,7 +1,7 @@
 import ModalContainer from "components/ModalContainer"
 import { defaultViewPadding } from "configs/configs"
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
-import { eq, ne, asc, sql } from 'drizzle-orm';
+import { eq, ne, asc, sql, and} from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
@@ -63,6 +63,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     const { data: gunData } = useLiveQuery(
         db.select()
         .from(schema.gunCollection)
+        .where(ne(schema.gunCollection.sold_isSold, true))
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.gunCollection.manufacturer}, ""), ${schema.gunCollection.model})`)))
     )
 
@@ -70,7 +71,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_Silencer)
         .where(
-            ne(schema.accessoryCollection_Silencer.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_Silencer.sold_isSold, true),
+                ne(schema.accessoryCollection_Silencer.id, itemData.id)
+            ),
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Silencer.manufacturer}, ""), ${schema.accessoryCollection_Silencer.model})`)))
     )
@@ -79,7 +83,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_Optic)
         .where(
-            ne(schema.accessoryCollection_Optic.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_Optic.sold_isSold, true),
+                ne(schema.accessoryCollection_Optic.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Optic.manufacturer}, ""), ${schema.accessoryCollection_Optic.model})`)))
     )
@@ -88,7 +95,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_Scope)
         .where(
-            ne(schema.accessoryCollection_Scope.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_Scope.sold_isSold, true),
+                ne(schema.accessoryCollection_Scope.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Scope.manufacturer}, ""), ${schema.accessoryCollection_Scope.model})`)))
     )
@@ -97,7 +107,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_LightLaser)
         .where(
-            ne(schema.accessoryCollection_LightLaser.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_LightLaser.sold_isSold, true),
+                ne(schema.accessoryCollection_LightLaser.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_LightLaser.manufacturer}, ""), ${schema.accessoryCollection_LightLaser.model})`)))
     )
@@ -106,7 +119,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_Magazine)
         .where(
-            ne(schema.accessoryCollection_Magazine.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_Magazine.sold_isSold, true),
+                ne(schema.accessoryCollection_Magazine.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Magazine.manufacturer}, ""), ${schema.accessoryCollection_Magazine.model})`)))
     )
@@ -115,7 +131,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.accessoryCollection_Misc)
         .where(
-            ne(schema.accessoryCollection_Misc.id, itemData.id)
+            and(
+                ne(schema.accessoryCollection_Misc.sold_isSold, true),
+                ne(schema.accessoryCollection_Misc.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.accessoryCollection_Misc.manufacturer}, ""), ${schema.accessoryCollection_Misc.model})`)))
     )
@@ -125,7 +144,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.partCollection_ConversionKit)
         .where(
-            ne(schema.partCollection_ConversionKit.id, itemData.id)
+            and(
+                ne(schema.partCollection_ConversionKit.sold_isSold, true),
+                ne(schema.partCollection_ConversionKit.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_ConversionKit.manufacturer}, ""), ${schema.partCollection_ConversionKit.model})`)))
     )
@@ -134,7 +156,10 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         db.select()
         .from(schema.partCollection_Barrel)
         .where(
-            ne(schema.partCollection_Barrel.id, itemData.id)
+            and(
+                ne(schema.partCollection_Barrel.sold_isSold, true),
+                ne(schema.partCollection_Barrel.id, itemData.id)
+            )
         )
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_Barrel.manufacturer}, ""), ${schema.partCollection_Barrel.model})`)))
     )
