@@ -10,6 +10,29 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+    "title": "V4.3.0",
+    "de": {
+      "text": `Behoben:\n- Artikel-5-PDFs ohne Legende\n- Kleinere Fehlerbehebungen\n\nNeu:\n- Verlauf für jeden Eintrag\n- Markieren von Eintrag als "verkauft"\n- PDFs sortiert wie in App\n- App merkt sich zuletzt angesehene Sammlung beim Schliessen\n- Kleinere Verbesserungen und neue Kaliber\n- Aufforderung zur Bewertung :)`,
+      "ios": null,
+      "android": null
+    },
+    "en": {
+      "text": `Fixed:\n- Article 5 PDFs without legend\n- Minor bug fixes\n\nNew:\n- History for every entry\n- Mark entries as "sold"\n- PDFs sorted like in the app\n- App remembers the last viewed collection when closing\n- Minor improvements and new calibers\n- Rating prompt :)`,
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": `Corrigé :\n- PDFs Article 5 sans légende\n- Corrections mineures\n\nNouveautés :\n- Historique pour chaque entrée\n- Marquer une entrée comme "vendue"\n- PDFs triés comme dans l’application\n- L’application mémorise la dernière collection consultée à la fermeture\n- Améliorations mineures et nouveaux calibres\n- Demande d’évaluation :)`,
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": `Corretto:\n- PDF Articolo 5 senza legenda\n- Correzioni minori\n\nNovità:\n- Cronologia per ogni voce\n- Contrassegnare una voce come "venduta"\n- PDF ordinati come nell’app\n- L’app ricorda l’ultima collezione visualizzata alla chiusura\n- Miglioramenti minori e nuovi calibri\n- Richiesta di valutazione :)`,
+      "ios": null,
+      "android": null
+    },
+  },
+  {
     "title": "V4.2.0",
     "de": {
       "text": `Behoben:\n- Datenbankexport hat Bilder ignoriert\n- Autocomplete wurde durch Tastatur verdeckt\n- Cache Overflow mit Kamerafunktion\n- Schlagworte bei Literatur nicht gespeichert\n\nNeu:\n- PDF Exporte mit selbst wählbaren Attributen für alle Sammlungen\n- Neue Sammlung: Wiederladen - Matrizen`,
@@ -125,7 +148,7 @@ export const versionHistory: Version[] = [
     }
   },
   {
-    "title": "V2.1.0",
+    "title": "V3.0.0",
     "de": {
       "text": "Neu:\n- Neue Sammlungskategorie: Zubehör\n- Neue Sammlungskategorie: Waffenbestandteile\n- Zubehör und Bestandteile lassen sich untereinander oder zu einer Waffe zuweisen\n- Kompakte Listenansicht\n\nBehoben:\n- Speichern nur möglich, nachdem ein anderes Eingabefeld ausgewählt wurde\n- Zahlenwerte mit Kommas führten zu kaputten Statistiken\n- Suchfeld in Munitionssamllung nicht sichtbar",
       "ios": null,

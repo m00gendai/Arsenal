@@ -89,6 +89,7 @@ export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const requiredFieldsPart_Barrel:string[] = ["model"]
 export const requiredFieldsLiterature_Book:string[] = ["title"]
 export const requiredFieldsReloading_Die:string[] = ["model"]
+export const requiredFieldsSellDialog:string[] = ["sold_buyerName"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
@@ -105,12 +106,14 @@ export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "las
 export const colorPickerTriggerFields: string[] = ["mainColor", "reticleColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanIntervalDisplay"]
+export const ignoreIntervalFieldsForLogger: string[] = ["cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const codeTriggerFields: string[] = ["qrCode"]
 
 export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
-export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "cleanInterval"]
+export const soldKeys = ["sold_isSold", "sold_buyerName", "sold_sellPrice", "sold_buyerPermit", "sold_sellDate_unix", "sold_remarks"]
+export const excludedKeysForDataTemplates: string[] = ["id", "createdAt", "lastModifiedAt", "images", "tags", "remarks", "cleanInterval_CustomTime", "cleanInterval_ShotCount", "cleanInterval", ...soldKeys]
 export const cleanIntervalOptions:string[] = ["none", "day_1", "day_7", "day_14", "month_1", "month_3", "month_6", "month_9", "year_1", "year_5", "year_10"] 
 
 export const cardActionsGun: string[] = ["delete", "clone", "quickShot", "quickClean"]
@@ -135,7 +138,7 @@ export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
-export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount"]
+export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "logger"]
 
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
 export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]

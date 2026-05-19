@@ -40,7 +40,13 @@ export const gunCollection = sqliteTable('guns', {
     blooptoob: integer("blooptoob", {mode: "boolean"}).default(false),
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const gunTags = sqliteTable("gunTags", {
@@ -70,7 +76,13 @@ export const legacyAmmoCollection = sqliteTable("ammo", {
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const ammoCollection = sqliteTable("ammo", {
@@ -93,7 +105,13 @@ export const ammoCollection = sqliteTable("ammo", {
     criticalStock: text("criticalStock"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const ammoTags = sqliteTable("ammoTags", {
@@ -176,7 +194,13 @@ export const partCollection_ConversionKit = sqliteTable("parts_conversionKit", {
     mainColor: text("mainColor"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const part_ConversionKitTags = sqliteTable("parts_conversionKitTags", {
@@ -217,7 +241,13 @@ export const partCollection_Barrel = sqliteTable("parts_barrel", {
     mainColor: text("mainColor"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const part_BarrelTags = sqliteTable("parts_barrelTags", {
@@ -259,7 +289,13 @@ export const accessoryCollection_Silencer = sqliteTable("accessories_silencer", 
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_SilencerTags = sqliteTable("accessories_silencerTags", {
@@ -305,7 +341,13 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_OpticTags = sqliteTable("accessories_opticTags", {
@@ -350,7 +392,13 @@ export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_ScopeTags = sqliteTable("accessories_scopeTags", {
@@ -388,7 +436,13 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_LightLaserTags = sqliteTable("accessories_lightLaserTags", {
@@ -431,7 +485,13 @@ export const accessoryCollection_Magazine = sqliteTable("accessories_magazine", 
     remarks: text("remarks"),
     currentlyMountedOn: text("currentlyMountedOn"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_MagazineTags = sqliteTable("accessories_magazineTags", {
@@ -461,7 +521,13 @@ export const accessoryCollection_Misc = sqliteTable("accessories_misc", {
     currentlyMountedOn: text("currentlyMountedOn"),
     serial: text("serial"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const accessory_MiscTags = sqliteTable("accessories_miscTags", {
@@ -496,7 +562,13 @@ export const literatureCollection_Book = sqliteTable("literature_book", {
     marketValue: text("marketValue"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const literature_BookTags = sqliteTable("literature_bookTags", {
@@ -526,7 +598,13 @@ export const reloadingCollection_Die = sqliteTable("reloading_die", {
     marketValue: text("marketValue"),
     remarks: text("remarks"),
     customInventoryDesignation: text("customInventoryDesignation"),
-    qrCode: text("qrCode")
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
 })
 
 export const reloading_DieTags = sqliteTable("reloading_dieTags", {
@@ -619,4 +697,16 @@ export const customShippingLabels = sqliteTable("customShippingLabels", {
     columns: real("columns"),
     rows: real("rows"),
     radius: real("radius")
+})
+
+export const logger = sqliteTable("logger", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    collection: text("collection"),
+    changedField: text("changedField"),
+    value_old: text("value_old"),
+    value_new: text("value_new"),
+    snapshot: text("snapshot") // WITH change
 })

@@ -5,6 +5,7 @@ import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccess
 export type DisplayVariants = "grid" | "list" | "compactList"
 
 interface GeneralSettings{
+  displayImagesInListView: boolean
   displayImagesInListViewGun: boolean
   displayImagesInListViewAmmo: boolean
   displayImagesInListViewAccessory_Silencer: boolean
@@ -24,6 +25,8 @@ interface GeneralSettings{
   titleBelowImage: boolean
   hintsDisplay: boolean
   scanBeep: boolean
+  rememberLastScreen: boolean
+  displaySoldItems: boolean
 }
 
 interface DisplaySettings{
@@ -95,12 +98,14 @@ interface InitialStoreState {
   hasConvertedLegacyDateFieldsToUnixTimeStamp: boolean
   hasConvertedLegacyAmmoCaliberFieldToStringArray: boolean
   hasBeenOnboarded: boolean
+  hasSeenReviewRequest: boolean
 }
 
 const initialState:InitialStoreState = {
     language: "de",
     theme: { name: "default", colors: colorThemes.default },
     generalSettings: {
+      displayImagesInListView: true,
       displayImagesInListViewGun: true,
       displayImagesInListViewAmmo: true,
       displayImagesInListViewAccessory_Silencer: true,
@@ -119,7 +124,9 @@ const initialState:InitialStoreState = {
       caliberDisplayName: false,
       titleBelowImage: false,
       hintsDisplay: true,
-      scanBeep: false
+      scanBeep: false,
+      rememberLastScreen: true,
+      displaySoldItems: true
     },
     displaySettings: {
       gunCollection: "grid",
@@ -178,6 +185,7 @@ const initialState:InitialStoreState = {
     hasConvertedLegacyDateFieldsToUnixTimeStamp: false,
     hasConvertedLegacyAmmoCaliberFieldToStringArray: false,
     hasBeenOnboarded: false,
+    hasSeenReviewRequest: false
   }
 
 
@@ -196,6 +204,7 @@ interface StoreFunctions {
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => void
     resetPreferenceStore: () => void
     setHasBeenOnboarded: (status: boolean) => void
+    setHasSeenReviewRequest: (status: boolean) => void
   }
 
   
@@ -220,5 +229,6 @@ interface StoreFunctions {
     setHasConvertedLegacyDateFieldsToUnixTimeStamp: (status: boolean) => set((state) => ({hasConvertedLegacyDateFieldsToUnixTimeStamp: status})),
     setHasConvertedLegacyAmmoCaliberFieldToStringArray: (status: boolean) => set((state) => ({hasConvertedLegacyAmmoCaliberFieldToStringArray: status})),
     resetPreferenceStore: () => {set(initialState)},
-    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status}))
+    setHasBeenOnboarded: (status: boolean) => set((state) => ({hasBeenOnboarded: status})),
+    setHasSeenReviewRequest: (status: boolean) => set((state) => ({hasSeenReviewRequest: status}))
 }))

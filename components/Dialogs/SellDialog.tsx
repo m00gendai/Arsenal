@@ -1,0 +1,173 @@
+import ModalContainer from "components/ModalContainer";
+import { dateTimeOptions, defaultViewPadding } from "configs/configs";
+import { Keyboard, Platform, Pressable, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { IconButton, Portal, TextInput } from "react-native-paper";
+import { usePreferenceStore } from "stores/usePreferenceStore";
+import { useViewStore } from "stores/useViewStore";
+import { useState } from "react";
+import { modalTexts } from "lib/Text/text_modals";
+import DateTimePicker from "react-native-ui-datepicker";
+import { useItemStore } from "stores/useItemStore";
+import { db } from "db/client"
+import * as schema from "db/schema"
+import { eq } from 'drizzle-orm';
+import { dataTemplate_TranslationSoldTranslations } from "lib/DataTemplates/translations";
+
+export default function customShippingLabelDialog(){
+
+    const { sellDialogVisible, setSellDialogVisible } = useViewStore()
+    const { currentCollection, currentItem, setCurrentItem } = useItemStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
+
+    const [buyerName, setBuyerName] = useState<string>(currentItem.sold_buyerName ?? null)
+    const [initialSellDate, setInitialSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
+    const [sellDate, setSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
+    const [sellPrice, setSellPrice] = useState<string>(currentItem.sold_sellPrice && currentItem.sold_sellPrice !== "sold_sellprice" ? currentItem.sold_sellPrice : null)
+    const [buyerPermit, setBuyerPermit] = useState<string>(currentItem.sold_buyerPermit ?? null)
+    const [soldRemarks, setSoldRemarks] = useState<string>(currentItem.sold_remarks ?? null)
+    
+    const [showDateTime, setShowDateTime] = useState<boolean>(false)
+
+    function updateDate(input){
+        const inputDate = input as number
+        setInitialSellDate(new Date(inputDate).getTime())
+    }
+
+    function confirmDate(){
+        setSellDate(initialSellDate)
+        setShowDateTime(false)
+    }
+
+    function cancelDate(){
+        setInitialSellDate(sellDate)
+        setShowDateTime(false)
+    }
+
+    function deleteDate(){
+        setSellDate(null)
+        setInitialSellDate(null)
+        setShowDateTime(false)
+    }
+
+    async function handleConfirm(){
+        const item = {
+            ...currentItem,
+            sold_isSold: true,
+            sold_sellDate_unix: sellDate,
+            sold_buyerName: buyerName,
+            sold_sellPrice: sellPrice,
+            sold_buyerPermit: buyerPermit,
+            sold_remarks: soldRemarks,
+        }
+        try{
+            await db.update(schema[currentCollection]).set(item).where((eq(schema[currentCollection].id, item.id)))
+        }catch(e){
+            console.error(e)
+        }
+        setCurrentItem(item)
+        setSellDialogVisible(false)
+    }
+
+    function handleCancel(){
+        setSellDialogVisible(false)
+    }
+
+    function handleInputPress(){
+            Keyboard.dismiss()
+            setShowDateTime(true)
+        }
+
+    return (
+        <Portal>
+            <ModalContainer
+                title={modalTexts.sellItem.title[language]}
+                subtitle={modalTexts.sellItem.text[language]}
+                visible={sellDialogVisible}
+                setVisible={setSellDialogVisible}
+                content={
+                    <View style={{ padding: defaultViewPadding, display: "flex", height: "100%", flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-start", alignItems: "flex-start", alignContent: "flex-start" }}>
+                        <View style={{width: "100%"}}>
+                            
+                        </View>
+                        <View style={{width: "100%", paddingTop: defaultViewPadding, paddingBottom: defaultViewPadding}}>
+                            <ScrollView style={{marginBottom: defaultViewPadding*5}}>
+                                <TextInput
+                                    label={`${dataTemplate_TranslationSoldTranslations.sold_buyerName[language]}*`}
+                                    value={buyerName}
+                                    onChangeText={text => setBuyerName(text)}
+                                />
+                                <View style={{flex: 1}}>
+                                    <Pressable style={{flex: 1}} onPress={()=>{Platform.OS === "android" ? handleInputPress() : null}}>
+                                        <TextInput
+                                            label={dataTemplate_TranslationSoldTranslations.sold_sellDate_unix[language]}
+                                            editable={false}
+                                            value={sellDate === null ? "" : new Date(sellDate).toLocaleDateString("de-CH", dateTimeOptions)}
+                                            onPress={()=>{Platform.OS === "ios" ? handleInputPress() : null}}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <TextInput
+                                    label={dataTemplate_TranslationSoldTranslations.sold_sellPrice[language]}
+                                    value={sellPrice ? sellPrice.toString() : ""}
+                                    inputMode={"decimal"}
+                                    onChangeText={text => setSellPrice(text)}
+                                />
+                                 <TextInput
+                                    label={dataTemplate_TranslationSoldTranslations.sold_buyerPermit[language]}
+                                    value={buyerPermit}
+                                    onChangeText={text => setBuyerPermit(text)}
+                                />
+                                <Pressable style={{flex: 1, height: 200}}>
+                                            <TextInput
+                                                label={dataTemplate_TranslationSoldTranslations.sold_remarks[language]}
+                                                style={{
+                                                    height: 200
+                                                }}
+                                                value={soldRemarks}
+                                                onChangeText={(text) => {
+                                                        setSoldRemarks(text)
+                                                    }}
+                                                multiline={true}
+                                                returnKeyType='done'
+                                                returnKeyLabel='OK'
+                                            />
+                                        </Pressable>
+                            </ScrollView>
+                        </View>
+                    </View>
+                }
+                buttonACK={<IconButton icon="currency-usd" disabled={buyerName ? false: true} onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
+                buttonDEL={null}
+            />
+
+            <ModalContainer 
+                title={modalTexts.datePicker.title[language]} 
+                subtitle={modalTexts.datePicker.text[language]} 
+                visible={showDateTime} 
+                setVisible={setShowDateTime}
+                content={<DateTimePicker
+                            mode="single"
+                            locale="de"
+                            firstDayOfWeek={1}
+                            date={initialSellDate === null ? undefined : new Date(initialSellDate)}
+                            onChange={(params) => updateDate(params.date)}
+                            selectedItemColor={theme.colors.primary}
+                            calendarTextStyle={{color: theme.colors.onBackground}}
+                            headerTextStyle={{color: theme.colors.primary, padding: defaultViewPadding}}
+                            headerTextContainerStyle={{backgroundColor: theme.colors.primaryContainer, elevation: 5, marginLeft: defaultViewPadding, marginRight: defaultViewPadding}}
+                            weekDaysTextStyle={{color: theme.colors.onBackground}}
+                            headerButtonColor={theme.colors.primary}
+                            monthContainerStyle={{backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.secondaryContainer}}
+                            yearContainerStyle={{backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.secondaryContainer}}
+                        />}
+                buttonACK={<IconButton mode="contained" onPress={()=>confirmDate()} icon={"check"} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={<IconButton mode="contained" onPress={()=>cancelDate()} icon={"cancel"} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} />}
+                buttonDEL={<IconButton mode="contained" onPress={()=>deleteDate()} icon={"delete"} style={{width: 50, backgroundColor: theme.colors.errorContainer}} iconColor={theme.colors.onErrorContainer}/>}
+                />
+            
+        </Portal>
+    )
+    
+}

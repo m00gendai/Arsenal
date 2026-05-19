@@ -258,11 +258,11 @@ export function checkConversionFields(item:ItemType, name: string, preferredUnit
 
 
 
-export function parseDate(date: string){
+export function parseDate(date: string | number){
     if(date === null){
         return ""
     }
-    const checkDate: Date = new Date(date)
+    const checkDate: Date = typeof date === "number" ? new Date(date) : new Date(Number(date))
     if (isNaN(checkDate.getTime())) {
         return `Invalid Date isNaN utils: ${date}`
     }

@@ -76,14 +76,14 @@ export default function Lists(){
                         </View> 
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
+                        {/*
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
                             <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=> handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
                         </View>
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
+                        */}
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
                             <Text style={{width: "80%"}}>{preferenceTitles.printCustomList[language]}</Text>
                             <IconButton icon={"shape-plus"} onPress={()=> handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>

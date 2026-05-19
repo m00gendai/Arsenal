@@ -24,19 +24,12 @@ export default function Settings_Display(){
 
     return( 
         <View style={{backgroundColor: theme.colors.tertiaryContainer}}>
-            <List.Accordion left={props => <List.Icon {...props} icon="monitor-dashboard" />} title={preferenceTitles.displaySettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
-                <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+            <List.Accordion left={props => <List.Icon {...props} icon="monitor-dashboard" />} title={preferenceTitles.displaySettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onSecondaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                <View style={{padding: defaultViewPadding, backgroundColor: theme.colors.tertiaryContainer, borderColor: theme.colors.primary}}>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListViewGun[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewGun} onValueChange={()=>handleSwitches("displayImagesInListViewGun")} />
-                        </View>
-                        
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
-                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
-                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListViewAmmo[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListViewAmmo} onValueChange={()=>handleSwitches("displayImagesInListViewAmmo")} />
+                            <Text style={{flex: 7}}>{displaySettingsLabels.displayImagesInListView[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displayImagesInListView} onValueChange={()=>handleSwitches("displayImagesInListView")} />
                         </View>
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
@@ -54,10 +47,17 @@ export default function Settings_Display(){
                         </View>
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
+    
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{displaySettingsLabels.caliberDisplayName[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.caliberDisplayName} onValueChange={()=>handleSwitches("caliberDisplayName")} />
+                        </View>
+
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+ 
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{displaySettingsLabels.displaySoldItems[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.displaySoldItems} onValueChange={()=>handleSwitches("displaySoldItems")} />
                         </View>
                         
                     </View>

@@ -1,5 +1,5 @@
 import ModalContainer from "components/ModalContainer";
-import { defaultViewPadding, screenNameParamsAll } from "configs/configs";
+import { defaultViewPadding, pdfExcludedKeys, screenNameParamsAll } from "configs/configs";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { IconButton, Text, Portal, Checkbox } from "react-native-paper";
@@ -18,7 +18,7 @@ import { selectCollection } from "lib/textTemplates";
 export default function customShippingLabelDialog(){
 
     const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
-    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, sortBy } = usePreferenceStore()
 
     const [selectedScreen, setSelectedScreen] = useState<CollectionType>("gunCollection")
     const [selectedAttributes, setSelectedAttributes] = useState(new Set<string>());
@@ -42,9 +42,12 @@ export default function customShippingLabelDialog(){
             selectedScreen as CollectionType, 
             Array.from(selectedAttributes), 
             preferredUnits,
-        determineTabBarLabel(selectedScreen)[language])
-        setSelectedAttributes(new Set())
-        setCustomPDFPrintVisible(false)
+            determineTabBarLabel(selectedScreen)[language],
+            sortBy
+        ),
+            setSelectedAttributes(new Set())
+            setCustomPDFPrintVisible(false)
+
         }catch(e){
             console.error(`Print Ammo Collection Error: ${e}`)
         } 
@@ -89,7 +92,7 @@ export default function customShippingLabelDialog(){
                                     <View style={{width: "100%", paddingTop: defaultViewPadding, paddingBottom: defaultViewPadding}}>
                                         <ScrollView style={{marginBottom: defaultViewPadding*5}}>
                                             {Object.entries(determineEmptyObject(selectedScreen)).map((data, index) =>{
-                                                if(dataTemplate_Translations[data[0]]){
+                                                if(!pdfExcludedKeys.includes(data[0]) && dataTemplate_Translations[data[0]]){
                                                     return (
                                                         <View key={`${data[0]}_${index}`} style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
                                                             <Checkbox.Android

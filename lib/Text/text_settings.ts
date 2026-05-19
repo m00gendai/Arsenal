@@ -36,14 +36,17 @@ interface GeneralSettingsLabels{
     loginGuard: SimpleTranslation
     hintsDisplay: SimpleTranslation
     scanBeep: SimpleTranslation
+    rememberLastScreen: SimpleTranslation
 }
 
 interface DisplaySettingsLabels{
     displayImagesInListViewGun: SimpleTranslation
     displayImagesInListViewAmmo: SimpleTranslation
+    displayImagesInListView: SimpleTranslation
     emptyFields: SimpleTranslation
     caliberDisplayName: SimpleTranslation
     titleBelowImage: SimpleTranslation
+    displaySoldItems: SimpleTranslation
 }
 
 export const preferenceTitles:PreferenceTitle = {
@@ -273,6 +276,13 @@ export const generalSettingsLabels: GeneralSettingsLabels = {
         fr: "Jouer un son lors du scan d’un code QR",
         it: "Riprodurre un suono quando si scansiona un codice QR",
         ch: "Duvrar in tun cura che vegn scaneà in code QR"
+    },
+    rememberLastScreen: {
+        de: "App mit zuletzt angeschauter Sammlung starten",
+        en: "Start app with last viewed collection",
+        fr: "Démarrer l'app avec la dernière collection consultée",
+        it: "Avvia l'app con l'ultima collezione visualizzata",
+        ch: "Aviar l'app cun l'ultima collecziun visualisada"
     }
 }
 
@@ -290,6 +300,13 @@ export const displaySettingsLabels: DisplaySettingsLabels = {
         fr: "Afficher les images dans la vue en liste munitions",
         it: "Visualizzare le immagini nella vista elenco munizioni",
         ch: "Mussar maletgs cun ina glista muniziun"  
+    },
+    displayImagesInListView: {
+        de: "Bilder in Listenansicht anzeigen", 
+        en: "Show images in list view",
+        fr: "Afficher les images dans la vue en liste",
+        it: "Visualizzare le immagini nella vista elenco",
+        ch: "Mussar las imagens en la vista da glista"  
     },
     emptyFields: {
         de: "Leere Felder in Einträgen ausblenden",
@@ -312,6 +329,13 @@ export const displaySettingsLabels: DisplaySettingsLabels = {
         it: "Mostrare il testo sotto l’immagine nella vista a griglia",
         ch: "Mussar il text sut l’imatge en la vista da griglia",
     },
+    displaySoldItems: {
+        de: "Verkaufte Sachen in Sammlung anzeigen",
+        en: "Display sold things in collection",
+        fr: "Afficher les objets vendus dans la collection",
+        it: "Mostra gli oggetti venduti nella collezione",
+        ch: "Mussar las chosas vendidas en la collecziun",
+    }
 }
 
 export const aboutText: SimpleTranslation = {

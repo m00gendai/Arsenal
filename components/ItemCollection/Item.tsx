@@ -22,15 +22,18 @@ import Item_Accessories from './Item_accessories';
 import Item_details from './Item_details';
 import { printSingleItem } from 'functions/printers/printSingleItem';
 import { gunDeleteAlert } from 'lib/Text/text_alerts';
+import SellDialog from 'components/Dialogs/SellDialog';
+import SoldDetails from 'components/SoldDetails';
+import Item_History from './Item_history';
 
 export default function Item({navigation}){
 
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
-    const [activeTab, setActiveTab] = useState<"details" | "accessories">("details")
+    const [activeTab, setActiveTab] = useState<"details" | "accessories" | "logger">("details")
     const [rotation, setRotation] = useState<number>(0)
 
-    const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet } = useViewStore()
+    const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet, sellDialogVisible, setSellDialogVisible } = useViewStore()
     const { language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection } = useItemStore()
 
@@ -182,8 +185,9 @@ useEffect(() => {
             <Appbar style={{width: "100%"}}>
                 <Appbar.BackAction  onPress={handleGoBack} />
                 <Appbar.Content title={`${"manufacturer" in currentItem && currentItem.manufacturer ? currentItem.manufacturer : "title" in currentItem && currentItem.title ? currentItem.title : ""} ${"model" in currentItem ? currentItem.model : "designation" in currentItem && currentItem.designation ? currentItem.designation : ""}`} />
+                <Appbar.Action icon="currency-usd" onPress={()=> setSellDialogVisible(true)} disabled={currentItem.sold_isSold ? true : false} />
                 <Appbar.Action icon="printer" onPress={()=>Platform.OS === "ios" ? handleIosPrint() : handlePrintPress()} />
-                <Appbar.Action icon="pencil" onPress={()=>handleEdit()} />
+                <Appbar.Action icon="pencil" onPress={()=>handleEdit()} disabled={currentItem.sold_isSold ? true : false} />
             </Appbar>
         
             <View style={styles.container}>   
@@ -270,15 +274,33 @@ useEffect(() => {
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.accessories[language]}</Text>
                         </Pressable>}
+                        <Pressable 
+                            style={{
+                                display: "flex", 
+                                flexDirection: "row", 
+                                justifyContent: "center", 
+                                width: "30%", 
+                                height: "100%", 
+                                backgroundColor: activeTab === "logger" ? theme.colors.primary :  theme.colors.secondaryContainer
+                            }} 
+                            onPress={() => setActiveTab("logger")}
+                        >
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "logger" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.logger[language]}</Text>
+                        </Pressable>
                     </View>
 
 
 {activeTab === "details" ? 
                     // DETAILS PAGE
-                    <Item_details />
-:
+                    <>
+                        {currentItem.sold_isSold ? <SoldDetails /> : null}
+                        <Item_details />
+                    </>
+: activeTab === "accessories" ? 
                     // ACCESSORIES PAGE        
                     <Item_Accessories currentItem={currentItem}/>
+: 
+                    <Item_History currentItem={currentItem} currentCollection={currentCollection} />
 }
 {activeTab === "details" ? <View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
                     <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
@@ -358,6 +380,9 @@ useEffect(() => {
                     <Button onPress={()=>toggleiosWarning(false)} icon="heart-broken" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{iosWarningText.cancel[language]}</Button>
                 </Dialog.Actions>
             </Dialog>
+
+            <SellDialog />
+
         </View>
     )
 }
