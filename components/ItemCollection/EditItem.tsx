@@ -114,6 +114,26 @@ export default function EditGun({navigation}){
             }).onConflictDoNothing();
         }
         
+        for (const [key, value] of Object.entries(item)) {
+            if(key !== "lastModifiedAt" && item[key] !== itemDataCompare[key]){
+                console.log(key)
+                console.log(item[key])
+                console.log(itemDataCompare[key])
+
+                await db.insert(schema.logger).values({
+                    id: uuidv4(),
+                    createdAt: Date.now(), 
+                    reference: currentItem.id,
+                    collection: currentCollection,
+                    changedField: key,
+                    value_old: itemDataCompare[key],
+                    value_new: item[key],
+                    snapshot: JSON.stringify(item)
+                })
+
+            }
+        }
+        
         setSaveState(true)
         setAlohaSnackbarText(`${"manufacturer" in item && item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : "designation" in item ?  item.designation : item.title} ${toastMessages.changed[language]}`)
         setAlohaSnackbarVisible(true)
