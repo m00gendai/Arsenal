@@ -116,10 +116,6 @@ export default function EditGun({navigation}){
         
         for (const [key, value] of Object.entries(item)) {
             if(key !== "lastModifiedAt" && item[key] !== itemDataCompare[key]){
-                console.log(key)
-                console.log(item[key])
-                console.log(itemDataCompare[key])
-
                 await db.insert(schema.logger).values({
                     id: uuidv4(),
                     createdAt: Date.now(), 

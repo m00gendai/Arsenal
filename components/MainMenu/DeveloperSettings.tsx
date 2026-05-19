@@ -96,7 +96,6 @@ export default function DeveloperSettings(){
     async function listAsyncStorage(){
         setDialogTitle("AsyncStorage")
         const entries = await AsyncStorage.getItem(PREFERENCES)
-        console.log(entries)
         const pretty = JSON.stringify(JSON.parse(entries), null, 2)
         setDialogContent(pretty)
         setDialogVisible(true)
