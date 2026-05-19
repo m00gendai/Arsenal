@@ -3,7 +3,7 @@ import { CollectionType, ItemType } from "lib/interfaces";
 import { useEffect, useState } from "react";
 import { SectionList, TouchableOpacity, View } from "react-native";
 import { Icon, Text } from 'react-native-paper';
-import { datePickerTriggerFields, defaultViewPadding } from "configs/configs";
+import { colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, ignoreIntervalFieldsForLogger, intervalPickerTriggerFields } from "configs/configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
 import * as schema from "db/schema"
@@ -14,6 +14,7 @@ import { PREFERENCES } from "configs/configs_DB";
 import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 import { parseDate } from "functions/utils";
 import { dataTemplate_TranslationCheckboxes, dataTemplate_Translations_Unified } from "lib/DataTemplates/translations";
+import { cleanIntervals, shotLabel } from "lib/textTemplates";
 
 interface Props{
     currentItem: ItemType
@@ -33,12 +34,22 @@ export default function Item_History({ currentItem, currentCollection }: Props) 
           .where(eq(schema.logger.reference, currentItem.id))
           .orderBy(desc(schema.logger.createdAt))
 
-        setLoggerData(loggerData)
+        setLoggerData(loggerData.filter(data => !ignoreIntervalFieldsForLogger.includes(data.changedField)))
       }
       getLoggerData()
 
       
     },[])
+
+    function getCleanIntervalDisplayValue(value: string){
+            const [presetString, shotSelectString] = value.split("/").map(s => s.trim())
+            return(
+                presetString && shotSelectString ? 
+                    `${cleanIntervals[presetString][language]} / ${shotSelectString} ${shotLabel[language]}`
+                    :  
+                    `${cleanIntervals[presetString][language]}` || `${shotSelectString} ${shotLabel[language]}` || ""
+            )
+        }
 
   function renderFieldName(field: string){
     if(dataTemplate_Translations_Unified[field]){
@@ -54,13 +65,16 @@ export default function Item_History({ currentItem, currentCollection }: Props) 
     if(dataTemplate_TranslationCheckboxes[field]){
       return value === "0" ? "☐" : "☑"
     }
+    if(field === "cleanIntervalDisplay"){
+      return getCleanIntervalDisplayValue(value)
+    }
     return value
   }
 
     return(
         <View>
           {loggerData.map((logEntry, index) =>{
-            return(
+              return(
               <View key={`loggerEntry_${index}`} style={index%2 === 1 ? 
                 {backgroundColor: theme.colors.secondaryContainer, rowGap: defaultViewPadding, padding: defaultViewPadding}
                 :
@@ -85,7 +99,7 @@ export default function Item_History({ currentItem, currentCollection }: Props) 
                     null
                   }
                   {logEntry.value_old ? 
-                    <Text key={index}>{`${renderFieldValue(logEntry.changedField, logEntry.value_old)}`}</Text> 
+                    <Text style={colorPickerTriggerFields.includes(logEntry.changedField) ? {color: logEntry.value_old} : {}} key={index}>{`${renderFieldValue(logEntry.changedField, logEntry.value_old)}`}</Text> 
                   : 
                     null
                   }
@@ -97,7 +111,7 @@ export default function Item_History({ currentItem, currentCollection }: Props) 
                     null
                   }
                   {logEntry.value_new ? 
-                    <Text>{`${renderFieldValue(logEntry.changedField, logEntry.value_new)}`}</Text> 
+                    <Text style={colorPickerTriggerFields.includes(logEntry.changedField) ? {color: logEntry.value_new} : {}}>{`${renderFieldValue(logEntry.changedField, logEntry.value_new)}`}</Text> 
                   : 
                     null
                   }
