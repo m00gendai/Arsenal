@@ -24,12 +24,13 @@ import { printSingleItem } from 'functions/printers/printSingleItem';
 import { gunDeleteAlert } from 'lib/Text/text_alerts';
 import SellDialog from 'components/Dialogs/SellDialog';
 import SoldDetails from 'components/SoldDetails';
+import Item_History from './Item_history';
 
 export default function Item({navigation}){
 
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
-    const [activeTab, setActiveTab] = useState<"details" | "accessories">("details")
+    const [activeTab, setActiveTab] = useState<"details" | "accessories" | "logger">("details")
     const [rotation, setRotation] = useState<number>(0)
 
     const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet, sellDialogVisible, setSellDialogVisible } = useViewStore()
@@ -273,6 +274,19 @@ useEffect(() => {
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "accessories" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.accessories[language]}</Text>
                         </Pressable>}
+                        <Pressable 
+                            style={{
+                                display: "flex", 
+                                flexDirection: "row", 
+                                justifyContent: "center", 
+                                width: "30%", 
+                                height: "100%", 
+                                backgroundColor: activeTab === "logger" ? theme.colors.primary :  theme.colors.secondaryContainer
+                            }} 
+                            onPress={() => setActiveTab("logger")}
+                        >
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "logger" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.logger[language]}</Text>
+                        </Pressable>
                     </View>
 
 
@@ -282,9 +296,11 @@ useEffect(() => {
                         {currentItem.sold_isSold ? <SoldDetails /> : null}
                         <Item_details />
                     </>
-:
+: activeTab === "accessories" ? 
                     // ACCESSORIES PAGE        
                     <Item_Accessories currentItem={currentItem}/>
+: 
+                    <Item_History currentItem={currentItem} currentCollection={currentCollection} />
 }
 {activeTab === "details" ? <View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
                     <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
