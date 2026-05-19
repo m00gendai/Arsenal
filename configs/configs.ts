@@ -105,6 +105,7 @@ export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "las
 export const colorPickerTriggerFields: string[] = ["mainColor", "reticleColor"]
 export const caliberPickerTriggerFields: string[] = ["caliber"]
 export const intervalPickerTriggerFields: string[] = ["cleanIntervalDisplay"]
+export const ignoreIntervalFieldsForLogger: string[] = ["cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const codeTriggerFields: string[] = ["qrCode"]
 
@@ -136,7 +137,7 @@ export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
-export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount"]
+export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "logger"]
 
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
 export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
