@@ -9,6 +9,7 @@ import { db } from "../db/client"
 import * as schema from "../db/schema"
 import { eq } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function QuickStock({navigation}){
 
@@ -24,12 +25,21 @@ export default function QuickStock({navigation}){
     const currentAmmo = currentItem as AmmoType
 
     async function saveNewStock(ammo:AmmoType){
-        const date:Date = new Date()
         if(stockChange !== ""){
         const currentValue:number = parseInt(ammo.currentStock) ? parseInt(ammo.currentStock) : 0
         const increase:number = Number(input)
         const total:number = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
         await db.update(schema.ammoCollection).set({currentStock: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema.ammoCollection.id, currentAmmo.id))
+        await db.insert(schema.logger).values({
+            id: uuidv4(),
+            createdAt: Date.now(), 
+            reference: currentAmmo.id,
+            collection: "ammoCollection",
+            changedField: "currentStock",
+            value_old: `${currentValue}`,
+            value_new: `${total}`,
+            snapshot: JSON.stringify(currentAmmo)
+        })
         navigation.goBack()
         displayError(false)
       }
