@@ -89,6 +89,7 @@ export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const requiredFieldsPart_Barrel:string[] = ["model"]
 export const requiredFieldsLiterature_Book:string[] = ["title"]
 export const requiredFieldsReloading_Die:string[] = ["model"]
+export const requiredFieldsSellDialog:string[] = ["sold_buyerName"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
