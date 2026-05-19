@@ -698,3 +698,15 @@ export const customShippingLabels = sqliteTable("customShippingLabels", {
     rows: real("rows"),
     radius: real("radius")
 })
+
+export const logger = sqliteTable("logger", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    collection: text("collection"),
+    changedField: text("changedField"),
+    value_old: text("value_old"),
+    value_new: text("value_new"),
+    snapshot: text("snapshot") // WITH change
+})
