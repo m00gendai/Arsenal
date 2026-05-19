@@ -10,6 +10,7 @@ import { db } from "../db/client"
 import * as schema from "../db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function QuickShot({navigation}){
 
@@ -141,15 +142,38 @@ useEffect(()=>{
   })
 
   async function saveNewStock(id: string, count:number){
-    const date:Date = new Date()
+    const previousAmmoStock = await db.select()
+              .from(schema.ammoCollection)
+              .where(eq(schema.ammoCollection.id, id))
     await db.update(schema.ammoCollection).set({currentStock: `${count}`, lastTopUpAt_unix: Date.now()}).where(eq(schema.ammoCollection.id, id))
+    await db.insert(schema.logger).values({
+      id: uuidv4(),
+      createdAt: Date.now(), 
+      reference: id,
+      collection: "ammoCollection",
+      changedField: "currentStock",
+      value_old: previousAmmoStock[0].currentStock,
+      value_new: `${count}`,
+      snapshot: JSON.stringify(previousAmmoStock[0])
+  })
   }
 
   async function handleShotCount(){
-    const date:Date = new Date()
+
     const mapped:number[] = Object.entries(shotCountFromStock).map(item => item[1] === "" ? 0 : Number(item[1]))
     const currentShotCount:number = "shotCount" in currentItem ? currentItem.shotCount ? Number(currentItem.shotCount) : 0 : 0
     const total: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCount
+
+    await db.insert(schema.logger).values({
+      id: uuidv4(),
+      createdAt: Date.now(), 
+      reference: currentItem.id,
+      collection: currentCollection,
+      changedField: "shotCount",
+      value_old: `${currentShotCount}`,
+      value_new: `${total}`,
+      snapshot: JSON.stringify(currentItem)
+  })
 
     {/*@ts-expect-error*/}
     await db.update(schema[currentCollection]).set({shotCount: `${total}`, lastShotAt_unix: Date.now()}).where(eq(schema[currentCollection].id, currentItem.id))
@@ -171,6 +195,18 @@ useEffect(()=>{
           try{
             const currentShotCountAccessory:number = "shotCount" in accessory ? accessory.shotCount ? Number(accessory.shotCount) : 0 : 0
             const totalAccessory: number = Number(shotCountNonStock) + mapped.reduce((acc, curr) => acc+Number(curr),0) + currentShotCountAccessory
+
+            await db.insert(schema.logger).values({
+              id: uuidv4(),
+              createdAt: Date.now(), 
+              reference: accessory.id,
+              collection: type,
+              changedField: "shotCount",
+              value_old: `${currentShotCountAccessory}`,
+              value_new: `${totalAccessory}`,
+              snapshot: JSON.stringify(accessory)
+          })
+
             await db.update(schema[type]).set({shotCount: `${totalAccessory}`, lastShotAt_unix: Date.now()}).where(eq(schema[type].id, accessory.id))
           }catch(e){
             console.error(e)
