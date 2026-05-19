@@ -6,6 +6,11 @@ interface Caliber{
     }[]
 }
 
+export function getCaliberCount(){
+    const total = calibers.reduce((acc, caliber) => acc + caliber.variants.length, 0)
+    return total
+}
+
 export const calibers:Caliber[] = [
     {
         range: "2mm (.79 - .117)",

@@ -1,0 +1,109 @@
+---
+import Footer from "../components/Footer"
+import Navbar from "../components/Navbar"
+import { metadata_appName, metadata_description, metadata_featureImageAlt, metadata_title } from "../text/text_metadata"
+import type { Language } from "../types/types_global"
+import Layout_Base from "./Layout_Base.astro"
+import favicon16 from "../assets/icon/favicon-16x16.png"
+import favicon32 from "../assets/icon/favicon-32x32.png"
+import appleTouchIcon from "../assets/icon/apple-touch-icon.png"
+import "../styles/styles.css"
+
+interface Props{
+	language: Language
+}
+
+const fetchAppstoreData = await fetch(
+    "https://itunes.apple.com/lookup?id=6670214648&country=ch"
+)
+const appstoreData = await fetchAppstoreData.json();
+
+const { userRatingCount, averageUserRating } = appstoreData.results[0]
+
+const { language } = Astro.props;
+
+const locales = { 
+	de: "de_DE", 
+	en: "en_US", 
+	fr: "fr_FR",
+    it: "it_IT"
+}
+
+const ogLocale = locales[language] ?? "de_DE"
+
+const ogAlternates = Object.values(locales).filter(locale => locale !== ogLocale)
+
+const baseURL = `https://arsenal-app.ch/`
+---
+
+<Layout_Base language={language}>
+    <head>
+		<meta charset="UTF-8">
+        <meta name="viewport"                   content="width=device-width, initial-scale=1.0">
+        <meta name="description"                content={metadata_description[language]}>
+        <meta name="author"                     content="Marcel Weber">
+        <link rel="apple-touch-icon"            sizes="180x180"     href=`${appleTouchIcon.src}`>
+        <link rel="icon"                        type="image/png"    sizes="32x32" href=`${favicon32.src}`>
+        <link rel="icon"                        type="image/png"    sizes="16x16" href=`${favicon16.src}`>
+        <link rel="manifest"                    href="/site.webmanifest">
+        <link rel="canonical"                   href=`${baseURL}${language}/`>
+        <link rel="alternate"                   hreflang="en"           href=`${baseURL}en/`>
+        <link rel="alternate"                   hreflang="de"           href=`${baseURL}de/`>
+        <link rel="alternate"                   hreflang="fr"           href=`${baseURL}fr/`>
+        <link rel="alternate"                   hreflang="it"           href=`${baseURL}it/`>
+        <link rel="alternate"                   hreflang="x-default"    href=`${baseURL}en/`>
+        <link rel="sitemap"                     href="/sitemap-index.xml" />
+        <title>{metadata_title[language]}</title>
+        <meta property="og:title"               content={metadata_title[language]} />
+        <meta property="og:description"         content={metadata_description[language]} />
+        <meta property="og:locale"              content={ogLocale} />
+		{ogAlternates.map(locale => {
+            return <meta property="og:locale:alternate" content={locale} />
+        })}
+        <meta property="og:image"               content=`${baseURL}assets/feature_${language}.png` />
+        <meta property="og:image:alt"           content={metadata_featureImageAlt[language]} />
+        <meta property="og:url"                 content=`${baseURL}${language}/` />
+        <meta property="og:type"                content="website" />
+        <script type="application/ld+json" set:html={JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": metadata_appName[language],
+                "operatingSystem": "Android, iOS",
+                "applicationCategory": "UtilitiesApplication",
+                "description": metadata_description[language],
+                "url": `${baseURL}${language}/`,
+                "inLanguage": ["de", "en", "fr", "it", "rm"],
+                "author": {
+                    "@type": "Person",
+                    "name": "Marcel Weber",
+                    "url": "https://mrweber.ch"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "5.00",
+                    "priceCurrency": "CHF"
+                },
+                "downloadUrl": [
+                    "https://play.google.com/store/apps/details?id=com.m00gendai.arsenal",
+                    `https://apps.apple.com/app/arsenal-armamentarium/id6670214648`
+                ],
+                ...(userRatingCount && userRatingCount > 0 && {
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": averageUserRating,
+                        "ratingCount": userRatingCount,
+                        "bestRating": "5",
+                        "worstRating": "1"
+                    },
+                }),
+                "image": `${baseURL}assets/appIcon.png`
+            })} />
+	</head>
+	<body>
+        <Navbar language={language} client:load/>
+        <main>
+		    <slot />
+        </main>
+		<Footer language={language}/>
+	</body>
+</Layout_Base>

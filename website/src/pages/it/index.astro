@@ -1,0 +1,24 @@
+---
+import Appstores from '../../components/Appstores';
+import FeatureImage from '../../components/FeatureImage';
+import Gallery from '../../components/Gallery';
+import SalesPitch from '../../text/salesPitch_IT.mdx';
+import Layout_Body from '../../layouts/Layout_Body.astro';
+import type { Language } from '../../types/types_global';
+
+const language = Astro.currentLocale as Language
+---
+
+<Layout_Body language={language} >
+	
+	<FeatureImage language={language} />
+
+	<Appstores language={language} />
+
+	<section class="content" id="home">
+		<SalesPitch />
+	</section>
+
+	<Gallery language={language} />
+
+</Layout_Body>
