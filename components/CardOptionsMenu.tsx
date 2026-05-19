@@ -14,7 +14,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore";
 import { useTextStore } from "stores/useTextStore";
 import { gunDeleteAlert } from "lib/Text/text_alerts";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CardOptionsMenu(){
 
@@ -51,27 +51,47 @@ export default function CardOptionsMenu(){
     }
 
     async function handleCleanButtonPress(item:ItemType){
-        if ("lastCleanedAt_unix" in schema[currentCollection]) {
+        if ("lastCleanedAt_unix" in item) {
+            await db.insert(schema.logger).values({
+                id: uuidv4(),
+                createdAt: Date.now(), 
+                reference: item.id,
+                collection: currentCollection,
+                changedField: "lastCleanedAt_unix",
+                value_old: `${item.lastCleanedAt_unix ?? ""}`,
+                value_new: `${Date.now()}`,
+                snapshot: JSON.stringify(item)
+            })
             await db.update(schema[currentCollection] as any)
                 .set({ lastCleanedAt_unix: Date.now() })
-                .where(eq(schema[currentCollection].id, currentItem.id));
+                .where(eq(schema[currentCollection].id, item.id));
         }
         setCardOptionsMenuVisible(false)
-        if("model" in currentItem){
-            setAlohaSnackbarText(`${currentItem.model} ${longPressActionsSuccessMessages.clean[language]}`)
+        if("model" in item){
+            setAlohaSnackbarText(`${item.model} ${longPressActionsSuccessMessages.clean[language]}`)
             setAlohaSnackbarVisible(true)
         }
     }
 
     async function handleBatteryButtonPress(item:ItemType){
-        if ("batteryLastChangedAt_unix" in schema[currentCollection]) {
+        if ("batteryLastChangedAt_unix" in item) {
+            await db.insert(schema.logger).values({
+                id: uuidv4(),
+                createdAt: Date.now(), 
+                reference: item.id,
+                collection: currentCollection,
+                changedField: "batteryLastChangedAt_unix",
+                value_old: `${item.batteryLastChangedAt_unix ?? ""}`,
+                value_new: `${Date.now()}`,
+                snapshot: JSON.stringify(item)
+            })
             await db.update(schema[currentCollection] as any)
                 .set({ batteryLastChangedAt_unix: Date.now() })
                 .where(eq(schema[currentCollection].id, currentItem.id));
         }
         setCardOptionsMenuVisible(false)
-        if("model" in currentItem){
-            setAlohaSnackbarText(`${longPressActionsSuccessMessages.battery[language].replace("{{{A}}}", currentItem.model)}`)
+        if("model" in item){
+            setAlohaSnackbarText(`${longPressActionsSuccessMessages.battery[language].replace("{{{A}}}", item.model)}`)
             setAlohaSnackbarVisible(true)
         }
     }
