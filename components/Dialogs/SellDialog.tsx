@@ -23,7 +23,7 @@ export default function customShippingLabelDialog(){
     const [buyerName, setBuyerName] = useState<string>(currentItem.sold_buyerName ?? null)
     const [initialSellDate, setInitialSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
     const [sellDate, setSellDate] = useState<number>(currentItem.sold_sellDate_unix ?? null)
-    const [sellPrice, setSellPrice] = useState<string>(currentItem.sold_sellPrice ?? null)
+    const [sellPrice, setSellPrice] = useState<string>(currentItem.sold_sellPrice && currentItem.sold_sellPrice !== "sold_sellprice" ? currentItem.sold_sellPrice : null)
     const [buyerPermit, setBuyerPermit] = useState<string>(currentItem.sold_buyerPermit ?? null)
     const [soldRemarks, setSoldRemarks] = useState<string>(currentItem.sold_remarks ?? null)
     
@@ -93,7 +93,7 @@ export default function customShippingLabelDialog(){
                         <View style={{width: "100%", paddingTop: defaultViewPadding, paddingBottom: defaultViewPadding}}>
                             <ScrollView style={{marginBottom: defaultViewPadding*5}}>
                                 <TextInput
-                                    label={dataTemplate_TranslationSoldTranslations.sold_buyerName[language]}
+                                    label={`${dataTemplate_TranslationSoldTranslations.sold_buyerName[language]}*`}
                                     value={buyerName}
                                     onChangeText={text => setBuyerName(text)}
                                 />
@@ -137,7 +137,7 @@ export default function customShippingLabelDialog(){
                         </View>
                     </View>
                 }
-                buttonACK={<IconButton icon="currency-usd" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonACK={<IconButton icon="currency-usd" disabled={buyerName ? false: true} onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
                 buttonCNL={<IconButton icon="cancel" onPress={() => handleCancel()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} />}
                 buttonDEL={null}
             />
