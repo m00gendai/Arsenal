@@ -95,6 +95,11 @@ interface DataTemplateTranslationsSoldIsSold {
     sold_isSold: DataTemplateTranslation
 }
 
+interface DataTemplateTranslationsInternalKeys {
+    tags: DataTemplateTranslation
+    images: DataTemplateTranslation
+}
+
 
 export const dataTemplate_Translations: DataTemplateTranslations = {
     "manufacturer": {
@@ -734,4 +739,32 @@ export const dataTemplate_TranslationSoldTranslations: DataTemplateTranslationSe
         it: "Osservazioni",
         ch: "Remartgar",
     },
+}
+
+export const dataTemplate_TranslationInternalKeys: DataTemplateTranslationsInternalKeys = {
+    "images": {
+        name: "images",
+        de: "Bilder",
+        en: "Images", 
+        fr: "Images",
+        it: "Immagini",
+        ch: "Maletgs",
+    },
+    "tags": {
+        name: "tags",
+        de: "Schlagworte",
+        en: "Tags", 
+        fr: "Mots-clés",
+        it: "Tags",
+        ch: "Tags",
+    }
+}
+
+export const dataTemplate_Translations_Unified: DataTemplateTranslations &  DataTemplateTranslationRemarks & DataTemplateTranslationCheckboxes & DataTemplateTranslationCheckboxes & DataTemplateTranslationSell = {
+    ...dataTemplate_Translations,
+    ...dataTemplate_TranslationRemarks,
+    ...dataTemplate_TranslationCheckboxes,
+    ...dataTemplate_TranslationSoldisSold,
+    ...dataTemplate_TranslationSoldTranslations,
+    ...dataTemplate_TranslationInternalKeys
 }
