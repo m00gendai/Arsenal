@@ -1,7 +1,21 @@
 import { getCaliberCount } from "../../../lib/caliberData";
-import { ammoCollection, barrelCollection, bookCollection, conversionCollection, gunCollection, lightLaserCollection, magazineCollection, miscAccessoryCollection, opticCollection, scopeCollection, silencerCollection, dieCollection } from "../lib/itemData";
-import { dataTemplate_Translations, excludedKeysForDataTemplates, tabBarLabels } from "../lib/itemData_translations";
+import { dataTemplate_Translations } from "../../../lib/DataTemplates/translations";
+import { tabBarLabels } from "../../../lib/Text/text_tabBarLabels"
 import type { Language, SimpleTranslation, SimpleTranslation_StringArray, SimpleTranslation_StringArrayName } from "../types/types_global";
+import { dataTemplateConverter } from "../utils/dataTemplateConverter";
+import { emptyGunObject } from "../../../lib/DataTemplates/gunDataTemplate"
+import { emptyAmmoObject } from "../../../lib/DataTemplates/ammoDataTemplate"
+import { emptyLightLaserObject } from "../../../lib/DataTemplates/accessoryDataTemplate_LightLaser"
+import { emptyMiscAccessoryObject } from "../../../lib/DataTemplates/accessoryDataTemplate_Misc"
+import { emptyMagazineObject } from "../../../lib/DataTemplates/accessoryDataTemplate_Magazine"
+import { emptyOpticObject } from "../../../lib/DataTemplates/accessoryDataTemplate_Optic"
+import { emptyScopeObject } from "../../../lib/DataTemplates/accessoryDataTemplate_Scope"
+import { emptySilencerObject } from "../../../lib/DataTemplates/accessoryDataTemplate_Silencer"
+import { emptyBookObject } from "../../../lib/DataTemplates/literatureDataTemplate_Book"
+import { emptyBarrelObject } from "../../../lib/DataTemplates/partDataTemplate_Barrel"
+import { emptyConversionKitObject } from "../../../lib/DataTemplates/partDataTemplate_ConversionKit"
+import { emptyDieObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Die"
+
 
 interface Section{
     title: SimpleTranslation
@@ -20,9 +34,22 @@ export const title: SimpleTranslation ={
     it: "Dettagli"
 }
 
+const gunCollection = dataTemplateConverter(emptyGunObject)
+const ammoCollection = dataTemplateConverter(emptyAmmoObject)
+const silencerCollection = dataTemplateConverter(emptySilencerObject)
+const lightLaserCollection = dataTemplateConverter(emptyLightLaserObject)
+const magazineCollection = dataTemplateConverter(emptyMagazineObject)
+const miscAccessoryCollection = dataTemplateConverter(emptyMiscAccessoryObject)
+const opticCollection = dataTemplateConverter(emptyOpticObject)
+const scopeCollection = dataTemplateConverter(emptyScopeObject)
+const bookCollection = dataTemplateConverter(emptyBookObject)
+const barrelCollection = dataTemplateConverter(emptyBarrelObject)
+const conversionCollection = dataTemplateConverter(emptyConversionKitObject)
+const dieCollection = dataTemplateConverter(emptyDieObject)
+
 function getTranslatedData(fields: string[], lang: Language){
     const translations = Object.keys(dataTemplate_Translations)
-        .filter(field => fields.includes(field) && !excludedKeysForDataTemplates.includes(field))
+        .filter(field => fields.includes(field))
         .map(field => dataTemplate_Translations[field][lang])
             
     return translations
