@@ -94,7 +94,7 @@ export default function NewChipArea({data, itemData, setItemData}:Props){
                 title={tagModal.title[language]}
                 subtitle={tagModal.subtitle[language]}
                 content={
-                    <View style={{height: "100%", display: "flex", flexDirection: "column", alignContent: "flex-start"}}>
+                    <View style={{height: "100%", width: "100%", display: "flex", flexDirection: "column", alignContent: "flex-start"}}>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", padding: defaultViewPadding}}>
                             <TextInput
                                 label={tagModal.inputTags[language]}
