@@ -1,5 +1,5 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AccessoryType_Magazine, AmmoType, ItemType, StackParamList } from 'lib/interfaces';
+import { AccessoryType_Magazine, AmmoType, ItemType, ReloadingType_Bullet, StackParamList } from 'lib/interfaces';
 import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs/configs';
@@ -54,6 +54,10 @@ export default function ItemCard({ item }:Props){
             const item = itemIn as AmmoType
             return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
         }
+        if(currentCollection === "reloadingCollection_Bullet"){
+            const item = itemIn as ReloadingType_Bullet
+            return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
+        }
         return theme.colors.onPrimary
     }
 
@@ -64,6 +68,10 @@ export default function ItemCard({ item }:Props){
         }
         if(currentCollection === "accessoryCollection_Magazine"){
             const item = itemIn as AccessoryType_Magazine
+            return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
+        }
+        if(currentCollection === "reloadingCollection_Bullet"){
+            const item = itemIn as ReloadingType_Bullet
             return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
         }
     }

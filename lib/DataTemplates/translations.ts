@@ -66,6 +66,7 @@ interface DataTemplateTranslations {
     group: DataTemplateTranslation
     partNumber: DataTemplateTranslation
     shellHolder: DataTemplateTranslation
+    ballisticCoefficient: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -607,6 +608,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "Porta bossolo", 
         ch: "Tegnider da cartutsch"
     },
+    "ballisticCoefficient": {
+        name: "ballisticCoefficient",
+        de: "Ballistik-Koeffizient",
+        en: "Ballistic Coefficient",
+        fr: "Coefficient Balistique",
+        it: "Coefficiente Balistico",
+        ch: "Boeffizient Ballistic"
+    }
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {

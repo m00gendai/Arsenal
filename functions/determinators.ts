@@ -1,4 +1,4 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Die } from "lib/interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Die } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Die, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Die, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Die } from "configs/configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Die, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Die, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Die } from "configs/configs";
 import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
@@ -32,6 +32,8 @@ import { shotLabel } from "lib/textTemplates";
 import { getShortCaliberName } from "./getShortCaliber";
 import sortReloadingCollection_Die from "./sorters/sortReloadingCollection_Die";
 import { dieRemarks, emptyDieObject, reloadingDataTemplate_Die } from "lib/DataTemplates/reloadingDataTemplate_Die";
+import sortReloadingCollection_Bullet from "./sorters/sortReloadingCollection_Bullet";
+import { bulletRemarks, emptyBulletObject, reloadingDataTemplate_Bullet } from "lib/DataTemplates/reloadingDataTemplate_Bullet";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -59,6 +61,8 @@ export function determineSchema(collection:CollectionType){
             return schema.literatureCollection_Book
         case "reloadingCollection_Die":
             return schema.reloadingCollection_Die
+        case "reloadingCollection_Bullet":
+            return schema.reloadingCollection_Bullet
     }
 }
 
@@ -88,6 +92,8 @@ export function determineSchemaStringFromTabBarLabel(collection:string){
             return "literatureCollection_Book"
         case "dieCollection":
             return "reloadingCollection_Die"
+        case "bulletCollection":
+            return "reloadingCollection_Bullet"
     }
 }
 
@@ -117,6 +123,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.literature_BookTags
         case "reloadingCollection_Die":
             return schema.reloading_DieTags
+        case "reloadingCollection_Bullet":
+            return schema.reloading_BulletTags
     }
 }
 
@@ -158,6 +166,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         }
         case "reloadingCollection_Die":{
             return sortReloadingCollection_Die(sortBy[collection].direction, sortBy[collection].type)
+        };
+        case "reloadingCollection_Bullet":{
+            return sortReloadingCollection_Bullet(sortBy[collection].direction, sortBy[collection].type)
         };
     }
 }
@@ -213,6 +224,10 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
             return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
                  like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
         }
+        case "reloadingCollection_Bullet":{
+            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
+                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+        }
     }
 }
 
@@ -243,6 +258,9 @@ export function determineDataTemplate(collection: CollectionType){
             return literatureDataTemplate_Book
         case "reloadingCollection_Die":
             return reloadingDataTemplate_Die
+        case "reloadingCollection_Bullet":
+            return reloadingDataTemplate_Bullet
+            
     }
 }
 
@@ -272,6 +290,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return bookRemarks
         case "reloadingCollection_Die":
             return dieRemarks
+        case "reloadingCollection_Bullet":
+            return bulletRemarks
     }
 }
 
@@ -301,6 +321,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyBookObject
         case "reloadingCollection_Die":
             return emptyDieObject
+        case "reloadingCollection_Bullet":
+            return emptyBulletObject
     }
 }
 
@@ -330,6 +352,8 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyBookObject}
         case "reloadingCollection_Die":
             return {...emptyDieObject}
+        case "reloadingCollection_Bullet":
+            return {...emptyBulletObject}
     }
 }
 
@@ -359,6 +383,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsLiterature_Book
         case "reloadingCollection_Die":
             return requiredFieldsReloading_Die
+        case "reloadingCollection_Bullet":
+            return requiredFieldsReloading_Bullet
     }
 }
 
@@ -388,6 +414,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsLiterature_Book
         case "reloadingCollection_Die":
             return sortingOptionsReloading_Die
+        case "reloadingCollection_Bullet":
+            return sortingOptionsReloading_Bullet
     }
 }
 
@@ -417,6 +445,8 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsLiterature_Book
         case "reloadingCollection_Die":
             return cardActionsReloading_Die
+        case "reloadingCollection_Bullet":
+            return cardActionsReloading_Bullet
     }
 }
 
@@ -446,6 +476,8 @@ export function determineAccessoryIcons(collection: CollectionType){
             return "bookshelf"
         case "reloadingCollection_Die":
             return "lightbulb-cfl-spiral"
+        case "reloadingCollection_Bullet":
+            return "gate-and"
     /*  case "reloadingCollection_Powder":
             return "sprinkler-fire" */
     /*  case "reloadingCollection_Primer":
@@ -479,6 +511,8 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.bookCollection
         case "reloadingCollection_Die":
             return tabBarLabels.dieCollection
+        case "reloadingCollection_Bullet":
+            return tabBarLabels.bulletCollection
     }
 }
 
@@ -574,6 +608,10 @@ export function determineCardTitle(collection: CollectionType, itemIn: ItemType,
             {   const item = itemIn as ReloadingType_Die
                 return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
             }
+        case "reloadingCollection_Bullet":
+            {   const item = itemIn as ReloadingType_Bullet
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
     }
 }
 
@@ -627,6 +665,10 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             }
         case "reloadingCollection_Die":
             {   const item = itemIn as ReloadingType_Die
+                return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+            }
+        case "reloadingCollection_Bullet":
+            {   const item = itemIn as ReloadingType_Bullet
                 return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
     }
