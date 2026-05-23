@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button, Dialog, HelperText, IconButton, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { dateTimeOptions, defaultViewPadding } from "../configs/configs";
-import { AmmoType } from "../lib/interfaces";
+import { AmmoType, ReloadingType_Bullet } from "../lib/interfaces";
 import { ammoQuickUpdate, gunQuickShot } from "../lib/textTemplates";
 import { db } from "../db/client"
 import * as schema from "../db/schema"
@@ -20,25 +20,25 @@ export default function QuickStock({navigation}){
     const { language, theme, } = usePreferenceStore()
     const { currentCollection, setCurrentCollection, currentItem, setCurrentItem } = useItemStore()
     const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
-    const [negativeAmmo, setNegativeAmmo] = useState<boolean>(false)
+    const [negativeAmount, setNegativeAmount] = useState<boolean>(false)
 
-    const currentAmmo = currentItem as AmmoType
+    const quickStockItem = currentItem as AmmoType | ReloadingType_Bullet
 
-    async function saveNewStock(ammo:AmmoType){
+    async function saveNewStock(item:AmmoType | ReloadingType_Bullet){
         if(stockChange !== ""){
-        const currentValue:number = parseInt(ammo.currentStock) ? parseInt(ammo.currentStock) : 0
+        const currentValue:number = parseInt(item.currentStock) ? parseInt(item.currentStock) : 0
         const increase:number = Number(input)
         const total:number = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
-        await db.update(schema.ammoCollection).set({currentStock: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema.ammoCollection.id, currentAmmo.id))
+        await db.update(schema[currentCollection]).set({currentStock: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema[currentCollection].id, item.id))
         await db.insert(schema.logger).values({
             id: uuidv4(),
             createdAt: Date.now(), 
-            reference: currentAmmo.id,
-            collection: "ammoCollection",
+            reference: quickStockItem.id,
+            collection: currentCollection,
             changedField: "currentStock",
             value_old: `${currentValue}`,
             value_new: `${total}`,
-            snapshot: JSON.stringify(currentAmmo)
+            snapshot: JSON.stringify(quickStockItem)
         })
         navigation.goBack()
         displayError(false)
@@ -49,7 +49,7 @@ export default function QuickStock({navigation}){
     }
 
     function handleInput(input:string){
-      setNegativeAmmo((currentAmmo.currentStock === undefined ? 0 : currentAmmo.currentStock === null ? 0 : Number(currentAmmo.currentStock)) < Number(input))
+      setNegativeAmount((quickStockItem.currentStock === undefined ? 0 : quickStockItem.currentStock === null ? 0 : Number(quickStockItem.currentStock)) < Number(input))
       setInput(input.replace(/[^0-9]/g, ''))
     }
     
@@ -62,18 +62,18 @@ export default function QuickStock({navigation}){
                             <View style={{display: "flex", flexDirection: "row"}}><Text variant="titleLarge" style={{color: theme.colors.primary, padding: defaultViewPadding, flex: 9}}>{`QuickStock`}</Text><IconButton style={{flex: 1}} icon="help-circle-outline" onPress={()=>toggleSeeInfo(true)}/></View>
                         </View>
                   <View style={{width: "100%", display: "flex", flexDirection: "row", padding: defaultViewPadding, flexWrap: "wrap"}}>
-                    <Text>{`${currentAmmo.manufacturer} ${currentAmmo.designation}\n${currentAmmo.caliber}`}</Text>
+                    <Text>{`${quickStockItem.manufacturer} ${"designation" in quickStockItem ? quickStockItem.designation : quickStockItem.model}\n${quickStockItem.caliber ?? ""}`}</Text>
                     <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "center",  marginBottom: 10}}>
                       <IconButton mode="contained" icon="plus" selected={stockChange === "inc" ? true : false} onPress={()=>setStockChange("inc")}/>
                       <IconButton mode="contained" icon="minus" selected={stockChange === "dec" ? true : false} onPress={()=>setStockChange("dec")} />
                     </View>
                     <TextInput style={{width: "100%"}} placeholder={ammoQuickUpdate.placeholder[language]} keyboardType={"number-pad"} value={input} onChangeText={input => handleInput(input)} inputMode='decimal' returnKeyType='done'
                         returnKeyLabel='OK'/>
-                        {negativeAmmo  && stockChange === "dec" ? <HelperText type="error" visible={negativeAmmo}>
-                                  {currentAmmo.currentStock === null ? gunQuickShot.errorNoAmountDefined[language] : currentAmmo.currentStock === undefined ? gunQuickShot.errorNoAmountDefined[language] : gunQuickShot.errorAmountTooLow[language].replace("{{AMOUNT}}", currentAmmo.currentStock)}
+                        {negativeAmount  && stockChange === "dec" ? <HelperText type="error" visible={negativeAmount}>
+                                  {quickStockItem.currentStock === null ? gunQuickShot.errorNoAmountDefined[language] : quickStockItem.currentStock === undefined ? gunQuickShot.errorNoAmountDefined[language] : gunQuickShot.errorAmountTooLow[language].replace("{{AMOUNT}}", quickStockItem.currentStock)}
                                 </HelperText> : null}
                     <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                    <IconButton disabled={negativeAmmo && stockChange === "dec"} mode="contained" icon="check" onPress={() => saveNewStock(currentAmmo)} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>
+                    <IconButton disabled={negativeAmount && stockChange === "dec"} mode="contained" icon="check" onPress={() => saveNewStock(quickStockItem)} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>
                       <IconButton mode="contained" icon="cancel" onPress={()=>navigation.goBack()} style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer}/>
                     </View>
                   </View>
