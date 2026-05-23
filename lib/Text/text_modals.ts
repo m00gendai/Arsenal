@@ -12,6 +12,7 @@ interface ModalText{
     cleanInterval: ModalTextItems
     mountedOn: ModalTextItems
     customPDFPrinter: ModalTextItems
+    sellItem: ModalTextItems
 }
 
 export const modalTexts: ModalText = {
@@ -110,5 +111,21 @@ export const modalTexts: ModalText = {
             it: `Selezionate la collezione che desiderate stampare e gli attributi che devono essere visualizzati. Il numero di attributi è limitato a 7.`,
             ch: `Tscherna la collecziun che Vus vulais stampar e tge attributs che duain vegnir inditgads. Il dumber dals attributs è limità a 7.`,
         }
-    }
+    },
+    sellItem: {
+        title: {
+            de: "Artikel verkaufen",
+            en: "Sell item",
+            fr: "Vendre l'article",
+            it: "Vendere l'articolo",
+            ch: "Vender l'artitgel",
+        },
+        text:{
+            de: `Gib die Informationen zum Verkauf des Artikels ein und bestätige den Verkauf.\n\nDer Artikel wird daraufhin als verkauft markiert und in der Übersicht je nach Einstellung in den Anzeigeoptionen entweder halbtransparent oder gar nicht angezeigt.`,
+            en: `Enter the information for selling the item and confirm the sale.\n\nThe item will then be marked as sold and displayed in the overview either semi-transparently or not at all, depending on the setting in the display options.`,
+            fr: `Entrez les informations pour vendre l'article et confirmez la vente.\n\nL'article sera alors marqué comme vendu et affiché dans l'aperçu soit en semi-transparence, soit pas du tout, selon le paramètre dans les options d'affichage.`,
+            it: `Inserisci le informazioni per vendere l'articolo e conferma la vendita.\n\nL'articolo sarà quindi contrassegnato come venduto e visualizzato nella panoramica in modo semi-trasparente o per niente, a seconda dell'impostazione nelle opzioni di visualizzazione.`,
+            ch: `Inseris las infurmaziuns per vender l'artitgel e conferma la vendita.\n\nIl artitgel vegn lura marcà sco vendì e mussà en la survista u en semi-transparenza u per nagut, dependent da l'impostaziun en las opziuns da visualisaziun.`,
+        }
+    },
 }

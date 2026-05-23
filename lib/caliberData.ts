@@ -80,7 +80,10 @@ export const calibers:Caliber[] = [
             {"name": ".22 Long Rifle"},
             {"name": ".22 Remington Jet"},
             {"name": ".22 Remington Special"},
-            {"name": ".22 Savage Hi-Power"},
+            {
+                "name": ".22 Savage Hi-Power",
+                "displayName": ".22 Savage Hi-Power (5.6x52mmR)"
+            },
             {"name": ".22 Short"},
             {"name": ".22 Spitfire"},
             {"name": ".22 TCM"},
@@ -111,6 +114,14 @@ export const calibers:Caliber[] = [
             {"name": "5.6x35mmR Vierling"},
             {"name": "5.6x50mm Magnum (5.6x50mmR)"},
             {"name": "5.6x57mm"},
+            {
+                "name": "5.6x61 Super Express vom Hofe",
+                "displayName": "5.6x61 SEvH"
+            },
+            {
+                "name": "5.6x61 R Super Express vom Hofe",
+                "displayName": "5.6x61 R SEvH"
+            },
             {"name": "5.66x39mm"},
             {"name": "5.8x21mm"},
             {"name": "5.8x42mm DBP87"},
@@ -162,11 +173,16 @@ export const calibers:Caliber[] = [
             {"name": "6mm PPC"},
             {"name": "6mm Remington (.244 Remington)"},
             {"name": "6mm XC"},
+            {"name": "6x62 Frères"},
             {"name": "6x45mm"},
             {"name": "6x45mm SAW"},
             {
                 "name": "6.45mm GP80 (1980) 6.45x48mm",
                 "displayName": "6.45mm GP80"
+            },
+            {
+                "name": "6.2x73 Super Express vom Hofe",
+                "displayName": "6.2x73 SEvH"
             },
             {"name": "6.45x48mm XPL Swiss"},
             {"name": "6.5 Precision Rifle Cartridge"},
@@ -234,6 +250,7 @@ export const calibers:Caliber[] = [
             {"name": ".300 Weatherby Magnum"},
             {"name": ".300 Werewolf"},
             {"name": ".300 Winchester Magnum"},
+            {"name": ".300 Blaser Magnum"},
             {
                 "name": ".300 WSM (Winchester Short Magnum)",
                 "displayName": ".300 WSM"
@@ -247,7 +264,11 @@ export const calibers:Caliber[] = [
             {"name": ".307 Winchester"},
             {"name": ".308 Norma Magnum"},
             {"name": ".308 Winchester"},
-             {"name": ".30 Herrett"},
+            {"name": ".30 Herrett"},
+            {
+                "name": ".30 R Blaser (7.62x68mm R)",
+                "displayName": ".30 R Blaser"
+            },
             {"name": ".32 ACP (7.65 Browning Short)"},
             {"name": ".32 H&R Magnum"},
             {"name": ".32 Long Colt (.32 Colt)"},
@@ -302,6 +323,18 @@ export const calibers:Caliber[] = [
             {"name": "7x57mm Mauser"},
             {"name": "7x64mm"},
             {"name": "7x61mm Sharpe & Hart"},
+            {
+                "name": "7x67 Super Express vom Hofe",
+                "displayName": "7x67 SEvH"
+            },
+            {
+                "name": "7x73 Super Express vom Hofe",
+                "displayName": "7x73 SEvH"
+            },
+            {
+                "name": "7x75R Super Express vom Hofe",
+                "displayName": "7x75 SEvH"
+            },
             {"name": "7.92x24mm VBR"},
             {"name": "7mm BR Remington (bench rest)"},
             {"name": "7mm Dakota"},
@@ -321,6 +354,7 @@ export const calibers:Caliber[] = [
             },
             {"name": "7mm Weatherby Magnum"},
             {"name": "7mm WSM"},
+            {"name": "7mm Blaser Magnum"},
             {"name": "7mm-06 Remington"},
             {"name": "7mm-08 Remington"},
             {
@@ -372,6 +406,7 @@ export const calibers:Caliber[] = [
             {"name": ".340 Weatherby Magnum"},
             {"name": ".348 Winchester"},
             {"name": "8,5 x 68 Fanzoj"},
+            {"name": "8.5x55 Blaser"},
             {"name": "8.6 mm Blackout"},
             {
                 "name": "8mm French Ordnance 8mm Lebel Revolver 8x27mmR Règlementaire Mle 92",
@@ -470,6 +505,7 @@ export const calibers:Caliber[] = [
             {"name": "9.3x72mmR"},
             {"name": "9.3x74mmR"},
             {"name": "9.4x22mmR Nagant"},
+            {"name": "9.5x57mm Mannlicher-Schönauer"},
             {"name": "9mm Action Express"},
             {"name": "9mm Automatic"},
             {"name": "9mm Browning Long"},

@@ -10,10 +10,11 @@ import * as schema from "db/schema"
 import { checkConversionFields, parseDate } from 'functions/utils';
 import * as Application from 'expo-application';
 import { tableStyle } from './printoutStyles';
-import { PreferredUnits } from 'stores/usePreferenceStore';
-import { determineDataTemplate } from 'functions/determinators';
+import { PreferredUnits, SorterSettings } from 'stores/usePreferenceStore';
+import { determineDataTemplate, determineSortingFunction, determineSortingOptions } from 'functions/determinators';
 import { pdfFooter } from 'lib/Text/text_pdf';
 import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
+import { ne } from 'drizzle-orm';
 
 export async function printCustomCollection(
   language: string, 
@@ -22,11 +23,11 @@ export async function printCustomCollection(
   collection: CollectionType,
   includedKeys: string[],
   preferredUnits:PreferredUnits,
-  title: string
+  title: string,
+  sortBy: SorterSettings
 ){
 
-
-  const customCollection = db.select().from(schema[collection]).all()
+  const customCollection = db.select().from(schema[collection]).where(ne(schema[collection].sold_isSold, true )).orderBy(determineSortingFunction(collection, sortBy)).all()
   const customTemplate = determineDataTemplate(collection)
 
   const date:Date = new Date()

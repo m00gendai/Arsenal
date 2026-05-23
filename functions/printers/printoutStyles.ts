@@ -18,6 +18,8 @@ export const tableStyle: string = `
         width: 100%;
         text-align: left;
         font-size: ${pdfCommonStyles.allSubtitleFontSize};
+        font-style: italic;
+        border: none;
     }
     .bodyContent{
         width: 100%;
@@ -39,7 +41,7 @@ export const tableStyle: string = `
         break-inside: avoid !important;
         page-break-after: auto;
     }
-    tr:nth-child(even){
+    tr:nth-child(2n+3){
         background-color: #f5f5f5;
     }
     td {

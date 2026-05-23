@@ -103,6 +103,7 @@ interface iosWarning{
 interface ItemViewTabBarLabels{
     details: SimpleTranslation
     accessories: SimpleTranslation
+    logger: SimpleTranslation
 }
 
 export const cleanIntervals:CleanIntervals = {
@@ -634,6 +635,13 @@ export const itemViewTabBarLabels: ItemViewTabBarLabels = {
         it: "Accessori",
         ch: "Airi"
     },
+    logger: {
+        de: "Verlauf",
+        en: "History",
+        fr: "Historique",
+        it: "Cronologia",
+        ch: "Istorgia",
+    }
 }
 
 export const selectCollection: SimpleTranslation = {

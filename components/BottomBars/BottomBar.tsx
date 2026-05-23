@@ -18,6 +18,8 @@ import BottomBar_PartCollection from "./BottomBar_PartCollection";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { PREFERENCES } from "configs/configs_DB";
 
 interface Props{
   screen?: string
@@ -48,11 +50,21 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
     });
   };
 
-  function handleNavigation(
+  async function handleNavigation(
     target: Screens,
     params: { collectionType: CollectionType }
   ){
     setCurrentCollection(params.collectionType)
+    
+    const preferences: string | null = await AsyncStorage.getItem(PREFERENCES)
+    const parsedPreferences = preferences ? JSON.parse(preferences) : {}
+    
+    const newPreferences = {
+      ...parsedPreferences,
+      currentCollection: params.collectionType
+    }
+
+    await AsyncStorage.setItem(PREFERENCES, JSON.stringify(newPreferences))
     navigation.navigate(target, params);
   }
 

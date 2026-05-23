@@ -83,6 +83,24 @@ interface DataTemplateTranslationCheckboxes {
     grandfather: DataTemplateTranslation
 }
 
+interface DataTemplateTranslationSell {
+    sold_buyerName: DataTemplateTranslation
+    sold_sellPrice: DataTemplateTranslation
+    sold_buyerPermit: DataTemplateTranslation
+    sold_sellDate_unix: DataTemplateTranslation
+    sold_remarks: DataTemplateTranslation
+}
+
+interface DataTemplateTranslationsSoldIsSold {
+    sold_isSold: DataTemplateTranslation
+}
+
+interface DataTemplateTranslationsInternalKeys {
+    tags: DataTemplateTranslation
+    images: DataTemplateTranslation
+}
+
+
 export const dataTemplate_Translations: DataTemplateTranslations = {
     "manufacturer": {
         name: "manufacturer",
@@ -667,4 +685,86 @@ export const dataTemplate_TranslationCheckboxes: DataTemplateTranslationCheckbox
         it: "Acquisito in base alla vecchia legge",
         ch: "Acquistà tenor il dretg vegl",
     },
+}
+
+export const dataTemplate_TranslationSoldisSold: DataTemplateTranslationsSoldIsSold = {
+    "sold_isSold": {
+        name: "sold_isSold",
+        de: "sold_isSold",
+        en: "sold_isSold", 
+        fr: "sold_isSold",
+        it: "sold_isSold",
+        ch: "sold_isSold",
+    },
+}
+
+export const dataTemplate_TranslationSoldTranslations: DataTemplateTranslationSell = {
+    "sold_buyerName": {
+        name: "sold_buyerName",
+        de: "Käufer",
+        en: "Buyer", 
+        fr: "Acheteur",
+        it: "Acquirente",
+        ch: "Cumprador",
+    },
+    "sold_sellPrice": {
+        name: "sold_sellPrice",
+        de: "Verkaufspreis",
+        en: "Sell price", 
+        fr: "Prix de vente",
+        it: "Prezzo di vendita",
+        ch: "Pretsch da vendita",
+    },
+    "sold_buyerPermit": {
+        name: "sold_buyerPermit",
+        de: "Bewilligung Käufer",
+        en: "Permit buyer", 
+        fr: "Autorisation acheteur",
+        it: "Autorizzazione acquirente",
+        ch: "Permissiun cumprador",
+    },
+    "sold_sellDate_unix": {
+        name: "sold_sellDate_unix",
+        de: "Verkaufsdatum",
+        en: "Sell date", 
+        fr: "Date de vente",
+        it: "Data di vendita",
+        ch: "Data da vendita",
+    },
+    "sold_remarks": {
+        name: "sold_remarks",
+        de: "Bemerkungen",
+        en: "Remarks",
+        fr: "Remarques",
+        it: "Osservazioni",
+        ch: "Remartgar",
+    },
+}
+
+export const dataTemplate_TranslationInternalKeys: DataTemplateTranslationsInternalKeys = {
+    "images": {
+        name: "images",
+        de: "Bilder",
+        en: "Images", 
+        fr: "Images",
+        it: "Immagini",
+        ch: "Maletgs",
+    },
+    "tags": {
+        name: "tags",
+        de: "Schlagworte",
+        en: "Tags", 
+        fr: "Mots-clés",
+        it: "Tags",
+        ch: "Tags",
+    }
+}
+
+export const dataTemplate_Translations_Unified: DataTemplateTranslations &  DataTemplateTranslationRemarks & DataTemplateTranslationCheckboxes & DataTemplateTranslationCheckboxes & DataTemplateTranslationSell = {
+    ...dataTemplate_Translations,
+    ...dataTemplate_TranslationRemarks,
+    ...dataTemplate_TranslationCheckboxes,
+    ...dataTemplate_TranslationSoldisSold,
+    ...dataTemplate_TranslationSoldTranslations,
+    ...dataTemplate_TranslationInternalKeys
 }

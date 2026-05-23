@@ -46,9 +46,9 @@ export default function Settings_General(){
     }
 
     return( 
-        <View style={{backgroundColor: theme.colors.tertiaryContainer}}>
-            <List.Accordion left={props => <List.Icon {...props} icon="tune" />} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onTertiaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.tertiaryContainer}}>
-                <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+        <View style={{backgroundColor: theme.colors.secondaryContainer}}>
+            <List.Accordion left={props => <List.Icon {...props} icon="tune" />} title={preferenceTitles.generalSettings[language]} titleStyle={{fontWeight: "700", color: theme.colors.onSecondaryContainer}} style={{paddingLeft: defaultViewPadding*2, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
+                <View style={{padding: defaultViewPadding, backgroundColor: theme.colors.tertiaryContainer}}>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
@@ -68,6 +68,13 @@ export default function Settings_General(){
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.hintsDisplay[language]}</Text>
                             <Switch style={{flex: 3}} value={generalSettings.hintsDisplay} onValueChange={()=>handleSwitches("hintsDisplay")} />
+                        </View>
+
+                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                        
+                        <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                            <Text style={{flex: 7}}>{generalSettingsLabels.rememberLastScreen[language]}</Text>
+                            <Switch style={{flex: 3}} value={generalSettings.rememberLastScreen} onValueChange={()=>handleSwitches("rememberLastScreen")} />
                         </View>
 {/*
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />

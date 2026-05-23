@@ -100,10 +100,11 @@ export default function AppContent() {
     setHasCheckedForLegacyAmmoData,
     setHasCheckedForLegacyGunData,
     setHasConvertedLegacyAmmoCaliberFieldToStringArray,
-    setHasConvertedLegacyDateFieldsToUnixTimeStamp
+    setHasConvertedLegacyDateFieldsToUnixTimeStamp,
+    setHasSeenReviewRequest
   } = usePreferenceStore();
   const { mainMenuOpen, hideBottomSheet, setOnboardingVisible } = useViewStore()
-  const { currentCollection } = useItemStore()
+  const { currentCollection, setCurrentCollection } = useItemStore()
 
 const { bottom } = useSafeAreaInsets();
 
@@ -370,6 +371,12 @@ const { bottom } = useSafeAreaInsets();
           })
         }
         setCaliberDisplayNameList(shortCalibers)
+        if(isPreferences?.generalSettings?.rememberLastScreen){
+          if(isPreferences?.currentCollection){
+            setCurrentCollection(isPreferences?.currentCollection)
+          }
+        }
+        setHasSeenReviewRequest(isPreferences?.hasSeenReviewRequest ?? false)
       }catch(e){
         alarm("General Preferences Error", e)
       }

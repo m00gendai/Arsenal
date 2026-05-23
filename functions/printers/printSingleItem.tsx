@@ -13,6 +13,7 @@ import { galleryStyle } from "./printoutStyles";
 import * as Application from 'expo-application';
 import { pdfFooter } from "lib/Text/text_pdf";
 import { getShortCaliberNameFromArray } from "functions/getShortCaliber";
+import { dataTemplate_TranslationSoldTranslations } from "lib/DataTemplates/translations";
 
 
 export async function printSingleItem(item:ItemType, collection: CollectionType, language: string, shortCaliber: boolean, caliberDisplayNameList: {name:string, displayName?:string}[]){
@@ -50,6 +51,10 @@ export async function printSingleItem(item:ItemType, collection: CollectionType,
         return data ? data[language] : remarks ? remarks : boxes ? boxes[language] : tags ? tags : key;
     }
 
+    function getTranslation_sold(key: string, language: string) {
+        return dataTemplate_TranslationSoldTranslations[key][language]
+    }
+
     const html = `
         <html>
             <body>
@@ -62,7 +67,22 @@ export async function printSingleItem(item:ItemType, collection: CollectionType,
                     <table>
                         <tbody>
                             ${Object.entries(item).map(entry =>{
-                                return excludedKeys.includes(entry[0]) ? 
+                                return item.sold_isSold && entry[0].startsWith("sold_") && entry[0] !== "sold_isSold"? 
+                                `<tr>
+                                    <td>
+                                        <strong>
+                                            ${getTranslation_sold(entry[0], language)}
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        ${entry[0].endsWith("_unix") ? parseDate(entry[1]) : entry[1]}
+                                    </td>
+                                </tr>`
+                                :
+                                null
+                            }).join("")}
+                            ${Object.entries(item).map(entry =>{
+                                return excludedKeys.includes(entry[0]) || entry[0].startsWith("sold_") ? 
                                 null 
                                 :
                                 `<tr>
