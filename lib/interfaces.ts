@@ -497,6 +497,33 @@ export interface ReloadingType_Bullet {
   sold_remarks: string | null,
 }
 
+export interface ReloadingType_Case {
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[],
+  tags: string[],
+  manufacturer: string
+  model: string
+  caliber: string[]
+  headstamp: string
+  primer: string
+  caseLength: string
+  material: string
+  currentStock: string
+  lastTopUpAt_unix: number
+  criticalStock: string
+  remarks: string
+  customInventoryDesignation: string
+  qrCode: string
+  sold_isSold: boolean
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
@@ -510,6 +537,7 @@ export type ItemType =  | GunType
                         | LiteratureType_Book
                         | ReloadingType_Die
                         | ReloadingType_Bullet
+                        | ReloadingType_Case
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -524,6 +552,7 @@ export type CollectionType =  | "gunCollection"
                               | "literatureCollection_Book"
                               | "reloadingCollection_Die"
                               | "reloadingCollection_Bullet"
+                              | "reloadingCollection_Case"
 
 export type Screens = "itemCollection"
 
@@ -532,6 +561,9 @@ interface DbId{
 }
 
 export type ItemTypeWithDbId = ItemType & DbId
+
+export type NumberBadgeType = AmmoType | AccessoryType_Magazine | ReloadingType_Bullet | ReloadingType_Case
+export type CriticalStockType = AmmoType | ReloadingType_Bullet | ReloadingType_Case
 
 export interface MenuVisibility{
   sortBy: boolean
@@ -717,6 +749,12 @@ export type SortingTypesReloading_Bullet =  | "alphabetical"
                                             | "caliber" 
                                             | "currentStock" 
 
+export type SortingTypesReloading_Case =  | "alphabetical" 
+                                          | "createdAt" 
+                                          | "lastModifiedAt" 
+                                          | "caliber" 
+                                          | "currentStock" 
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
@@ -730,6 +768,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesLiterature_Book
                             | SortingTypesReloading_Die
                             | SortingTypesReloading_Bullet
+                            | SortingTypesReloading_Case
 
                             
 export type Languages = | "de" 
