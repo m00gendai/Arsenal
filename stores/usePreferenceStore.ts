@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -19,6 +19,7 @@ interface GeneralSettings{
   displayImagesInListViewLiterature_Book: boolean
   displayImagesInListViewReloading_Die: boolean
   displayImagesInListViewReloading_Bullet: boolean
+  displayImagesInListViewReloading_Case: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -44,6 +45,7 @@ interface DisplaySettings{
   literatureCollection_Book: DisplayVariants
   reloadingCollection_Die: DisplayVariants
   reloadingCollection_Bullet: DisplayVariants
+  reloadingCollection_Case: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -61,6 +63,7 @@ export interface SorterSettings{
   literatureCollection_Book: {type: SortingTypesLiterature_Book, direction: "asc" | "desc", icon: string}
   reloadingCollection_Die: {type: SortingTypesReloading_Die, direction: "asc" | "desc", icon: string}
   reloadingCollection_Bullet: {type: SortingTypesReloading_Bullet, direction: "asc" | "desc", icon: string}
+  reloadingCollection_Case: {type: SortingTypesReloading_Case, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
@@ -77,6 +80,7 @@ interface FilterState{
   literatureCollection_Book: boolean
   reloadingCollection_Die: boolean
   reloadingCollection_Bullet: boolean
+  reloadingCollection_Case: boolean
 }
 
 export interface PreferredUnits{
@@ -86,6 +90,7 @@ export interface PreferredUnits{
   powderWeightUnit: string
   generalLengthUnit: string
   barrelLengthUnit: string
+  caseLengthUnit: string
 }
 
 interface InitialStoreState {
@@ -123,6 +128,7 @@ const initialState:InitialStoreState = {
       displayImagesInListViewLiterature_Book: true,
       displayImagesInListViewReloading_Die: true,
       displayImagesInListViewReloading_Bullet: true,
+      displayImagesInListViewReloading_Case: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -147,6 +153,7 @@ const initialState:InitialStoreState = {
       literatureCollection_Book: "grid",
       reloadingCollection_Die: "grid",
       reloadingCollection_Bullet: "grid",
+      reloadingCollection_Case: "grid",
       accessoryView: "grid"
     },
     preferredUnits: {
@@ -156,6 +163,7 @@ const initialState:InitialStoreState = {
       powderWeightUnit: "g",
       generalLengthUnit: "cm",
       barrelLengthUnit: "in",
+      caseLengthUnit: "in",
     },
     sortBy: {
       gunCollection: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
@@ -171,6 +179,7 @@ const initialState:InitialStoreState = {
       literatureCollection_Book: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Die: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Bullet: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"}
     },
     caliberDisplayNameList: [],
     filterOn: {
@@ -186,7 +195,8 @@ const initialState:InitialStoreState = {
       partCollection_Barrel: false,
       literatureCollection_Book: false,
       reloadingCollection_Die: false,
-      reloadingCollection_Bullet: false
+      reloadingCollection_Bullet: false,
+      reloadingCollection_Case: false,
     },
     hasCheckedForLegacyGunData: false,
     hasCheckedForLegacyAmmoData: false,
