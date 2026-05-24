@@ -3,7 +3,7 @@ import { Checkbox, Text, IconButton } from 'react-native-paper';
 import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit } from "functions/utils";
@@ -67,6 +67,9 @@ export default function Item_details(){
         }
         if(barrelLengthPrefixFields.includes(dataItem.name)){
             return `${preferredUnits.barrelLengthUnit} ${currentItem[dataItem.name] ? convertLengthUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name]) :  ""}` 
+        }
+        if(caseLengthPrefixFields.includes(dataItem.name)){
+            return `${preferredUnits.caseLengthUnit} ${currentItem[dataItem.name] ? convertLengthUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name]) :  ""}` 
         }
         if(dataItem.name === "cleanIntervalDisplay" && currentItem[dataItem.name]){
             return getCleanIntervalDisplayValue()

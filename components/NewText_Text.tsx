@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper';
 import { useEffect, useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Keyboard, Platform } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, currencyPrefixFields, fieldsForAutocomplete, maxCharCountText, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caseLengthPrefixFields, currencyPrefixFields, fieldsForAutocomplete, maxCharCountText, numberTextFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
@@ -120,6 +120,9 @@ useEffect(() => {
                         :
                         barrelLengthPrefixFields.includes(data) ? 
                         <TextInput.Affix text={`${preferredUnits.barrelLengthUnit} `} /> 
+                        :
+                        caseLengthPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.caseLengthUnit} `} /> 
                         :
                         null
                     }
