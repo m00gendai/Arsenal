@@ -18,7 +18,6 @@ export const emptyBulletObject:ReloadingType_Bullet = {
     manufacturer: null,
     model: null,
     caliber: null,
-    headstamp: null,
     bulletWeight: null,
     bulletType: null,
     ballisticCoefficient: null,

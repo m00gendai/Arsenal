@@ -480,7 +480,6 @@ export interface ReloadingType_Bullet {
   manufacturer: string
   model: string
   caliber: string[]
-  headstamp: string
   bulletWeight: string
   bulletType: string
   ballisticCoefficient: string
