@@ -68,6 +68,7 @@ interface DataTemplateTranslations {
     shellHolder: DataTemplateTranslation
     ballisticCoefficient: DataTemplateTranslation
     primer: DataTemplateTranslation
+    caseLength: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -624,6 +625,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Amorces",
         it: "Capsule",
         ch: "Chamona d'envidar", 
+    },
+    "caseLength": {
+        name: "caseLength",
+        de: "OAL (Patronengesamtlänge)",
+        en: "OAL (Overall Cartridge Length)",
+        fr: "OAL (Longueur totale de la cartouche)",
+        it: "OAL (Lunghezza totale della cartuccia)",
+        ch: "OAL (Lunghezza totala da la cartuscha)",
     }
 }
 
