@@ -1,8 +1,8 @@
 import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
-import { AccessoryType_Magazine, AmmoType, ItemType, ReloadingType_Bullet, StackParamList } from 'lib/interfaces';
+import { AccessoryType_Magazine, AmmoType, CriticalStockType, ItemType, NumberBadgeType, ReloadingType_Bullet, StackParamList } from 'lib/interfaces';
 import { Badge, Card, IconButton, TouchableRipple } from 'react-native-paper';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
-import { dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs/configs';
+import { criticalStockCollections, dateLocales, defaultGridGap, defaultViewPadding, numberBadgeCollections } from 'configs/configs';
 import { useViewStore } from 'stores/useViewStore';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -42,36 +42,24 @@ export default function ItemCard({ item }:Props){
     }
 
     function setBadgeBackgroundColor(itemIn: ItemType){
-        if(currentCollection === "ammoCollection"){
-            const item = itemIn as AmmoType
+        if(criticalStockCollections.includes(currentCollection)){
+            const item = itemIn as CriticalStockType
             return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.errorContainer : theme.colors.primary : theme.colors.primary
         }
         return theme.colors.primary
     }
 
     function setBadgeColor(itemIn: ItemType){
-        if(currentCollection === "ammoCollection"){
-            const item = itemIn as AmmoType
-            return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
-        }
-        if(currentCollection === "reloadingCollection_Bullet"){
-            const item = itemIn as ReloadingType_Bullet
+        if(criticalStockCollections.includes(currentCollection)){
+            const item = itemIn as CriticalStockType
             return item.currentStock !== null && item.currentStock !== undefined && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? theme.colors.onErrorContainer : theme.colors.onPrimary : theme.colors.onPrimary
         }
         return theme.colors.onPrimary
     }
 
     function setBadgeContent(itemIn: ItemType){
-        if(currentCollection === "ammoCollection"){
-            const item = itemIn as AmmoType
-            return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
-        }
-        if(currentCollection === "accessoryCollection_Magazine"){
-            const item = itemIn as AccessoryType_Magazine
-            return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
-        }
-        if(currentCollection === "reloadingCollection_Bullet"){
-            const item = itemIn as ReloadingType_Bullet
+        if(numberBadgeCollections.includes(currentCollection)){
+            const item = itemIn as NumberBadgeType
             return item.currentStock !== null && item.currentStock !== undefined && item.currentStock.toString() !== "" ? new Intl.NumberFormat(dateLocales[language]).format(parseInt(item.currentStock)) : "- - -" 
         }
     }
