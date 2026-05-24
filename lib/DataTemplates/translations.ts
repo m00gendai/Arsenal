@@ -67,6 +67,7 @@ interface DataTemplateTranslations {
     partNumber: DataTemplateTranslation
     shellHolder: DataTemplateTranslation
     ballisticCoefficient: DataTemplateTranslation
+    primer: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -615,6 +616,14 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Coefficient Balistique",
         it: "Coefficiente Balistico",
         ch: "Boeffizient Ballistic"
+    },
+    "primer": {
+        name: "primer",
+        de: "Zündhütchen",
+        en: "Primers",
+        fr: "Amorces",
+        it: "Capsule",
+        ch: "Chamona d'envidar", 
     }
 }
 
