@@ -15,13 +15,14 @@ interface TabBarLabels{
     dieCollection: SimpleTranslation
     bulletCollection: SimpleTranslation
     caseCollection: SimpleTranslation
+    primerCollection: SimpleTranslation
     /*printMagazineCollection: SimpleTranslation
     swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
     diesCollection: SimpleTranslation
     
     
-    primerCollection: SimpleTranslation
+    
     powderCollection: SimpleTranslation
     reloadingMiscCollection: SimpleTranslation*/
 }
@@ -145,14 +146,14 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Boîtes",
         it: "Cartucce",
         ch: "Mantuns", 
-    },/*
+    },
     primerCollection: {
         de: "Zündhütchen",
         en: "Primers",
         fr: "Amorces",
         it: "Capsule",
         ch: "Chamona d'envidar", 
-    },
+    },/*
     powderCollection: {
         de: "Pulver",
         en: "Poweder",

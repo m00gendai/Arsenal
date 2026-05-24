@@ -683,6 +683,37 @@ export const reloading_CaseTags = sqliteTable("reloading_caseTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const reloadingCollection_Primer = sqliteTable("reloading_primer", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    model: text('name').notNull(),
+    type: text("type"),
+    currentStock: text("currentStock"),
+    lastTopUpAt_unix: integer("lastTopUpAt_unix"),
+    criticalStock: text("criticalStock"),
+    remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation"),
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
+})
+
+export const reloading_PrimerTags = sqliteTable("reloading_primerTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("primerTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const autocomplete = sqliteTable("autocomplete",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),

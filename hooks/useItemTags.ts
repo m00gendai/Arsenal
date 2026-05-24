@@ -74,6 +74,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.reloading_CaseTags)
     )
 
+    const { data: reloadingTagsPrimer } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_PrimerTags)
+    )
+
     switch(type){
         case "gunCollection":
             return gunTags
@@ -103,5 +108,7 @@ export function useItemTags(type: CollectionType) {
             return reloadingTags_Bullet
         case "reloadingCollection_Case":
             return reloadingTags_Case
+        case "reloadingCollection_Primer":
+            return reloadingTagsPrimer
     }
 }

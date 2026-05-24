@@ -524,6 +524,29 @@ export interface ReloadingType_Case {
   sold_remarks: string | null,
 }
 
+export interface ReloadingType_Primer {
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[],
+  tags: string[],
+  manufacturer: string
+  model: string
+  type: string[]
+  currentStock: string
+  lastTopUpAt_unix: number
+  criticalStock: string
+  remarks: string
+  customInventoryDesignation: string
+  qrCode: string
+  sold_isSold: boolean
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
+}
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
@@ -538,6 +561,7 @@ export type ItemType =  | GunType
                         | ReloadingType_Die
                         | ReloadingType_Bullet
                         | ReloadingType_Case
+                        | ReloadingType_Primer
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -553,6 +577,7 @@ export type CollectionType =  | "gunCollection"
                               | "reloadingCollection_Die"
                               | "reloadingCollection_Bullet"
                               | "reloadingCollection_Case"
+                              | "reloadingCollection_Primer"
 
 export type Screens = "itemCollection"
 
@@ -562,8 +587,8 @@ interface DbId{
 
 export type ItemTypeWithDbId = ItemType & DbId
 
-export type NumberBadgeType = AmmoType | AccessoryType_Magazine | ReloadingType_Bullet | ReloadingType_Case
-export type CriticalStockType = AmmoType | ReloadingType_Bullet | ReloadingType_Case
+export type NumberBadgeType = AmmoType | AccessoryType_Magazine | ReloadingType_Bullet | ReloadingType_Case | ReloadingType_Primer
+export type CriticalStockType = AmmoType | ReloadingType_Bullet | ReloadingType_Case | ReloadingType_Primer
 
 export interface MenuVisibility{
   sortBy: boolean
@@ -755,6 +780,11 @@ export type SortingTypesReloading_Case =  | "alphabetical"
                                           | "caliber" 
                                           | "currentStock" 
 
+export type SortingTypesReloading_Primer =  | "alphabetical" 
+                                            | "createdAt" 
+                                            | "lastModifiedAt" 
+                                            | "currentStock" 
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
@@ -769,6 +799,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesReloading_Die
                             | SortingTypesReloading_Bullet
                             | SortingTypesReloading_Case
+                            | SortingTypesReloading_Primer
 
                             
 export type Languages = | "de" 

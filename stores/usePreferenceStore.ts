@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -20,6 +20,7 @@ interface GeneralSettings{
   displayImagesInListViewReloading_Die: boolean
   displayImagesInListViewReloading_Bullet: boolean
   displayImagesInListViewReloading_Case: boolean
+  displayImagesInListViewReloading_Primer: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -46,6 +47,7 @@ interface DisplaySettings{
   reloadingCollection_Die: DisplayVariants
   reloadingCollection_Bullet: DisplayVariants
   reloadingCollection_Case: DisplayVariants
+  reloadingCollection_Primer: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -64,6 +66,7 @@ export interface SorterSettings{
   reloadingCollection_Die: {type: SortingTypesReloading_Die, direction: "asc" | "desc", icon: string}
   reloadingCollection_Bullet: {type: SortingTypesReloading_Bullet, direction: "asc" | "desc", icon: string}
   reloadingCollection_Case: {type: SortingTypesReloading_Case, direction: "asc" | "desc", icon: string}
+  reloadingCollection_Primer: {type: SortingTypesReloading_Primer, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
@@ -81,6 +84,7 @@ interface FilterState{
   reloadingCollection_Die: boolean
   reloadingCollection_Bullet: boolean
   reloadingCollection_Case: boolean
+  reloadingCollection_Primer: boolean
 }
 
 export interface PreferredUnits{
@@ -129,6 +133,7 @@ const initialState:InitialStoreState = {
       displayImagesInListViewReloading_Die: true,
       displayImagesInListViewReloading_Bullet: true,
       displayImagesInListViewReloading_Case: true,
+      displayImagesInListViewReloading_Primer: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -154,6 +159,7 @@ const initialState:InitialStoreState = {
       reloadingCollection_Die: "grid",
       reloadingCollection_Bullet: "grid",
       reloadingCollection_Case: "grid",
+      reloadingCollection_Primer: "grid",
       accessoryView: "grid"
     },
     preferredUnits: {
@@ -179,7 +185,8 @@ const initialState:InitialStoreState = {
       literatureCollection_Book: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Die: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Bullet: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
-      reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"}
+      reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      reloadingCollection_Primer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"}
     },
     caliberDisplayNameList: [],
     filterOn: {
@@ -197,6 +204,7 @@ const initialState:InitialStoreState = {
       reloadingCollection_Die: false,
       reloadingCollection_Bullet: false,
       reloadingCollection_Case: false,
+      reloadingCollection_Primer: false,
     },
     hasCheckedForLegacyGunData: false,
     hasCheckedForLegacyAmmoData: false,

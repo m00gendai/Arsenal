@@ -1,4 +1,4 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die } from "lib/interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Primer } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die } from "configs/configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Primer, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Primer } from "configs/configs";
 import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
@@ -36,6 +36,8 @@ import sortReloadingCollection_Bullet from "./sorters/sortReloadingCollection_Bu
 import { bulletRemarks, emptyBulletObject, reloadingDataTemplate_Bullet } from "lib/DataTemplates/reloadingDataTemplate_Bullet";
 import sortReloadingCollection_Case from "./sorters/sortReloadingCollection_Case";
 import { caseRemarks, emptyCaseObject, reloadingDataTemplate_Case } from "lib/DataTemplates/reloadingDataTemplate_Case";
+import sortReloadingCollection_Primer from "./sorters/sortReloadingCollection_Primer";
+import { emptyPrimerObject, primerRemarks, reloadingDataTemplate_Primer } from "lib/DataTemplates/reloadingDataTemplate_Primer";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -67,6 +69,8 @@ export function determineSchema(collection:CollectionType){
             return schema.reloadingCollection_Bullet
         case "reloadingCollection_Case":
             return schema.reloadingCollection_Case
+        case "reloadingCollection_Primer":
+            return schema.reloadingCollection_Primer
     }
 }
 
@@ -100,6 +104,8 @@ export function determineSchemaStringFromTabBarLabel(collection:string){
             return "reloadingCollection_Bullet"
         case "caseCollection":
             return "reloadingCollection_Case"
+        case "primerCollection":
+            return "reloadingCollection_Primer"
     }
 }
 
@@ -133,6 +139,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.reloading_BulletTags
         case "reloadingCollection_Case":
             return schema.reloading_CaseTags
+        case "reloadingCollection_Primer":
+            return schema.reloadingCollection_Primer
     }
 }
 
@@ -180,6 +188,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         };
         case "reloadingCollection_Case":{
             return sortReloadingCollection_Case(sortBy[collection].direction, sortBy[collection].type)
+        };
+        case "reloadingCollection_Primer":{
+            return sortReloadingCollection_Primer(sortBy[collection].direction, sortBy[collection].type)
         };
     }
 }
@@ -243,6 +254,10 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
             return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
                  like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
         }
+        case "reloadingCollection_Primer":{
+            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
+                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+        }
     }
 }
 
@@ -277,6 +292,8 @@ export function determineDataTemplate(collection: CollectionType){
             return reloadingDataTemplate_Bullet
         case "reloadingCollection_Case":
             return reloadingDataTemplate_Case
+        case "reloadingCollection_Primer":
+            return reloadingDataTemplate_Primer
     }
 }
 
@@ -310,6 +327,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return bulletRemarks
         case "reloadingCollection_Case":
             return caseRemarks
+        case "reloadingCollection_Primer":
+            return primerRemarks
     }
 }
 
@@ -343,6 +362,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyBulletObject
         case "reloadingCollection_Case":
             return emptyCaseObject
+        case "reloadingCollection_Primer":
+            return emptyPrimerObject
     }
 }
 
@@ -376,6 +397,8 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyBulletObject}
         case "reloadingCollection_Case":
             return {...emptyCaseObject}
+        case "reloadingCollection_Primer":
+            return {...emptyPrimerObject}
     }
 }
 
@@ -409,6 +432,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsReloading_Bullet
         case "reloadingCollection_Case":
             return requiredFieldsReloading_Case
+        case "reloadingCollection_Primer":
+            return requiredFieldsReloading_Primer
     }
 }
 
@@ -442,6 +467,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsReloading_Bullet
         case "reloadingCollection_Case":
             return sortingOptionsReloading_Case
+        case "reloadingCollection_Primer":
+            return sortingOptionsReloading_Primer
     }
 }
 
@@ -475,6 +502,8 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsReloading_Bullet
         case "reloadingCollection_Case":
             return cardActionsReloading_Case
+        case "reloadingCollection_Primer":
+            return cardActionsReloading_Primer
     }
 }
 
@@ -510,8 +539,8 @@ export function determineAccessoryIcons(collection: CollectionType){
             return "test-tube-empty"
     /*  case "reloadingCollection_Powder":
             return "sprinkler-fire" */
-    /*  case "reloadingCollection_Primer":
-            return "fire-circle" */
+        case "reloadingCollection_Primer":
+            return "fire-circle"
     }
 }
 
@@ -545,6 +574,8 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.bulletCollection
         case "reloadingCollection_Case":
             return tabBarLabels.caseCollection
+        case "reloadingCollection_Primer":
+            return tabBarLabels.primerCollection
     }
 }
 
@@ -648,6 +679,10 @@ export function determineCardTitle(collection: CollectionType, itemIn: ItemType,
             {   const item = itemIn as ReloadingType_Case
                 return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
             }
+        case "reloadingCollection_Primer":
+            {   const item = itemIn as ReloadingType_Primer
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
     }
 }
 
@@ -710,6 +745,10 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
         case "reloadingCollection_Case":
             {   const item = itemIn as ReloadingType_Case
                 return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+            }
+        case "reloadingCollection_Primer":
+            {   const item = itemIn as ReloadingType_Primer
+                return item.type ? item.type : " "
             }
     }
 }

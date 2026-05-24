@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die } from "../lib/interfaces"
+import { CollectionType, CommonStyles, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Primer } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -91,6 +91,7 @@ export const requiredFieldsLiterature_Book:string[] = ["title"]
 export const requiredFieldsReloading_Die:string[] = ["model"]
 export const requiredFieldsReloading_Bullet:string[] = ["model"]
 export const requiredFieldsReloading_Case: string[] = ["model"]
+export const requiredFieldsReloading_Primer: string[] = ["model"]
 export const requiredFieldsSellDialog:string[] = ["sold_buyerName"]
 
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
@@ -132,6 +133,7 @@ export const cardActionsLiterature_Book: string[] = ["delete", "clone"]
 export const cardActionsReloading_Die: string[] = ["delete", "clone"]
 export const cardActionsReloading_Bullet: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsReloading_Case: string[] = ["delete", "clone", "quickStock"]
+export const cardActionsReloading_Primer: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsAmmo: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
@@ -139,7 +141,7 @@ export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoColl
 export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic", "accessoryCollection_Scope", "accessoryCollection_LightLaser", "accessoryCollection_Magazine", "accessoryCollection_Misc"]
 export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel"]
 export const screenNameParamsLiterature: CollectionType[] = ["literatureCollection_Book"]
-export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case"]
+export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
@@ -148,10 +150,10 @@ export const nonCollectionTables: string[]= ["accessoryCollection", "partCollect
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
 export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
 
-export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case"]
-export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case"]
+export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
+export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
-export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case"]
+export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
@@ -167,3 +169,4 @@ export const sortingOptionsLiterature_Book:SortingTypesLiterature_Book[] = ["alp
 export const sortingOptionsReloading_Die:SortingTypesReloading_Die[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Bullet:SortingTypesReloading_Bullet[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Case:SortingTypesReloading_Case[] = ["alphabetical", "createdAt", "lastModifiedAt"]
+export const sortingOptionsReloading_Primer:SortingTypesReloading_Primer[] = ["alphabetical", "createdAt", "lastModifiedAt"]
