@@ -1,0 +1,13 @@
+---
+import DetailsWrapper from '../../components/Details/details';
+import Layout_Body from '../../layouts/Layout_Body.astro';
+import type { Language } from '../../types/types_global';
+
+const language = Astro.currentLocale as Language
+---
+
+<Layout_Body language={language}>
+    
+    <DetailsWrapper language={language} />
+
+</Layout_Body>

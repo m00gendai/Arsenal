@@ -1,4 +1,4 @@
-import { excludedKeysForDataTemplates } from "configs/configs";
+import { excludedKeysForDataTemplates } from "../../configs/configs";
 import { AccessoryType_LightLaser } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_TranslationRemarks, dataTemplate_Translations, dataTemplate_TranslationSoldisSold, dataTemplate_TranslationSoldTranslations, DataTemplateTranslation } from "./translations";
