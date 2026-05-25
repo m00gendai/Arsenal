@@ -3,6 +3,7 @@ import { section_collectionItems_accessories, section_collectionItems_literature
 import type { Language } from "../../types/types_global";
 import s from "../../styles/supportedCollections.module.css"
 import t from "../../styles/accordion.module.css"
+import { ignoreIntervalFieldsForLogger } from "../../../../configs/configs";
 
 interface Props{
     language: Language
@@ -79,7 +80,9 @@ export default function Details_supportedCollections({language}:Props){
                                         <div className={t.content}>
                                             <ul className={s.list}>
                                                 {collectionContent[indx] && collectionContent[indx].map((entry, ind) => {
-                                                    return <li key={`accordion_listItem_${ind}`} dangerouslySetInnerHTML={{__html: entry}}></li>
+                                                    if(!ignoreIntervalFieldsForLogger.includes(entry)){
+                                                        return <li key={`accordion_listItem_${ind}`} dangerouslySetInnerHTML={{__html: entry}}></li>
+                                                    }
                                                 })}
                                             </ul>
                                         </div>
