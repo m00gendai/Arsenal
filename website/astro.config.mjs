@@ -28,5 +28,10 @@ export default defineConfig({
         },
       },
     }),
-  ]
+  ],
+  vite: {
+    esbuild: {
+      tsconfigRaw: {}
+    },
+  },
 });
