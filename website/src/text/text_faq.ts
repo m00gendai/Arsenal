@@ -1,4 +1,4 @@
-import { getCaliberCount } from "../lib/caliberData"
+import { getCaliberCount } from "../../../lib/caliberData"
 import type { SimpleTranslation, SimpleTranslation_StringArray } from "../types/types_global"
 
 export interface FAQ{
