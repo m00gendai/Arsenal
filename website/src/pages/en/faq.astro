@@ -1,0 +1,13 @@
+---
+import FAQ from '../../components/FAQ/faq';
+import Layout_Body from '../../layouts/Layout_Body.astro';
+import type { Language } from '../../types/types_global';
+
+const language = Astro.currentLocale as Language
+---
+
+<Layout_Body language={language}>
+    
+    <FAQ language={language} />
+
+</Layout_Body>

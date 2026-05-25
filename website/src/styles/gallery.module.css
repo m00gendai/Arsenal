@@ -1,0 +1,27 @@
+.gallery{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+}
+
+.image{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+    object-fit: contain;
+    border: 2px solid var(--outline);
+    background: var(--on-surface-variant);
+}
+
+.image img{
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (max-aspect-ratio: 13/9){
+    .gallery{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,36 @@
+.footer{
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--scrim);
+    color: var(--on-background);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 3rem 0 0 0;
+}
+
+.item{
+    position: relative;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.link{
+    color: var(--on-background);
+}
+
+.socialMedia{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image{
+    width: 3rem;
+    margin: 1rem;
+    fill: var(--on-background);
+}

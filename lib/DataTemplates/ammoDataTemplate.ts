@@ -1,4 +1,4 @@
-import { excludedKeysForDataTemplates } from "configs/configs";
+import { excludedKeysForDataTemplates } from "../../configs/configs";
 import { AmmoType } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_Translations, DataTemplateTranslation, dataTemplate_TranslationRemarks, dataTemplate_TranslationSoldTranslations, dataTemplate_TranslationSoldisSold } from "./translations";
