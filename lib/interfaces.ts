@@ -532,10 +532,34 @@ export interface ReloadingType_Primer {
   tags: string[],
   manufacturer: string
   model: string
-  type: string[]
+  type: string
   currentStock: string
   lastTopUpAt_unix: number
   criticalStock: string
+  remarks: string
+  customInventoryDesignation: string
+  qrCode: string
+  sold_isSold: boolean
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
+}
+
+export interface ReloadingType_Powder {
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[],
+  tags: string[],
+  manufacturer: string
+  designation: string
+  texture: string
+  application: string
+  powderWeight: string
+  lastTopUpAt_unix: number
+  criticalPowderWeight: string
   remarks: string
   customInventoryDesignation: string
   qrCode: string
@@ -562,6 +586,7 @@ export type ItemType =  | GunType
                         | ReloadingType_Bullet
                         | ReloadingType_Case
                         | ReloadingType_Primer
+                        | ReloadingType_Powder
 
 export type CollectionType =  | "gunCollection" 
                               | "ammoCollection" 
@@ -578,6 +603,7 @@ export type CollectionType =  | "gunCollection"
                               | "reloadingCollection_Bullet"
                               | "reloadingCollection_Case"
                               | "reloadingCollection_Primer"
+                              | "reloadingCollection_Powder"
 
 export type Screens = "itemCollection"
 
@@ -785,6 +811,11 @@ export type SortingTypesReloading_Primer =  | "alphabetical"
                                             | "lastModifiedAt" 
                                             | "currentStock" 
 
+export type SortingTypesReloading_Powder =  | "alphabetical" 
+                                            | "createdAt" 
+                                            | "lastModifiedAt" 
+                                            | "currentStock" 
+
 export type SortingTypes =  | SortingTypesGun 
                             | SortingTypesAmmo 
                             | SortingTypesAccessory_Silencer
@@ -800,6 +831,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesReloading_Bullet
                             | SortingTypesReloading_Case
                             | SortingTypesReloading_Primer
+                            | SortingTypesReloading_Powder
 
                             
 export type Languages = | "de" 
