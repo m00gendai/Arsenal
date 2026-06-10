@@ -2,7 +2,7 @@ import * as schema from "../../db/schema"
 import { asc, desc, sql } from 'drizzle-orm';
 import { SortingTypesReloading_Primer } from "../../lib/interfaces";
 
-export default function sortReloadingCollection_Case(direction: "asc" | "desc", sortBy:SortingTypesReloading_Primer){
+export default function sortReloadingCollection_Primer(direction: "asc" | "desc", sortBy:SortingTypesReloading_Primer){
 
     const ascending = direction === "asc"
         // subtitle is serial
