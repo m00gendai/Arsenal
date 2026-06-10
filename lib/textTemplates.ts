@@ -375,18 +375,18 @@ export const gunQuickShot:GunQuickShot = {
         ch: "Muniziun da plantadi"  
     },
     errorNoAmountDefined:{
-        de: "Achtung: Kein Bestand dieses Kalibers definiert!", 
-        en: "Ammunition from stock",
-        fr: "Munitions de stocks",
-        it: "Munizioni di scorta",
-        ch: "Muniziun da plantadi"  
+        de: "Achtung: Kein Bestand definiert!", 
+        en: "Warning: No inventory defined!",
+        fr: "Attention: aucun stock défini!",
+        it: "Attenzione: nessuna giacenza definita!",
+        ch: "Attenziun: nagin stoc definì!"  
     },
     errorAmountTooLow:{
-        de: "Achtung: Bestand dieses Kalibers ({{AMOUNT}}) ist weniger als der eingegebene Verbrauch!", 
-        en: "Ammunition from stock",
-        fr: "Munitions de stocks",
-        it: "Munizioni di scorta",
-        ch: "Muniziun da plantadi"  
+        de: "Achtung: Bestand ({{AMOUNT}}) ist weniger als der eingegebene Verbrauch!", 
+        en: "Warning: Stock ({{AMOUNT}}) is less than the entered amount!",
+        fr: "Attention: le stock ({{AMOUNT}}) est inférieur à la consommation saisie!",
+        it: "Attenzione: la giacenza ({{AMOUNT}}) è inferiore al consumo inserito!",
+        ch: "Attenziun: il stoc ({{AMOUNT}}) è pli pitschen che la consumaziun endatada!"  
     }
 }
 
