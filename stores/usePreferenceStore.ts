@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -21,6 +21,7 @@ interface GeneralSettings{
   displayImagesInListViewReloading_Bullet: boolean
   displayImagesInListViewReloading_Case: boolean
   displayImagesInListViewReloading_Primer: boolean
+  displayImagesInListViewReloading_Powder: boolean
   resizeImages: boolean
   loginGuard: boolean
   emptyFields: boolean
@@ -48,6 +49,7 @@ interface DisplaySettings{
   reloadingCollection_Bullet: DisplayVariants
   reloadingCollection_Case: DisplayVariants
   reloadingCollection_Primer: DisplayVariants
+  reloadingCollection_Powder: DisplayVariants
   accessoryView: DisplayVariants
 }
 
@@ -67,6 +69,7 @@ export interface SorterSettings{
   reloadingCollection_Bullet: {type: SortingTypesReloading_Bullet, direction: "asc" | "desc", icon: string}
   reloadingCollection_Case: {type: SortingTypesReloading_Case, direction: "asc" | "desc", icon: string}
   reloadingCollection_Primer: {type: SortingTypesReloading_Primer, direction: "asc" | "desc", icon: string}
+  reloadingCollection_Powder: {type: SortingTypesReloading_Powder, direction: "asc" | "desc", icon: string}
 }
 
 interface FilterState{
@@ -85,6 +88,7 @@ interface FilterState{
   reloadingCollection_Bullet: boolean
   reloadingCollection_Case: boolean
   reloadingCollection_Primer: boolean
+  reloadingCollection_Powder: boolean
 }
 
 export interface PreferredUnits{
@@ -92,6 +96,7 @@ export interface PreferredUnits{
   generalWeightUnit: string
   bulletWeightUnit: string
   powderWeightUnit: string
+  criticalPowderWeightUnit: string
   generalLengthUnit: string
   barrelLengthUnit: string
   caseLengthUnit: string
@@ -134,6 +139,7 @@ const initialState:InitialStoreState = {
       displayImagesInListViewReloading_Bullet: true,
       displayImagesInListViewReloading_Case: true,
       displayImagesInListViewReloading_Primer: true,
+      displayImagesInListViewReloading_Powder: true,
       resizeImages: true,
       loginGuard: false,
       emptyFields: false,
@@ -160,6 +166,7 @@ const initialState:InitialStoreState = {
       reloadingCollection_Bullet: "grid",
       reloadingCollection_Case: "grid",
       reloadingCollection_Primer: "grid",
+      reloadingCollection_Powder: "grid",
       accessoryView: "grid"
     },
     preferredUnits: {
@@ -167,6 +174,7 @@ const initialState:InitialStoreState = {
       generalWeightUnit: "gr",
       bulletWeightUnit: "gr",
       powderWeightUnit: "g",
+      criticalPowderWeightUnit: "g",
       generalLengthUnit: "cm",
       barrelLengthUnit: "in",
       caseLengthUnit: "in",
@@ -186,7 +194,8 @@ const initialState:InitialStoreState = {
       reloadingCollection_Die: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Bullet: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
-      reloadingCollection_Primer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"}
+      reloadingCollection_Primer: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      reloadingCollection_Powder: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"}
     },
     caliberDisplayNameList: [],
     filterOn: {
@@ -205,6 +214,7 @@ const initialState:InitialStoreState = {
       reloadingCollection_Bullet: false,
       reloadingCollection_Case: false,
       reloadingCollection_Primer: false,
+      reloadingCollection_Powder: false,
     },
     hasCheckedForLegacyGunData: false,
     hasCheckedForLegacyAmmoData: false,

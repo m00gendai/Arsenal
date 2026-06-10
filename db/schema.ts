@@ -714,6 +714,38 @@ export const reloading_PrimerTags = sqliteTable("reloading_primerTags", {
     active: integer("active", {mode: "boolean"}).default(true),
 })
 
+export const reloadingCollection_Powder = sqliteTable("reloading_powder", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    lastModifiedAt: integer("lastModifiedAt"),
+    images: text("images", {mode: "json"}),
+    tags: text("tags", {mode: "json"}),
+    manufacturer: text("manufacturer"),
+    designation: text('name').notNull(),
+    texture: text("texture"),
+    application: text("application"),
+    powderWeight: text("powderWeight"), // behaves like currentStock but needs this designation for unit conversion
+    lastTopUpAt_unix: integer("lastTopUpAt_unix"),
+    criticalPowderWeight: text("criticalPowderWeight"), // behaves like criticalStock but needs this designation for unit conversion
+    remarks: text("remarks"),
+    customInventoryDesignation: text("customInventoryDesignation"),
+    qrCode: text("qrCode"),
+    sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
+    sold_sellDate_unix: integer("sold_sellDate_unix"),
+    sold_buyerName: text("sold_buyerName"),
+    sold_sellPrice: text("sold_sellprice"),
+    sold_buyerPermit: text("sold_buyerPermit"),
+    sold_remarks: text("sold_remarks")
+})
+
+export const reloading_PowderTags = sqliteTable("reloading_powderTags", {
+    db_id: integer('id').primaryKey().notNull(),
+    label: text("label").notNull().unique("powderTag_label"),
+    color: text("color"),
+    active: integer("active", {mode: "boolean"}).default(true),
+})
+
 export const autocomplete = sqliteTable("autocomplete",{
     db_id: integer('id').primaryKey().notNull(),
     id: text("uuid").notNull(),

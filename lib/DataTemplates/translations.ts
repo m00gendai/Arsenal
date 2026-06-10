@@ -70,6 +70,10 @@ interface DataTemplateTranslations {
     primer: DataTemplateTranslation
     caseLength: DataTemplateTranslation
     type: DataTemplateTranslation
+    texture: DataTemplateTranslation
+    application: DataTemplateTranslation
+    powderWeight: DataTemplateTranslation
+    criticalPowderWeight: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -642,6 +646,38 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Type",
         it: "Tipo",
         ch: "Tip"
+    },
+    "powderWeight": { // behaves like current stock, thus the translations for it
+        name: "powderWeight",
+        de: "Aktuelle Menge",
+        en: "Current stock",
+        fr: "Montant actuel",
+        it: "Quantità attuale",
+        ch: "Quantitad actuala",
+    },
+    "criticalPowderWeight": { // behaves like critical stock, thus the translations for it
+        name: "criticalPowderWeight",
+        de: "Kritische Menge",
+        en: "Critical stock",
+        fr: "Quantité critique",
+        it: "Scorta critica",
+        ch: "Quantitad critica",
+    },
+    "texture": {
+        name: "texture",
+        de: "Beschaffenheit",
+        en: "Texture",
+        fr: "Texture",
+        it: "Struttura",
+        ch: "Textura"
+    },
+    "application": {
+        name: "application",
+        de: "Anwendungsbereich",
+        en: "Application Scope",
+        fr: "Domaine d’application",
+        it: "Campo d’impiego",
+        ch: "Champ d'applicaziun"
     }
 }
 
