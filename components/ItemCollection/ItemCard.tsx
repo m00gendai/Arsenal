@@ -20,7 +20,7 @@ interface Props{
 
 export default function ItemCard({ item }:Props){
 
-    const { displaySettings, language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
+    const { displaySettings, language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
     const { setCurrentItem, currentCollection } = useItemStore()  
     const { setHideBottomSheet, setCardOptionsMenuVisible } = useViewStore()
     const { accessoryMount, partMount } = useDatabaseStore()
@@ -79,7 +79,11 @@ export default function ItemCard({ item }:Props){
         if(isDanger){
             return isDanger
         }
-        isDanger = "currentStock" in item && "criticalStock" in item && item.currentStock && item.criticalStock ? Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? true : false : false
+        isDanger = "currentStock" in item && "criticalStock" in item && item.currentStock && item.criticalStock ? 
+                        Number(item.currentStock.toString()) <= Number(item.criticalStock.toString()) ? true : false : 
+                    "powderWeight" in item && "criticalPowderWeight" in item && item.powderWeight && item.criticalPowderWeight ? 
+                        Number(item.powderWeight.toString()) <= Number(item.criticalPowderWeight.toString()) ? true : false : 
+                    false
         return isDanger
     }
 
@@ -144,7 +148,7 @@ export default function ItemCard({ item }:Props){
                                 color: theme.colors.onSurfaceVariant,
                             }}
                             title={determineCardTitle(currentCollection, item, language)}
-                            subtitle={determineCardSubtitle(currentCollection, item, language, caliberDisplayNameList)} 
+                            subtitle={determineCardSubtitle(currentCollection, item, language, caliberDisplayNameList, preferredUnits)} 
                             titleVariant={displaySettings[currentCollection] === "compactList" ? "bodySmall" : "titleSmall"}
                             subtitleVariant={displaySettings[currentCollection] === "compactList" ? "labelSmall" : "bodySmall"}
                             titleNumberOfLines={displaySettings[currentCollection] === "compactList" ? 1 : 2} 
@@ -330,7 +334,7 @@ export default function ItemCard({ item }:Props){
                                 color: theme.colors.onSurfaceVariant,
                             }}
                             title={determineCardTitle(currentCollection, item, language)}
-                            subtitle={determineCardSubtitle(currentCollection, item, language, caliberDisplayNameList)} 
+                            subtitle={determineCardSubtitle(currentCollection, item, language, caliberDisplayNameList, preferredUnits)} 
                             titleVariant={displaySettings[currentCollection] === "compactList" ? "bodySmall" : "titleSmall"}
                             subtitleVariant={displaySettings[currentCollection] === "compactList" ? "labelSmall" : "bodySmall"}
                             titleNumberOfLines={displaySettings[currentCollection] === "compactList" ? 1 : 2} 
