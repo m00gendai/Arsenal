@@ -19,7 +19,6 @@ export default function Settings_Units(){
     const [generalWeightUnit, setGeneralWeightUnit] = useState<string>(preferredUnits.generalWeightUnit)
     const [selectedBulletWeight, setSelectedBulletWeight] = useState<string>(preferredUnits.bulletWeightUnit)
     const [selectedPowderWeight, setSelectedPowderWeight] = useState<string>(preferredUnits.powderWeightUnit)
-
     const [generalLengthUnit, setGeneralLengthUnit] = useState<string>(preferredUnits.generalLengthUnit)
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>(preferredUnits.barrelLengthUnit)
     const [caseLengthUnit, setCaseLengthUnit] = useState<string>(preferredUnits.caseLengthUnit)
@@ -32,6 +31,7 @@ export default function Settings_Units(){
                 generalWeightUnit: generalWeightUnit,
                 bulletWeightUnit: selectedBulletWeight,
                 powderWeightUnit: selectedPowderWeight,
+                criticalPowderWeightUnit: selectedPowderWeight,
                 generalLengthUnit: generalLengthUnit,
                 barrelLengthUnit: barrelLengthUnit,
                 caseLengthUnit: caseLengthUnit
