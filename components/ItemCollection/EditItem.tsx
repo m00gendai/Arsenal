@@ -79,6 +79,7 @@ export default function EditGun({navigation}){
     },[itemData])
 
     async function save(item: ItemType) {
+        console.log("save")
         const validationResult:{field: string, error: string}[] = itemDataValidation(currentCollection, item, language)
         if(validationResult.length != 0){
             Alert.alert(validationFailedAlert.title[language], `${validationResult.map(result => `${result.field}: ${result.error}`)}`, [
@@ -113,23 +114,30 @@ export default function EditGun({navigation}){
                 field: key
             }).onConflictDoNothing();
         }
-        
+    try {
         for (const [key, value] of Object.entries(item)) {
             if(key !== "lastModifiedAt" && item[key] !== itemDataCompare[key]){
+
                 await db.insert(schema.logger).values({
                     id: uuidv4(),
                     createdAt: Date.now(), 
                     reference: currentItem.id,
                     collection: currentCollection,
                     changedField: key,
-                    value_old: itemDataCompare[key],
-                    value_new: item[key],
+                    value_old: Array.isArray(itemDataCompare[key]) 
+                        ? JSON.stringify(itemDataCompare[key]) 
+                        : itemDataCompare[key],
+                    value_new: Array.isArray(item[key]) 
+                        ? JSON.stringify(item[key]) 
+                        : item[key],
                     snapshot: JSON.stringify(item)
                 })
 
             }
         }
-        
+    }catch(e){
+         console.error(`Error saving to history: ${e}`)
+    }
         setSaveState(true)
         setAlohaSnackbarText(`${"manufacturer" in item && item.manufacturer ? item.manufacturer : ""} ${"model" in item ? item.model : "designation" in item ?  item.designation : item.title} ${toastMessages.changed[language]}`)
         setAlohaSnackbarVisible(true)
@@ -386,7 +394,7 @@ function swapItems(arr: string[], from: number, to: number){
                 <Appbar.BackAction  onPress={() => navigation.goBack()} />
                 <Appbar.Content title={determineEditItemTitle(currentCollection)[language]} />
                 <Appbar.Action icon="delete" onPress={()=>toggleDialogVisible(!dialogVisible)} color='red'/>
-                <Appbar.Action icon="floppy" onPress={() => save({...itemData, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
+                <Appbar.Action icon="floppy" onPress={() => save({...itemData, images: selectedImage, lastModifiedAt: new Date().getTime()})} color={saveState === null ? theme.colors.onBackground : saveState === false ? theme.colors.error : "green"}/>
             </Appbar>
             <View style={styles.container}>
                 <ScrollView style={{width: "100%"}}>
