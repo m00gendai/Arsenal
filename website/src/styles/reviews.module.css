@@ -1,0 +1,41 @@
+.wrapper{
+    position: relative;
+    width: 100%;
+    display: grid;
+}
+
+.container{
+    position: relative;
+    grid-area: 1 / 1;  /* same cell */
+    background: transparent;
+    padding: 1rem;
+    position: relative;
+    width: 100%;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+}
+
+.container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.inner{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: max-content;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    grid-area: 1 / 1;  /* same cell */
+    position: relative;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: inset 4rem 0 2rem -4rem var(--background),
+                inset -4rem 0 2rem -4rem var(--background);
+}
