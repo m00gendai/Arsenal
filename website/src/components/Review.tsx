@@ -14,7 +14,7 @@ export default function Review({review, language}:Props){
             <p className={s.title}>{review.title[language]}</p>
             <p className={s.text}>{review.body[language]}</p>
             </div>
-            {language !== review.originalLanguage ? <p className={s.translated}>{`Translated from ${review.originalLanguage}`}</p> : null}
+            {language !== review.originalLanguage ? <div className={s.translated}><p>{`Translated from `}</p><div className={s.flag} id={s.flag_de} aria-label="Deutsch"></div></div> : null}
         </div>
     )
 }
