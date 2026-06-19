@@ -5,8 +5,17 @@ import Gallery from '../../components/Gallery';
 import SalesPitch from '../../text/salesPitch_IT.mdx';
 import Layout_Body from '../../layouts/Layout_Body.astro';
 import type { Language } from '../../types/types_global';
+import { claude_prompt } from "../../utils/claude_prompt";
+
 
 const language = Astro.currentLocale as Language
+
+let reviewTranslations = null
+try{
+	reviewTranslations = await claude_prompt(language);
+}catch(e){
+	console.error(e)
+}
 ---
 
 <Layout_Body language={language} >
@@ -16,7 +25,7 @@ const language = Astro.currentLocale as Language
 	<Appstores language={language} />
 
 	<section class="content" id="home">
-		<SalesPitch />
+		<SalesPitch reviewTranslations={reviewTranslations} language={language}/>
 	</section>
 
 	<Gallery language={language} />

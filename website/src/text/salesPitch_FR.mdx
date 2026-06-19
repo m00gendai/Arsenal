@@ -1,7 +1,11 @@
+import Reviews from '../components/Reviews.tsx';
+
 # Arsenal - L’application suisse pour les collectionneurs d’armes
 
 Arsenal est **le gestionnaire d’inventaire d’armes à feu et de collection d’armes** pour les collectionneurs sérieux, développé en Suisse.\
 Suivez vos armes, votre stock de munitions et vos accessoires - **entièrement hors ligne, achat unique (seulement 5 CHF), sans abonnement**.
+
+<Reviews client:only="react" reviewTranslations={props.reviewTranslations} language={props.language} />
 
 Crée une grande variété de **collections**, avec photos et de nombreux paramètres :
 - Armes
