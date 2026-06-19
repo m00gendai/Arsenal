@@ -57,8 +57,9 @@ export async function claude_prompt(language:Language){
         })
         
         const msg = await anthropic.messages.create({
-            model: "claude-opus-4-8",
+            model: "claude-sonnet-4-6",
             max_tokens: 20000,
+            cache_control: { type: "ephemeral" },
             system: "Context are appstore reviews for a gun collection management app. You receive a stringified review JSON object array. Translate the title and body value string to each (swiss) French, (Swiss) Italian, (american) Englisch and German. Keep the incoming string verbatim for its respective language. return a new JSON object array with schema {rating: number, title: {de: string, fr: string, en: string, it: string}, body: {de: string, fr: string, en: string, it: string}, territory: string, createdDate: string, reviewerNickname: string, originalLanguage: [ISO 2 letter country code of input language]}. Respond with raw JSON only. No markdown, no backticks, no explanation.",
             messages: [
                 {
@@ -71,14 +72,10 @@ export async function claude_prompt(language:Language){
                         ]
                 }
             ],
-            thinking: {
-                "type": "adaptive"
-            }
         })
 
         const json = msg.content.filter(content => content.type === "text")[0].text
         cache = JSON.parse(json);
-
     } else {
         console.log("claude_prompt: returning cached response");
     }
