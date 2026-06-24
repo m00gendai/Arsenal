@@ -19,9 +19,9 @@ export default function Settings_Units(){
     const [generalWeightUnit, setGeneralWeightUnit] = useState<string>(preferredUnits.generalWeightUnit)
     const [selectedBulletWeight, setSelectedBulletWeight] = useState<string>(preferredUnits.bulletWeightUnit)
     const [selectedPowderWeight, setSelectedPowderWeight] = useState<string>(preferredUnits.powderWeightUnit)
-
     const [generalLengthUnit, setGeneralLengthUnit] = useState<string>(preferredUnits.generalLengthUnit)
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>(preferredUnits.barrelLengthUnit)
+    const [caseLengthUnit, setCaseLengthUnit] = useState<string>(preferredUnits.caseLengthUnit)
 
     useEffect(()=>{
         async function saveUnits(){
@@ -31,8 +31,10 @@ export default function Settings_Units(){
                 generalWeightUnit: generalWeightUnit,
                 bulletWeightUnit: selectedBulletWeight,
                 powderWeightUnit: selectedPowderWeight,
+                criticalPowderWeightUnit: selectedPowderWeight,
                 generalLengthUnit: generalLengthUnit,
-                barrelLengthUnit: barrelLengthUnit
+                barrelLengthUnit: barrelLengthUnit,
+                caseLengthUnit: caseLengthUnit
             }
         
             const newPreferences:{[key:string] : string} = preferences == null ? {
@@ -46,7 +48,7 @@ export default function Settings_Units(){
             setPreferredUnits(onboardingPreferences)
         }
         saveUnits()
-    },[generalLengthUnit, barrelLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency])
+    },[generalLengthUnit, barrelLengthUnit, caseLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency])
 
     const weightData = weightUnits.map(unit => {
             return(
@@ -110,6 +112,14 @@ export default function Settings_Units(){
             fr: "Unité de longueur du canon",
             it: "Unità di lunghezza della canna",
             ch: "Unitad da lunghezza dal chanal",
+        }
+
+        const lengthLabelCase: SimpleTranslation = {
+            de: "Einheit OAL (Patronengesamtlänge)",
+            en: "Unit OAL (Overall Cartridge Length)",
+            fr: "Unité OAL (Longueur totale de la cartouche)",
+            it: "Unità OAL (Lunghezza totale della cartuccia)",
+            ch: "Unitad OAL (Lunghezza totala da la cartuscha)",
         }
     
 
@@ -176,6 +186,16 @@ export default function Settings_Units(){
                                 options={lengthData}
                                 value={barrelLengthUnit}
                                 onSelect={setBarrelLengthUnit}
+                                menuContentStyle={{height: "100%"}}
+                            />
+                        </View>
+
+                        <View style={{width: "100%"}}>
+                            <Dropdown
+                                label={lengthLabelCase[language]}
+                                options={lengthData}
+                                value={caseLengthUnit}
+                                onSelect={setCaseLengthUnit}
                                 menuContentStyle={{height: "100%"}}
                             />
                         </View>

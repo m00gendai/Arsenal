@@ -17,6 +17,8 @@ interface Props{
     setGeneralLengthUnit: React.Dispatch<React.SetStateAction<string>>
     barrelLengthUnit: string
     setBarrelLengthUnit: React.Dispatch<React.SetStateAction<string>>
+    caseLengthUnit: string
+    setCaseLengthUnit: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function Onboarding_WeightSelect(
@@ -30,7 +32,9 @@ export default function Onboarding_WeightSelect(
         generalLengthUnit, 
         setGeneralLengthUnit,
         barrelLengthUnit,
-        setBarrelLengthUnit
+        setBarrelLengthUnit,
+        caseLengthUnit,
+        setCaseLengthUnit
     }: 
 Props){
 
@@ -72,6 +76,14 @@ Props){
         ch: "Unitad da lunghezza dal chanal",
     }
 
+    const lengthLabelCase: SimpleTranslation = {
+        de: "Einheit OAL (Patronengesamtlänge)",
+        en: "Unit OAL (Overall Cartridge Length)",
+        fr: "Unité OAL (Longueur totale de la cartouche)",
+        it: "Unità OAL (Lunghezza totale della cartuccia)",
+        ch: "Unitad OAL (Lunghezza totala da la cartuscha)",
+    }
+
     const weightLabelBulletWeight: SimpleTranslation = {
         de: "Einheit Geschossgewicht",
         en: "Unit Bullet Weight",
@@ -97,7 +109,7 @@ Props){
     }
     
     return(
-         <View>
+         <View style={{paddingBottom: defaultViewPadding}}>
             <Dropdown
                 label={weightLabelGeneral[language]}
                 options={weightData}
@@ -137,6 +149,14 @@ Props){
                 options={lengthData}
                 value={barrelLengthUnit}
                 onSelect={setBarrelLengthUnit}
+                menuContentStyle={{height: "100%"}}
+            />
+
+            <Dropdown
+                label={lengthLabelCase[language]}
+                options={lengthData}
+                value={caseLengthUnit}
+                onSelect={setCaseLengthUnit}
                 menuContentStyle={{height: "100%"}}
             />
 

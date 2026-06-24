@@ -66,6 +66,14 @@ interface DataTemplateTranslations {
     group: DataTemplateTranslation
     partNumber: DataTemplateTranslation
     shellHolder: DataTemplateTranslation
+    ballisticCoefficient: DataTemplateTranslation
+    primer: DataTemplateTranslation
+    caseLength: DataTemplateTranslation
+    type: DataTemplateTranslation
+    texture: DataTemplateTranslation
+    application: DataTemplateTranslation
+    powderWeight: DataTemplateTranslation
+    criticalPowderWeight: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -607,6 +615,70 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "Porta bossolo", 
         ch: "Tegnider da cartutsch"
     },
+    "ballisticCoefficient": {
+        name: "ballisticCoefficient",
+        de: "Ballistik-Koeffizient",
+        en: "Ballistic Coefficient",
+        fr: "Coefficient Balistique",
+        it: "Coefficiente Balistico",
+        ch: "Boeffizient Ballistic"
+    },
+    "primer": {
+        name: "primer",
+        de: "Zündhütchen",
+        en: "Primers",
+        fr: "Amorces",
+        it: "Capsule",
+        ch: "Chamona d'envidar", 
+    },
+    "caseLength": {
+        name: "caseLength",
+        de: "OAL (Patronengesamtlänge)",
+        en: "OAL (Overall Cartridge Length)",
+        fr: "OAL (Longueur totale de la cartouche)",
+        it: "OAL (Lunghezza totale della cartuccia)",
+        ch: "OAL (Lunghezza totala da la cartuscha)",
+    },
+    "type": {
+        name: "type",
+        de: "Art",
+        en: "Type",
+        fr: "Type",
+        it: "Tipo",
+        ch: "Tip"
+    },
+    "powderWeight": { // behaves like current stock, thus the translations for it
+        name: "powderWeight",
+        de: "Aktuelle Menge",
+        en: "Current stock",
+        fr: "Montant actuel",
+        it: "Quantità attuale",
+        ch: "Quantitad actuala",
+    },
+    "criticalPowderWeight": { // behaves like critical stock, thus the translations for it
+        name: "criticalPowderWeight",
+        de: "Kritische Menge",
+        en: "Critical stock",
+        fr: "Quantité critique",
+        it: "Scorta critica",
+        ch: "Quantitad critica",
+    },
+    "texture": {
+        name: "texture",
+        de: "Beschaffenheit",
+        en: "Texture",
+        fr: "Texture",
+        it: "Struttura",
+        ch: "Textura"
+    },
+    "application": {
+        name: "application",
+        de: "Anwendungsbereich",
+        en: "Application Scope",
+        fr: "Domaine d’application",
+        it: "Campo d’impiego",
+        ch: "Champ d'applicaziun"
+    }
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {
