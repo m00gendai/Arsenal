@@ -3,7 +3,7 @@ import { CollectionType, ItemType } from "lib/interfaces";
 import { useEffect, useState } from "react";
 import { SectionList, TouchableOpacity, View } from "react-native";
 import { Icon, Text } from 'react-native-paper';
-import { colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, ignoreIntervalFieldsForLogger, intervalPickerTriggerFields } from "configs/configs";
+import { colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, ignoreIntervalFieldsForLogger, intervalPickerTriggerFields, unitFields_Length, unitFields_Weight } from "configs/configs";
 import { DisplayVariants, usePreferenceStore } from "stores/usePreferenceStore";
 import ItemCard_accessories from "./ItemCard_accessories";
 import * as schema from "db/schema"
@@ -12,7 +12,7 @@ import { useViewStore } from "stores/useViewStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PREFERENCES } from "configs/configs_DB";
 import { tabBarLabels } from "lib/Text/text_tabBarLabels";
-import { parseDate } from "functions/utils";
+import { convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, parseDate } from "functions/utils";
 import { dataTemplate_TranslationCheckboxes, dataTemplate_Translations_Unified } from "lib/DataTemplates/translations";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 
@@ -23,7 +23,7 @@ interface Props{
 
 export default function Item_History({ currentItem, currentCollection }: Props) {
 
-    const { language, theme } = usePreferenceStore()
+    const { language, theme, preferredUnits } = usePreferenceStore()
 
     const [loggerData, setLoggerData] = useState([])
 
@@ -67,6 +67,12 @@ export default function Item_History({ currentItem, currentCollection }: Props) 
     }
     if(field === "cleanIntervalDisplay"){
       return getCleanIntervalDisplayValue(value)
+    }
+    if(unitFields_Weight.includes(field)){
+      return convertWeightUnitsToPreferredUnit(preferredUnits, field, value)
+    }
+    if(unitFields_Length.includes(field)){
+      return convertLengthUnitsToPreferredUnit(preferredUnits, field, value)
     }
     return value
   }
