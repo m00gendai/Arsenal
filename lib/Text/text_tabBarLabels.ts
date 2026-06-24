@@ -157,7 +157,7 @@ export const tabBarLabels: TabBarLabels = {
     },
     powderCollection: {
         de: "Pulver",
-        en: "Poweder",
+        en: "Powder",
         fr: "Poudre",
         it: "Polvere",
         ch: "Pulvrus", 
