@@ -1,7 +1,7 @@
 import { ReloadingType_Case } from "lib/interfaces"
 import { SimpleTranslation } from "lib/textTemplates";
 import { dataTemplate_TranslationRemarks, dataTemplate_Translations, dataTemplate_TranslationSoldisSold, dataTemplate_TranslationSoldTranslations, DataTemplateTranslation } from "./translations";
-import { excludedKeysForDataTemplates } from "configs/configs";
+import { excludedKeysForDataTemplates } from "../../configs/configs";
 
 type TemplateKeys = keyof Omit<ReloadingType_Case, "id" | "createdAt" | "lastModifiedAt" | "db_id" | "tags" | "images" | "remarks">;
 
