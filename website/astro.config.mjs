@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import react from "@astrojs/react";
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
@@ -35,6 +35,14 @@ export default defineConfig({
   vite: {
     esbuild: {
       tsconfigRaw: {}
+    },
+  },
+  env: {
+    schema: {
+      ANTHROPIC_API_KEY: { context: "server", access: "secret", type: "string" },
+      APPSTORE_ISSUER_ID: { context: "server", access: "secret", type: "string" },
+      APPSTORE_CONNECT_ID: { context: "server", access: "secret", type: "string" },
+      APPSTORE_PRIVATE_KEY: { context: "server", access: "secret", type: "string" },
     },
   },
 });
