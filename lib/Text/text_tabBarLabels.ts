@@ -13,14 +13,18 @@ interface TabBarLabels{
     miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
     dieCollection: SimpleTranslation
-    /*printMagazineCollection: SimpleTranslation
-    swissMilitaryRegulationCollection: SimpleTranslation
-    literatureMiscCollection: SimpleTranslation
-    diesCollection: SimpleTranslation
     bulletCollection: SimpleTranslation
     caseCollection: SimpleTranslation
     primerCollection: SimpleTranslation
     powderCollection: SimpleTranslation
+    /*printMagazineCollection: SimpleTranslation
+    swissMilitaryRegulationCollection: SimpleTranslation
+    literatureMiscCollection: SimpleTranslation
+    diesCollection: SimpleTranslation
+    
+    
+    
+    
     reloadingMiscCollection: SimpleTranslation*/
 }
 
@@ -129,7 +133,7 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Outils",
         it: "Ricaricare le cartucce",
         ch: "Matriza", 
-    },/*
+    },
     bulletCollection: {
         de: "Geschosse",
         en: "Bullets",
@@ -153,11 +157,11 @@ export const tabBarLabels: TabBarLabels = {
     },
     powderCollection: {
         de: "Pulver",
-        en: "Poweder",
+        en: "Powder",
         fr: "Poudre",
         it: "Polvere",
         ch: "Pulvrus", 
-    },
+    },/*
     reloadingMiscCollection: {
         de: "Diverses",
         en: "Miscellaneous",

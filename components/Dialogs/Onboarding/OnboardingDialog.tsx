@@ -26,6 +26,7 @@ export default function OnboardingDialog(){
 
     const [generalLengthUnit, setGeneralLengthUnit] = useState<string>("cm")
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>("in")
+    const [caseLengthUnit, setCaseLengthUnit] = useState<string>("in")
 
     const titles = [
         {
@@ -60,7 +61,8 @@ export default function OnboardingDialog(){
             bulletWeightUnit: selectedBulletWeight,
             powderWeightUnit: selectedPowderWeight,
             generalLengthUnit: generalLengthUnit,
-            barrelLengthUnit: barrelLengthUnit
+            barrelLengthUnit: barrelLengthUnit,
+            caseLengthUnit: caseLengthUnit
         }
         
         const newPreferences:{[key:string] : string} = preferences == null ? {
@@ -146,6 +148,8 @@ export default function OnboardingDialog(){
                                     setGeneralLengthUnit={setGeneralLengthUnit} 
                                     barrelLengthUnit={barrelLengthUnit}
                                     setBarrelLengthUnit={setBarrelLengthUnit}
+                                    caseLengthUnit={caseLengthUnit}
+                                    setCaseLengthUnit={setCaseLengthUnit}
                                     generalWeightUnit={generalWeightUnit} 
                                     setGeneralWeightUnit={setGeneralWeightUnit} 
                                     selectedBulletWeight={selectedBulletWeight} 

@@ -15,6 +15,10 @@ import { emptyBookObject } from "../../../lib/DataTemplates/literatureDataTempla
 import { emptyBarrelObject } from "../../../lib/DataTemplates/partDataTemplate_Barrel"
 import { emptyConversionKitObject } from "../../../lib/DataTemplates/partDataTemplate_ConversionKit"
 import { emptyDieObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Die"
+import { emptyCaseObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Case"
+import { emptyBulletObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Bullet"
+import { emptyPrimerObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Primer"
+import { emptyPowderObject, powderRemarks } from "../../../lib/DataTemplates/reloadingDataTemplate_Powder"
 
 
 interface Section{
@@ -34,18 +38,22 @@ export const title: SimpleTranslation ={
     it: "Dettagli"
 }
 
-const gunCollection = dataTemplateConverter(emptyGunObject)
-const ammoCollection = dataTemplateConverter(emptyAmmoObject)
-const silencerCollection = dataTemplateConverter(emptySilencerObject)
-const lightLaserCollection = dataTemplateConverter(emptyLightLaserObject)
-const magazineCollection = dataTemplateConverter(emptyMagazineObject)
-const miscAccessoryCollection = dataTemplateConverter(emptyMiscAccessoryObject)
-const opticCollection = dataTemplateConverter(emptyOpticObject)
-const scopeCollection = dataTemplateConverter(emptyScopeObject)
-const bookCollection = dataTemplateConverter(emptyBookObject)
-const barrelCollection = dataTemplateConverter(emptyBarrelObject)
-const conversionCollection = dataTemplateConverter(emptyConversionKitObject)
-const dieCollection = dataTemplateConverter(emptyDieObject)
+const gunCollection             = dataTemplateConverter(emptyGunObject)
+const ammoCollection            = dataTemplateConverter(emptyAmmoObject)
+const silencerCollection        = dataTemplateConverter(emptySilencerObject)
+const lightLaserCollection      = dataTemplateConverter(emptyLightLaserObject)
+const magazineCollection        = dataTemplateConverter(emptyMagazineObject)
+const miscAccessoryCollection   = dataTemplateConverter(emptyMiscAccessoryObject)
+const opticCollection           = dataTemplateConverter(emptyOpticObject)
+const scopeCollection           = dataTemplateConverter(emptyScopeObject)
+const bookCollection            = dataTemplateConverter(emptyBookObject)
+const barrelCollection          = dataTemplateConverter(emptyBarrelObject)
+const conversionCollection      = dataTemplateConverter(emptyConversionKitObject)
+const dieCollection             = dataTemplateConverter(emptyDieObject)
+const bulletCollection          = dataTemplateConverter(emptyBulletObject)
+const caseCollection            = dataTemplateConverter(emptyCaseObject)
+const primerCollection          = dataTemplateConverter(emptyPrimerObject)
+const powderCollection          = dataTemplateConverter(emptyPowderObject)
 
 function getTranslatedData(fields: string[], lang: Language){
     const translations = Object.keys(dataTemplate_Translations)
@@ -117,6 +125,18 @@ function buildSectionReloading(lang: Language) {
         getTranslatedTitle("dieCollection", lang),
         getTranslatedData(dieCollection, lang),
         {name: "dieCollection"},
+        getTranslatedTitle("bulletCollection", lang),
+        getTranslatedData(bulletCollection, lang),
+        {name: "bulletCollection"},
+        getTranslatedTitle("caseCollection", lang),
+        getTranslatedData(caseCollection, lang),
+        {name: "caseCollection"},
+        getTranslatedTitle("primerCollection", lang),
+        getTranslatedData(primerCollection, lang),
+        {name: "primerCollection"},
+        getTranslatedTitle("powderCollection", lang),
+        getTranslatedData(powderCollection, lang),
+        {name: "powderCollection"},
     ]
 }
 

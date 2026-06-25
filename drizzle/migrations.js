@@ -25,6 +25,7 @@ import m0020 from './0020_sturdy_corsair.sql';
 import m0021 from './0021_wide_celestials.sql';
 import m0022 from './0022_wakeful_black_cat.sql';
 import m0023 from './0023_safe_lilandra.sql';
+import m0024 from './0024_redundant_zaran.sql';
 
   export default {
     journal,
@@ -52,7 +53,8 @@ m0019,
 m0020,
 m0021,
 m0022,
-m0023
+m0023,
+m0024
     }
   }
   

@@ -64,6 +64,26 @@ export function useItemTags(type: CollectionType) {
         .from(schema.reloading_DieTags)
     )
 
+    const { data: reloadingTags_Bullet } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_BulletTags)
+    )
+
+    const { data: reloadingTags_Case } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_CaseTags)
+    )
+
+    const { data: reloadingTagsPrimer } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_PrimerTags)
+    )
+
+    const { data: reloadingTagsPowder } = useLiveQuery(
+        db.select()
+        .from(schema.reloading_PowderTags)
+    )
+
     switch(type){
         case "gunCollection":
             return gunTags
@@ -89,5 +109,13 @@ export function useItemTags(type: CollectionType) {
             return literatureTags_Book
         case "reloadingCollection_Die":
             return reloadingTags_Die
+        case "reloadingCollection_Bullet":
+            return reloadingTags_Bullet
+        case "reloadingCollection_Case":
+            return reloadingTags_Case
+        case "reloadingCollection_Primer":
+            return reloadingTagsPrimer
+        case "reloadingCollection_Powder":
+            return reloadingTagsPowder
     }
 }

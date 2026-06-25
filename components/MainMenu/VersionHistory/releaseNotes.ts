@@ -10,6 +10,29 @@ export interface Version{
 
 export const versionHistory: Version[] = [
   {
+  "title": "V4.4.0",
+  "de": {
+    "text": "Neue Sammlungen:\nGeschosse, Hülsen, Zündhütchen und Pulver\nNeu: Diverse Schwarzpulver-Kaliber hinzugefügt\nBehoben: Kleinere Anpassungen und Fehlerbehebungen",
+    "ios": "Behoben: Bilder konnten nicht nachträglich bearbeitet werden",
+    "android": null
+    },
+    "en": {
+      "text": "New collections:\nBullets, Cases, Primers and Powder\nNew: Added various black powder calibers\nFixed: Minor improvements and bug fixes",
+      "ios": null,
+      "android": null
+    },
+    "fr": {
+      "text": "Nouvelles collections :\nProjectiles, Douilles, Amorces et Poudre\nNouveau : Ajout de plusieurs calibres à poudre noire\nCorrection : Ajustements mineurs et corrections de bugs",
+      "ios": null,
+      "android": null
+    },
+    "it": {
+      "text": "Nuove collezioni:\nProiettili, Bossoli, Inneschi e Polvere\nNovità: Aggiunti diversi calibri a polvere nera\nCorretto: Piccoli miglioramenti e correzioni di bug",
+      "ios": null,
+      "android": null
+    }
+  },
+  {
     "title": "V4.3.0",
     "de": {
       "text": `Behoben:\n- Artikel-5-PDFs ohne Legende\n- Kleinere Fehlerbehebungen\n\nNeu:\n- Verlauf für jeden Eintrag\n- Markieren von Eintrag als "verkauft"\n- PDFs sortiert wie in App\n- App merkt sich zuletzt angesehene Sammlung beim Schliessen\n- Kleinere Verbesserungen und neue Kaliber\n- Aufforderung zur Bewertung :)`,

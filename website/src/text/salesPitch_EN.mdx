@@ -1,7 +1,11 @@
+import Reviews from '../components/Reviews.tsx';
+
 # Arsenal - The Swiss App for Gun Collectors
 
 Arsenal is **the firearm inventory and gun collection manager** for serious collectors, made in Switzerland.\
 Track your guns, ammo stock, and accessories - **fully offline, one-time purchase (only 5 CHF), no subscription**.
+
+<Reviews client:only="react" reviewTranslations={props.reviewTranslations} language={props.language} />
 
 Create a wide variety of **collections**, with photos and many parameters:
 - Firearms
@@ -15,6 +19,7 @@ Create a wide variety of **collections**, with photos and many parameters:
 - Conversion Kits
 - Barrels
 - Books
+- Reloading Components
 - and new collections are added continuously!
 
 Each entry has a **history**, so every change can be tracked at any time. You can also record **sales**.
