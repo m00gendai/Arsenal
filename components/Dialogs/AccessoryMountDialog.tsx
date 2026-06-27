@@ -5,7 +5,7 @@ import { eq, ne, asc, sql, and} from 'drizzle-orm';
 import { db } from 'db/client';
 import * as schema from "db/schema"
 import { ScrollView, TouchableNativeFeedback, View } from "react-native"
-import { IconButton, List, Text } from "react-native-paper"
+import { Card, IconButton, List, RadioButton, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +18,7 @@ import { determineAccessoryIcons, determineCardSubtitle, determineCardTitle } fr
 import { toastMessages } from "lib/Text/text_toastMessages";
 import { modalTexts } from "lib/Text/text_modals";
 import { tabBarLabels } from "lib/Text/text_tabBarLabels";
+import * as FileSystem from 'expo-file-system/legacy';
 
 interface Props{
     data: string
@@ -30,7 +31,7 @@ interface Props{
 
 export default function AccessoryMountDialog({data, itemData, setItemData, showModal, setShowModal, setItemName}: Props){
 
-    const { language, theme, caliberDisplayNameList } = usePreferenceStore()
+    const { language, theme, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
     const { setAlohaSnackbarVisible } = useViewStore()
     const { currentItem, setCurrentItem, currentCollection, currentAccessory } = useItemStore()
     const { setAlohaSnackbarText } = useTextStore()
@@ -165,11 +166,8 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     )
 
     function getListItemBackgroundColor(id, index){
-        if(id === checked){
-            return theme.colors.tertiary
-        }  
         if(index % 2 !== 0){
-            return theme.colors.tertiaryContainer
+            return theme.colors.secondaryContainer
         }
         return theme.colors.background
     }
@@ -268,8 +266,27 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
     }
 
     function getListEntryTitle(collection: CollectionType, item: ItemType){
-        return `${determineCardTitle(collection, item, language)}\n${determineCardSubtitle(collection, item, language, caliberDisplayNameList)}`
+        return `${determineCardTitle(collection, item, language)}\n${determineCardSubtitle(collection, item, language, caliberDisplayNameList, preferredUnits)}`
     }
+
+    function validateImage(item:ItemType){
+            if(!item.images){
+                return false
+            }
+            if(!Array.isArray(item.images)){
+                return false
+            }
+            if(item.images.length === 0){
+                return false
+            }
+            if(!item.images[0]){
+                return false
+            }
+            if(item.images[0].split("/").pop() === ""){
+                return false
+            }
+            return true
+        }
     
     return(
         <ModalContainer
@@ -289,22 +306,35 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         style={gunData.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
         titleStyle={gunData.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
         left={props => <List.Icon {...props} icon={determineAccessoryIcons("gunCollection")} color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}>
-        {gunData.map((item, index) =>{
+            {gunData.map((item, index) =>{
             return (
                 <TouchableNativeFeedback onPress={() => handleSelect(item.id, "guns")} key={item.id} >
                     <View 
+                    key={item.id} 
                         style={{
                             paddingLeft: defaultViewPadding, 
                             paddingRight: defaultViewPadding, 
                             backgroundColor: getListItemBackgroundColor(item.id, index), 
-                            width: "100%", 
+                            width: "100%",
                             display: "flex", 
                             flexDirection: "row", 
                             alignItems: "center", 
-                            marginBottom: index === gunData.length-1 ? 10 : 0
+                            marginBottom: index === gunData.length-1 ? 10 : 0,
                         }}
                     >
-                        <Text style={{padding: defaultViewPadding, width: "100%", color: item.id === checked ? theme.colors.onTertiary : ""}}>{getListEntryTitle("gunCollection", item as unknown as ItemType)}</Text>
+                        <Text style={{padding: defaultViewPadding, flex: 1}}>{getListEntryTitle("gunCollection", item as unknown as ItemType)}</Text>
+                        <View style={{width: "40%", padding: defaultViewPadding}}>
+                            <Card>
+                                <Card.Cover style={{height: 75}} source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} />
+                            </Card>
+                        </View>
+                        <View>
+                            <RadioButton.Android
+                                value={item.id}
+                                status={ checked === item.id ? 'checked' : 'unchecked' }
+                                onPress={() => handleSelect(item.id, "guns")}
+                            />
+                        </View>
                     </View>
                 </TouchableNativeFeedback>
             )
