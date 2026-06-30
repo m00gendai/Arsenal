@@ -29,6 +29,7 @@ interface PreferenceTitle{
     editData_customLabels: SimpleTranslation
     versionHistory: SimpleTranslation
     generateQRCodes: SimpleTranslation
+    countrySpecifics: SimpleTranslation
 }
 
 interface GeneralSettingsLabels{
@@ -245,6 +246,13 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Historique des versions",
         it: "Storia delle versioni",
         ch: "Istorgia da las versiuns"
+    },
+    countrySpecifics:{
+        de: "Länderspezifisch",
+        en: "Country Specific",
+        fr: "Spécifique au pays",
+        it: "Specifico per paese",
+        ch: "Specific per pajais"
     }
 }
 

@@ -840,6 +840,16 @@ export type Languages = | "de"
                         | "it" 
                         | "ch"
 
+export type SupportedCountries =  | "ch"
+                                  | "us"
+                                  | "--"
+
+export interface CountrySelection {
+  flag: string
+  name: {de: string, en: string, fr: string, it: string, ch: string}
+  iso: SupportedCountries
+}
+
 export type CaliberArray = {id: string, amount: string }
 
 export type DBOperations =  | "save_arsenal_db" 
