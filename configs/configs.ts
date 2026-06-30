@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer } from "../lib/interfaces"
+import { CollectionType, CommonStyles, CountrySelection, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -36,6 +36,30 @@ export const languageSelection:{flag:string, code:Languages}[] = [
     {flag: "🇫🇷", code: "fr"},
     {flag: "🇮🇹", code: "it"},
     {flag: "🇺🇸", code: "en"},
+]
+
+export const countrySelection:CountrySelection[] = [
+    {flag: "🇨🇭", name: {
+        de: "Schweiz",
+        en: "Switzerland",
+        fr: "Suisse",
+        it: "Svizzera",
+        ch: "Svizra"
+    }, iso: "ch"},
+    {flag: "🇺🇸", name: {
+        de: "Vereinigte Staaten von Amerika",
+        en: "United States of America",
+        fr: " États-Unis d'Amérique",
+        it: "Stati Uniti d'America",
+        ch: "Stadis Unids da l’America"
+    }, iso: "us"},
+    {flag: "🏴‍☠️", name: {
+        de: "Anderes Land",
+        en: "Other country",
+        fr: "Autre pays",
+        it: "Altro paese",
+        ch: "Ulteriur pajais"
+    }, iso: "--"}
 ]
 
 export const pdfCommonStyles:CommonStyles = {
@@ -174,3 +198,7 @@ export const sortingOptionsReloading_Bullet:SortingTypesReloading_Bullet[] = ["a
 export const sortingOptionsReloading_Case:SortingTypesReloading_Case[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Primer:SortingTypesReloading_Primer[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Powder:SortingTypesReloading_Powder[] = ["alphabetical", "createdAt", "lastModifiedAt"]
+
+// i shouldve used more descriptive names for these but oh well
+export const checkboxFields_ch = ["exFullAuto", "highCapacityMagazine", "short", "fullAuto", "launcher", "decepticon", "blooptoob", "grandfather"]
+export const checkboxFields_us = ["pistol", "rifle", "shotgun", "sbr", "sbs", "aow", "machineGun", "dd", "pmf", "cr", "nfa", "antique"]
