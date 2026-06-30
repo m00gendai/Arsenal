@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { useEffect, useState } from "react";
 import { ItemType } from "../lib/interfaces";
-import AccessoryMountDialog from "./Dialogs/AccessoryMountDialog";
+import AccessoryMountDialog from "./Dialogs/AccessoryMount/AccessoryMountDialog";
 import { useRoute } from "@react-navigation/native";
 
 interface RouteParams {
