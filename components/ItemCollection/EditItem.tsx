@@ -53,7 +53,7 @@ export default function EditGun({navigation}){
     const carouselRef = useRef<ICarouselInstance>(null)
     const progress = useSharedValue<number>(0)
 
-    const { language, theme, generalSettings } = usePreferenceStore()
+    const { language, theme, generalSettings, country } = usePreferenceStore()
     const { setAlohaSnackbarVisible } = useViewStore()
     const { setAlohaSnackbarText } = useTextStore()
 

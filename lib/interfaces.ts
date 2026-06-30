@@ -44,6 +44,18 @@ export interface GunTypeStatus{
   decepticon: boolean
   blooptoob: boolean
   grandfather: boolean
+  pistol: boolean
+  rifle: boolean
+  shotgun: boolean
+  sbr: boolean
+  sbs: boolean
+  aow: boolean
+  machineGun: boolean
+  dd: boolean
+  pmf: boolean
+  cr: boolean
+  nfa: boolean
+  antique: boolean
 }
 
 export type GunType = GunTypeDetails & GunTypeStatus
