@@ -89,6 +89,18 @@ interface DataTemplateTranslationCheckboxes {
     decepticon: DataTemplateTranslation
     blooptoob: DataTemplateTranslation
     grandfather: DataTemplateTranslation
+    pistol: DataTemplateTranslation
+    rifle: DataTemplateTranslation
+    shotgun: DataTemplateTranslation
+    sbr: DataTemplateTranslation
+    sbs: DataTemplateTranslation
+    aow: DataTemplateTranslation
+    machineGun: DataTemplateTranslation
+    dd: DataTemplateTranslation
+    pmf: DataTemplateTranslation
+    cr: DataTemplateTranslation
+    nfa: DataTemplateTranslation
+    antique: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationSell {
@@ -692,6 +704,7 @@ export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {
     },
 }
 
+// These include all checboxes regardless of country; rendering them is done via configs
 export const dataTemplate_TranslationCheckboxes: DataTemplateTranslationCheckboxes = {
     "fullAuto": {
         name: "fullAuto",
@@ -756,6 +769,102 @@ export const dataTemplate_TranslationCheckboxes: DataTemplateTranslationCheckbox
         fr: "Acquis sous l'ancien régime",
         it: "Acquisito in base alla vecchia legge",
         ch: "Acquistà tenor il dretg vegl",
+    },
+    "pistol":{
+        name: "pistol",
+        de: "Pistole",
+        en: "Pistol",
+        fr: "Pistolet",
+        it: "Pistola",
+        ch: "Pistola",
+    },
+    "rifle":{
+        name: "rifle",
+        de: "Gewehr",
+        en: "Rifle",
+        fr: "Fusil",
+        it: "Fucile",
+        ch: "Fusil",
+    },
+    "shotgun":{
+        name: "shotgun",
+        de: "Flinte",
+        en: "Shotgun",
+        fr: "Fusil à canon lisse",
+        it: "Fucile a canna liscia",
+        ch: "Flinta",
+    },
+    "sbr":{
+        name: "sbr",
+        de: "Gewehr mit kurzem Lauf",
+        en: "Short-Barreled Rifle",
+        fr: "Fusil à canon court",
+        it: "Fucile a canna corta",
+        ch: "Fusil cun chanun curt",
+    },
+    "sbs":{
+        name: "sbs",
+        de: "Flinte mit kurzem Lauf",
+        en: "Short-Barreled",
+        fr: "Fusil à canon court (lisse)",
+        it: "Fucile a canna corta (liscia)",
+        ch: "Flinta cun chanun curt",
+    },
+    "aow":{
+        name: "aow",
+        de: "Sonstige Waffe",
+        en: "Any Other Weapon",
+        fr: "Autre arme",
+        it: "Altra arma",
+        ch: "Autra arma",
+    },
+    "machineGun":{
+        name: "machineGun",
+        de: "Maschinengewehr",
+        en: "Machine Gun",
+        fr: "Mitrailleuse",
+        it: "Mitragliatrice",
+        ch: "Mitragliusa",
+    },
+    "dd":{
+        name: "dd",
+        de: "Zerstörungswaffe",
+        en: "Destructive Device",
+        fr: "Engin destructeur",
+        it: "Dispositivo distruttivo",
+        ch: "Apparat destructiv",
+    },
+    "pmf":{
+        name: "pmf",
+        de: "Privat hergestellte Schusswaffe",
+        en: "Privately Made Firearm",
+        fr: "Arme à feu fabriquée à titre privé",
+        it: "Arma da fuoco di fabbricazione privata",
+        ch: "Arma da fieu fabritgada privatamain",
+    },
+    "cr":{
+        name: "cr",
+        de: "Kuriosität & Relikt",
+        en: "Curio & Relic",
+        fr: "Curiosité et relique",
+        it: "Curiosità e reliquia",
+        ch: "Curiositad e relict",
+    },
+    "nfa":{
+        name: "nfa",
+        de: "NFA-Artikel",
+        en: "NFA Item",
+        fr: "Article NFA",
+        it: "Articolo NFA",
+        ch: "Artitgel NFA",
+    },
+    "antique":{
+        name: "antique",
+        de: "Antike Waffe",
+        en: "Antique",
+        fr: "Arme antique",
+        it: "Arma antica",
+        ch: "Arma antica",
     },
 }
 
