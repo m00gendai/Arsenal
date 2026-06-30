@@ -42,7 +42,7 @@ export default function Settings_Country(){
     }
 
     const countryData = countrySelection.map(country => {return(
-        {label: `${country.name[language]}`, value: `${country.iso}`}
+        {label: `${country.flag} ${country.name[language]}`, value: `${country.iso}`}
     )})
 
     function selectCountry(iso: string){
