@@ -854,3 +854,12 @@ export const logger = sqliteTable("logger", {
     value_new: text("value_new"),
     snapshot: text("snapshot") // WITH change
 })
+
+export const costLoggerAmmunition = sqliteTable("costLoggerAmmunition", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
