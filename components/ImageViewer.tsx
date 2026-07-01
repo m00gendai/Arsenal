@@ -23,7 +23,7 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder, rot
     const barrierX = useSharedValue<number>(0)
     const barrierY = useSharedValue<number>(0)
 
-  const imageName = selectedImage ? `${FileSystem.documentDirectory}${selectedImage.split("/").pop()}` : placeholder // Legacy support for full file paths
+  const imageName = selectedImage ? `${FileSystem.documentDirectory}${selectedImage.split("/").pop()}` : "gun" // Legacy support for full file paths
   
   rotation.value = rotationInput;
   

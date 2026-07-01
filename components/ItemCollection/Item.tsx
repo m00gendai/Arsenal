@@ -210,7 +210,7 @@ useEffect(() => {
                                             return(
                                                 <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
                                                     <View style={styles.imageContainer} >
-                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]}/> 
+                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]} placeholder={currentCollection}/> 
                                                     </View>
                                                 </TouchableNativeFeedback>
                                             )
@@ -219,7 +219,7 @@ useEffect(() => {
                                             return(
                                                 <TouchableNativeFeedback key={`slides_${index}`}>
                                                     <View style={styles.imageContainer} >
-                                                    <ImageViewer isLightBox={false} selectedImage={null} /> 
+                                                    <ImageViewer isLightBox={false} selectedImage={null} placeholder={currentCollection}/> 
                                                     </View>
                                                 </TouchableNativeFeedback>
                                             )
@@ -346,7 +346,7 @@ useEffect(() => {
                                     style={{backgroundColor: theme.colors.primary}}
                                 />
                             </View>
-                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]} rotationInput={rotation}/> : null}
+                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]} placeholder={currentCollection} rotationInput={rotation}/> : null}
                         </View>
                     </Modal>    
                 </Portal>   
