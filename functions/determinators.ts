@@ -845,3 +845,10 @@ export function determinePlaceHolderImage(collection: CollectionType){
         return require("../assets/Placeholder_Reloading.png")
     }
 }
+
+export function determineCostLoggerSchema(collection: CollectionType){
+    switch(collection){
+        case "ammoCollection":
+            return schema.costLoggerAmmunition
+    }
+}
