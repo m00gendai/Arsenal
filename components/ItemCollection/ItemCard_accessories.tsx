@@ -9,7 +9,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { useItemStore } from 'stores/useItemStore';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
 import MountedIconBar from './MountedIconBar';
-import { determineCardSubtitle, determineCardTitle } from 'functions/determinators';
+import { determineCardSubtitle, determineCardTitle, determinePlaceHolderImage } from 'functions/determinators';
 import { db } from 'db/client';
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
@@ -22,7 +22,7 @@ interface Props{
 
 export default function ItemCard_accessories({ item }:Props){
 
-    const { displaySettings, language, theme, generalSettings, caliberDisplayNameList } = usePreferenceStore()
+    const { displaySettings, language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentAccessory } = useItemStore()  
       const { setHideBottomSheet, setCardOptionsMenuVisible_accessories } = useViewStore()
     const { accessoryMount, partMount } = useDatabaseStore()
@@ -86,7 +86,7 @@ export default function ItemCard_accessories({ item }:Props){
                     color: theme.colors.onSurfaceVariant,
                 }}
                 title={determineCardTitle(itemType, item, language)}
-                subtitle={determineCardSubtitle(itemType, item, language, caliberDisplayNameList)} 
+                subtitle={determineCardSubtitle(itemType, item, language, caliberDisplayNameList, preferredUnits)} 
                 titleVariant={displaySettings.accessoryView === "compactList" ? "bodySmall" : "titleSmall"}
                 subtitleVariant={displaySettings.accessoryView === "compactList" ? "labelSmall" : "bodySmall"}
                 titleNumberOfLines={displaySettings.accessoryView === "compactList" ? 1 : 2} 
@@ -95,7 +95,7 @@ export default function ItemCard_accessories({ item }:Props){
             {displaySettings.accessoryView === "grid" ? 
             <View>
                 <Card.Cover 
-                    source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                    source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : determinePlaceHolderImage(currentCollection)} 
                     style={{
                         height: 100,
                     }}
@@ -152,7 +152,7 @@ export default function ItemCard_accessories({ item }:Props){
                 }}
             >
                 {generalSettings.displayImagesInListView ? <Card.Cover 
-                    source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                    source={item.images && item.images.length != 0 ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : determinePlaceHolderImage(currentCollection)} 
                     style={{
                         height: "75%",
                         aspectRatio: "4/3"

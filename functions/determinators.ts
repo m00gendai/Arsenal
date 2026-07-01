@@ -824,3 +824,24 @@ export function determineCountryCheckboxes(iso:SupportedCountries){
             return []
     }
 }
+
+export function determinePlaceHolderImage(collection: CollectionType){
+    if(collection.startsWith("gun")){
+        return require("../assets/Placeholder_Guns.png")
+    }
+    if(collection.startsWith("ammo")){
+        return require("../assets/Placeholder_Ammo.png")
+    }
+    if(collection.startsWith("accessoryCollection_")){
+        return require("../assets/Placeholder_Accessories.png")
+    }
+    if(collection.startsWith("partCollection_")){
+        return require("../assets/Placeholder_Parts.png")
+    }
+    if(collection.startsWith("literatureCollection_")){
+        return require("../assets/Placeholder_Literature.png")
+    }
+    if(collection.startsWith("reloadingCollection_")){
+        return require("../assets/Placeholder_Reloading.png")
+    }
+}

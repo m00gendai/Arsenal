@@ -390,7 +390,7 @@ export default function NewItem({navigation}){
                                     {
                                         return(
                                             <View key={`slides_${index}`} style={styles.imageContainer} >
-                                                <ImageViewer isLightBox={false} selectedImage={selectedImage && selectedImage[index] != undefined ? selectedImage[index] : null} />
+                                                <ImageViewer isLightBox={false} selectedImage={selectedImage && selectedImage[index] != undefined ? selectedImage[index] : null} placeholder={currentCollection}/>
                                                 <View 
                                                     style={{
                                                         position: "absolute",

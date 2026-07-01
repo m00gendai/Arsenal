@@ -1,5 +1,5 @@
 import { defaultViewPadding } from "configs/configs"
-import { determineCardSubtitle, determineCardTitle } from "functions/determinators"
+import { determineCardSubtitle, determineCardTitle, determinePlaceHolderImage } from "functions/determinators"
 import { CollectionType, ItemType } from "lib/interfaces"
 import { TouchableNativeFeedback, View } from "react-native"
 import { Card, RadioButton, Text } from "react-native-paper"
@@ -79,7 +79,7 @@ export default function SelectRow({checked, setCollection, setChecked, item, ind
                 <Text style={{padding: defaultViewPadding, flex: 1}}>{getListEntryTitle(collection, item as unknown as ItemType)}</Text>
                 <View style={{width: "40%", padding: defaultViewPadding}}>
                     <Card>
-                        <Card.Cover style={{height: 75}} source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} />
+                        <Card.Cover style={{height: 75}} source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : determinePlaceHolderImage(collection)} />
                     </Card>
                 </View>
                 <View>

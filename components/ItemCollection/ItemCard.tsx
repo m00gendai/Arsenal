@@ -11,7 +11,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
-import { determineCardSubtitle, determineCardTitle } from 'functions/determinators';
+import { determineCardSubtitle, determineCardTitle, determinePlaceHolderImage } from 'functions/determinators';
 
 interface Props{
     item: ItemType
@@ -158,7 +158,7 @@ export default function ItemCard({ item }:Props){
                     {displaySettings[currentCollection] === "grid" ? 
                         <View>
                             <Card.Cover 
-                                source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                                source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : determinePlaceHolderImage(currentCollection)} 
                                 style={{
                                     height: 100,
                                 }}
@@ -218,7 +218,7 @@ export default function ItemCard({ item }:Props){
                         >
                             {generalSettings.displayImagesInListView ? 
                                 <Card.Cover 
-                                    source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : require(`../../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} 
+                                    source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}` } : determinePlaceHolderImage(currentCollection)} 
                                     style={{
                                         height: "75%",
                                         aspectRatio: "4/3"
