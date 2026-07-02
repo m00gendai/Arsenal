@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, CountrySelection, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
+import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -202,3 +202,7 @@ export const sortingOptionsReloading_Powder:SortingTypesReloading_Powder[] = ["a
 // i shouldve used more descriptive names for these but oh well
 export const checkboxFields_ch = ["exFullAuto", "highCapacityMagazine", "short", "fullAuto", "launcher", "decepticon", "blooptoob", "grandfather"]
 export const checkboxFields_us = ["pistol", "rifle", "shotgun", "sbr", "sbs", "aow", "machineGun", "dd", "pmf", "cr", "nfa", "antique"]
+
+export const printers_ch: ListPrinter[] = ["gunCollection", "gunCollectionArt5", "gunCollectionHybrid", "custom"]
+export const printers_us: ListPrinter[] = ["gunCollection", "custom"]
+export const printers_others: ListPrinter[] = ["gunCollection", "custom"]
