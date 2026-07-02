@@ -183,9 +183,17 @@ export default function QuickStockDialog({showModal, setShowModal}:Props){
                   </Pressable>
                 </View>
                 {negativeAmount  && stockChange === "dec" ? 
-                <View style={{width: "100%"}}><HelperText type="error" visible={negativeAmount}>
-                  {setHelperText()}
-                </HelperText></View> : null}
+                <View style={{width: "100%"}}>
+                  <HelperText type="error" visible={negativeAmount}>
+                    {setHelperText()}
+                  </HelperText>
+                </View> : null}
+                {error ? 
+                <View style={{width: "100%"}}>
+                  <HelperText type="error" visible={error}>
+                    {errorText}
+                  </HelperText>
+                </View> : null}
                 <View style={{width: "100%", display: "flex", flexDirection: "row", gap: defaultViewPadding, marginTop: defaultViewPadding*2}}>
                   <TextInput 
                     style={{flex: 1}} 
@@ -201,10 +209,6 @@ export default function QuickStockDialog({showModal, setShowModal}:Props){
                   />
                 </View>
               </View>
-              {error ? 
-              <View style={{width: "100%", display: "flex", flexDirection: "row"}}>
-                <Text style={{color: theme.colors.error}}>{errorText}</Text>
-              </View> : null}
             </View>
           }
           buttonACK={<IconButton disabled={negativeAmount && stockChange === "dec"} mode="contained" icon="check" onPress={() => saveNewStock(quickStockItem)} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
