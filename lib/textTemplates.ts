@@ -106,6 +106,7 @@ interface ItemViewTabBarLabels{
     details: SimpleTranslation
     accessories: SimpleTranslation
     logger: SimpleTranslation
+    cost: SimpleTranslation
 }
 
 export const cleanIntervals:CleanIntervals = {
@@ -665,6 +666,13 @@ export const itemViewTabBarLabels: ItemViewTabBarLabels = {
         fr: "Historique",
         it: "Cronologia",
         ch: "Istorgia",
+    },
+    cost: {
+        de: "Kosten",
+        en: "Cost",
+        fr: "Coûts",
+        it: "Costo",
+        ch: "Custs",
     }
 }
 
