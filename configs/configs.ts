@@ -139,6 +139,7 @@ export const intervalPickerTriggerFields: string[] = ["cleanIntervalDisplay"]
 export const ignoreIntervalFieldsForLogger: string[] = ["cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const codeTriggerFields: string[] = ["qrCode"]
+export const stockTriggerFields: string[] = ["currentStock"]
 
 export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]

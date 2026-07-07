@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { Button, Dialog, HelperText, Icon, IconButton, Portal, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../../stores/usePreferenceStore";
 import { dateTimeOptions, defaultViewPadding } from "../../configs/configs";
-import { AmmoType, ReloadingType_Bullet, ReloadingType_Powder } from "../../lib/interfaces";
+import { AmmoType, ItemType, ReloadingType_Bullet, ReloadingType_Powder } from "../../lib/interfaces";
 import { ammoQuickUpdate, gunQuickShot, inStockLabel, shotLabel } from "../../lib/textTemplates";
 import { db } from "../../db/client"
 import * as schema from "../../db/schema"
@@ -15,11 +15,14 @@ import ModalContainer from ".././ModalContainer";
 import { determineCostLoggerSchema } from "functions/determinators";
 
 interface Props{
+  data?: string
+  itemData?: ItemType
+  setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
   showModal: boolean
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function QuickStockDialog({showModal, setShowModal}:Props){
+export default function QuickStockDialog({data, itemData, setItemData, showModal, setShowModal}:Props){
 
     const [error, displayError] = useState<boolean>(false)
     const [errorText, setErrorText] = useState<string>("")
@@ -64,16 +67,7 @@ export default function QuickStockDialog({showModal, setShowModal}:Props){
             total = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
             await db.update(schema[currentCollection]).set({powderWeight: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema[currentCollection].id, item.id))
           }
-          await db.insert(schema.logger).values({
-              id: uuidv4(),
-              createdAt: Date.now(), 
-              reference: quickStockItem.id,
-              collection: currentCollection,
-              changedField: "currentStock" in item ? "currentStock" : "powderWeight",
-              value_old: `${currentValue}`,
-              value_new: `${total}`,
-              snapshot: JSON.stringify(quickStockItem)
-          })
+
           if(costInput && stockChange === "inc" ){
             console.log("update cost logger")
             await db.insert(determineCostLoggerSchema(currentCollection)).values({
@@ -84,6 +78,14 @@ export default function QuickStockDialog({showModal, setShowModal}:Props){
               totalCost: `${costInput}`
             })
           }
+          if(data && stockChange === "inc"){
+
+            setItemData({...itemData, [data]: (Number(itemData[data]) + Number(input)).toString()})
+          }
+          if(data && stockChange === "dec"){
+            setItemData({...itemData, [data]: (Number(itemData[data]) - Number(input)).toString()})
+          }
+
           displayError(false)
           setShowModal(false)
       }
