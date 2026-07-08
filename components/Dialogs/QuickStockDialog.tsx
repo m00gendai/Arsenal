@@ -20,9 +20,10 @@ interface Props{
   setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
   showModal: boolean
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  fromQuickAction?: boolean
 }
 
-export default function QuickStockDialog({data, itemData, setItemData, showModal, setShowModal}:Props){
+export default function QuickStockDialog({data, itemData, setItemData, showModal, setShowModal, fromQuickAction}:Props){
 
     const [error, displayError] = useState<boolean>(false)
     const [errorText, setErrorText] = useState<string>("")
@@ -78,6 +79,20 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
               totalCost: `${costInput}`
             })
           }
+
+          if(fromQuickAction){
+            await db.insert(schema.logger).values({
+              id: uuidv4(),
+              createdAt: Date.now(), 
+              reference: quickStockItem.id,
+              collection: currentCollection,
+              changedField: "currentStock" in item ? "currentStock" : "powderWeight",
+              value_old: `${currentValue}`,
+              value_new: `${total}`,
+              snapshot: JSON.stringify(quickStockItem)
+            })
+          }
+
           if(data && stockChange === "inc"){
 
             setItemData({...itemData, [data]: (Number(itemData[data]) + Number(input)).toString()})
@@ -109,7 +124,7 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
     }
 
     function handleCostInput(input:string){
-      setConstInput(input.replace(/[^0-9]/g, ''))
+      setConstInput(input.replace(/[^0-9.,]/g, ''))
     }
 
     function setDetailText(){
