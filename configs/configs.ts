@@ -182,6 +182,7 @@ export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "acce
 export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
 export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
+export const costExceptions: CollectionType[] = ["gunCollection", ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
