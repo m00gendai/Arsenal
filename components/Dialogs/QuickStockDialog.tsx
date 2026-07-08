@@ -55,14 +55,12 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
           let currentValue:number
           let total:number
           if("currentStock" in item){
-            console.log("currentStock")
             currentValue = parseInt(item.currentStock) ? parseInt(item.currentStock) : 0
             const increase:number = Number(input)
             total = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
             await db.update(schema[currentCollection]).set({currentStock: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema[currentCollection].id, item.id))
           }
           if("powderWeight" in item){
-            console.log("powderWeight")
             currentValue = parseInt(item.powderWeight) ? parseInt(item.powderWeight) : 0 // this is Milligram
             const increase:number = Number(convertWeightUnitsToMilligram(preferredUnits, "powderWeight", input))
             total = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
@@ -70,12 +68,11 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
           }
 
           if(costInput && stockChange === "inc" ){
-            console.log("update cost logger")
             await db.insert(determineCostLoggerSchema(currentCollection)).values({
               id: uuidv4(),
               createdAt: Date.now(),
               reference: quickStockItem.id,
-              amountBought: `${input}`,
+              amountBought: `${"powderWeight" in quickStockItem ? convertWeightUnitsToMilligram(preferredUnits, "powderWeight", input) : input}`,
               totalCost: `${costInput}`
             })
           }
