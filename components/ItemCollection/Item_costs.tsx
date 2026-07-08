@@ -56,8 +56,8 @@ export default function Item_Costs({ currentItem, currentCollection }: Props) {
                     <DataTable.Row key={item.key}>
                     <DataTable.Cell>{new Date(item.createdAt).toLocaleDateString("de-CH", dateTimeOptions)}</DataTable.Cell>
                     <DataTable.Cell numeric>{item.amountBought}</DataTable.Cell>
-                    <DataTable.Cell numeric>{Number(item.totalCost).toFixed(2)} </DataTable.Cell>
-                    <DataTable.Cell numeric>{(item.totalCost/item.amountBought).toFixed(3)}</DataTable.Cell>
+                    <DataTable.Cell numeric>{Number(item.totalCost.replaceAll(",", ".")).toFixed(2)} </DataTable.Cell>
+                    <DataTable.Cell numeric>{(item.totalCost.replaceAll(",", ".")/item.amountBought.replaceAll(",", ".")).toFixed(3)}</DataTable.Cell>
                     </DataTable.Row>
                 ))}
             </DataTable>
