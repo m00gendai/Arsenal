@@ -148,9 +148,9 @@ export function determineTagSchema(collection:CollectionType){
         case "reloadingCollection_Case":
             return schema.reloading_CaseTags
         case "reloadingCollection_Primer":
-            return schema.reloadingCollection_Primer
+            return schema.reloading_PrimerTags
         case "reloadingCollection_Powder":
-            return schema.reloadingCollection_Powder
+            return schema.reloading_PowderTags
     }
 }
 
@@ -850,6 +850,14 @@ export function determineCostLoggerSchema(collection: CollectionType){
     switch(collection){
         case "ammoCollection":
             return schema.costLoggerAmmunition
+        case "reloadingCollection_Bullet":
+            return schema.costLoggerBullets
+        case "reloadingCollection_Case":
+            return schema.costLoggerCasings
+        case "reloadingCollection_Primer":
+            return schema.costLoggerPrimers
+        case "reloadingCollection_Powder":
+            return schema.costLoggerPowder
     }
 }
 
