@@ -8,7 +8,7 @@ import { iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
 import { ItemType } from 'lib/interfaces';
 import { alarm, generateGradient } from 'functions/utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { accessoryExceptions, defaultViewPadding } from 'configs/configs';
+import { accessoryExceptions, costExceptions, defaultViewPadding } from 'configs/configs';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as schema from "db/schema"
@@ -254,7 +254,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "details" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -267,7 +267,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "accessories" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -280,7 +280,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "logger" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -288,19 +288,19 @@ useEffect(() => {
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "logger" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.logger[language]}</Text>
                         </Pressable>
-                        <Pressable 
+                        {costExceptions.includes(currentCollection) ? null : <Pressable 
                             style={{
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "cost" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
                             onPress={() => setActiveTab("cost")}
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "cost" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.cost[language]}</Text>
-                        </Pressable>
+                        </Pressable>}
                     </View>
 
 
