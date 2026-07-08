@@ -299,7 +299,7 @@ useEffect(() => {
                             }} 
                             onPress={() => setActiveTab("cost")}
                         >
-                            <Text style={{padding: defaultViewPadding, color: activeTab === "logger" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.cost[language]}</Text>
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "cost" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.cost[language]}</Text>
                         </Pressable>
                     </View>
 
