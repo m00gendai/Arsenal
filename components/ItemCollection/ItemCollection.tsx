@@ -74,14 +74,11 @@ useEffect(() => {
 
 useEffect(()=>{
   async function requestReview(){
-    console.log(hasSeenReviewRequest)
     if(!hasSeenReviewRequest){
       if (await StoreReview.hasAction()) {
-        console.log("has action")
         if(currentCollection === "gunCollection"){
           const collectionSize = await db.select({ count: count() }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
           const amount = collectionSize[0].count
-          console.log(amount)
           if(amount >= 5){
             try{
               await StoreReview.requestReview()
@@ -104,7 +101,7 @@ useEffect(()=>{
             }
           }
         } else {
-          console.log("doesnt have action")
+          console.info("doesnt have action")
         }
       }
     }

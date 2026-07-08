@@ -80,7 +80,6 @@ export default function EditGun({navigation}){
     },[itemData])
 
     async function save(item: ItemType) {
-        console.log("save")
         const validationResult:{field: string, error: string}[] = itemDataValidation(currentCollection, item, language)
         if(validationResult.length != 0){
             Alert.alert(validationFailedAlert.title[language], `${validationResult.map(result => `${result.field}: ${result.error}`)}`, [

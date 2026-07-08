@@ -342,7 +342,6 @@ const { bottom } = useSafeAreaInsets();
       try{
         switchLanguage(isPreferences?.language ?? "de")
         switchTheme(isPreferences?.theme ?? "default")
-        console.log(isPreferences?.country ?? "ch")
         switchCountry(isPreferences?.country ?? "ch")
         setGeneralSettings({
           ...generalSettings, 
