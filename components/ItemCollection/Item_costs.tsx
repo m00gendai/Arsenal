@@ -38,9 +38,22 @@ export default function Item_Costs({ currentItem, currentCollection }: Props) {
         setLoggerData(loggerData)
       }
       getLoggerData()
-
-      
     },[])
+
+    function getAmountDisplayValue(amount:string){
+        if("powderWeight" in currentItem){
+            return convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", amount)
+        }
+        return amount
+    }
+
+    function getAverageCost(total: string, amount: string){
+        if("powderWeight" in currentItem){
+            const convertedUnit = convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", amount)
+            return `${(Number(total.replaceAll(",", "."))/Number(convertedUnit)).toFixed(3)}/${preferredUnits.powderWeightUnit}`
+        }
+        return (Number(total.replaceAll(",", "."))/Number(amount.replaceAll(",", "."))).toFixed(3)
+    }
     
     return(
         <View>
@@ -52,12 +65,12 @@ export default function Item_Costs({ currentItem, currentCollection }: Props) {
                     <DataTable.Title numeric><Icon source="diameter-variant" size={24} /></DataTable.Title>
                 </DataTable.Header>
 
-                {loggerData.map((item) => (
-                    <DataTable.Row key={item.key}>
-                    <DataTable.Cell>{new Date(item.createdAt).toLocaleDateString("de-CH", dateTimeOptions)}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.amountBought}</DataTable.Cell>
-                    <DataTable.Cell numeric>{Number(item.totalCost.replaceAll(",", ".")).toFixed(2)} </DataTable.Cell>
-                    <DataTable.Cell numeric>{(item.totalCost.replaceAll(",", ".")/item.amountBought.replaceAll(",", ".")).toFixed(3)}</DataTable.Cell>
+                {loggerData.map((item, index) => (
+                    <DataTable.Row key={`cost_row_${index}`}>
+                        <DataTable.Cell>{new Date(item.createdAt).toLocaleDateString("de-CH", dateTimeOptions)}</DataTable.Cell>
+                        <DataTable.Cell numeric>{getAmountDisplayValue(item.amountBought)}</DataTable.Cell>
+                        <DataTable.Cell numeric>{Number(item.totalCost.replaceAll(",", ".")).toFixed(2)} </DataTable.Cell>
+                        <DataTable.Cell numeric>{getAverageCost(item.totalCost, item.amountBought)}</DataTable.Cell>
                     </DataTable.Row>
                 ))}
             </DataTable>
