@@ -47,13 +47,30 @@ export default async function saveDatabase(
     return;
   }
   
-  try { 
-    await FileSystem.cp(dbPath, `${tempDir.uri}/${DB_NAME}`)
-  } catch(e) {
-    console.error(`Failed copying DB to tempDir1: ${e}`)
-    return;
+// saveDatabase.ts — decrypt-on-export block
+const plainExportFile = new File(Paths.document, 'Arsenal.export.tmp.db');
+
+try {
+  // clean up any leftover from a previous failed export
+  if (plainExportFile.exists) {
+    plainExportFile.delete();
   }
 
+  // decrypt into a fresh plaintext db, using the already-keyed live connection
+  await expo.execAsync(`ATTACH DATABASE '${plainExportFile.uri.replace('file://', '')}' AS plaintext KEY '';`);
+  await expo.execAsync(`SELECT sqlcipher_export('plaintext');`);
+  await expo.execAsync(`DETACH DATABASE plaintext;`);
+
+  await FileSystem.cp(plainExportFile.uri, `${tempDir.uri}/${DB_NAME}`);
+} catch(e) {
+  console.error(`Failed exporting decrypted DB copy: ${e}`);
+  return;
+} finally {
+  // don't leave a decrypted copy sitting on disk
+  if (plainExportFile.exists) {
+    plainExportFile.delete();
+  }
+}
     try{
 
       for(const item of collectionExportDirectories){
