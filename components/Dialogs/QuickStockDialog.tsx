@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import { HelperText, Icon, IconButton, Portal, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../../stores/usePreferenceStore";
@@ -126,6 +126,10 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
       }
       setInput(input.replace(/[^0-9]/g, ''))
     }
+
+    useEffect(()=>{
+      handleInput(input)
+    },[powderConsumptionUnit])
 
     function handleCostInput(input:string){
       setConstInput(input.replace(/[^0-9.,]/g, ''))
