@@ -15,7 +15,7 @@ import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 import { convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit, parseDate } from "functions/utils";
 import { dataTemplate_TranslationCheckboxes, dataTemplate_Translations_Unified } from "lib/DataTemplates/translations";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
-import { determineCostLoggerSchema } from "functions/determinators";
+import { determineCostLoggerSchema, determineWeightUnitMultiplier } from "functions/determinators";
 
 interface Props{
     currentItem: ItemType
@@ -42,7 +42,7 @@ export default function Item_Costs({ currentItem, currentCollection }: Props) {
 
     function getAmountDisplayValue(amount:string){
         if("powderWeight" in currentItem){
-            return convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", amount)
+            return `${convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", amount)} ${preferredUnits.powderWeightUnit}`
         }
         return amount
     }
@@ -50,27 +50,35 @@ export default function Item_Costs({ currentItem, currentCollection }: Props) {
     function getAverageCost(total: string, amount: string){
         if("powderWeight" in currentItem){
             const convertedUnit = convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", amount)
-            return `${(Number(total.replaceAll(",", "."))/Number(convertedUnit)).toFixed(3)}/${preferredUnits.powderWeightUnit}`
+            return `${((Number(total.replaceAll(",", "."))/Number(convertedUnit))*determineWeightUnitMultiplier(preferredUnits.powderWeightUnit)).toFixed(2)} / ${determineWeightUnitMultiplier(preferredUnits.powderWeightUnit)}${preferredUnits.powderWeightUnit}`
         }
-        return (Number(total.replaceAll(",", "."))/Number(amount.replaceAll(",", "."))).toFixed(3)
+        return (Number(total.replaceAll(",", ".")) / Number(amount.replaceAll(",", "."))).toFixed(3)
     }
     
     return(
         <View>
             <DataTable>
                 <DataTable.Header>
-                    <DataTable.Title><Icon source="calendar-range" size={24} /></DataTable.Title>
-                    <DataTable.Title numeric><Icon source="basket-fill" size={24} /></DataTable.Title>
-                    <DataTable.Title numeric><Icon source="cash-multiple" size={24} /></DataTable.Title>
-                    <DataTable.Title numeric><Icon source="diameter-variant" size={24} /></DataTable.Title>
+                    <DataTable.Title style={{flex: 1}} ><Icon source="calendar-range" size={24} /></DataTable.Title>
+                    <DataTable.Title style={{flex: 2}} numeric><Icon source="basket-fill" size={24} /></DataTable.Title>
+                    <DataTable.Title style={{flex: 2}} numeric><Icon source="cash-multiple" size={24} /></DataTable.Title>
+                    <DataTable.Title style={{flex: 3}} numeric><Icon source="diameter-variant" size={24} /></DataTable.Title>
                 </DataTable.Header>
 
                 {loggerData.map((item, index) => (
                     <DataTable.Row key={`cost_row_${index}`}>
-                        <DataTable.Cell>{new Date(item.createdAt).toLocaleDateString("de-CH", dateTimeOptions)}</DataTable.Cell>
-                        <DataTable.Cell numeric>{getAmountDisplayValue(item.amountBought)}</DataTable.Cell>
-                        <DataTable.Cell numeric>{Number(item.totalCost.replaceAll(",", ".")).toFixed(2)} </DataTable.Cell>
-                        <DataTable.Cell numeric>{getAverageCost(item.totalCost, item.amountBought)}</DataTable.Cell>
+                        <DataTable.Cell style={{flex: 1}} >
+                            <Text>{new Date(item.createdAt).toLocaleDateString("de-CH", dateTimeOptions)}</Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell style={{flex: 2}} numeric>
+                            <Text>{getAmountDisplayValue(item.amountBought)}</Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell style={{flex: 2}} numeric>
+                            <Text>{Number(item.totalCost.replaceAll(",", ".")).toFixed(2)}</Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell style={{flex: 3}} numeric>
+                            <Text>{getAverageCost(item.totalCost, item.amountBought)}</Text>
+                        </DataTable.Cell>
                     </DataTable.Row>
                 ))}
             </DataTable>
