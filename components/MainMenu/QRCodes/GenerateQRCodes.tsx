@@ -302,7 +302,7 @@ export default function GenerateQRCodes({navigation}){
                         keyExtractor={(item, index) => `label_${index}`}
                         renderItem={({ item }) => (
                             <Checkbox.Item
-                                label={`${determineCardTitle(params.collection, item as ItemType, language)}\n${determineCardSubtitle(params.collection, item as ItemType, language, caliberDisplayNameList)}`}
+                                label={`${determineCardTitle(params.collection, item as ItemType, language)}\n${determineCardSubtitle(params.collection, item as ItemType, language, caliberDisplayNameList, preferredUnits)}`}
                                 status={selectedGuns.has(item.id) ? "checked" : "unchecked"}
                                 onPress={() => handleCheckboxPress(item.id)}
                                 mode="android"
