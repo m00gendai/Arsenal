@@ -936,3 +936,6 @@ export interface CustomLabel{
   rows: number
   radius: number
 }
+
+export type weightUnitNames = "gr" | "oz" | "lb" | "mg" | "g" | "kg"
+export type distUnitNames = "mm" | "cm" | "in"
