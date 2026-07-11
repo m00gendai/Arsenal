@@ -11,6 +11,7 @@ import { PREFERENCES } from "configs/configs_DB";
 import { useViewStore } from "stores/useViewStore";
 import { ScrollView } from "react-native-gesture-handler";
 import Onboarding_CountrySelect from "./Onboarding_CountrySelect";
+import { distUnitNames, weightUnitNames } from "lib/interfaces";
 
 export default function OnboardingDialog(){
 
@@ -21,13 +22,13 @@ export default function OnboardingDialog(){
 
     const [selectedCurrency, setSelectedCurrency] = useState<string>("CHF")
 
-    const [generalWeightUnit, setGeneralWeightUnit] = useState<string>("g")
-    const [selectedBulletWeight, setSelectedBulletWeight] = useState<string>("gr")
-    const [selectedPowderWeight, setSelectedPowderWeight] = useState<string>("gr")
+    const [generalWeightUnit, setGeneralWeightUnit] = useState<weightUnitNames>("g")
+    const [selectedBulletWeight, setSelectedBulletWeight] = useState<weightUnitNames>("gr")
+    const [selectedPowderWeight, setSelectedPowderWeight] = useState<weightUnitNames>("gr")
 
-    const [generalLengthUnit, setGeneralLengthUnit] = useState<string>("cm")
-    const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>("in")
-    const [caseLengthUnit, setCaseLengthUnit] = useState<string>("in")
+    const [generalLengthUnit, setGeneralLengthUnit] = useState<distUnitNames>("cm")
+    const [barrelLengthUnit, setBarrelLengthUnit] = useState<distUnitNames>("in")
+    const [caseLengthUnit, setCaseLengthUnit] = useState<distUnitNames>("in")
 
     const titles = [
         {
@@ -37,8 +38,8 @@ export default function OnboardingDialog(){
         },
         {
             title: "Eligere patriam",
-            left: "translate",
-            right: "translate",
+            left: "earth",
+            right: "earth",
         },
         {
             title: "Eligere Pecuniam",
