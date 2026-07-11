@@ -1,4 +1,4 @@
-import { Languages } from "lib/interfaces";
+import { distUnitNames, Languages, weightUnitNames } from "lib/interfaces";
 
 interface Currency{
     isoCode: string
@@ -188,7 +188,7 @@ interface WeightUnit{
     fr: string
     it: string
     ch: string
-    iso: string
+    iso: weightUnitNames
     base: number
 }
 
@@ -263,7 +263,7 @@ interface DistUnit{
     fr: string
     it: string
     ch: string
-    iso: string
+    iso: distUnitNames
     base: number
 }
 // lengths all have their relation to millimeter. All length data is stored in millimeters and displayed according to the chosen unit
