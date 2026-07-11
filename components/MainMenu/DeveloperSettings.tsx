@@ -3,6 +3,7 @@ import ModalContainer from "components/ModalContainer";
 import { collectionImportTables, defaultViewPadding, imageFileExtensions, screenNameParamsAll } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
+import { runDbDiagnostics } from "db/dbDiagnostics";
 import * as schema from "db/schema"
 import { eq, ne } from "drizzle-orm/sql";
 import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
@@ -112,6 +113,20 @@ export default function DeveloperSettings(){
                 await db.update(schema[table]).set({sold_isSold: false}).where((eq(schema[table].id, item.id)))
             })
         })
+    }
+
+    async function showDbDiagnostics(){
+        setDialogTitle("DB Encryption Diagnostics")
+        setDialogContent("Running checks...")
+        setDialogVisible(true)
+        try{
+            const results = await runDbDiagnostics()
+            const pretty = JSON.stringify(results, null, 2)
+            setDialogContent(pretty)
+            console.info(pretty)
+        } catch(e){
+            setDialogContent(`Diagnostics failed:\n${String(e)}`)
+        }
     }
     
     return(
@@ -267,6 +282,18 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>reset_isSold()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Run DB Diagnostics</Text>
+                    <IconButton 
+                        icon="database-eye" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>showDbDiagnostics()}
                     />
                 </View>
 
