@@ -863,3 +863,39 @@ export const costLoggerAmmunition = sqliteTable("costLoggerAmmunition", {
     amountBought: text("amountBought"),
     totalCost: text("totalCost"),
 })
+
+export const costLoggerBullets = sqliteTable("costLoggerBullets", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerCasings = sqliteTable("costLoggerCasings", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerPrimers = sqliteTable("costLoggerPrimers", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerPowder = sqliteTable("costLoggerPowder", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
