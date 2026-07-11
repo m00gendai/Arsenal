@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -93,13 +93,13 @@ interface FilterState{
 
 export interface PreferredUnits{
   selectedCurrency: string
-  generalWeightUnit: string
-  bulletWeightUnit: string
-  powderWeightUnit: string
-  criticalPowderWeightUnit: string
-  generalLengthUnit: string
-  barrelLengthUnit: string
-  caseLengthUnit: string
+  generalWeightUnit: weightUnitNames
+  bulletWeightUnit: weightUnitNames
+  powderWeightUnit: weightUnitNames
+  criticalPowderWeightUnit: weightUnitNames
+  generalLengthUnit: distUnitNames
+  barrelLengthUnit: distUnitNames
+  caseLengthUnit: distUnitNames
 }
 
 interface InitialStoreState {
