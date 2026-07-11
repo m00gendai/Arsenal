@@ -30,7 +30,7 @@ return(
   <View style={{width: "100%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", flexWrap: "wrap", backgroundColor: theme.colors.backdrop}}>
     <View style={{width: "85%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flexWrap: "wrap"}}>
       <View style={{backgroundColor: theme.colors.background, width: "100%", height: "75%"}}>
-        <AccessoryMountDialog data={"currentlyMountedOn"} showModal={showModal} setShowModal={setShowModal} itemData={params.item}/>
+        <AccessoryMountDialog data={"currentlyMountedOn"} showModal={showModal} setShowModal={setShowModal} itemData={params.item} fromQuickMount={true}/>
       </View>
     </View>
   </View>
