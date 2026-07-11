@@ -12,6 +12,7 @@ import { useItemStore } from 'stores/useItemStore';
 import MountedIconBar from './MountedIconBar';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
 import { determineCardSubtitle, determineCardTitle, determinePlaceHolderImage } from 'functions/determinators';
+import MountedTextBar from './MountedTextBar';
 
 interface Props{
     item: ItemType
@@ -168,6 +169,11 @@ export default function ItemCard({ item }:Props){
                                 : 
                                 null
                             }
+                            {(currentCollection.startsWith("accessoryCollection_") || currentCollection.startsWith("partCollection_")) && item.currentlyMountedOn ? 
+                                <MountedTextBar mountedOn={item.currentlyMountedOn}/> 
+                                : 
+                                null
+                            }
                             {item.sold_isSold ? null : numberBadgeCollections.includes(currentCollection) ? 
                                 <TouchableRipple onPress={() => meloveyoulongtime()} style={{borderRadius: 0, position: "absolute", bottom: 1, right: 1}}>
                                     <Badge
@@ -229,6 +235,11 @@ export default function ItemCard({ item }:Props){
                             }
                             {(attachedAccessories.length || attachedParts.length) ? 
                                 <MountedIconBar accessories={attachedAccessories} parts={attachedParts} accessoryView={false}/> 
+                                : 
+                                null
+                            }
+                            {(currentCollection.startsWith("accessoryCollection_") || currentCollection.startsWith("partCollection_")) && item.currentlyMountedOn ? 
+                                <MountedTextBar mountedOn={item.currentlyMountedOn}/> 
                                 : 
                                 null
                             }
