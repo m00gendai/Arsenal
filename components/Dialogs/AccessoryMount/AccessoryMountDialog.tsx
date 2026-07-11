@@ -20,14 +20,15 @@ import SelectRow from "./SelectRow";
 
 interface Props{
     data: string
-    itemData?: ItemType
+    itemData: ItemType
     setItemData?: React.Dispatch<React.SetStateAction<ItemType>>
     showModal: boolean
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>
     setItemName?: React.Dispatch<React.SetStateAction<string>>
+    fromQuickMount?: boolean
 }
 
-export default function AccessoryMountDialog({data, itemData, setItemData, showModal, setShowModal, setItemName}: Props){
+export default function AccessoryMountDialog({data, itemData, setItemData, showModal, setShowModal, setItemName, fromQuickMount}: Props){
 
     const { language, theme } = usePreferenceStore()
     const { setAlohaSnackbarVisible } = useViewStore()
@@ -171,24 +172,30 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
 
         //This is if set via QuickMount/Remount
 
-        if(!itemData && accessoryData.length !== 0){
+        if(fromQuickMount && currentCollection.startsWith("accessoryCollection_")){
+
             try{
-                const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+                const mountableAccessory = currentAccessory ? currentAccessory : currentItem
+                
                 const type = await db.select().from(schema.accessoryCollection).where(eq(schema.accessoryCollection.id, mountableAccessory.id))
 
-                await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
+                await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()}).where(eq(schema[type[0].type].id, mountableAccessory.id))
             }catch(e){
-                console.error(e)
+                console.error(`Update QuickMount accessoryData: ${e}`)
             }
         }    
-        if(!itemData && partData.length !== 0){
-            const mountableAccessory = currentAccessory ? currentAccessory :currentItem
-            const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, mountableAccessory.id))
-            await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()})
-        }  
+        try{
+            if(fromQuickMount && partData.length !== 0){
+                const mountableAccessory = currentAccessory ? currentAccessory :currentItem
+                const type = await db.select().from(schema.partCollection).where(eq(schema.partCollection.id, mountableAccessory.id))
+                await db.update(schema[type[0].type]).set({currentlyMountedOn: getItemName()}).where(eq(schema[type[0].type].id, mountableAccessory.id))
+            }  
+        }catch(e){
+            console.error(`Update QuickMount partData: ${e}`)
+        }
 
         //This is if set via NewItem or EditItem
-        if(setItemData){
+        if(!fromQuickMount){
             setItemData({...itemData, [data]: input})
         }
 
@@ -310,6 +317,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                             {accordionConstructorArray.map((accordion, index) =>{
                                 return(
                                     <List.Accordion
+                                    key={`quickMount_${accordion}_${index}`}
                                         title={determineTabBarLabel(accordion.collection)[language]}
                                         style={accordion.data.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
                                         titleStyle={accordion.data.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
