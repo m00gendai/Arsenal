@@ -24,7 +24,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Dimensions, View } from 'react-native';
 import { calibers } from './lib/caliberData';
-import { expo, db } from "./db/client"
 import * as schema from "./db/schema"
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
@@ -51,13 +50,12 @@ import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
 import EditCustomLabels from 'components/MainMenu/EditData/EdiCustomLabels';
 import Statistics from 'components/MainMenu/Statistics/Statistics';
 import GenerateQRCodes from 'components/MainMenu/QRCodes/GenerateQRCodes';
+import { AppDb } from 'db/client';
+import * as SQLite from 'expo-sqlite';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function AppContent() {
-
-  // Run migrations and initialize SQLite DB
-
+export default function AppContent({ db, expo }: { db: AppDb; expo: SQLite.SQLiteDatabase }) {
   const { success, error } = useMigrations(db, migrations);
   
   if(error){
