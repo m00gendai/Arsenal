@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.4.0",
+    "@ronradtke/react-native-markdown-display": "^9.0.3",
     "@shopify/react-native-skia": "^2.4.21",
     "@types/papaparse": "^5.3.14",
     "babel-plugin-inline-import": "^3.0.0",
