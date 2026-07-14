@@ -4,6 +4,7 @@ import * as schema from "db/schema";
 import * as SecureStore from 'expo-secure-store';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Crypto from 'expo-crypto';
+import { alarm } from 'functions/utils';
 
 const DB_NAME = "Arsenal.db";
 const SQLITE_DIR = `${FileSystem.documentDirectory}SQLite/`;
@@ -63,20 +64,43 @@ export async function initDatabase(): Promise<{ db: AppDb; expo: SQLite.SQLiteDa
   const key = await getOrCreateKey();
 
   if (!(await isMigrated())) {
-    try {
-      await migrateToEncrypted(key);
-    } catch (e) {
-      console.error("Encryption migration failed, retrying next launch", e);
+    const existingDbInfo = await FileSystem.getInfoAsync(DB_PATH);
+
+    if (!existingDbInfo.exists) {
+      // Fresh install — no plaintext data to migrate. Just mark as
+      // "migrated" so the fresh db gets created encrypted from the start.
+      await SecureStore.setItemAsync(MIGRATION_FLAG, "true");
+    } else {
+      try {
+        await migrateToEncrypted(key);
+      } catch (e) {
+        console.error("Encryption migration failed, retrying next launch", e);
+      }
     }
   }
 
   const _expo = SQLite.openDatabaseSync(DB_NAME, { enableChangeListener: true });
+
   if (await isMigrated()) {
     await _expo.execAsync(`PRAGMA key = '${key}';`);
+
+    try {
+      // Querying sqlite_master forces SQLCipher to actually read and decrypt a page.
+      // If the key is wrong, this call throws an explicit native error immediately,
+      // rather than surfacing as a confusing failure on some later, arbitrary query.
+      await _expo.getFirstAsync("SELECT count(*) FROM sqlite_master;");
+    } catch (canaryError) {
+      console.error("FATAL - Decryption failed, wrong key.", canaryError);
+      alarm(
+        "Database Decryption Error",
+        "The stored key does not match this database. If your device's secure storage was reset or compromised, database access may be unrecoverable — please delete app data and restore from a backup."
+      );
+      throw new Error("Database decryption failed: invalid key.");
+    }
   }
+
   const _db = drizzle(_expo, { schema });
 
-  // Assign the module-level bindings so every static `import { db } from "db/client"` sees it
   db = _db;
   expo = _expo;
 
