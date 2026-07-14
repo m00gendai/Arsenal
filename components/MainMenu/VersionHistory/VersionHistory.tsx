@@ -5,11 +5,16 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { versionHistory } from "./releaseNotes";
 import { Languages } from "lib/interfaces";
 import { preferenceTitles } from "lib/Text/text_settings";
-
+import Markdown from "@ronradtke/react-native-markdown-display";
 
 export default function VersionHistory(){
 
     const { language, theme } = usePreferenceStore()
+
+    const markdownStyles = {
+        strong: { fontWeight: "700" as const },
+        bullet_list_icon: { color: theme.colors.onBackground },
+    };
 
     return(
         <View>
@@ -21,10 +26,15 @@ export default function VersionHistory(){
                             <View 
                                 key={`VersionHistory_${index}`}
                             >
-                                <Text style={{fontWeight: "bold"}}>{`${version.title}`}</Text>
-                                <Text>{`${version[lang].text}`}</Text>
-                                {Platform.OS === "ios" && version[lang].ios ? <View><Text style={{fontStyle: "italic"}}>{`\niOS:`}</Text><Text>{version[lang].ios}</Text></View> : null}
-                                {Platform.OS === "android" && version[lang].android ? <View><Text style={{fontStyle: "italic"}}>{`\nAndroid:`}</Text><Text>{version[lang].android}</Text></View> : null}
+                                <Markdown style={markdownStyles}>
+                                    {`**${version.title}**\n${version[lang].text}`}
+                                </Markdown>
+                                {Platform.OS === "ios" && version[lang].ios ? (
+                                    <Markdown style={markdownStyles}>{`*iOS:*\n\n${version[lang].ios}`}</Markdown>
+                                ) : null}
+                                {Platform.OS === "android" && version[lang].android ? (
+                                    <Markdown style={markdownStyles}>{`*Android:*\n\n${version[lang].android}`}</Markdown>
+                                ) : null}
                                  <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.backdrop, marginTop: defaultViewPadding, marginBottom: defaultViewPadding}} />
                             </View>
                         )
