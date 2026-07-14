@@ -36,7 +36,6 @@ export default function DeveloperSettings(){
     }
 
     async function purgePreferences(){
-        console.info("Purge Preferences")
         await AsyncStorage.setItem(PREFERENCES, JSON.stringify({}))
         resetPreferenceStore()
         setAlohaSnackbarText("Purged Preferences")
@@ -44,7 +43,6 @@ export default function DeveloperSettings(){
     }
 
     function purgeDatabase(){
-        console.info("Purge Database")
         collectionImportTables.forEach(async table => {
             await db.delete(schema[table])
         })
@@ -53,7 +51,6 @@ export default function DeveloperSettings(){
     }
 
     async function purgeTable(){
-        console.info("Purge Table")
         await db.delete(schema[dropTable])
         setAlohaSnackbarText(`Purged Table ${dropTable}`)
         setAlohaSnackbarVisible(true)
@@ -77,6 +74,8 @@ export default function DeveloperSettings(){
                 }
             })
         })
+        setAlohaSnackbarText("Faulty Images Nulled")
+        setAlohaSnackbarVisible(true)
     }
 
     function migrateCaliberToArray(){
@@ -92,6 +91,8 @@ export default function DeveloperSettings(){
                 }
             })
         })
+        setAlohaSnackbarText("Caliber Entries force-migrated")
+        setAlohaSnackbarVisible(true)
     }
 
     async function listAsyncStorage(){
@@ -104,6 +105,8 @@ export default function DeveloperSettings(){
 
     async function purgeAsyncStorage(){
         await AsyncStorage.removeItem(PREFERENCES)
+        setAlohaSnackbarText("Async Storage purged")
+        setAlohaSnackbarVisible(true)
     }
 
     function reset_isSold(){
@@ -113,6 +116,8 @@ export default function DeveloperSettings(){
                 await db.update(schema[table]).set({sold_isSold: false}).where((eq(schema[table].id, item.id)))
             })
         })
+        setAlohaSnackbarText("_isSold reset")
+        setAlohaSnackbarVisible(true)
     }
 
     async function showDbDiagnostics(){
