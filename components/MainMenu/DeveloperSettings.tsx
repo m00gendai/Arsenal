@@ -5,7 +5,7 @@ import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
 import { runDbDiagnostics } from "db/dbDiagnostics";
 import * as schema from "db/schema"
-import { eq, ne } from "drizzle-orm/sql";
+import { eq, ne, and, isNotNull } from "drizzle-orm/sql";
 import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
 import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
@@ -132,6 +132,17 @@ export default function DeveloperSettings(){
         } catch(e){
             setDialogContent(`Diagnostics failed:\n${String(e)}`)
         }
+    }
+
+    async function insertDummySerials(){
+        screenNameParamsAll.forEach(async table => {
+            const collection = await db.select().from(schema[table]).where(and(isNotNull(schema[table].serial), ne(schema[table].serial, "")))
+            collection.forEach(async item => {
+                await db.update(schema[table]).set({serial: `${(Math.random()*100000).toFixed(0)}`}).where((eq(schema[table].id, item.id)))
+            })
+        })
+        setAlohaSnackbarText("Inserted Dummy Serials")
+        setAlohaSnackbarVisible(true)
     }
     
     return(
@@ -299,6 +310,18 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>showDbDiagnostics()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Insert Dummy Serials</Text>
+                    <IconButton 
+                        icon="numeric" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>insertDummySerials()}
                     />
                 </View>
 
