@@ -1,18 +1,37 @@
 //TODO: ditch XML, do directly in JSON and wirte an XML translator for the stores, its easier
 
-export interface Version{
+export interface Version {
     title: string
-    de: {text: string, ios: string | null, android: string | null}
-    en: {text: string, ios: string | null, android: string | null}
-    fr: {text: string, ios: string | null, android: string | null}
-    it: {text: string, ios: string | null, android: string | null}
+    de: {
+        text: string,
+        ios: string | null,
+        android: string | null
+    }
+    en: {
+        text: string,
+        ios: string | null,
+        android: string | null
+    }
+    fr: {
+        text: string,
+        ios: string | null,
+        android: string | null
+    }
+    it: {
+        text: string,
+        ios: string | null,
+        android: string | null
+    }
 }
 
 export const versionHistory: Version[] = [
-{
-    "title": "V5.0.0",
-    "de": {
-        "text": `
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V5.0.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V5.0.0",
+        de: {
+            text: `
 Neu:
 - Kostenübersicht für Verbrauchsmaterial via QuickStock Funktion
 - Lokalisierungsoptionen
@@ -23,11 +42,11 @@ Verbessert:
 
 Behoben:
 Kleinere Anpassungen und Fehlerbehebungen`,
-        "ios": "",
-        "android": null
-    },
-    "en": {
-        "text": `
+            ios: "",
+            android: null
+        },
+        en: {
+            text: `
 New: 
 - Cost overview for consumables via QuickStock function
 - Localization options
@@ -39,11 +58,11 @@ Improved:
 Fixed:
 Minor improvements and bug fixes
 `,
-        "ios": null,
-        "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Nouveau :
 - Aperçu des coûts pour le matériel consommable via la fonction QuickStock
 - Options de localisation
@@ -55,11 +74,11 @@ Amélioré :
 Corrigé :
 Ajustements mineurs et corrections de bugs
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Novità:
 - Panoramica dei costi per il materiale di consumo tramite la funzione QuickStock
 - Opzioni di localizzazione
@@ -71,14 +90,17 @@ Migliorato:
 Corretto:
 Piccoli miglioramenti e correzioni di bug
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-  "title": "V4.4.0",
-  "de": {
-    "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.4.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.4.0",
+        de: {
+            text: `
 Neu:
 - Neue Sammlungen: Geschosse, Hülsen, Zündhütchen und Pulver
 - Diverse Schwarzpulver-Kaliber hinzugefügt
@@ -86,47 +108,50 @@ Neu:
 Behoben: 
 Kleinere Anpassungen und Fehlerbehebungen
 `,
-    "ios": "Behoben: Bilder konnten nicht nachträglich bearbeitet werden",
-    "android": null
-    },
-    "en": {
-      "text": `
+            ios: "Behoben: Bilder konnten nicht nachträglich bearbeitet werden",
+            android: null
+        },
+        en: {
+            text: `
 New:
 - New collections: Bullets, Cases, Primers and Powder
 - Added various black powder calibers
 
 Fixed: 
 Minor improvements and bug fixes`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Nouveau:
 - Nouvelles collections: Projectiles, Douilles, Amorces et Poudre
 - Ajout de plusieurs calibres à poudre noire
 
 Corrigé: 
 Ajustements mineurs et corrections de bugs`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Novità::
 - Nuove collezioni: Proiettili, Bossoli, Inneschi e Polvere
 - Aggiunti diversi calibri a polvere nera
 
 Corretto: 
 Piccoli miglioramenti e correzioni di bug`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V4.3.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.3.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.3.0",
+        de: {
+            text: `
 Neu:
 - Verlauf für jeden Eintrag
 - Markieren von Eintrag als "verkauft"
@@ -139,11 +164,11 @@ Behoben:
 - Artikel-5-PDFs ohne Legende
 - Kleinere Fehlerbehebungen
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Article 5 PDFs without legend
 - Minor bug fixes
@@ -155,11 +180,11 @@ New:
 - App remembers the last viewed collection when closing
 - Minor improvements and new calibers
 - Rating prompt :)`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - PDFs Article 5 sans légende
 - Corrections mineures
@@ -170,11 +195,11 @@ Nouveautés:
 - L’application mémorise la dernière collection consultée à la fermeture
 - Améliorations mineures et nouveaux calibres
 - Demande d’évaluation :)`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto:
 - PDF Articolo 5 senza legenda
 - Correzioni minori
@@ -186,14 +211,17 @@ Novità:
 - L’app ricorda l’ultima collezione visualizzata alla chiusura
 - Miglioramenti minori e nuovi calibri
 - Richiesta di valutazione :)`,
-      "ios": null,
-      "android": null
+            ios: null,
+            android: null
+        },
     },
-  },
-  {
-    "title": "V4.2.0",
-    "de": {
-      "text": `
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.2.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.2.0",
+        de: {
+            text: `
 Behoben:
 - Datenbankexport hat Bilder ignoriert
 - Autocomplete wurde durch Tastatur verdeckt
@@ -203,11 +231,11 @@ Behoben:
 Neu:
 - PDF Exporte mit selbst wählbaren Attributen für alle Sammlungen
 - Neue Sammlung: Wiederladen - Matrizen`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Database export was ignoring images
 - Autocomplete was hidden behind keyboard
@@ -217,11 +245,11 @@ Fixed:
 New:
 - PDF exports with selectable attributes for all collections
 - New collection: Reloading - Dies`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - L'export de la base de données ignorait les images
 - La saisie automatique était masquée par le clavier
@@ -231,11 +259,11 @@ Corrigé:
 Nouveautés:
 - Exports PDF avec attributs sélectionnables pour toutes les collections
 - Nouvelle collection: Rechargement - Matrices`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto:
 - L'esportazione del database ignorava le immagini
 - Il completamento automatico era nascosto dalla tastiera
@@ -245,143 +273,155 @@ Corretto:
 Novità:
 - Esportazioni PDF con attributi selezionabili per tutte le collezioni
 - Nuova collezione: Ricarica - Matrici`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V4.1.1",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.1.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.1.1",
+        de: {
+            text: `
 Behoben:
 - Daten in QR Etiketten wurden als Unix Zeitstempel statt lokalisiertem Datumsformat angezeigt
 -Leere Artikel 5 Kästchen wurden angezeigt, obwohl "leere Felder in Einträgen ausblenden" eingeschaltet war
 - Möglichkeit, Etikettengitteranzeige auszuschalten fehlte`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Dates in QR labels were shown as Unix timestamps instead of localized date format
 - Empty article 5 boxes were shown even if “hide empty fields in entries” was turned on
 - Option to turn off label grid display was missing`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Correction:
 - Les dates dans les étiquettes QR étaient affichées en tant que timestamp Unix au lieu d’un format de date localisé
 - Des cases vides de 5 articles étaient affichées même si l’option «Masquer les cases vides dans les entrées» était activée
 - Il n’était pas possible de désactiver l’affichage des grilles d’étiquettes`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Le date nelle etichette QR venivano visualizzate come timbri temporali Unix invece che nel formato di data locale
 - Quando era attivata l’opzione «Nascondi i campi vuoti nelle voci», venivano visualizzati 5 campi vuoti
 - Mancava la possibilità di disattivare la visualizzazione della griglia delle etichette`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V4.1.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.1.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.1.0",
+        de: {
+            text: `
 QR Codes integriert:
 - Eigene bestehende QR Codes können Einträgen zugewiesen werden
 - Direkte Navigation zu Eintrag durch Scannen von zugewiesenem QR Code
 - Generierung von QR Codes für Einträge direkt in der App zum Ausdrucken auf Etikettpapier
 - Vorgefertigte Etikettformate und Möglichkeit zur definierung eigener Formate`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 QR Codes integrated:
 - Existing QR Codes can be assigned to entries
 - Direct navigation to entry by scanning the assigned QR Code
 - Generation of QR Codes for entries directly in the app for printing on label paper
 - Pre-made label formats and the possibility to define your own formats`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Codes QR intégrés: 
 - Possibilité d’attribuer vos propres codes QR existants aux entrées
 - Navigation directe vers une entrée en scannant le code QR attribué
 - Génération de codes QR pour les entrées directement dans l’application pour impression sur papier autocollant
 - Modèles d’étiquettes prédéfinis et possibilité de créer vos propres modèles`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 QR Code integrati:
 - Possibilità di assegnare QR Code esistenti agli articoli
 - Navigazione diretta all’articolo scansionando il QR Code assegnato
 - Generazione di QR Code per gli articoli direttamente dall’app per la stampa su etichette
 - Formati di etichette predefiniti e possibilità di definire formati personalizzati`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V4.0.1",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.0.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.0.1",
+        de: {
+            text: `
 Behoben:
 -App stürtzt ab wenn Schlagwort bei neuem Eintrag gewählt wird
 -Statistiken: Anzahl verschiedener Kaliber inkorrekt
 
 Verbessert:
 -Statistiken: Bei inkorrekten Daten wird ein Hinweis angezeigt, welcher zeigt wo die inkorrekten Daten sind`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 -App crashes if tag is selected on anew entry
 -Statistics: Number of different Calibers not correct
 
 Improved:
 -Statistics: If there is incorrect data, a visual hint is displayed which shows where the incorrect data is`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 -L'application se bloque si un mot-clé est sélectionné dans une nouvelle entrée
 -Statistiques: Nombre de calibres différents incorrect
 
 Amélioré:
 -Statistiques: Si des données sont incorrectes, un indice visuel est affiché indiquant où se trouvent les données incorrectes`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto:
 -L'app si blocca se viene selezionata una parola chiave in una nuova voce
 -Statistiche: Numero di calibri diversi non corretto
 
 Migliorato:
 -Statistiche: Se ci sono dati errati, viene mostrato un suggerimento visivo che indica dove si trovano i dati errati`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V4.0.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V4.0.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V4.0.0",
+        de: {
+            text: `
 Neu:
 - Sammlung: Literatur
 - Neue Felder für Munition, Licht&Laser, Optiken und Verschiedenes
@@ -399,11 +439,11 @@ Verbessert:
 Behoben:
 - CSV Importe/Exporte nur für Waffen und Munition
 - QuickShot hat angebautes Zubehör nicht berücksichtigt`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 New:
 - Collection: Literature
 - New fields for Ammunition, Lights&Lasers, Optics, and Miscellaneous
@@ -421,11 +461,11 @@ Improved:
 Fixed:
 - CSV imports/exports limited to firearms and ammunition
 - QuickShot now correctly considers attached accessories`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Nouveautés:
 - Collection: Littérature
 - Nouveaux champs pour les munitions, lumière&laser, optiques et divers
@@ -443,11 +483,11 @@ Améliorations:
 Corrections:
 - Import/export CSV limité aux armes et aux munitions
 - QuickShot prend désormais correctement en compte les accessoires montés`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Novità:
 - Collezione: Letteratura
 - Nuovi campi per munizioni, luce&laser, ottiche e varie
@@ -463,14 +503,17 @@ Miglioramenti:
 Correzioni:
 - Importazione/esportazione CSV limitata ad armi e munizioni
 - QuickShot ora tiene correttamente conto degli accessori montati`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V3.0.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V3.0.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V3.0.0",
+        de: {
+            text: `
 Neu:
 - Neue Sammlungskategorie: Zubehör
 - Neue Sammlungskategorie: Waffenbestandteile
@@ -481,11 +524,11 @@ Behoben:
 - Speichern nur möglich, nachdem ein anderes Eingabefeld ausgewählt wurde
 - Zahlenwerte mit Kommas führten zu kaputten Statistiken
 - Suchfeld in Munitionssamllung nicht sichtbar`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 New:
 - New collection category: Accessories
 - New collection category: Weapon parts
@@ -496,11 +539,11 @@ Fixed:
 - Saving only possible when another input field has been selected first
 - Number values with commas broke statistics
 - Searchfield in ammunition collection not visible`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Nouveau:
 - Nouvelle catégorie de collection: Accessoires
 - Nouvelle catégorie de collection: Pièces d’armes
@@ -511,11 +554,11 @@ Correctif:
 - Enregistrement possible uniquement après avoir sélectionné un autre champ de saisie
 - Les valeurs numériques avec des virgules ont perturbé les statistiques
 - Le champ de recherche dans la collection de munitions n’était pas visible`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Novità:
 - Nuova categoria di collezioni: Accessori
 - Nuova categoria di collezioni: Parti di armi
@@ -526,45 +569,51 @@ Risolti:
 - Salvataggio possibile solo dopo aver selezionato un altro campo di input
 - Valori numerici con virgole che causavano problemi con le statistiche
 - Campo di ricerca nella collezione di munizioni non visibi`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V2.0.1",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V2.0.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V2.0.1",
+        de: {
+            text: `
 - Potentielle Out of Memory Fehler beim Export der Arsenal-Datenbank behoben
 - Fehler behoben bei seltenen Fällen, in denen Sammlungen erst dann angezeigt werden, wenn die Sortierreihenfolge manuell geändert wird`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 - Fixed potential out of memory errors in exporting Arsenal Database 
 - Fixed rare occasions where collections are not displayed until sorting order is manually changed`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 - Correction d'erreurs potentielles de manque de mémoire lors de l'exportation de la base de données Arsenal 
 - Correction de cas rares où les collections ne sont pas affichées tant que l'ordre de tri n'est pas manuellement modifié`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 - Corretta la potenziale mancanza di memoria durante l'esportazione della banca dati Arsenal 
 - Corretta la rara situazione in cui le collezioni non vengono visualizzate finché l'ordine di ordinamento non viene cambiato manualmente`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V2.0.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V2.0.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V2.0.0",
+        de: {
+            text: `
 Völlig überarbeitete interne Datenbankstruktur
 - Legacy-Importer für Arsenal-Datenbank der Version 1
 
@@ -575,11 +624,11 @@ Weitere Änderungen:
 - Die Datenbankimporter sind viel toleranter gegenüber fehlerhaften Daten
 
 Weitere neue Funktionen werden in Version 2.1.0 eingeführt`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Completely reworked internal database structure
 - Legacy importer for version 1 Arsenal database
 
@@ -590,11 +639,11 @@ Other changes:
 - Database importers are much more tolerant to bad data
 
 More new features will be introduced in version 2.1.0`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Structure de la base de données interne entièrement révisée
 - Importateur de version 1 de la base de données Arsenal
 
@@ -605,11 +654,11 @@ Autres modifications:
 - Les importateurs de base de données sont beaucoup plus tolérants aux données incorrectes
 
 D'autres nouvelles fonctionnalités seront introduites dans la version 2.1.0`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Struttura di database interna completamente rinnovata
 - Legacy-Importer per la versione 1 del database di Arsenal
 
@@ -620,84 +669,93 @@ Altre modifiche:
 - I database-importer sono molto più tolleranti nei confronti di dati errati
 
 Ulteriori nuove funzionalità saranno introdotte nella versione 2.1.0`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.4.1",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.4.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.4.1",
+        de: {
+            text: `
 Kleinere Fehlerbehebungen`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Minor bugfixes`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrections mineures de bogues`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Correzioni di bug minori`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.4.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.4.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.4.0",
+        de: {
+            text: `
 Behoben:
 - Suche mit Sonderzeichen in Munitionsübersicht
 
 Neu:
 - Waffen filtern nach zuletzt geschossen und zuletzt gereinigt`,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Search with special characters in ammunition overview
 
 New:
 - Filter weapons for last shot and last cleaned`,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - Recherche avec des caractères spéciaux dans l'aperçu des munitions
 
 Nouveau:
 - Filtrer les armes selon le dernier tir et le dernier nettoyage`,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Ricerca con caratteri speciali nella panoramica delle munizioni
 
 Nuovo:
 - Le armi filtrano dopo l'ultimo sparo e l'ultimo pulito`,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.3.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.3.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.3.0",
+        de: {
+            text: `
 Behoben:
 - Datum immer zweistellig
 - Bild teilen fehlerhaft
@@ -707,11 +765,11 @@ Verbessert:
 - Ausgewählte Kaliber in Auswahl direkt löschbar
 - Verkürzte Kaliberbezeichnungen möglich (via Einstellungen)
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Date always in two digits
 - Split image incorrect
@@ -722,11 +780,11 @@ Improved:
 - Selected calibers in selection can be erased directly
 - Abbreviated calibre designations possible (via settings)
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - date toujours à deux chiffres
 - Partage d'image défectueux
@@ -737,11 +795,11 @@ Amélioré:
 - Calibres sélectionnés dans la sélection directement effaçables
 - Désignations de calibres abrégées possibles (via les réglages)
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Data sempre a due cifre
 - Condivisione immagine errata
@@ -752,80 +810,90 @@ Migliorato:
 - Calibri selezionati in selezione eliminabili direttamente
 - Denominazioni di calibro abbreviate possibili (tramite impostazioni)
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.2.3",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.2.3                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.2.3",
+        de: {
+            text: `
 Code-Änderungen, keine sichtbaren Auswirkungen`,
-      "ios": `
+            ios: `
 Behoben:
 - Bilder nach Update nicht mehr sichtbar
 - Warnung-Popup für die PDF Funktionen`,
-      "android": null
-    },
-    "en": {
-      "text": `
+            android: null
+        },
+        en: {
+            text: `
 Code changes, no visible impact`,
-      "ios": `
+            ios: `
 Fixed:
 - Images not visible after update
 - Warning popup for PDF prints`,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            android: null
+        },
+        fr: {
+            text: `
 Changements de code, aucune incidence visible`,
-      "ios": `
+            ios: `
 Correction:
 - Images non visibles après la mise à jour
 - Popup d’alerte pour les fonctions PDF`,
-      "android": null
-    },
-    "it": {
-      "text": `
+            android: null
+        },
+        it: {
+            text: `
 Cambiamenti di codice, nessun impatto visibile`,
-      "ios": `
+            ios: `
 Risolto:
 - Immagini non più visibili dopo l’aggiornamento
 - Popup di avviso per le funzioni PDF`,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.2.2",
-    "de": { 
-      "text": `
-Herobrine entfernt`, 
-  "ios": null, 
-  "android": null 
-  },
-    "en": { 
-      "text": `
-Removed Herobrine`, 
-"ios": null,
-"android": null },
-    "fr": { 
-      "text": `
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.2.2                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.2.2",
+        de: {
+            text: `
+Herobrine entfernt`,
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
+Removed Herobrine`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Herobrine supprimé`,
-"ios": null,
-"android": null 
-},
-    "it": { 
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Herobrine rimosso
-`, 
-"ios": null, 
-"android": null 
-}
-  },
-  {
-    "title": "V1.2.1",
-    "de": {
-      "text": `
+`,
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.2.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.2.1",
+        de: {
+            text: `
 Behoben:
 - Neues Objekt mit alten Daten
 - Fehlerhafter Farbtext
@@ -834,11 +902,11 @@ Behoben:
 - Sortieren nach zuletzt hinzugefügt/zuletzt bearbeitet fehlerhafte Reihenfolge
 - Datumauswahl: Knopf für schnelle Monats- und Jahresauswahl zu wenig sichtbar
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - New object with old data
 - Incorrect colour text
@@ -847,11 +915,11 @@ Fixed:
 - Sort by last added/last edited incorrect order
 - Date selection: Button for quick month and year selection not visible enough
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - Nouvel objet avec d'anciennes données
 - Texte de couleur erroné
@@ -860,11 +928,11 @@ Corrigé:
 - Tri par dernier ajout/dernier édité ordre erroné
 - Sélection de date: le bouton pour sélection rapide du mois et de l'année est trop peu visible
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Nuovo oggetto con dati vecchi
 - Testo a colori errato
@@ -873,14 +941,17 @@ Risolto:
 - Ordina per ultimo aggiunto/ultimo modificato ordine errato
 - Selezione data: pulsante per la selezione rapida del mese e dell' anno troppo poco visibile
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.2.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.2.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.2.0",
+        de: {
+            text: `
 Behoben:
 - Abbrechen eines neuen Objekts nicht möglich
 - Lange Schlüsselwörter verursachten Darstellungsfehler im Filtermenü
@@ -902,11 +973,11 @@ Neu:
 - Bilder teilen
 - Objekt Klonen (langer Druck in Listenansicht)
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Cancel of new object not possible
 - Long keywords display error filter menu
@@ -928,14 +999,14 @@ New:
 - Share pictures
 - Object Clone (long press in list view)
 `,
-      "ios": `
+            ios: `
 - Scrolling opens Dialog Windows
 - Keyboard overlap
 `,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - Annulation de la création d’un nouvel objet impossible
 - Les mots-clés longs provoquaient des erreurs d’affichage dans le menu de filtrage
@@ -957,11 +1028,11 @@ Nouveau:
 - Partager des images
 - Clonage d'objets (longue impression en vue liste)
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Impossibile annullare la creazione di un nuovo oggetto
 - Parole chiave lunghe causavano errori di visualizzazione nel menu dei filtri
@@ -983,14 +1054,17 @@ Nuovo:
 - Condividi immagini
 - Oggetto Clonazione (premere a lungo nella vista a lista)
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "V1.1.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V1.1.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V1.1.0",
+        de: {
+            text: `
 Behoben:
 - Darstellungsfehler bei Munition ohne Kaliberangabe
 - Neues Sammlungsobjekt wird nicht an richtiger Position eingefügt
@@ -1003,11 +1077,11 @@ Neu:
 - Neues Feld "Aktueller Marktwert"
 - Rudimentäre Statistiken
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - Display error for ammunition without calibre indication
 - New collection object is not inserted in correct position
@@ -1020,11 +1094,11 @@ New:
 - New field "Current Market Value"
 - Rudimentary statistics
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Corrigé:
 - erreur de présentation pour les munitions sans indication de calibre
 - Le nouvel objet de collection n'est pas inséré au bon endroit
@@ -1037,11 +1111,11 @@ Nouveau:
 - Nouveau champ "Valeur de marché actuelle"
 - Statistiques rudimentaires
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Risolto:
 - Errore di rappresentazione delle munizioni senza calibro
 - Impossibilità di inserire il nuovo oggetto nella posizione corretta
@@ -1054,14 +1128,17 @@ Nuovo:
 - Nuova casella "Valore di mercato attuale" 
 - Statistiche rudimentali
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "BETA 1.2.0-rc",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                   BETA V1.2.0-rc                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "BETA 1.2.0-rc",
+        de: {
+            text: `
 Behoben:
 - Liste merkt sich Scrollposition nicht
 - CSV Import hat Kaliberfeld falsch gesetzt
@@ -1074,11 +1151,11 @@ Verbessert:
 - Farbrahmen um Waffe ansehnlicher
 - Löschfunktion jetzt auch im Bearbeitungsmodus und besser ersichtlich
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed:
 - List does not remember scroll position
 - CSV import has set caliber field incorrectly
@@ -1091,11 +1168,11 @@ Improved:
 - Color frame around weapon more attractive
 - Delete function now also in edit mode and better visible
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Correction d'un problème:
 - La liste ne se souvient pas de la position de défilement
 - L'importation CSV ne définissait pas correctement le champ de calibre
@@ -1108,64 +1185,70 @@ Amélioration de l'affichage :
 - Cadre de couleur plus visible autour de l'arme
 - Fonction d'effacement maintenant aussi en mode édition et plus visible
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto:\n- L'elenco non ricorda la posizione di scorrimento\n- L'importazione CSV ha impostato il campo calibro in modo errato\n- L'importazione CSV ha uno stato sbagliato\n- Corretti vari errori di visualizzazione minori\n\nMigliorato:\n- Munizioni con calibro nella vista elenco/piastrella\n- Funzione di ordinamento più accurata\n- Cornice di colore intorno all'arma più attraente\n- Funzione di cancellazione ora anche in modalità di modifica e meglio visibile
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "BETA 1.1.1",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                         BETA 1.1.1                          |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "BETA 1.1.1",
+        de: {
+            text: `
 Behoben:
 - Potentielles Einfrieren der App beim Start
 - Reinigungsintervall auf Waffenliste
 - Galerie-Druck einer Waffe hat Munitionsparameter
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed: 
 - Potential freezing of the app at startup
 - Cleaning interval on weapon list
 - Gallery print of a weapon has ammunition parameters
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Correction d'un problème: 
 - Gel potentiel de l'application au démarrage
 - Intervalle de nettoyage sur la liste des armes
 - La pression de la galerie d'une arme a des paramètres de munitions
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto:
 - Possibile blocco dell'applicazione all'avvio
 - Intervallo di pulizia nell'elenco delle armi
 - La stampa della galleria di un'arma contiene i parametri delle munizioni
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-  {
-    "title": "BETA 1.1.0",
-    "de": {
-      "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                        BETA 1.1.0                           |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "BETA 1.1.0",
+        de: {
+            text: `
 Neu:
 - Biometrisches Login
 - Leere Felder in Sammlungsobjekten ausblenden
@@ -1176,11 +1259,11 @@ Behoben:
 - undefined Objekt bei CSV Import
 - Sortierreihenfolge
 `,
-      "ios": null,
-      "android": null
-    },
-    "en": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 New:
 - Biometric login
 - Hide empty fields in collection objects
@@ -1191,11 +1274,11 @@ Fixed:
 - undefined object in CSV import
 - Sort order
 `,
-      "ios": null,
-      "android": null
-    },
-    "fr": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Nouveau:
 - Connexion biométrique
 - Masquer les champs vides dans les objets de collection
@@ -1206,11 +1289,11 @@ Correction:
 - Objet non défini lors de l'importation CSV
 - Ordre de tri
 `,
-      "ios": null,
-      "android": null
-    },
-    "it": {
-      "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Nuovo:
 - Accesso biometrico
 - Nascondere i campi vuoti negli oggetti di raccolta
@@ -1220,40 +1303,42 @@ Corretto:
 - Oggetto non definito nell'importazione CSV
 - Ordinamento
 `,
-      "ios": null,
-      "android": null
-    }
-  },
-
-  {
-    "title": "BETA 1.0.0",
-    "de": { 
-        "text": `
+            ios: null,
+            android: null
+        }
+    },
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                          BETA 1.0.0                         |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "BETA 1.0.0",
+        de: {
+            text: `
 Fehler behoben, der die App abstürzen liess, wenn ein neuer Munitionseintrag erstellt wurde
-`, 
-        "ios": null, 
-        "android": null 
-    },
-    "en": { 
-        "text": `
+`,
+            ios: null,
+            android: null
+        },
+        en: {
+            text: `
 Fixed bug that crashed the App if a new ammunition entry was created
-`, 
-        "ios": null, 
-        "android": null 
-    },
-    "fr": { 
-        "text": `
+`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
 Correction d'un bug qui faisait planter l'application si une nouvelle entrée de munitions était créée
 `,
-         "ios": null,
-         "android": null
-    },
-    "it": { 
-        "text": `
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
 Corretto un bug che mandava in crash l'app se veniva creata una nuova voce di munizioni
-`, 
-        "ios": null, 
-        "android": null
+`,
+            ios: null,
+            android: null
+        }
     }
-  }
 ]
