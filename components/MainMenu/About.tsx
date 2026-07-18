@@ -48,6 +48,22 @@ export default function About(){
         it: "Discussione ufficiale su waffenforum.ch",
         ch: "Discussiun uffiziala sin waffenforum.ch"
     }
+
+    const developmentStatus: SimpleTranslation = {
+        de: "Übersicht Entwicklungsstatus",
+        en: "Development Status Overview",
+        fr: "Aperçu de l'état de développement",
+        it: "Panoramica dello stato di sviluppo",
+        ch: "Survista da l'stadi da svilup",
+    }
+
+    const officialYoutube: SimpleTranslation = {
+        de: "Offizieller YouTube-Kanal",
+        en: "Official YouTube Channel",
+        fr: "Chaîne YouTube officielle",
+        it: "Canale YouTube ufficiale",
+        ch: "Canal ufficial da YouTube",
+    }
     
     return(<View>
         <List.Accordion left={props => <List.Icon {...props} icon="cellphone-information" />} title={preferenceTitles.about[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
@@ -66,15 +82,29 @@ export default function About(){
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
 
                 <Pressable onPress={() => Linking.openURL("https://waffenforum.ch/forum/index.php?thread/2883-arsenal-die-schweizer-app-f%C3%BCr-waffensammler/&action=lastPost")} style={{display: "flex", flexDirection: "row", alignItems: "center", gap: defaultViewPadding}}>
-                     <Icon source="open-in-new" size={24} />
+                     <Icon source="forum-outline" size={24} />
                      <Text>{officialThread[language]}</Text>
                 </Pressable>
 
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
 
                 <Pressable onPress={() => Linking.openURL("https://arsenal-app.ch")} style={{display: "flex", flexDirection: "row", alignItems: "center", gap: defaultViewPadding}}>
-                     <Icon source="open-in-new" size={24} />
+                     <Icon source="monitor-cellphone-star" size={24} />
                      <Text>{officialPage[language]}</Text>
+                </Pressable>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <Pressable onPress={() => Linking.openURL("https://trello.com/b/aewI0VKW/arsenal")} style={{display: "flex", flexDirection: "row", alignItems: "center", gap: defaultViewPadding}}>
+                     <Icon source="chart-timeline" size={24} />
+                     <Text>{developmentStatus[language]}</Text>
+                </Pressable>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <Pressable onPress={() => Linking.openURL("https://www.youtube.com/@ArsenalGunCollectionApp")} style={{display: "flex", flexDirection: "row", alignItems: "center", gap: defaultViewPadding}}>
+                     <Icon source="television-classic" size={24} />
+                     <Text>{officialYoutube[language]}</Text>
                 </Pressable>
 
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
