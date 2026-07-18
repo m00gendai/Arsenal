@@ -177,7 +177,7 @@ export const loggerTables: string[] = ["logger", "costLoggerAmmunition", "costLo
 export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "autocomplete", "gunReminders", "customShippingLabels", ...loggerTables]
 
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
-export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
+export const collectionImportTables: (CollectionType | string)[] = [...screenNameParamsAll, ...nonCollectionTables]
 
 export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
