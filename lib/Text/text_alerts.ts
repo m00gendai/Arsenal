@@ -195,6 +195,37 @@ export const databaseImportAlert:Alert = {
 
 export const databaseExportAlert:Alert = {
     title: {
+        de: "Datenbank exportieren",
+        en: "Export database",
+        fr: "Exporter la base de données",
+        it: "Esporta la banca dati",
+        ch: "Exportar la banca da datas",
+    },
+    subtitle: {
+        de: "",
+        en: "",
+        fr: "",
+        it: "",
+        ch: "",
+    },
+    yes: {
+        de: "Ja",
+        en: "Yes",
+        fr: "Oui",
+        it: "Sì",
+        ch: "Gea",
+    },
+    no: {
+        de: "Nein",
+        en: "No",
+        fr: "Non",
+        it: "No",
+        ch: "Na",
+    }
+}
+
+export const databaseCSVExportAlert:Alert = {
+    title: {
         de: "Datenbank im CSV-Format exportieren",
         en: "Export database to CSV format",
         fr: "Exporter la base de données au format CSV",
