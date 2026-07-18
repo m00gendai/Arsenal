@@ -9,6 +9,7 @@ import { DB_NAME } from "../../configs/configs_DB";
 import { collectionImportTables, legacyDatePickerTriggerFields, nonCollectionTables } from "configs/configs";
 import { determineTagSchema } from "../determinators";
 import { AmmoType, CollectionType, ItemType, LegacyAmmoType } from "lib/interfaces";
+import { ImportCancelledError } from "lib/customErrors";
 
 function parseDate(inDate: string | number) {
  
@@ -74,10 +75,29 @@ function checkLegacyAmmoCaliber(caliber:any){
   }
 }
 
-export default async function importDatabase() {
+function nextFrame() {
+  return new Promise(resolve => setTimeout(resolve, 0))
+}
+
+export default async function importDatabase(
+    startElapsedTime: () => void,
+    setImportSize: React.Dispatch<React.SetStateAction<number>>,
+    setImportProgress: React.Dispatch<React.SetStateAction<number>>,
+    setImportCollection: React.Dispatch<React.SetStateAction<CollectionType | string>>
+) {
+
+    let lastYield = Date.now()
+
   try {
     const importableZip = await DocumentPicker.getDocumentAsync()
+    if (importableZip.canceled || !importableZip.assets?.[0]) {
+        throw new ImportCancelledError()
+    }
+    startElapsedTime()
     const importableZipUri = importableZip.assets[0].uri
+
+    
+
     await unzip(importableZipUri, FileSystem.cacheDirectory)
     
     const importDatabasePath = `${FileSystem.cacheDirectory}${DB_NAME}`
@@ -114,6 +134,7 @@ export default async function importDatabase() {
       
       // Handle Collections
       for (const directory of collectionImportTables) {
+        setImportCollection(directory)
         console.info(`outer directory loop - ${directory}`)
         let collection
         try {
@@ -130,6 +151,7 @@ export default async function importDatabase() {
   } else {
     collection = cacheDBopen.select().from(schema[directory]).all()
   }
+  setImportSize(collection.length)
 } catch (e) {
   const message = String(e?.message ?? e)
 
@@ -187,6 +209,11 @@ export default async function importDatabase() {
               await db.insert(schema[directory]).values(newItem);
               console.info("successfully imported item")
             }
+            setImportProgress(importProgress => importProgress + 1)
+            if (Date.now() - lastYield > 100) {   // yield at most ~10x/sec
+    await nextFrame()
+    lastYield = Date.now()
+  }
           }
           if(!nonCollectionTables.includes(directory)){
             for(const item of tags){
@@ -196,6 +223,11 @@ export default async function importDatabase() {
           }
         }catch(e){
           throw new Error(`itemCollection ${directory}: ${e}`)
+        }
+        setImportProgress(0)
+        if (Date.now() - lastYield > 100) {   // yield at most ~10x/sec
+            await nextFrame()
+            lastYield = Date.now()
         }
       }
       
@@ -210,6 +242,7 @@ export default async function importDatabase() {
         for(const folder of presentFolders){
           const itemFolder = await FileSystem.getInfoAsync(`${FileSystem.cacheDirectory}images/${folder}`)
           if(itemFolder.exists){
+            
             const images = await FileSystem.readDirectoryAsync(`${FileSystem.cacheDirectory}images/${folder}`)
             for(const image of images){
               const imageURI = `${FileSystem.cacheDirectory}images/${folder}/${image}`
@@ -223,6 +256,7 @@ export default async function importDatabase() {
                 console.error(`Failed to move image ${image}:`, e)
               }
             }
+            
           }
         }
       }
