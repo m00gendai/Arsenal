@@ -56,7 +56,6 @@ export default function CSVImportModal({startElapsedTime, stopElapsedTime, setIm
     function handleCancel(){
         toggleImportCSVVisible()
         stopElapsedTime()
-        setDbModalVisible()
         setAlohaSnackbarText(`${toastMessages.dbImportCancel[language]}`)
         setAlohaSnackbarVisible(true)
     }
