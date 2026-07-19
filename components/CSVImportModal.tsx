@@ -200,7 +200,7 @@ export default function CSVImportModal({startElapsedTime, stopElapsedTime, setIm
                                 <View key={`mapperRow_${index}`} style={{width: "100%", display: "flex", flexDirection: "row", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between"}}>
                                     <Text style={{width: "50%"}}>{item[language]}</Text>
                                     <Picker 
-                                        itemStyle={Platform.OS === "ios" ? {fontSize: 15}:{}} 
+                                        itemStyle={Platform.OS === "ios" ? {fontSize: 15, height: 100}:{}} 
                                         style={{width: "50%", color: theme.colors.onBackground}} 
                                         dropdownIconColor={theme.colors.onBackground} 
                                         selectedValue={mapCSVItem[item.name]} 
