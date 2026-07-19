@@ -6,7 +6,7 @@ import { datePickerTriggerFields, defaultViewPadding } from "configs/configs"
 import { mainMenu_DatabaseOperations } from "lib/Text/mainMenu_DatabaseOperations"
 import { Picker } from "@react-native-picker/picker"
 import { useImportExportStore } from "stores/useImportExportStore"
-import { ItemType } from "lib/interfaces"
+import { CollectionType, ItemType } from "lib/interfaces"
 import { v4 as uuidv4 } from 'uuid';
 import ModalContainer from "./ModalContainer"
 import { useState } from "react"
@@ -14,12 +14,25 @@ import { db } from "db/client"
 import * as schema from "db/schema"
 import { determineDataTemplate, determineEmptyObjectReturns } from "functions/determinators"
 import { Dropdown } from 'react-native-paper-dropdown';
+import { ImportCancelledError } from "lib/customErrors"
+import { toastMessages } from "lib/Text/text_toastMessages"
+import { useTextStore } from "stores/useTextStore"
 
-export default function CSVImportModal(){
+interface Props{
+    startElapsedTime: () => void
+    stopElapsedTime: () => void
+    setImportSize: React.Dispatch<React.SetStateAction<number>>
+    setImportProgress: React.Dispatch<React.SetStateAction<number>>
+    importOption: CollectionType
+    setDbModalVisible: () => void
+}
 
-    const { importCSVVisible, toggleImportCSVVisible } = useViewStore()
+export default function CSVImportModal({startElapsedTime, stopElapsedTime, setImportSize, setImportProgress, importOption, setDbModalVisible}: Props){
+
+    const { importCSVVisible, toggleImportCSVVisible, setAlohaSnackbarVisible } = useViewStore()
     const { language, theme } = usePreferenceStore()
-    const { CSVHeader, CSVBody, importProgress, setImportProgress, setImportSize, mapCSVItem, setMapCSVItem, dbCollectionType, setDbCollectionType } = useImportExportStore()
+    const { CSVHeader, CSVBody, mapCSVItem, setMapCSVItem } = useImportExportStore()
+    const { setAlohaSnackbarText } = useTextStore()
 
     const [hasHeaders, setHasHeaders] = useState<boolean>(true)
     const [dateFormat, setDateFormat] = useState<string>("DD-MM-YYYY-period")
@@ -33,6 +46,20 @@ export default function CSVImportModal(){
         { label: '2000-12-31', value: 'YYYY-MM-DD-dash' },
         { label: "Unix Epoch", value: "unix"}
     ];
+
+    let lastYield = Date.now()
+
+    function nextFrame() {
+        return new Promise(resolve => setTimeout(resolve, 0))
+    }
+
+    function handleCancel(){
+        toggleImportCSVVisible()
+        stopElapsedTime()
+        setDbModalVisible()
+        setAlohaSnackbarText(`${toastMessages.dbImportCancel[language]}`)
+        setAlohaSnackbarVisible(true)
+    }
 
     function parseDate(csvDate:string){
         if(dateFormat === "unix"){
@@ -64,7 +91,9 @@ export default function CSVImportModal(){
     }
 
     async function setImportedCSV(){
-        
+        try{
+        setDbModalVisible()
+        startElapsedTime()
         toggleImportCSVVisible()
         setImportSize(CSVBody.length)
         const indexMapCSV: {[key: string]: number} = {}
@@ -80,8 +109,10 @@ export default function CSVImportModal(){
 
         const itemsToBeMapped:string[][] = hasHeaders ? [...CSVBody] : [[...CSVHeader], ...CSVBody]
 
-        const objects: ItemType[] = itemsToBeMapped.map((items, index)=>{
-            const mapped:ItemType = determineEmptyObjectReturns(dbCollectionType)
+        const objects: ItemType[] = []
+
+        for (const items of itemsToBeMapped) {
+            const mapped:ItemType = determineEmptyObjectReturns(importOption)
             const uniqueId = uuidv4()
             for(const entry of Object.entries(indexMapCSV)){
 
@@ -107,18 +138,35 @@ export default function CSVImportModal(){
                 }
             })
             mapped.remarks = rmk.join("\n")
-            setImportProgress(importProgress+1)
-            return mapped
-        })
-
-        await db.delete(schema[dbCollectionType]);
-        for(const item of objects){
-            await db.insert(schema[dbCollectionType]).values(item)
+            setImportProgress(importProgress => importProgress + 1)
+            if (Date.now() - lastYield > 100) {   // yield at most ~10x/sec
+                await nextFrame()
+                lastYield = Date.now()
+            }
+            objects.push(mapped)
         }
 
-        setDbCollectionType("")
-        setMapCSVItem(null)
+        setImportProgress(0)
+        setImportSize(objects.length)
+        lastYield = Date.now()
 
+        await db.delete(schema[importOption]);
+        for(const item of objects){
+            await db.insert(schema[importOption]).values(item)
+
+            setImportProgress(importProgress => importProgress + 1)
+            if (Date.now() - lastYield > 100) {
+                await nextFrame()
+                lastYield = Date.now()
+            }
+        }
+        setMapCSVItem(null)
+        setDbModalVisible()
+        setAlohaSnackbarText(`${toastMessages.dbImportSuccess[language]}`)
+        setAlohaSnackbarVisible(true)
+    }catch(e){
+        console.error(e)
+    }
     }
 
     return(
@@ -147,7 +195,7 @@ export default function CSVImportModal(){
                     </View>
                     <ScrollView style={{padding: defaultViewPadding}}>
                     
-                        {determineDataTemplate(dbCollectionType).map((item, index)=>{
+                        {determineDataTemplate(importOption).map((item, index)=>{
                             return(
                                 <View key={`mapperRow_${index}`} style={{width: "100%", display: "flex", flexDirection: "row", flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between"}}>
                                     <Text style={{width: "50%"}}>{item[language]}</Text>
@@ -175,7 +223,7 @@ export default function CSVImportModal(){
             }
 
             buttonACK={<IconButton icon="check" mode="contained" style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary} onPress={()=>setImportedCSV()} />}
-            buttonCNL={<IconButton icon="cancel" mode="contained" style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} onPress={()=>toggleImportCSVVisible()} />}
+            buttonCNL={<IconButton icon="cancel" mode="contained" style={{width: 50, backgroundColor: theme.colors.secondaryContainer}} iconColor={theme.colors.onSecondaryContainer} onPress={()=>handleCancel()} />}
             buttonDEL={null}
         />              
     )

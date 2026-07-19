@@ -216,7 +216,6 @@ export default function DatabaseOperations(){
 
         if(data === "import_arsenal_csv"){
             toggleImportModalVisible()
-            setDbModalVisible()
             setImportProgress(0)
             setImportSize(0)
             setDbModalText(`${databaseOperations.import[language]}`)
@@ -246,13 +245,11 @@ export default function DatabaseOperations(){
 
         if(data === "import_custom_csv"){
             toggleImportModalVisible()
-            setDbModalVisible()
             setImportProgress(0)
             setImportSize(0)
             setDbModalText(`${databaseOperations.import[language]}`)
             try{
                 await importCSV()
-                dbImportSuccess()
             }catch(e){
                 if (e instanceof ImportCancelledError) {
                     dbImportCancel()
@@ -406,7 +403,7 @@ export default function DatabaseOperations(){
             </Portal>
 
             <Portal>
-               {importCSVVisible ? <CSVImportModal startElapsedTime={startElapsedTime} stopElapsedTime={stopElapsedTime} setImportSize={setImportSize} setImportProgress={setImportProgress} importOption={importOption} dbImportCancel={dbImportCancel}/> : null} 
+               {importCSVVisible ? <CSVImportModal startElapsedTime={startElapsedTime} stopElapsedTime={stopElapsedTime} setImportSize={setImportSize} setImportProgress={setImportProgress} importOption={importOption} setDbModalVisible={setDbModalVisible}/> : null} 
             </Portal>
 
             <Modal visible={dbModalVisible}>
