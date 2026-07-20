@@ -1,5 +1,3 @@
-import { RECORD_SEP } from "papaparse";
-
 export const IS_DEV = process.env.APP_VARIANT === 'development';
 export const IS_PREV = process.env.APP_VARIANT === "preview"
 export const IS_RC = process.env.APP_VARIANT === "releaseCandidate"
@@ -22,7 +20,11 @@ export default {
       "buildNumber": "5",
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
-        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos."
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos.",
+      },
+      "config":
+      { 
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
