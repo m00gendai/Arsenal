@@ -39,6 +39,18 @@ export const gunCollection = sqliteTable('guns', {
     decepticon: integer("decepticon", {mode: "boolean"}).default(false),
     blooptoob: integer("blooptoob", {mode: "boolean"}).default(false),
     grandfather: integer("grandfather", {mode: "boolean"}).default(false),
+    pistol: integer("pistol", {mode: "boolean"}).default(false),
+    rifle: integer("rifle", {mode: "boolean"}).default(false),
+    shotgun: integer("shotgun", {mode: "boolean"}).default(false),
+    sbr: integer("sbr", {mode: "boolean"}).default(false),
+    sbs: integer("sbs", {mode: "boolean"}).default(false),
+    aow: integer("aow", {mode: "boolean"}).default(false),
+    machineGun: integer("machineGun", {mode: "boolean"}).default(false),
+    dd: integer("dd", {mode: "boolean"}).default(false),
+    pmf: integer("pmf", {mode: "boolean"}).default(false),
+    cr: integer("cr", {mode: "boolean"}).default(false),
+    nfa: integer("nfa", {mode: "boolean"}).default(false),
+    antique: integer("antique", {mode: "boolean"}).default(false),
     customInventoryDesignation: text("customInventoryDesignation"),
     qrCode: text("qrCode"),
     sold_isSold: integer("sold_isSold", {mode: "boolean"}).default(false),
@@ -319,6 +331,7 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     serial: text("serial"),
     reticle: text("reticle"),
     reticleColor: text("reticleColor"),
+    glassDimensions: text("glassDimensions"),
     footprint: text("footprint"),
     zoom: text("zoom"),
     unit: text("unit"),
@@ -336,6 +349,7 @@ export const accessoryCollection_Optic = sqliteTable("accessories_optic", {
     cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
     cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
+    batteryType: text("batteryType"),
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
@@ -371,6 +385,8 @@ export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
     serial: text("serial"),
     reticle: text("reticle"),
     reticleColor: text("reticleColor"),
+    glassDimensions: text("glassDimensions"),
+    focalPlane: text("focalPlane"),
     zoom: text("zoom"),
     unit: text("unit"),
     clicksToUnitElevation: text("clicksToUnitElevation"),
@@ -387,6 +403,7 @@ export const accessoryCollection_Scope = sqliteTable("accessories_scope", {
     cleanInterval_CustomTime: text("cleanInterval_CustomTime"),
     cleanInterval_ShotCount: text("cleanInterval_ShotCount"),
     cleanIntervalDisplay: text("cleanIntervalDisplay"),
+    batteryType: text("batteryType"),
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
@@ -431,6 +448,7 @@ export const accessoryCollection_LightLaser = sqliteTable("accessories_lightLase
     marketValue: text("marketValue"),
     shotCount: text("shotCount"),
     lastShotAt_unix: integer("lastShotAt_unix"),
+    batteryType: text("batteryType"),
     batteryLastChangedAt_unix: integer("batteryLastChangedAt_unix"),
     mainColor: text("mainColor"),
     remarks: text("remarks"),
@@ -841,4 +859,49 @@ export const logger = sqliteTable("logger", {
     value_old: text("value_old"),
     value_new: text("value_new"),
     snapshot: text("snapshot") // WITH change
+})
+
+export const costLoggerAmmunition = sqliteTable("costLoggerAmmunition", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerBullets = sqliteTable("costLoggerBullets", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerCasings = sqliteTable("costLoggerCasings", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerPrimers = sqliteTable("costLoggerPrimers", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
+})
+
+export const costLoggerPowder = sqliteTable("costLoggerPowder", {
+    db_id: integer('id').primaryKey().notNull(),
+    id: text("uuid").notNull().unique(),
+    createdAt: integer("createdAt").notNull(),
+    reference: text("reference"),
+    amountBought: text("amountBought"),
+    totalCost: text("totalCost"),
 })

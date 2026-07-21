@@ -5,6 +5,7 @@ import Settings_Units from "./Settings_Units";
 import Settings_Display from "./Settings_Display";
 import ColorPalette from "./ColorPalette";
 import { preferenceTitles } from "lib/Text/text_settings";
+import Settings_Country from "./Settings_Country";
 
 export default function Settings(){
 
@@ -20,6 +21,8 @@ export default function Settings(){
             <Settings_Display />
         
             <Settings_Units />
+
+            <Settings_Country />
         
         </List.Accordion>
     )

@@ -1,0 +1,121 @@
+This file is for any AI prompts used, which is pretty much only the case for the placeholder images.
+
+Placeholder Image Guns:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+On the teal background, arrange an assortments of guns (modern long guns, modern pistols, classic wooden long guns, classic pistols, classic revolvers, contemporary machine pistols). 
+The guns should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image. 
+Use a variation of guns.
+Mix in some swiss guns like the SIG 550, P210, Karabiner 31.
+Place guns at the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of guns. 
+The guns should not be sci-fi, but realistic contemporary guns from the early 1900s until 2026 with emphasis on the 80s. 
+
+
+Placeholer Image Accessories:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+on the teal background, arrange an assortment of gun accessories (modern reddot sights, silencers, magazines, scopes, flashlights, lasers, bipods). 
+the accessories should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image. 
+use a variation of accessories. 
+place accessoriesat the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of accessories. 
+the accessories should not be sci-fi, but realistic contemporary accessories from the 1980s until 2026 with emphasis on the late 2000s. 
+Do not include any weapon parts such as upper, lower, barrels.
+do not include any guns at all. 
+
+
+Placeholder Image Reloading:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+on the teal background, arrange an assortment of ammunition reloading accessories (bullet tips, bullet casings, powder bottles, reloading dies).
+the accessories should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image. 
+use a variation of accessories. 
+place accessories at the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of accessories. 
+the accessories should not be sci-fi, but realistic contemporary accessories from the 1980s until 2026 with emphasis on the late 2000s.
+Do not include any weapon parts such as upper, lower, barrels. 
+do not include any guns at all. 
+Do not include any complete ammunition. 
+
+
+Placeholder Image Parts:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+on the teal background, arrange an assortment of gun parts (modern rifle upper, modern rifle lower, modern pistol frames without slide, rifle bolt carrier groups, modern pistol slides without frame, revolver frames, revolver drums). 
+Do NOT include any assembled guns at all. 
+Do NOT include any complete guns at all. 
+Do NOT include any completely assembled pistols at all. 
+Do NOT include any completely assembled rifles at all. 
+Do NOT include any completely assembled revolers at all. 
+ONLY include individual parts. 
+the parts should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image.
+use a variation of parts. 
+Do NOT include any assembled guns at all. 
+Do NOT include any complete guns at all. 
+Do NOT include any completely assembled pistols at all. 
+Do NOT include any completely assembled rifles at all. 
+Do NOT include any completely assembled revolers at all. 
+ONLY include individual parts. 
+place parts at the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of parts. 
+Do NOT include any assembled guns at all. 
+Do NOT include any complete guns at all. 
+Do NOT include any completely assembled pistols at all. 
+Do NOT include any completely assembled rifles at all.
+Do NOT include any completely assembled revolers at all. 
+ONLY include individual parts. 
+the parts should not be sci-fi, but realistic contemporary parts from the 1980s until 2026 with emphasis on the late 2000s.
+Do NOT include any assembled guns at all. 
+Do NOT include any complete guns at all.
+Do NOT include any completely assembled pistols at all. 
+Do NOT include any completely assembled rifles at all. 
+Do NOT include any completely assembled revolers at all. 
+ONLY include individual parts.   
+
+
+Placeholder Image Ammunition:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+
+on the teal background, arrange an assortment of ammunition (small pistol rounds, large revolver rounds, small rifle rounds, large rifle rounds, ammunition packets, ammunition cases, ammunition on loading strips, ammunition on speedloaders). 
+the ammunition should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image. 
+use a variation of ammunition.
+place ammunition at the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of ammunition. 
+the ammunition should not be sci-fi, but realistic contemporary ammunition from the 1900s until 2026s. 
+Do not include any guns, weapons or firearms, only ammunition. 
+
+
+Placeholder Image Literature:
+- Gemini Flash 3.5
+
+Create an image:
+- dimensions: 16:9, 512px wide
+- solid teal background
+- style: generally realistic, 80s space anime style
+on the teal background, arrange an assortment of firearm related print media (firearm books, firearm print magazines, firearm manuals, firearm military documents).
+the print media should all face the same direction (left to right) and should be aligned on a slanted plane from the lower left to the upper right of the image. 
+use a variation of print media in varying states such as closed or folded open. 
+use a variety of languages and countries with an emphasis on switzerland. 
+place print media at the edges of the image too, so they are cut off by the dimensions, creating the illusion of only a tiny view of a much larger array of print media. 
+the print media should not be sci-fi, but realistic contemporary print media from the 1950s until 2026 with emphasis on the 1990s.
+Do not include any guns, weapons, ammunition or accessories, only print media.  
+
+
+

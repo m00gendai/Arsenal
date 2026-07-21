@@ -77,7 +77,7 @@ export async function claude_prompt(language:Language){
         const json = msg.content.filter(content => content.type === "text")[0].text
         cache = JSON.parse(json);
     } else {
-        console.log("claude_prompt: returning cached response");
+        console.info("claude_prompt: returning cached response");
     }
     
     return cache

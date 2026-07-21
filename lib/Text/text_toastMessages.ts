@@ -4,7 +4,11 @@ interface Toast{
     saved: SimpleTranslation
     changed: SimpleTranslation
     dbSaveSuccess: SimpleTranslation
+    dbSaveFail: SimpleTranslation
+    dbSaveCancel: SimpleTranslation
     dbImportSuccess: SimpleTranslation
+    dbImportFail: SimpleTranslation
+    dbImportCancel: SimpleTranslation
     wrongGunDbSelected: SimpleTranslation
     wrongAmmoDbSelected: SimpleTranslation
     mountAccessory: SimpleTranslation
@@ -33,12 +37,40 @@ export const toastMessages:Toast = {
         it: "Banca dati salvata nella cartella Download",
         ch: "Arcunada en l'ordinatur da download",
     },
+    dbSaveCancel: {
+        de: "Datenbankexport abgebrochen",
+        en: "Database Export cancelled",
+        fr: "Exportation de la base de données annulée",
+        it: "Exportazione del database annullata",
+        ch: "Export da la banca da datas interrut",
+    },
+    dbSaveFail: {
+        de: "Datenbankexport fehlgeschlagen",
+        en: "Database Export failed",
+        fr: "Échec de l'exportation de la base de données",
+        it: "Exportazione del database non riuscita",
+        ch: "L'export da la banca da datas è betg reussì",
+    },
     dbImportSuccess: {
-        de: "Datensätze importiert",
-        en: "datasets imported",
-        fr: "enregistrements importés",
-        it: "dati importati",
-        ch: "importà unitads da datas",
+        de: "Datenbank erfolgreich importiert",
+        en: "Database successfully imported",
+        fr: "Base de données importée avec succès",
+        it: "Database importato con successo",
+        ch: "Importà cun success la banca da datas",
+    },
+    dbImportCancel: {
+        de: "Datenbankimport abgebrochen",
+        en: "Database Import cancelled",
+        fr: "Importation de la base de données annulée",
+        it: "Importazione del database annullata",
+        ch: "Import da la banca da datas interrut",
+    },
+    dbImportFail: {
+        de: "Datenbank Import fehlgeschlagen",
+        en: "Database Import failed",
+        fr: "Échec de l'importation de la base de données",
+        it: "Importazione del database non riuscita",
+        ch: "L'import da la banca da datas è betg reussì",
     },
     wrongGunDbSelected: {
         de: "Achtung: Sicherstellen, dass eine Waffendatenbank ausgewählt ist (gunDB_17.....)",

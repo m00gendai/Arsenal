@@ -19,8 +19,10 @@ interface DatabaseOperation{
 
 interface AmmoQuickUpdate{
     title: SimpleTranslation
-    error: SimpleTranslation
+    errorIncDec: SimpleTranslation
+    errorNoAmount: SimpleTranslation
     placeholder: SimpleTranslation
+    cost: SimpleTranslation
 }
 
 interface Tooltips{
@@ -104,6 +106,7 @@ interface ItemViewTabBarLabels{
     details: SimpleTranslation
     accessories: SimpleTranslation
     logger: SimpleTranslation
+    cost: SimpleTranslation
 }
 
 export const cleanIntervals:CleanIntervals = {
@@ -295,12 +298,19 @@ export const ammoQuickUpdate:AmmoQuickUpdate = {
         it: "Usa + o - per registrare rapidamente un aumento o una diminuzione del volume delle munizioni",
         ch: "Registrar cun + u - svelt in augment u ina reducziun da la muniziun",
     },
-    error: {
+    errorIncDec: {
         de: "Entweder + oder - muss ausgewählt sein",
         en: "Either + or - must be selected", 
         fr: "Le + ou le - doit être sélectionné",
         it: "Deve essere selezionato + o -",
         ch: "Ubain + u - sto esser selecziunà",
+    },
+    errorNoAmount: {
+        de: "Keine Menge angegeben",
+        en: "No amount entered", 
+        fr: "Aucune quantité saisie",
+        it: "Nessun importo inserito",
+        ch: "Na demussà nagina quantitad",
     },
     placeholder: {
         de: "Menge +/-",
@@ -308,6 +318,13 @@ export const ammoQuickUpdate:AmmoQuickUpdate = {
         fr: "Montant +/-",
         it: "Quantità +/-",
         ch: "Quantitad +/-",
+    },
+    cost: {
+        de: "Kosten total",
+        en: "Total Cost",
+        fr: "Coût total",
+        it: "Costo totale",
+        ch: "Custs totals",
     }
 }
 
@@ -604,6 +621,14 @@ export const shotLabel: SimpleTranslation = {
     ch: "culps",
 }
 
+export const inStockLabel: SimpleTranslation = {
+    de: "Derzeit auf Lager:",
+    en: "Currently in stock:",
+    fr: "Actuellement en stock:",
+    it: "Attualmente disponibile:",
+    ch: "Actualmain en deposit:",
+}
+
 export const importExportSelectionLabel: SimpleTranslation = {
     de: "Ausgewählte Datenbank",
     en: "Selected database",
@@ -641,6 +666,13 @@ export const itemViewTabBarLabels: ItemViewTabBarLabels = {
         fr: "Historique",
         it: "Cronologia",
         ch: "Istorgia",
+    },
+    cost: {
+        de: "Kosten",
+        en: "Cost",
+        fr: "Coûts",
+        it: "Costo",
+        ch: "Custs",
     }
 }
 

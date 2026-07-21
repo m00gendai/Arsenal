@@ -1,13 +1,12 @@
-import { text } from "stream/consumers";
 import { Version, versionHistory } from "../components/MainMenu/VersionHistory/releaseNotes";
 
 function generateReleaseNotes() {
   const currentVersion:Version = versionHistory[0]
 
-  const text_de = currentVersion.de.text
-  const text_en = currentVersion.en.text
-  const text_fr = currentVersion.fr.text
-  const text_it = currentVersion.it.text
+  const text_de = currentVersion.de.text.trim()
+  const text_en = currentVersion.en.text.trim()
+  const text_fr = currentVersion.fr.text.trim()
+  const text_it = currentVersion.it.text.trim()
 
   const xml = `
   <de-DE>

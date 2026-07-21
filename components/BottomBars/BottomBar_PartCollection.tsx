@@ -5,7 +5,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "lib/interfaces";
 import { useItemStore } from "stores/useItemStore";
-import { determineAccessoryIcons, determineTabBarLabel } from "functions/determinators";
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon, determineTabBarLabel } from "functions/determinators";
 
 interface Props{
     handleNavigation:(target: "itemCollection", params:{ collectionType: CollectionType })=>void
@@ -49,7 +49,7 @@ export default function BottomBar_PartCollection({handleNavigation}:Props){
                             alignItems: 'center'}}
                     >
                         <Icon 
-                            source={determineAccessoryIcons(collection)}
+                            source={determineIfCustomIcon(collection) ? determineCustomIcon(collection) : determineAccessoryIcons(collection)}
                             size={48} 
                             color={currentCollection === collection ? theme.colors.primary : theme.colors.secondary} 
                         />

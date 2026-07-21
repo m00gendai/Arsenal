@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, Languages, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer } from "../lib/interfaces"
+import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -36,6 +36,30 @@ export const languageSelection:{flag:string, code:Languages}[] = [
     {flag: "🇫🇷", code: "fr"},
     {flag: "🇮🇹", code: "it"},
     {flag: "🇺🇸", code: "en"},
+]
+
+export const countrySelection:CountrySelection[] = [
+    {flag: "🇨🇭", name: {
+        de: "Schweiz",
+        en: "Switzerland",
+        fr: "Suisse",
+        it: "Svizzera",
+        ch: "Svizra"
+    }, iso: "ch"},
+    {flag: "🇺🇸", name: {
+        de: "Vereinigte Staaten von Amerika",
+        en: "United States of America",
+        fr: " États-Unis d'Amérique",
+        it: "Stati Uniti d'America",
+        ch: "Stadis Unids da l’America"
+    }, iso: "us"},
+    {flag: "🏴‍☠️", name: {
+        de: "Anderes Land",
+        en: "Other country",
+        fr: "Autre pays",
+        it: "Altro paese",
+        ch: "Ulteriur pajais"
+    }, iso: "--"}
 ]
 
 export const pdfCommonStyles:CommonStyles = {
@@ -115,6 +139,7 @@ export const intervalPickerTriggerFields: string[] = ["cleanIntervalDisplay"]
 export const ignoreIntervalFieldsForLogger: string[] = ["cleanInterval", "cleanInterval_CustomTime", "cleanInterval_ShotCount"]
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const codeTriggerFields: string[] = ["qrCode"]
+export const stockTriggerFields: string[] = ["currentStock"]
 
 export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
@@ -148,15 +173,17 @@ export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
-export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "logger"]
+export const loggerTables: string[] = ["logger", "costLoggerAmmunition", "costLoggerBullets", "costLoggerCasings", "costLoggerPrimers", "costLoggerPowder"]
+export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "autocomplete", "gunReminders", "customShippingLabels", ...loggerTables]
 
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
-export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
+export const collectionImportTables: (CollectionType | string)[] = [...screenNameParamsAll, ...nonCollectionTables]
 
 export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
 export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
+export const costExceptions: CollectionType[] = ["gunCollection", ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsAmmo:SortingTypesAmmo[] = ["alphabetical", "createdAt", "lastModifiedAt", "currentStock", "lastTopUpAt"]
@@ -174,3 +201,11 @@ export const sortingOptionsReloading_Bullet:SortingTypesReloading_Bullet[] = ["a
 export const sortingOptionsReloading_Case:SortingTypesReloading_Case[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Primer:SortingTypesReloading_Primer[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Powder:SortingTypesReloading_Powder[] = ["alphabetical", "createdAt", "lastModifiedAt"]
+
+// i shouldve used more descriptive names for these but oh well
+export const checkboxFields_ch = ["exFullAuto", "highCapacityMagazine", "short", "fullAuto", "launcher", "decepticon", "blooptoob", "grandfather"]
+export const checkboxFields_us = ["pistol", "rifle", "shotgun", "sbr", "sbs", "aow", "machineGun", "dd", "pmf", "cr", "nfa", "antique"]
+
+export const printers_ch: ListPrinter[] = ["gunCollection", "gunCollectionArt5", "gunCollectionHybrid", "custom"]
+export const printers_us: ListPrinter[] = ["gunCollection", "custom"]
+export const printers_others: ListPrinter[] = ["gunCollection", "custom"]

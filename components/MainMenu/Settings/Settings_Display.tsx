@@ -1,17 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultViewPadding } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
-import { loginGuardAlert, resizeImageAlert } from "lib/Text/text_alerts";
 import { displaySettingsLabels, preferenceTitles } from "lib/Text/text_settings";
 import { View } from "react-native";
-import { Dialog, Divider, List, Switch, Text, Button } from "react-native-paper";
+import { Divider, List, Switch, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useViewStore } from "stores/useViewStore"
 
 export default function Settings_Display(){
 
     const { theme, language, generalSettings, setGeneralSettings } = usePreferenceStore()
-    const { imageResizeVisible, toggleImageResizeVisible, loginGuardVisible, toggleLoginGuardVisible } = useViewStore()
 
     async function handleSwitches(setting: string){
         // DISPLAY SETTINGS ARE STORED AS GENERAL SETTINGS, the distinction is only made for UI reasons
@@ -63,35 +61,7 @@ export default function Settings_Display(){
                     </View>
                 </View>
             </List.Accordion>
-
-            <Dialog visible={imageResizeVisible} onDismiss={()=>toggleImageResizeVisible()}>
-                <Dialog.Title>
-                {`${resizeImageAlert.title[language]}`}
-                </Dialog.Title>
-                <Dialog.Content>
-                    <Text>{`${resizeImageAlert.subtitle[language]}`}</Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button onPress={()=>{
-                        handleSwitches("resizeImages");
-                        toggleImageResizeVisible();
-                    }} icon="check" buttonColor={theme.colors.errorContainer} textColor={theme.colors.onErrorContainer}>{resizeImageAlert.yes[language]}</Button>
-                    <Button onPress={()=>toggleImageResizeVisible()} icon="cancel" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{resizeImageAlert.no[language]}</Button>
-                </Dialog.Actions>
-            </Dialog>
-
-            <Dialog visible={loginGuardVisible} onDismiss={()=>toggleLoginGuardVisible()}>
-                <Dialog.Title>
-                {`${loginGuardAlert.title[language]}`}
-                </Dialog.Title>
-                <Dialog.Content>
-                    <Text>{`${loginGuardAlert.subtitle[language]}`}</Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button onPress={()=>toggleLoginGuardVisible()} icon="emoticon-frown-outline" buttonColor={theme.colors.secondary} textColor={theme.colors.onSecondary}>{loginGuardAlert.no[language]}</Button>
-                </Dialog.Actions>
-            </Dialog>
-
+            
         </View>
     )
 }

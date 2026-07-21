@@ -7,7 +7,19 @@ import { db } from "../../db/client"
 import * as schema from "../../db/schema"
 import { determineTagSchema } from '../determinators';
 
-export async function importLegacyGunDatabase(resizeImages:boolean, importOptionLegacyDB: CollectionType){
+function nextFrame() {
+    return new Promise(resolve => setTimeout(resolve, 0))
+}
+
+export async function importLegacyGunDatabase(
+    resizeImages:boolean, 
+    importOptionLegacyDB: CollectionType,
+    startElapsedTime: () => void,
+    setImportSize: React.Dispatch<React.SetStateAction<number>>,
+    setImportProgress: React.Dispatch<React.SetStateAction<number>>
+){
+
+    let lastYield = Date.now()
 
     const legacyPrefix = importOptionLegacyDB.startsWith("gun") ? "gun" : "ammo"
 
@@ -20,6 +32,8 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
     if(!result.assets[0].name.startsWith(`${legacyPrefix}DB_`)){
         throw new Error(`Legacy DB Prefix not ${legacyPrefix}DB_`)
     }
+
+    startElapsedTime()
 
     const content = await FileSystem.readAsStringAsync(result.assets[0].uri)
 
@@ -51,6 +65,8 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
             throw new Error(`JSON parsing ${legacyPrefix}DB_: ${e}`)
         }
     }
+
+    setImportSize(importables.length)
 
     const importTags:{label:string, status:boolean}[] = []
     const importableCollection:ItemType[] = await Promise.all(importables.map(async importable=>{
@@ -147,6 +163,11 @@ export async function importLegacyGunDatabase(resizeImages:boolean, importOption
         }
 
         await db.insert(schema[importOptionLegacyDB]).values(insertItem)
+        setImportProgress(0)
+        if (Date.now() - lastYield > 100) {   // yield at most ~10x/sec
+            await nextFrame()
+            lastYield = Date.now()
+        }
     }
     
    for(const tag of importTags){

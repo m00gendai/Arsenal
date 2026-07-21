@@ -44,6 +44,18 @@ export interface GunTypeStatus{
   decepticon: boolean
   blooptoob: boolean
   grandfather: boolean
+  pistol: boolean
+  rifle: boolean
+  shotgun: boolean
+  sbr: boolean
+  sbs: boolean
+  aow: boolean
+  machineGun: boolean
+  dd: boolean
+  pmf: boolean
+  cr: boolean
+  nfa: boolean
+  antique: boolean
 }
 
 export type GunType = GunTypeDetails & GunTypeStatus
@@ -155,6 +167,7 @@ export interface AccessoryType_Optic{
   serial: string
   reticle: string
   reticleColor: string
+  glassDimensions: string,
   footprint: string
   zoom: string
   unit: string
@@ -172,6 +185,7 @@ export interface AccessoryType_Optic{
   cleanInterval_CustomTime: null | string
   cleanInterval_ShotCount: null | string
   cleanIntervalDisplay: null | string
+  batteryType: string| null
   batteryLastChangedAt_unix: number | null
   mainColor: string
   remarks: string
@@ -199,6 +213,8 @@ export interface AccessoryType_Scope{
   serial: string
   reticle: string
   reticleColor: string
+  glassDimensions: string
+  focalPlane: string
   zoom: string
   unit: string
   clicksToUnitElevation: string
@@ -215,6 +231,7 @@ export interface AccessoryType_Scope{
   cleanInterval_CustomTime: null | string
   cleanInterval_ShotCount: null | string
   cleanIntervalDisplay: null | string
+  batteryType: string | null
   batteryLastChangedAt_unix: number | null
   mainColor: string
   remarks: string
@@ -251,6 +268,7 @@ export interface AccessoryType_LightLaser{
   marketValue: string
   shotCount: string
   lastShotAt_unix: number | null
+  batteryType: string | null
   batteryLastChangedAt_unix: number | null
   mainColor: string
   remarks: string
@@ -840,6 +858,16 @@ export type Languages = | "de"
                         | "it" 
                         | "ch"
 
+export type SupportedCountries =  | "ch"
+                                  | "us"
+                                  | "--"
+
+export interface CountrySelection {
+  flag: string
+  name: {de: string, en: string, fr: string, it: string, ch: string}
+  iso: SupportedCountries
+}
+
 export type CaliberArray = {id: string, amount: string }
 
 export type DBOperations =  | "save_arsenal_db" 
@@ -914,3 +942,6 @@ export interface CustomLabel{
   rows: number
   radius: number
 }
+
+export type weightUnitNames = "gr" | "oz" | "lb" | "mg" | "g" | "kg"
+export type distUnitNames = "mm" | "cm" | "in"

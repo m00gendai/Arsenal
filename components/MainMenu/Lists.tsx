@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Platform, View } from "react-native";
 import { Button, Dialog, Divider, IconButton, List, Portal, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { ListPrinter } from "lib/interfaces";
-import { determineAccessoryIcons } from "functions/determinators";
+import { CollectionType, ListPrinter } from "lib/interfaces";
+import { determineAccessoryIcons, determineCountryPrinters } from "functions/determinators";
 import { printAmmoCollection } from "functions/printers/printAmmoCollectionToPDF";
 import { useViewStore } from "stores/useViewStore";
 import CustomPDFPrintDialog from "components/Dialogs/CustomPDFPrintDialog";
@@ -14,7 +14,7 @@ import { preferenceTitles } from "lib/Text/text_settings";
 
 export default function Lists(){
 
-    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, country } = usePreferenceStore()
     const { customPDFPrintVisible, setCustomPDFPrintVisible } = useViewStore()
 
     const [printerSrc, setPrinterSrc] = useState<ListPrinter>(null)
@@ -48,6 +48,29 @@ export default function Lists(){
         setPrinterSrc(printer)
         toggleiosWarning(true)
     }
+
+    const listConstructor:{title: string, icon: string | CollectionType, print: ListPrinter}[] = [
+        {
+            title: preferenceTitles.printAllGuns[language],
+            icon: "d_gunCollection",
+            print: "gunCollection",
+        },
+        {
+            title: preferenceTitles.printArt5[language],
+            icon: "d_gunCollection",
+            print: "gunCollectionArt5",
+        },
+        {
+            title: preferenceTitles.printGunsHybrid[language],
+            icon: "d_gunCollection",
+            print: "gunCollectionHybrid",
+        },
+        {
+            title: preferenceTitles.printCustomList[language],
+            icon: "shape-plus",
+            print: "custom",
+        },
+    ]
     
     return(
         <View>
@@ -55,39 +78,22 @@ export default function Lists(){
             <List.Accordion left={props => <List.Icon {...props} icon="printer" />} title={preferenceTitles.gunList[language]} titleStyle={{fontWeight: "700", color: theme.colors.onBackground}}>
                 <View style={{ marginLeft: 5, marginRight: 5, padding: defaultViewPadding, backgroundColor: theme.colors.secondaryContainer, borderColor: theme.colors.primary, borderLeftWidth: 5}}>
                     <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", gap: 5}}>
-                        
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{preferenceTitles.printAllGuns[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                        </View>   
-                        
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{preferenceTitles.printArt5[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=> handlePrints("gunCollectionArt5")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                        </View>   
+                        {listConstructor.map((entry, index) => {
+                            if(determineCountryPrinters(country).includes(entry.print)){
+                                const icon: string | CollectionType = entry.icon.startsWith("d_") ? entry.icon.split("_")[1] : entry.icon
+                                return(
+                                    <View key={`listConstructorItem_${index}`}>
+                                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
+                                            <Text style={{width: "80%"}}>{entry.title}</Text>
+                                            <IconButton icon={entry.icon.startsWith("d_") ? determineAccessoryIcons(icon as CollectionType) : icon} onPress={()=> handlePrints(entry.print)} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
+                                        </View>
 
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+                                        {index !== listConstructor.length-1 ? <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} /> : null}
+                                    </View>
+                                )
+                            }
+                        })}
                         
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{preferenceTitles.printGunsHybrid[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("gunCollection")} onPress={()=>  handlePrints("gunCollectionHybrid")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                        </View> 
-
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        {/*
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{preferenceTitles.printAllAmmo[language]}</Text>
-                            <IconButton icon={determineAccessoryIcons("ammoCollection")} onPress={()=> handlePrints("ammoCollection")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                        </View>
-
-                        <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
-                        */}
-                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%"}}>
-                            <Text style={{width: "80%"}}>{preferenceTitles.printCustomList[language]}</Text>
-                            <IconButton icon={"shape-plus"} onPress={()=> handlePrints("custom")} mode="contained" iconColor={theme.colors.onPrimary} style={{backgroundColor: theme.colors.primary}}/>
-                        </View>
                         
                     </View>
                 </View>

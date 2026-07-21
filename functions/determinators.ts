@@ -1,4 +1,4 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer } from "lib/interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { PreferredUnits, SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { or, like, sql } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, checkboxFields_ch, checkboxFields_us, printers_ch, printers_others, printers_us, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
 import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
@@ -148,9 +148,9 @@ export function determineTagSchema(collection:CollectionType){
         case "reloadingCollection_Case":
             return schema.reloading_CaseTags
         case "reloadingCollection_Primer":
-            return schema.reloadingCollection_Primer
+            return schema.reloading_PrimerTags
         case "reloadingCollection_Powder":
-            return schema.reloadingCollection_Powder
+            return schema.reloading_PowderTags
     }
 }
 
@@ -538,6 +538,26 @@ export function determineCardOptions(collection: CollectionType){
     }
 }
 
+export function determineIfCustomIcon(collection: CollectionType){
+    switch(collection){
+        case "partCollection_PistolSlide":
+            return true
+        case "partCollection_PistolFrame":
+            return true
+        default: 
+            return false
+    }
+}
+
+export function determineCustomIcon(collection: CollectionType){
+    switch(collection){
+        case "partCollection_PistolSlide":
+            return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
+        case "partCollection_PistolFrame":
+            return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
+    }
+}
+
 export function determineAccessoryIcons(collection: CollectionType){
     switch(collection){
         case "gunCollection":
@@ -791,5 +811,80 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             {   const item = itemIn as ReloadingType_Powder
                 return item.powderWeight ? `${preferredUnits.powderWeightUnit} ${convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", item.powderWeight)}` : ""
             }
+    }
+}
+
+export function determineCountryCheckboxes(iso:SupportedCountries){
+    switch(iso){
+        case "ch":
+            return checkboxFields_ch
+        case "us":
+            return checkboxFields_us
+        case "--":
+            return []
+    }
+}
+
+export function determinePlaceHolderImage(collection: CollectionType){
+    if(collection.startsWith("gun")){
+        return require("../assets/Placeholder_Guns.png")
+    }
+    if(collection.startsWith("ammo")){
+        return require("../assets/Placeholder_Ammo.png")
+    }
+    if(collection.startsWith("accessoryCollection_")){
+        return require("../assets/Placeholder_Accessories.png")
+    }
+    if(collection.startsWith("partCollection_")){
+        return require("../assets/Placeholder_Parts.png")
+    }
+    if(collection.startsWith("literatureCollection_")){
+        return require("../assets/Placeholder_Literature.png")
+    }
+    if(collection.startsWith("reloadingCollection_")){
+        return require("../assets/Placeholder_Reloading.png")
+    }
+}
+
+export function determineCostLoggerSchema(collection: CollectionType){
+    switch(collection){
+        case "ammoCollection":
+            return schema.costLoggerAmmunition
+        case "reloadingCollection_Bullet":
+            return schema.costLoggerBullets
+        case "reloadingCollection_Case":
+            return schema.costLoggerCasings
+        case "reloadingCollection_Primer":
+            return schema.costLoggerPrimers
+        case "reloadingCollection_Powder":
+            return schema.costLoggerPowder
+    }
+}
+
+export function determineCountryPrinters(iso:SupportedCountries){
+    switch(iso){
+        case "ch":
+            return printers_ch
+        case "us":
+            return printers_us
+        default:
+            return printers_others
+    }
+}
+
+export function determineWeightUnitMultiplier(unit:weightUnitNames){
+    switch(unit){
+        case "gr":
+            return 100
+        case "oz":
+            return 10
+        case "lb":
+            return 1
+        case "mg":
+            return 100
+        case "g":
+            return 100
+        case "kg":
+            return 1
     }
 }
