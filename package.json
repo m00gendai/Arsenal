@@ -8,7 +8,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "ts:check": "tsc",
-    "generate:notes": "npx tsx cli_scripts/generateReleaseNotes.ts"
+    "generate:notes": "npx tsx cli_scripts/generateReleaseNotes.ts",
+    "generate:pitch": "npx tsx cli_scripts/generateSalesPitch.ts"
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.3",
