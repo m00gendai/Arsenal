@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Platform, Keyboard } from 'react-native';
 import { usePreferenceStore } from '../stores/usePreferenceStore';
-import AccessoryMountDialog from './Dialogs/AccessoryMountDialog';
+import AccessoryMountDialog from './Dialogs/AccessoryMount/AccessoryMountDialog';
 
 interface Props{
     data: string

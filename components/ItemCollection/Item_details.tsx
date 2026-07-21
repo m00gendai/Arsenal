@@ -1,6 +1,6 @@
 import { View } from "react-native"
 import { Checkbox, Text, IconButton } from 'react-native-paper';
-import { determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
+import { determineCountryCheckboxes, determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions, powderWeightPrefixFields } from "configs/configs";
@@ -13,7 +13,7 @@ import { getShortCaliberName } from "functions/getShortCaliber";
 export default function Item_details(){
 
     const { currentItem, currentCollection } = useItemStore()
-    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits } = usePreferenceStore()
+    const { language, theme, generalSettings, caliberDisplayNameList, preferredUnits, country } = usePreferenceStore()
 
     function getCleanIntervalDisplayValue(){
         if("cleanIntervalDisplay" in currentItem && !currentItem?.cleanIntervalDisplay){
@@ -155,10 +155,12 @@ export default function Item_details(){
 
                         <View style={{flex: 1, flexDirection: "column"}} >
                             {currentCollection === "gunCollection" ? checkBoxes.map(checkBox=>{
-                                if(!generalSettings.emptyFields){
-                                    return <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
-                                } else {
-                                    return currentItem[checkBox.name] ? <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/> : null
+                                if(determineCountryCheckboxes(country).includes(checkBox.name)){
+                                    if(!generalSettings.emptyFields){
+                                        return <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/>
+                                    } else {
+                                        return currentItem[checkBox.name] ? <Checkbox.Item mode="android" key={checkBox.name} label={checkBox[language]} status={currentItem[checkBox.name] ? "checked" : "unchecked"}/> : null
+                                    }
                                 }
                             }) : null}
                         </View>

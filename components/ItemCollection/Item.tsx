@@ -8,7 +8,7 @@ import { iosWarningText, itemViewTabBarLabels } from 'lib/textTemplates';
 import { ItemType } from 'lib/interfaces';
 import { alarm, generateGradient } from 'functions/utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { accessoryExceptions, defaultViewPadding } from 'configs/configs';
+import { accessoryExceptions, costExceptions, defaultViewPadding } from 'configs/configs';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as schema from "db/schema"
@@ -25,12 +25,13 @@ import { gunDeleteAlert } from 'lib/Text/text_alerts';
 import SellDialog from 'components/Dialogs/SellDialog';
 import SoldDetails from 'components/SoldDetails';
 import Item_History from './Item_history';
+import Item_Costs from './Item_costs';
 
 export default function Item({navigation}){
 
     const [lightBoxIndex, setLightBoxIndex] = useState<number>(0)
     const [dialogVisible, toggleDialogVisible] = useState<boolean>(false)
-    const [activeTab, setActiveTab] = useState<"details" | "accessories" | "logger">("details")
+    const [activeTab, setActiveTab] = useState<"details" | "accessories" | "logger" | "cost">("details")
     const [rotation, setRotation] = useState<number>(0)
 
     const { lightBoxOpen, setLightBoxOpen, setHideBottomSheet, sellDialogVisible, setSellDialogVisible } = useViewStore()
@@ -210,7 +211,7 @@ useEffect(() => {
                                             return(
                                                 <TouchableNativeFeedback key={`slides_${index}`} onPress={()=>showModal(index)}>
                                                     <View style={styles.imageContainer} >
-                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]}/> 
+                                                    <ImageViewer isLightBox={false} selectedImage={currentItem.images[index]} placeholder={currentCollection}/> 
                                                     </View>
                                                 </TouchableNativeFeedback>
                                             )
@@ -219,7 +220,7 @@ useEffect(() => {
                                             return(
                                                 <TouchableNativeFeedback key={`slides_${index}`}>
                                                     <View style={styles.imageContainer} >
-                                                    <ImageViewer isLightBox={false} selectedImage={null} /> 
+                                                    <ImageViewer isLightBox={false} selectedImage={null} placeholder={currentCollection}/> 
                                                     </View>
                                                 </TouchableNativeFeedback>
                                             )
@@ -253,7 +254,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "details" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -266,7 +267,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "accessories" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -279,7 +280,7 @@ useEffect(() => {
                                 display: "flex", 
                                 flexDirection: "row", 
                                 justifyContent: "center", 
-                                width: "30%", 
+                                flex: 1,
                                 height: "100%", 
                                 backgroundColor: activeTab === "logger" ? theme.colors.primary :  theme.colors.secondaryContainer
                             }} 
@@ -287,6 +288,19 @@ useEffect(() => {
                         >
                             <Text style={{padding: defaultViewPadding, color: activeTab === "logger" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.logger[language]}</Text>
                         </Pressable>
+                        {costExceptions.includes(currentCollection) ? null : <Pressable 
+                            style={{
+                                display: "flex", 
+                                flexDirection: "row", 
+                                justifyContent: "center", 
+                                flex: 1,
+                                height: "100%", 
+                                backgroundColor: activeTab === "cost" ? theme.colors.primary :  theme.colors.secondaryContainer
+                            }} 
+                            onPress={() => setActiveTab("cost")}
+                        >
+                            <Text style={{padding: defaultViewPadding, color: activeTab === "cost" ? theme.colors.onPrimary :  theme.colors.onSecondaryContainer}}>{itemViewTabBarLabels.cost[language]}</Text>
+                        </Pressable>}
                     </View>
 
 
@@ -299,8 +313,11 @@ useEffect(() => {
 : activeTab === "accessories" ? 
                     // ACCESSORIES PAGE        
                     <Item_Accessories currentItem={currentItem}/>
-: 
+: activeTab === "logger" ?
+                    // LOGGER PAGE
                     <Item_History currentItem={currentItem} currentCollection={currentCollection} />
+:
+                    <Item_Costs currentItem={currentItem} currentCollection={currentCollection} />
 }
 {activeTab === "details" ? <View style={{width: "100%", display: "flex", flex: 1, flexDirection: "row", justifyContent:"center"}}>
                     <Button mode="contained" style={{width: "20%", backgroundColor: theme.colors.errorContainer, marginTop: 20}} onPress={()=>toggleDialogVisible(!dialogVisible)}>
@@ -346,7 +363,7 @@ useEffect(() => {
                                     style={{backgroundColor: theme.colors.primary}}
                                 />
                             </View>
-                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]} rotationInput={rotation}/> : null}
+                            {lightBoxOpen ? <ImageViewer isLightBox={true} selectedImage={currentItem.images[lightBoxIndex]} placeholder={currentCollection} rotationInput={rotation}/> : null}
                         </View>
                     </Modal>    
                 </Portal>   

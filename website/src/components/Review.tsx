@@ -7,7 +7,7 @@ interface Props{
 }
 
 export default function Review({review, language}:Props){
-    console.log(language)
+
     return(
         <div className={s.container}>
             <div className={s.main}>

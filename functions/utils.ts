@@ -1,4 +1,4 @@
-import { AmmoType, CollectionType, Color, GunType, ItemType, Languages, SortingTypes } from "../lib/interfaces";
+import { AmmoType, CollectionType, Color, GunType, ItemType, Languages, SortingTypes, weightUnitNames } from "../lib/interfaces";
 import { validationErros } from "../lib/textTemplates";
 import { dateTimeOptions, unitFields_Length, unitFields_Weight } from "../configs/configs";
 import * as ImagePicker from "expo-image-picker"
@@ -222,12 +222,26 @@ export function convertWeightUnitsToMilligram(preferredUnits: PreferredUnits, we
     return weightInMilligram.toFixed(2)
 }
 
+export function convertSelectedUnitToMilligram(selectedUnit: weightUnitNames, inputWeight:string){
+    const base = weightUnits.filter(weight => weight.iso === selectedUnit)
+    const conversion = base[0].base
+    const weightInMilligram = Number(inputWeight)*conversion
+    return weightInMilligram.toFixed(2)
+}
+
 export function convertWeightUnitsToPreferredUnit(preferredUnits: PreferredUnits, weightField:string, inputWeight:string){
     const unit:string = preferredUnits[`${weightField}Unit`]
     const base = weightUnits.filter(weight => weight.iso === unit)
     const conversion = base[0].base
     const weightInPreferredUnit = Number(inputWeight)/conversion
     return weightInPreferredUnit.toFixed(2)
+}
+
+export function convertWeightUnitsToSelectedUnit(selectedUnit: weightUnitNames, inputWeight:string){
+    const base = weightUnits.filter(weight => weight.iso === selectedUnit)
+    const conversion = base[0].base
+    const weightInSelectedUnit = Number(inputWeight)/conversion
+    return weightInSelectedUnit.toFixed(2)
 }
 
 export function convertLengthUnitsToMillimeter(preferredUnits: PreferredUnits, lengthField:string, inputLength:string){

@@ -3,11 +3,13 @@ import { GestureDetector, Gesture, GestureHandlerRootView, PinchGesture, PanGest
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { defaultViewPadding } from '../configs/configs';
 import * as FileSystem from 'expo-file-system/legacy';
+import { CollectionType } from 'lib/interfaces';
+import { determinePlaceHolderImage } from 'functions/determinators';
 
 interface Props{
   selectedImage:string
   isLightBox: boolean
-  placeholder?: "gun" | "ammo"
+  placeholder: CollectionType
   rotationInput?: number
 }
 
@@ -21,7 +23,7 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder, rot
     const barrierX = useSharedValue<number>(0)
     const barrierY = useSharedValue<number>(0)
 
-  const imageName = selectedImage ? `${FileSystem.documentDirectory}${selectedImage.split("/").pop()}` : placeholder // Legacy support for full file paths
+  const imageName = selectedImage ? `${FileSystem.documentDirectory}${selectedImage.split("/").pop()}` : "gun" // Legacy support for full file paths
   
   rotation.value = rotationInput;
   
@@ -79,7 +81,7 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder, rot
                 <GestureHandlerRootView style={styles.imageContainer2} >
                     <GestureDetector gesture={composed}>
                         <Animated.View style={[animatedStyle]} >
-                         <Image resizeMode={isLightBox ? "contain" : "cover"} style={styles.image} source={selectedImage ? {uri: imageName} : placeholder === "ammo" ? require(`../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`) : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} />
+                         <Image resizeMode={isLightBox ? "contain" : "cover"} style={styles.image} source={selectedImage ? {uri: imageName} : determinePlaceHolderImage(placeholder)} />
                         </Animated.View>
                     </GestureDetector>
                 </GestureHandlerRootView>
@@ -88,7 +90,7 @@ export default function ImageViewer({selectedImage, isLightBox, placeholder, rot
         :
         <View style={{height: "100%", aspectRatio: "21/10", padding: defaultViewPadding, backgroundColor: isLightBox ? "black" : "transparent", alignItems: "center", justifyContent: "center", flexDirection: "column", overflow: "hidden"}}>
           {selectedImage != null ? <Image resizeMode={isLightBox ? "contain" : "cover"} style={styles.image} source={{uri: imageName} } /> 
-        :  <Image resizeMode={isLightBox ? "contain" : "cover"} style={styles.image} source={selectedImage ? {uri: imageName} : placeholder === "ammo" ? require(`../assets//540940_several different realistic bullets and ammunition_xl-1024-v1-0.png`) : require(`../assets//775788_several different realistic rifles and pistols on _xl-1024-v1-0.png`)} />
+        :  <Image resizeMode={isLightBox ? "contain" : "cover"} style={styles.image} source={selectedImage ? {uri: imageName} : determinePlaceHolderImage(placeholder)} />
           }</View>}</>
     ) 
 }

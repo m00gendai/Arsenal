@@ -1,5 +1,3 @@
-import { RECORD_SEP } from "papaparse";
-
 export const IS_DEV = process.env.APP_VARIANT === 'development';
 export const IS_PREV = process.env.APP_VARIANT === "preview"
 export const IS_RC = process.env.APP_VARIANT === "releaseCandidate"
@@ -8,7 +6,7 @@ export default {
   "expo": {
     "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
-    "version": "4.4.0",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/appIconC.png",
     "userInterfaceStyle": "light",
@@ -22,7 +20,11 @@ export default {
       "buildNumber": "5",
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
-        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos."
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos.",
+      },
+      "config":
+      { 
+        "usesNonExemptEncryption": false
       }
     },
     "android": {

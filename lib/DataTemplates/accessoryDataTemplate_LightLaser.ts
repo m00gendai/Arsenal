@@ -34,6 +34,7 @@ export const emptyLightLaserObject:AccessoryType_LightLaser = {
     paidPrice: null,
     marketValue: null,
     currentlyMountedOn: null,
+    batteryType: null,
     batteryLastChangedAt_unix: null,
     customInventoryDesignation: null,
     qrCode: null,

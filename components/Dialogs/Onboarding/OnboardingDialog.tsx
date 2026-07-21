@@ -10,6 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PREFERENCES } from "configs/configs_DB";
 import { useViewStore } from "stores/useViewStore";
 import { ScrollView } from "react-native-gesture-handler";
+import Onboarding_CountrySelect from "./Onboarding_CountrySelect";
+import { distUnitNames, weightUnitNames } from "lib/interfaces";
 
 export default function OnboardingDialog(){
 
@@ -20,19 +22,24 @@ export default function OnboardingDialog(){
 
     const [selectedCurrency, setSelectedCurrency] = useState<string>("CHF")
 
-    const [generalWeightUnit, setGeneralWeightUnit] = useState<string>("g")
-    const [selectedBulletWeight, setSelectedBulletWeight] = useState<string>("gr")
-    const [selectedPowderWeight, setSelectedPowderWeight] = useState<string>("gr")
+    const [generalWeightUnit, setGeneralWeightUnit] = useState<weightUnitNames>("g")
+    const [selectedBulletWeight, setSelectedBulletWeight] = useState<weightUnitNames>("gr")
+    const [selectedPowderWeight, setSelectedPowderWeight] = useState<weightUnitNames>("kg")
 
-    const [generalLengthUnit, setGeneralLengthUnit] = useState<string>("cm")
-    const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>("in")
-    const [caseLengthUnit, setCaseLengthUnit] = useState<string>("in")
+    const [generalLengthUnit, setGeneralLengthUnit] = useState<distUnitNames>("cm")
+    const [barrelLengthUnit, setBarrelLengthUnit] = useState<distUnitNames>("in")
+    const [caseLengthUnit, setCaseLengthUnit] = useState<distUnitNames>("in")
 
     const titles = [
         {
             title: "Eligere Lingua",
             left: "translate",
             right: "translate",
+        },
+        {
+            title: "Eligere patriam",
+            left: "earth",
+            right: "earth",
         },
         {
             title: "Eligere Pecuniam",
@@ -60,6 +67,7 @@ export default function OnboardingDialog(){
             generalWeightUnit: generalWeightUnit,
             bulletWeightUnit: selectedBulletWeight,
             powderWeightUnit: selectedPowderWeight,
+            criticalPowderWeightUnit: selectedPowderWeight,
             generalLengthUnit: generalLengthUnit,
             barrelLengthUnit: barrelLengthUnit,
             caseLengthUnit: caseLengthUnit
@@ -131,18 +139,23 @@ export default function OnboardingDialog(){
                             <Icon source={titles[onboardIndex].right} size={20} color={theme.colors.onPrimary}/>
                         </View>
                         <ScrollView style={{width: "100%", flexDirection: "column", flexGrow: 1, padding: defaultViewPadding}}>
+                            
                             <View style={{ flex: 1, display: onboardIndex === 0 ? "flex" : "none" }}>
                                 <Onboarding_LanguageSelect />
                             </View>
 
                             <View style={{ flex: 1, display: onboardIndex === 1 ? "flex" : "none" }}>
+                                <Onboarding_CountrySelect />
+                            </View>
+
+                            <View style={{ flex: 1, display: onboardIndex === 2 ? "flex" : "none" }}>
                                 <Onboarding_CurrencySelect 
                                     selectedCurrency={selectedCurrency}
                                     setSelectedCurrency={setSelectedCurrency}
                                 />
                             </View>
 
-                            <View style={{ flex: 1, display: onboardIndex === 2 ? "flex" : "none" }}>
+                            <View style={{ flex: 1, display: onboardIndex === 3 ? "flex" : "none" }}>
                                 <Onboarding_WeightSelect 
                                     generalLengthUnit={generalLengthUnit} 
                                     setGeneralLengthUnit={setGeneralLengthUnit} 
@@ -175,7 +188,7 @@ export default function OnboardingDialog(){
                                 size={20}
                                 onPress={null}
                             />}
-                            {onboardIndex !== 2 ? <IconButton
+                            {onboardIndex !== titles.length-1 ? <IconButton
                                 icon="chevron-right"
                                 iconColor={theme.colors.onPrimary}
                                 size={20}

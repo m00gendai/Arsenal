@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
-import { FAB, Icon } from 'react-native-paper';
+import { ActivityIndicator, FAB, Icon } from 'react-native-paper';
 import { defaultBottomBarHeight, defaultGridGap, defaultViewPadding } from 'configs/configs';
 import { AccessoryMount, ItemType, PartMount, Tag } from 'lib/interfaces';
 import { useViewStore } from 'stores/useViewStore';
@@ -35,6 +35,9 @@ export default function ItemCollection({navigation}){
 
 const currentSchema = determineSchema(currentCollection);
 const soldColumn = 'sold_isSold' in currentSchema ? currentSchema.sold_isSold : undefined;
+
+const [readyCollection, setReadyCollection] = useState(currentCollection)
+const isSwitching = readyCollection !== currentCollection
 
 const { data: itemData } = useLiveQuery(
   db.select()
@@ -72,16 +75,20 @@ useEffect(() => {
   }
 }, [accessoryData, partData]);
 
+useEffect(() => {
+  if (itemData) {
+    setReadyCollection(currentCollection)
+  }
+}, [itemData])
+
+
 useEffect(()=>{
   async function requestReview(){
-    console.log(hasSeenReviewRequest)
     if(!hasSeenReviewRequest){
       if (await StoreReview.hasAction()) {
-        console.log("has action")
         if(currentCollection === "gunCollection"){
           const collectionSize = await db.select({ count: count() }).from(schema.gunCollection).where(ne(schema.gunCollection.sold_isSold, true))
           const amount = collectionSize[0].count
-          console.log(amount)
           if(amount >= 5){
             try{
               await StoreReview.requestReview()
@@ -104,7 +111,7 @@ useEffect(()=>{
             }
           }
         } else {
-          console.log("doesnt have action")
+          console.info("doesnt have action")
         }
       }
     }
@@ -137,12 +144,7 @@ useEffect(()=>{
 const isLandscape = width > height;
 
 const numColumns = isLandscape ? 4 : displaySettings[currentCollection] === "grid" ? 2 : 1;
-const listKey = isLandscape
-  ? "gunCollectionGrid4"
-  : displaySettings[currentCollection] === "grid"
-  ? "gunCollectionGrid2"
-  : "gunCollectionList";
-  
+const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[currentCollection] === "grid" ? "grid2" : "list"}` 
 
   function filterCollection(){
     const items = itemData.filter(item => {
@@ -180,7 +182,11 @@ const listKey = isLandscape
           <Icon source={determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
         </View> : 
       null}
-      <FlatList<ItemType>
+      {isSwitching ? 
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <ActivityIndicator size={"large"}/>
+  </View>
+ :<FlatList<ItemType>
     numColumns={numColumns}
     initialNumToRender={10}
     contentContainerStyle={{ gap: defaultGridGap }}
@@ -200,7 +206,7 @@ const listKey = isLandscape
     ListHeaderComponent={generalSettings.hintsDisplay ? <Hints /> : null}
     ListFooterComponent={<View style={{ width: "100%", height: 100 + defaultBottomBarHeight }} />}
     ListEmptyComponent={null}
-  />
+  />}
 
       <Animated.View style={
         [{

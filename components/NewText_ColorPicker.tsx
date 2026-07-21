@@ -152,7 +152,24 @@ try{
                             <View style={{paddingRight: defaultViewPadding/2, marginBottom: 10}}>
                                 <InputWidget inputStyle={{color: theme.colors.onBackground}} iconColor={theme.colors.primary} inputTitleStyle={{color: theme.colors.onBackground}} formats={["HEX", "RGB", "HSL"]} disableAlphaChannel/>
                             </View>
-                            <Swatches colors={["#000000", "#c0c0c0", "#e0e0e0", "#818589", "#6b8e23", "#877348", "#f6d7b0", "#ff69b4", "#ffc5cb", "#dd8a3c", "#56301d"]}/>
+                            <Swatches colors={[
+                                // Reds & Pinks
+                                "#FF0000", "#ff69b4", "#ffc5cb",
+                                // Oranges & Ambers
+                                "#FFA700", "#dd8a3c", "#FFD700",
+                                // Yellows & Yellow-Greens
+                                "#FFFF00", "#6b8e23", "#636B2F",
+                                // Greens
+                                "#00FF00",
+                                // Blues
+                                "#0000FF",
+                                // Magentas
+                                "#FF00FF",
+                                // Browns & Skin Tones
+                                "#56301d", "#977B6C", "#877348", "#7A6C5F", "#f6d7b0",
+                                // Neutrals (dark to light)
+                                "#000000", "#818589", "#c0c0c0", "#e0e0e0",
+                            ]}/>
                         </ScrollView>
                     </ColorPicker>
                 }

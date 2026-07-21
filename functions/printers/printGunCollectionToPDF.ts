@@ -4,7 +4,7 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system/legacy';
 import { ListPrinter } from 'lib/interfaces';
 import { checkBoxes, gunDataTemplate } from 'lib/DataTemplates/gunDataTemplate';
-import { dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
+import { checkboxFields_ch, dateLocales, datePickerTriggerFields, pdfCommonStyles, pdfDateOptions } from 'configs/configs';
 import { Platform } from 'react-native';
 import { db } from 'db/client';
 import * as schema from "db/schema"
@@ -16,7 +16,7 @@ import { pdfFooter, pdfTitle_GunCollection, pdfTitle_GunCollectionArt5 } from 'l
 import { getShortCaliberNameFromArray } from 'functions/getShortCaliber';
 import { ne } from 'drizzle-orm';
 
-const art5Keys = checkBoxes.map(checkBox => checkBox.name)
+const art5Keys = checkBoxes.filter(checkBox => checkboxFields_ch.includes(checkBox.name)).map(checkBox => checkBox.name)
 
 const excludedKeys = [
     "images", 
@@ -125,10 +125,10 @@ export async function printGunCollection(language: string, shortCaliber: boolean
                 <th colspan=${getHeaderFooterLength(printer)}>${getTitle(printer)[language]}</th>
               </tr>
               ${printer === "gunCollectionArt5" || printer === "gunCollectionHybrid" ? `<tr>
-                <td class="legend" colspan=${getHeaderFooterLength(printer)}>${checkBoxes.map((box, index) => `${index+1}: ${box[language]}`).join(", ")}<td>
+                <td class="legend" colspan=${getHeaderFooterLength(printer)}>${checkBoxes.filter(checkBox => checkboxFields_ch.includes(checkBox.name)).map((box, index) => `${index+1}: ${box[language]}`).join(", ")}<td>
               </tr>` : ""}
               <tr>
-                ${gunDataTemplate.map(data=>{return excludedKeys.includes(data.name) ? "" : `<th>${data[language]}</th>`}).join("")}${checkForCheckboxes(printer) ? checkBoxes.map((box, index) => `<th>${index+1}</th>`).join("") : ""}
+                ${gunDataTemplate.map(data=>{return excludedKeys.includes(data.name) ? "" : `<th>${data[language]}</th>`}).join("")}${checkForCheckboxes(printer) ? checkBoxes.filter(checkBox => checkboxFields_ch.includes(checkBox.name)).map((box, index) => `<th>${index+1}</th>`).join("") : ""}
               </tr>
             </thead>
             
@@ -155,7 +155,7 @@ export async function printGunCollection(language: string, shortCaliber: boolean
                           : 
                           ""
                         )
-                    }).join("")}${checkForCheckboxes(printer) ? checkBoxes.map(box => {
+                    }).join("")}${checkForCheckboxes(printer) ? checkBoxes.filter(checkBox => checkboxFields_ch.includes(checkBox.name)).map(box => {
                   return gun[box.name] === true ? 
                     `<td class="xcell">X</td>` 
                   : `<td class="hidden"> </td>`}).join("") : ""}

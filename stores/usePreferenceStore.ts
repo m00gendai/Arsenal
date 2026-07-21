@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames} from "../lib/interfaces"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -93,18 +93,19 @@ interface FilterState{
 
 export interface PreferredUnits{
   selectedCurrency: string
-  generalWeightUnit: string
-  bulletWeightUnit: string
-  powderWeightUnit: string
-  criticalPowderWeightUnit: string
-  generalLengthUnit: string
-  barrelLengthUnit: string
-  caseLengthUnit: string
+  generalWeightUnit: weightUnitNames
+  bulletWeightUnit: weightUnitNames
+  powderWeightUnit: weightUnitNames
+  criticalPowderWeightUnit: weightUnitNames
+  generalLengthUnit: distUnitNames
+  barrelLengthUnit: distUnitNames
+  caseLengthUnit: distUnitNames
 }
 
 interface InitialStoreState {
   language: Languages
   theme: {name: string, colors: Color}
+  country: SupportedCountries
   generalSettings: GeneralSettings
   displaySettings: DisplaySettings
   preferredUnits: PreferredUnits
@@ -122,6 +123,7 @@ interface InitialStoreState {
 const initialState:InitialStoreState = {
     language: "de",
     theme: { name: "default", colors: colorThemes.default },
+    country: "ch",
     generalSettings: {
       displayImagesInListView: true,
       displayImagesInListViewGun: true,
@@ -228,6 +230,7 @@ const initialState:InitialStoreState = {
 interface StoreFunctions {
     switchLanguage: (lang: string) => void
     switchTheme: (name: string) => void,
+    switchCountry: (iso: SupportedCountries) => void
     setGeneralSettings: (settings: GeneralSettings) => void
     setPreferredUnits: (units: PreferredUnits) => void
     setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
@@ -249,6 +252,7 @@ interface StoreFunctions {
     
     switchLanguage: (lang: Languages) => set((state) => ({ language: lang })),
     switchTheme: (name: string) => set((state) => ({theme: {name: name, colors: colorThemes[name]}})),
+    switchCountry: (iso: SupportedCountries) => set((state) => ({ country: iso })),
     setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
     setPreferredUnits: (settings: PreferredUnits) => set((state) => ({preferredUnits: settings})),
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
