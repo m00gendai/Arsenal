@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
-import { Button, Dialog, HelperText, Icon, IconButton, Portal, Text, TextInput } from "react-native-paper"
+import { HelperText, Icon, IconButton, Portal, Text, TextInput } from "react-native-paper"
 import { usePreferenceStore } from "../../stores/usePreferenceStore";
-import { dateTimeOptions, defaultViewPadding } from "../../configs/configs";
-import { AmmoType, ItemType, ReloadingType_Bullet, ReloadingType_Powder } from "../../lib/interfaces";
+import { defaultViewPadding } from "../../configs/configs";
+import { AmmoType, ItemType, ReloadingType_Bullet, ReloadingType_Powder, weightUnitNames } from "../../lib/interfaces";
 import { ammoQuickUpdate, gunQuickShot, inStockLabel, shotLabel } from "../../lib/textTemplates";
 import { db } from "../../db/client"
 import * as schema from "../../db/schema"
 import { eq } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore";
 import { v4 as uuidv4 } from 'uuid';
-import { convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from "functions/utils";
+import { convertSelectedUnitToMilligram, convertWeightUnitsToSelectedUnit } from "functions/utils";
 import ModalContainer from ".././ModalContainer";
 import { determineCostLoggerSchema } from "functions/determinators";
+import { Dropdown } from "react-native-paper-dropdown";
+import { weightUnits } from "lib/unitData";
 
 interface Props{
   data?: string
@@ -25,20 +27,25 @@ interface Props{
 
 export default function QuickStockDialog({data, itemData, setItemData, showModal, setShowModal, fromQuickAction}:Props){
 
+    const { preferredUnits } = usePreferenceStore()
+
     const [error, displayError] = useState<boolean>(false)
     const [errorText, setErrorText] = useState<string>("")
     const [stockChange, setStockChange] = useState<"dec" | "inc" | "">("")
-    const [stockValue, setStockValue] = useState<number>(0)
+    const [powderConsumptionUnit, setPowderConsumptionUnit] = useState<weightUnitNames>(preferredUnits.powderWeightUnit)
     const [input, setInput] = useState<string>("")
     const [costInput, setConstInput] = useState<string>("")
     const { language, theme, } = usePreferenceStore()
     const { currentCollection, setCurrentCollection, currentItem, setCurrentItem } = useItemStore()
-    const [seeInfo, toggleSeeInfo] = useState<boolean>(false)
     const [negativeAmount, setNegativeAmount] = useState<boolean>(false)
 
-    const { preferredUnits } = usePreferenceStore()
-
     const quickStockItem = currentItem as AmmoType | ReloadingType_Bullet | ReloadingType_Powder
+
+    const weightData = weightUnits.map(unit => {
+        return(
+            {label: `${unit[language]} - ${unit.iso}`, value: `${unit.iso}`}
+        )
+    })
 
     function insertErrorText(){
       if(stockChange === ""){
@@ -62,7 +69,7 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
           }
           if("powderWeight" in item){
             currentValue = parseInt(item.powderWeight) ? parseInt(item.powderWeight) : 0 // this is Milligram
-            const increase:number = Number(convertWeightUnitsToMilligram(preferredUnits, "powderWeight", input))
+            const increase:number = Number(convertSelectedUnitToMilligram(powderConsumptionUnit, input))
             total = stockChange === "inc" ? Number(currentValue) + Number(increase) : Number(currentValue) - Number(increase)
             await db.update(schema[currentCollection]).set({powderWeight: `${total}`, lastTopUpAt_unix: Date.now()}).where(eq(schema[currentCollection].id, item.id))
           }
@@ -72,7 +79,7 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
               id: uuidv4(),
               createdAt: Date.now(),
               reference: quickStockItem.id,
-              amountBought: `${"powderWeight" in quickStockItem ? convertWeightUnitsToMilligram(preferredUnits, "powderWeight", input) : input}`,
+              amountBought: `${"powderWeight" in quickStockItem ? convertSelectedUnitToMilligram(powderConsumptionUnit, input) : input}`,
               totalCost: `${costInput}`
             })
           }
@@ -115,10 +122,14 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
         setNegativeAmount((quickStockItem.currentStock === undefined ? 0 : quickStockItem.currentStock === null ? 0 : Number(quickStockItem.currentStock)) < Number(input))
         }
       if("powderWeight" in quickStockItem){
-        setNegativeAmount((quickStockItem.powderWeight === undefined ? 0 : quickStockItem.powderWeight === null ? 0 : Number(convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", quickStockItem.powderWeight))) < Number(input))
+        setNegativeAmount((quickStockItem.powderWeight === undefined ? 0 : quickStockItem.powderWeight === null ? 0 : Number(convertWeightUnitsToSelectedUnit(powderConsumptionUnit, quickStockItem.powderWeight))) < Number(input))
       }
       setInput(input.replace(/[^0-9]/g, ''))
     }
+
+    useEffect(()=>{
+      handleInput(input)
+    },[powderConsumptionUnit])
 
     function handleCostInput(input:string){
       setConstInput(input.replace(/[^0-9.,]/g, ''))
@@ -136,6 +147,17 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
           </View> 
         )
       }
+      if("powderWeight" in quickStockItem){
+        return(
+          <View style={{width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+            <Text>{`${quickStockItem.manufacturer} ${"designation" in quickStockItem ? quickStockItem.designation : quickStockItem.model} ${quickStockItem.caliber ?? ""}`}</Text>
+            <View style={{width: "100%", display: "flex", flexDirection: "row"}}>
+              <Text>{`${inStockLabel[language]} `}</Text>
+              <Text style={{fontWeight: "bold"}}>{`${convertWeightUnitsToSelectedUnit(powderConsumptionUnit, quickStockItem.powderWeight)} ${powderConsumptionUnit}`}</Text>
+            </View>
+          </View> 
+        )
+      }
       
     }
 
@@ -144,7 +166,7 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
         return !quickStockItem.currentStock ? gunQuickShot.errorNoAmountDefined[language] : gunQuickShot.errorAmountTooLow[language].replace("{{AMOUNT}}", quickStockItem.currentStock)
         }
       if("powderWeight" in quickStockItem){
-        return !quickStockItem.powderWeight ? gunQuickShot.errorNoAmountDefined[language] : gunQuickShot.errorAmountTooLow[language].replace("{{AMOUNT}}", convertWeightUnitsToPreferredUnit(preferredUnits, "powderWeight", quickStockItem.powderWeight))
+        return !quickStockItem.powderWeight ? gunQuickShot.errorNoAmountDefined[language] : gunQuickShot.errorAmountTooLow[language].replace("{{AMOUNT}}", `${convertWeightUnitsToSelectedUnit(powderConsumptionUnit, quickStockItem.powderWeight)} ${powderConsumptionUnit}`)
       }
     }
     
@@ -159,6 +181,18 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
             <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", height: "100%"}}>
               <View style={{width: "100%", display: "flex", flexDirection: "row", padding: defaultViewPadding, flexWrap: "wrap"}}>
                 <View style={{width: "100%"}}>{setDetailText()}</View>
+                {currentCollection === "reloadingCollection_Powder" ? <View style={{width: "100%", display: "flex", flexDirection: "row", gap: defaultViewPadding, marginTop: defaultViewPadding*2}}>
+                  <View style={{width: "100%"}}>
+                    <Dropdown
+                      label={"Unit"}
+                      options={weightData}
+                      value={powderConsumptionUnit}
+                      onSelect={setPowderConsumptionUnit}
+                      menuContentStyle={{height: "100%"}}
+                      style={{width: "100%"}}
+                    />
+                  </View>
+                </View> : null}
                 <View style={{width: "100%", display: "flex", flexDirection: "row", gap: defaultViewPadding, marginTop: defaultViewPadding*2}}>
                   <Pressable 
                     style={{
@@ -172,8 +206,8 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
                   >
                     <Icon source="minus" size={24} color={stockChange === "dec" ? theme.colors.onPrimary : theme.colors.onSurfaceVariant}/>
                   </Pressable>
+
                   <TextInput 
-                    style={{flex: 1}} 
                     placeholder={`${"powderWeight" in quickStockItem ? "" : ammoQuickUpdate.placeholder[language]}`} 
                     keyboardType={"number-pad"} 
                     value={input} 
@@ -181,8 +215,9 @@ export default function QuickStockDialog({data, itemData, setItemData, showModal
                     inputMode='decimal' 
                     returnKeyType='done'
                     returnKeyLabel='OK'
-                    left={"powderWeight" in quickStockItem ? <TextInput.Affix text={`${preferredUnits.powderWeightUnit} `} />  : null}
+                    style={{flex: 1}}
                   />
+
                   <Pressable 
                     style={{
                       width: "15%", 

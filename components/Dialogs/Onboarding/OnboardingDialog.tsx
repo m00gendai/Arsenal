@@ -24,7 +24,7 @@ export default function OnboardingDialog(){
 
     const [generalWeightUnit, setGeneralWeightUnit] = useState<weightUnitNames>("g")
     const [selectedBulletWeight, setSelectedBulletWeight] = useState<weightUnitNames>("gr")
-    const [selectedPowderWeight, setSelectedPowderWeight] = useState<weightUnitNames>("gr")
+    const [selectedPowderWeight, setSelectedPowderWeight] = useState<weightUnitNames>("kg")
 
     const [generalLengthUnit, setGeneralLengthUnit] = useState<distUnitNames>("cm")
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<distUnitNames>("in")

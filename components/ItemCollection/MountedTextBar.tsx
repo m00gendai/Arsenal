@@ -38,7 +38,7 @@ export default function MountedTextBar({mountedOn}:Props){
                 borderBottomRightRadius: 0
             }}>
                <View style={{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-                    <Text style={{fontSize: 10}}><Icon source="wrench" size={10} />{" "}{mountedOn}</Text>
+                    <Text style={{fontSize: 10, textAlign: "right", width: "100%"}}><Icon source="wrench" size={10} />{" "}{mountedOn}</Text>
                 </View>
                   </View>
     )

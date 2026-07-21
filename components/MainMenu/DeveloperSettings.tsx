@@ -3,8 +3,9 @@ import ModalContainer from "components/ModalContainer";
 import { collectionImportTables, defaultViewPadding, imageFileExtensions, screenNameParamsAll } from "configs/configs";
 import { PREFERENCES } from "configs/configs_DB";
 import { db } from "db/client";
+import { runDbDiagnostics } from "db/dbDiagnostics";
 import * as schema from "db/schema"
-import { eq, ne } from "drizzle-orm/sql";
+import { eq, ne, and, isNotNull } from "drizzle-orm/sql";
 import DEV_importLegacyDatabaseAsJSON from "functions/DEV/DEV_importLegacyDatabaseAsJSON";
 import DEV_injectBadItem_date from "functions/DEV/DEV_injectBadItem_date";
 import { developerSettingsWarning } from "lib/textTemplates";
@@ -35,7 +36,6 @@ export default function DeveloperSettings(){
     }
 
     async function purgePreferences(){
-        console.info("Purge Preferences")
         await AsyncStorage.setItem(PREFERENCES, JSON.stringify({}))
         resetPreferenceStore()
         setAlohaSnackbarText("Purged Preferences")
@@ -43,7 +43,6 @@ export default function DeveloperSettings(){
     }
 
     function purgeDatabase(){
-        console.info("Purge Database")
         collectionImportTables.forEach(async table => {
             await db.delete(schema[table])
         })
@@ -52,7 +51,6 @@ export default function DeveloperSettings(){
     }
 
     async function purgeTable(){
-        console.info("Purge Table")
         await db.delete(schema[dropTable])
         setAlohaSnackbarText(`Purged Table ${dropTable}`)
         setAlohaSnackbarVisible(true)
@@ -76,6 +74,8 @@ export default function DeveloperSettings(){
                 }
             })
         })
+        setAlohaSnackbarText("Faulty Images Nulled")
+        setAlohaSnackbarVisible(true)
     }
 
     function migrateCaliberToArray(){
@@ -91,6 +91,8 @@ export default function DeveloperSettings(){
                 }
             })
         })
+        setAlohaSnackbarText("Caliber Entries force-migrated")
+        setAlohaSnackbarVisible(true)
     }
 
     async function listAsyncStorage(){
@@ -103,6 +105,8 @@ export default function DeveloperSettings(){
 
     async function purgeAsyncStorage(){
         await AsyncStorage.removeItem(PREFERENCES)
+        setAlohaSnackbarText("Async Storage purged")
+        setAlohaSnackbarVisible(true)
     }
 
     function reset_isSold(){
@@ -112,6 +116,33 @@ export default function DeveloperSettings(){
                 await db.update(schema[table]).set({sold_isSold: false}).where((eq(schema[table].id, item.id)))
             })
         })
+        setAlohaSnackbarText("_isSold reset")
+        setAlohaSnackbarVisible(true)
+    }
+
+    async function showDbDiagnostics(){
+        setDialogTitle("DB Encryption Diagnostics")
+        setDialogContent("Running checks...")
+        setDialogVisible(true)
+        try{
+            const results = await runDbDiagnostics()
+            const pretty = JSON.stringify(results, null, 2)
+            setDialogContent(pretty)
+            console.info(pretty)
+        } catch(e){
+            setDialogContent(`Diagnostics failed:\n${String(e)}`)
+        }
+    }
+
+    async function insertDummySerials(){
+        screenNameParamsAll.forEach(async table => {
+            const collection = await db.select().from(schema[table]).where(and(isNotNull(schema[table].serial), ne(schema[table].serial, "")))
+            collection.forEach(async item => {
+                await db.update(schema[table]).set({serial: `${(Math.random()*100000).toFixed(0)}`}).where((eq(schema[table].id, item.id)))
+            })
+        })
+        setAlohaSnackbarText("Inserted Dummy Serials")
+        setAlohaSnackbarVisible(true)
     }
     
     return(
@@ -267,6 +298,30 @@ export default function DeveloperSettings(){
                         iconColor={theme.colors.onError}
                         style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
                         onPress={()=>reset_isSold()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Run DB Diagnostics</Text>
+                    <IconButton 
+                        icon="database-eye" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>showDbDiagnostics()}
+                    />
+                </View>
+
+                <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
+
+                <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
+                    <Text style={{flex: 7}}>Insert Dummy Serials</Text>
+                    <IconButton 
+                        icon="numeric" 
+                        iconColor={theme.colors.onError}
+                        style={{height: "100%", backgroundColor: theme.colors.error, aspectRatio: "1/1"}} 
+                        onPress={()=>insertDummySerials()}
                     />
                 </View>
 

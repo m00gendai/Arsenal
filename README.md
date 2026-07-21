@@ -1,6 +1,6 @@
 # Arsenal
 
-React Native Application to manage a gun collection.
+Expo React Native Application to manage a gun collection.
 Written in TypeScript using SQLite as its core with Drizzle as an ORM.
 
 ### Build Profiles
@@ -14,72 +14,10 @@ Written in TypeScript using SQLite as its core with Drizzle as an ORM.
 
 - ```npm run generate:notes```
   
-  Generates Playstore release notes from @components/MainMenu/VersionHistory/releaseNotes.ts
+  Generates Playstore release notes from /components/MainMenu/VersionHistory/releaseNotes.ts
+
+- ```npm run generate:pitch```
+
+  Generates App description text from /website/src/text/salesPitch_${language}.mdx
 
 
-### Create a new Collection
-
-Creating a new collection (category or category item) is done by updating the below relevant files or creating new ones.
-The Screens themselves are agnostic to input, database queries are determined by screen params. This allows new collections to be added relatively comfortable
-avoiding duplicate code, but it still requires carefulness to not forget an update.
-Adhere to naming conventions already present.
-
-@db/schema.ts
-- define {collection}Collection schema
-- define {collection}Tags tag schema
-- run migrations
-
-@interfaces.ts
-- set up new {collection}Type
-- append to ItemType 
-- append to CollectionType
-- set up new SortingTypes{Collection}
-- append to SortingTypes
-
-@lib/textTemplates.ts
-- append to tabBarLabels
-- append to sorting:Sorting if necessary
-
-@configs.ts
-- define requiredFields{Collection}
-- append to currencyPrefixFields if necessary
-- append to numberTextFields if necessary
-- append to datePickerTriggerFields if necessary
-- append to colorPickerTriggerFields if necessary
-- append to caliberPickerTriggerFields if necessary
-- append to intervalPickerTriggerFields if necessary
-- append to mountedOnTriggerFields if necessary
-- create cardActions{Collection}
-- add collection to collectionExportDirectories
-- append to respective screenNameParams{Collection}
-- create new sortingOptions{Collection}
-
-@stores/usePreferenceStore.ts
-- append to genralSettings
-- append to displaySettings
-- append to sorterSettings
-- append to filterState
-
-@lib/DataTemplates
-- create new {collection}DataTemplate
-- create an empty{Collection}Object
-
-@components/Hooks
-- append to useItemTags()
-
-@functions
-- create new sort{Collection}Collection -> use singular, e.g. sirtGunCollection sortAccessoryCollection_silencer, sortReloadingCollection_casing
-- append to determinators
-
-@components/ItemCollection/Item_accessories
-- create {collection}Data state
-- append to getAccessoryData()/getPartData()
-- append to DATA
-
-@components/Dialogs/AccessoryMountDialog
-- create db query for collection data
-- append db query variable to getItemName()
-- append List Item to component
-
-@BottomBars (only for new collection category)
-- create new BottomBar_{Collection}Collection.tsx

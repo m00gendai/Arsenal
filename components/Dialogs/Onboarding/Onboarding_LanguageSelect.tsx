@@ -48,7 +48,7 @@ export default function Onboarding_LanguageSelect(){
                         </View>
                         <Text style={{width: "60%"}}>{`${languageSelect[language.code]}`}</Text>
                         <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                            <RadioButton
+                            <RadioButton.Android
                                 value="first"
                                 status={ selectedLanguage === language.code ? 'checked' : 'unchecked' }
                                 onPress={() => handleLanguageSwitch(language.code)}

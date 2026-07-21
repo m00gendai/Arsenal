@@ -40,7 +40,7 @@ export default function Onboarding_CountrySelect(){
                         </View>
                         <Text style={{width: "60%"}}>{`${country.name[language]}`}</Text>
                         <View style={{width: "20%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                            <RadioButton
+                            <RadioButton.Android
                                 value="first"
                                 status={ selectedCountry === country.iso ? 'checked' : 'unchecked' }
                                 onPress={() => handleCountrySwitch(country.iso)}

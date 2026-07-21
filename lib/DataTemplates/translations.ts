@@ -74,6 +74,9 @@ interface DataTemplateTranslations {
     application: DataTemplateTranslation
     powderWeight: DataTemplateTranslation
     criticalPowderWeight: DataTemplateTranslation
+    batteryType: DataTemplateTranslation
+    glassDimensions: DataTemplateTranslation
+    focalPlane: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -690,7 +693,31 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Domaine d’application",
         it: "Campo d’impiego",
         ch: "Champ d'applicaziun"
-    }
+    },
+    "batteryType":{
+        name: "batteryType",
+        de: "Batterietyp",
+        en: "Battery Type",
+        fr: "Type de pile",
+        it: "Tipo di batteria",
+        ch: "Tip da batteria"
+    },
+    "glassDimensions":{
+        name: "glassDimensions",
+        de: "Fenstergrösse",
+        en: "Window Dimension",
+        fr: "Dimensions de la fenêtre",
+        it: "Dimensioni della finestra",
+        ch: "Grondezza da la fanestra"
+    },
+    "focalPlane":{
+        name: "focalPlane",
+        de: "Bildebene",
+        en: "Focal Plane",
+        fr: "Plan focal",
+        it: "Piano focale",
+        ch: "Plan focal"
+    },
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {

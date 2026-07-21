@@ -173,10 +173,11 @@ export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
 
-export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "logger"]
+export const loggerTables: string[] = ["logger", "costLoggerAmmunition", "costLoggerBullets", "costLoggerCasings", "costLoggerPrimers", "costLoggerPowder"]
+export const nonCollectionTables: string[]= ["accessoryCollection", "partCollection", "accessoryMount", "partMount", "autocomplete", "gunReminders", "customShippingLabels", ...loggerTables]
 
 export const collectionExportDirectories: CollectionType[] = screenNameParamsAll
-export const collectionImportTables = [...screenNameParamsAll, ...nonCollectionTables]
+export const collectionImportTables: (CollectionType | string)[] = [...screenNameParamsAll, ...nonCollectionTables]
 
 export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
