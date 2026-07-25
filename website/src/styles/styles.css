@@ -70,6 +70,10 @@ main{
     min-height: 100svh;
 }
 
+h2{
+    color: var(--primary);
+}
+
 code{
     font-size: 1rem;
     margin: 0.5rem 0;
