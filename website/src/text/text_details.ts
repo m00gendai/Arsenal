@@ -150,19 +150,19 @@ export const section_collectionItems_title: Section = {
     text: {
         de: [
                 `Mit Arsenal können viele Sammlungen angelegt werden, über Waffen und Munition, Zubehör wie Optiken, Schalldämpfer und Laser bishin zu Büchern.
-                Die Sammlungen werden stetig ausgebaut, in Planung sind zum Beispiel mehr Literatur und die Verwaltung des Wiederlade-Equipments.`
+                Die Sammlungen werden stetig ausgebaut, in Planung sind zum Beispiel mehr Literatur und mehr Waffenteile.`
             ],
         en: [
                 `With Arsenal, many collections can be created, from weapons and ammunition to accessories such as optics, silencers, and lasers, to books.
-                The collections are constantly being expanded, with more literature and the management of reloading equipment being planned, for example.`
+                The collections are constantly being expanded, with more literature and more weapon parts.`
             ],
         fr: [
                 `De nombreuses collections peuvent être créées avec Arsenal, des armes et munitions, aux accessoires comme les optiques, les silencieux et les lasers, en passant par les livres.
-                Les collections sont en constante évolution, avec notamment plus de littérature et la gestion de l’équipement de rechargement en cours de développement.`
+                Les collections sont en constante évolution, avec notamment plus de littérature et plus de pièces d’armes.`
             ],
         it: [
                 `Con Arsenal si possono creare molte collezioni, dalle armi e munizioni, agli accessori come ottiche, silenziatori e laser, fino ai libri.
-                Le collezioni sono in continua espansione, con l’aggiunta di più letteratura e la gestione di attrezzature per il ricaricamento, ad esempio.`
+                Le collezioni sono in continua espansione, con l’aggiunta di più letteratura e più parti di armi.`
         ]
     }
 }
