@@ -1,5 +1,3 @@
-// TODO: Replace – with -, « » with " and : ; ! ? with leading spaces
-
 import { getCaliberCount } from "../../../lib/caliberData";
 import { dataTemplate_Translations } from "../../../lib/DataTemplates/translations";
 import { tabBarLabels } from "../../../lib/Text/text_tabBarLabels"
@@ -20,7 +18,7 @@ import { emptyDieObject } from "../../../lib/DataTemplates/reloadingDataTemplate
 import { emptyCaseObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Case"
 import { emptyBulletObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Bullet"
 import { emptyPrimerObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Primer"
-import { emptyPowderObject, powderRemarks } from "../../../lib/DataTemplates/reloadingDataTemplate_Powder"
+import { emptyPowderObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Powder"
 
 
 interface Section{
@@ -277,7 +275,7 @@ export const section_supportedCalibers: Section = {
              `Alcune funzionalità, come QuickShot, dipendono da un formato specifico del calibro. All’interno dell’app sono presenti dei limiti per garantire che il calibro segua questo formato,
             ma quando si importano dati personalizzati, potrebbe essere necessario modificare i dati del calibro prima di importarli`,
             `Di seguito è riportato un elenco dei <strong>${getCaliberCount()} calibri</strong> e del formato esatto che l’app supporta. Se è necessario specificare più calibri
-            (ad esempio, se un revolver spara sia .357 Magnum che .38 Special), separarli con una virgola e uno spazio «, «:`,
+            (ad esempio, se un revolver spara sia .357 Magnum che .38 Special), separarli con una virgola e uno spazio ", ":`,
             `<code>.357 S&W Magnum, .38 S&W Special</code>`
         ]
     }
@@ -309,14 +307,14 @@ Arsenal offre una vasta gamma di funzionalità aggiuntive che vanno oltre quelle
 export const section_supportedFunctionality_details: {title: SimpleTranslation, text: SimpleTranslation, icon: functionalityIcons}[] = [
     {
         title: {
-            de: `QuickShot – Behalte den Überblick, wie viele Schüsse du abgegeben hast`,
+            de: `QuickShot - Behalte den Überblick, wie viele Schüsse du abgegeben hast`,
             en: `QuickShot - Keep track of how may rounds went through your gun`,
-            fr: `QuickShot – Garde une trace du nombre de balles tirées par ton arme`,
-            it: `QuickShot – Tieni traccia di quanti colpi sono stati sparati con la tua arma`,
+            fr: `QuickShot - Garde une trace du nombre de balles tirées par ton arme`,
+            it: `QuickShot - Tieni traccia di quanti colpi sono stati sparati con la tua arma`,
         },
         text: {
             de: `
-QuickShot ist ein «Rangelog light» und ermöglicht dir, abgegebene Schüsse direkt aus der Sammlungsübersicht zu erfassen.
+QuickShot ist ein "Rangelog light" und ermöglicht dir, abgegebene Schüsse direkt aus der Sammlungsübersicht zu erfassen.
 Es ist mit der Munition in der App verbunden, wodurch QuickShot erkennt, ob du passende Munition für das Kaliber an Lager hast.
 So kannst du nicht nur schnell eine Schiesssession erfassen, sondern auch die verschossenen Patronen direkt von deinem Munitionsbestand abziehen.
 
@@ -332,7 +330,7 @@ Of course, you can just log shots without touching your ammunition stock.
 Using QuickShot will update the used firearm with shots fired and date of last shooting and the ammuniton, if applicable.
 `,
             fr: `
-QuickShot est un «rangelog light» qui te permet d'enregistrer les coups tirés avec une arme directement depuis l'aperçu de ta collection.
+QuickShot est un "rangelog light" qui te permet d'enregistrer les coups tirés avec une arme directement depuis l'aperçu de ta collection.
 Il est lié aux munitions dans l'application, ce qui signifie que QuickShot détecte si tu as des munitions compatibles avec le calibre en stock.
 Cela te permet non seulement d'enregistrer rapidement une séance de tir, mais aussi de déduire directement les coups tirés de ton stock de munitions.
 
@@ -341,7 +339,7 @@ L'utilisation de QuickShot met à jour l'arme concernée avec le nombre de coups
 
             `,
             it: `
-QuickShot è un « rangelog light » che ti permette di registrare i colpi sparati con un'arma direttamente dalla panoramica della tua collezione.
+QuickShot è un "rangelog light" che ti permette di registrare i colpi sparati con un'arma direttamente dalla panoramica della tua collezione.
 È collegato alle munizioni presenti nell'app, ciò significa che QuickShot rileva se hai delle munizioni compatibili con il calibro disponibili in magazzino.
 Questo ti permette non solo di registrare rapidamente una sessione di tiro, ma anche di sottrarre direttamente i colpi sparati dalla tua scorta di munizioni.
 
@@ -354,16 +352,16 @@ L'utilizzo di QuickShot aggiorna l'arma interessata con il numero di colpi spara
     },
     {
         title: {
-            de: `QuickStock – Behalte den Überblick über den Lagerbestand deines Verbrauchsmaterials`,
+            de: `QuickStock - Behalte den Überblick über den Lagerbestand deines Verbrauchsmaterials`,
             en: `QuickStock - Keep track of your consumables' stock increase and decrease`,
-            fr: `QuickStock – Suis l’augmentation et la diminution de ton stock de consommables`,
-            it: `QuickStock – Tieni traccia dell’aumento e della diminuzione delle scorte dei materiali di consumo`,
+            fr: `QuickStock - Suis l’augmentation et la diminution de ton stock de consommables`,
+            it: `QuickStock - Tieni traccia dell’aumento e della diminuzione delle scorte dei materiali di consumo`,
         },
         text: {
             de: `
 QuickStock ist ein intelligentes Werkzeug, mit dem du deine Verbrauchsmaterialien (Munition, Geschosse, Hülsen, Zündhütchen, Pulver) direkt aus der Sammlungsübersicht schnell nachfüllen kannst.
 Du kannst damit nicht nur Zu- und Abgänge deines Bestands schnell erfassen, sondern auch den bezahlten Betrag für deine Auffüllung hinzufügen.
-In der Detailansicht deiner Verbrauchsmaterialien findest du einen «Kosten»-Tab, der alle Auffüllungen, die bezahlten Beträge sowie den Durchschnittspreis auflistet.
+In der Detailansicht deiner Verbrauchsmaterialien findest du einen "Kosten"-Tab, der alle Auffüllungen, die bezahlten Beträge sowie den Durchschnittspreis auflistet.
 
 Bei Pulver kannst du die Mengeneinheit festlegen. So kannst du beispielsweise eine Reduktion in Grain erfassen, obwohl die Pulvermenge in Pfund angezeigt wird.
 
@@ -378,14 +376,14 @@ For powder, you can specify the quantity unit. This is so you can log a decrease
             fr: `
 QuickStock est un outil intelligent qui te permet de compléter rapidement ton stock de consommables (munitions, balles, douilles, amorces, poudre) directement depuis l'aperçu de ta collection.
 Tu peux non seulement enregistrer rapidement les augmentations et diminutions de stock, mais aussi ajouter le montant payé lors de ton réapprovisionnement.
-Dans la vue détaillée de tes consommables, tu trouveras un onglet «coûts» qui liste tous les réapprovisionnements, les montants payés ainsi que le prix moyen.
+Dans la vue détaillée de tes consommables, tu trouveras un onglet "coûts" qui liste tous les réapprovisionnements, les montants payés ainsi que le prix moyen.
 
 Pour la poudre, tu peux définir l'unité de quantité. Cela te permet par exemple d'enregistrer une diminution en grains, même si la quantité de poudre est affichée en livres.
 `,
             it: `
 QuickStock è uno strumento intelligente che ti permette di rifornire rapidamente le tue scorte di materiali di consumo (munizioni, palle, bossoli, inneschi, polvere) direttamente dalla panoramica della tua collezione.
 Non solo puoi registrare rapidamente gli aumenti e le diminuzioni delle scorte, ma puoi anche aggiungere quanto hai pagato per il rifornimento.
-Nella vista dettagliata dei tuoi materiali di consumo troverai una scheda «costi», che elenca tutti i rifornimenti, gli importi pagati e il prezzo medio.
+Nella vista dettagliata dei tuoi materiali di consumo troverai una scheda "costi", che elenca tutti i rifornimenti, gli importi pagati e il prezzo medio.
 
 Per la polvere puoi definire l'unità di quantità. Questo ti permette, ad esempio, di registrare una diminuzione in grani anche se la quantità di polvere è impostata in libbre.
 
@@ -395,19 +393,19 @@ Per la polvere puoi definire l'unità di quantità. Questo ti permette, ad esemp
     },
         {
         title: {
-            de: `QuickMount – Behalte den Überblick, wo du dein Zubehör oder deine Waffenkomponenten montiert hast`,
+            de: `QuickMount - Behalte den Überblick, wo du dein Zubehör oder deine Waffenkomponenten montiert hast`,
             en: `QuickMount - Keep track of where your accessories or weapon parts are mounted to`,
-            fr: `QuickMount – Garde une trace de l’endroit où tes accessoires ou pièces d’arme sont montés`,
-            it: `QuickMount – Tieni traccia di dove sono montati i tuoi accessori o le parti dell’arma`,
+            fr: `QuickMount - Garde une trace de l’endroit où tes accessoires ou pièces d’arme sont montés`,
+            it: `QuickMount - Tieni traccia di dove sono montati i tuoi accessori o le parti dell’arma`,
         },
         text: {
             de: `
-QuickMount ermöglicht dir, ein Zubehör oder Waffenteil schnell auf einer Waffe, einem anderen Zubehör oder einem anderen Waffenteil zu «montieren».
+QuickMount ermöglicht dir, ein Zubehör oder Waffenteil schnell auf einer Waffe, einem anderen Zubehör oder einem anderen Waffenteil zu "montieren".
 So weisst du jederzeit, an welcher Waffe ein Zubehör montiert ist oder welche Waffe über welches Zubehör verfügt.
 Eine praktische, kategorisierte Liste (mit Bildern) macht es einfach, schnell die gewünschte Waffe, das Zubehör oder das Waffenteil auszuwählen.
 
 Im Bild der Kachelansicht findest du unten Symbole, die dem Typ des montierten Zubehörs oder Waffenteils entsprechen.
-In der Detailansicht findest du unter dem Tab «Zubehör» die Informationen zum Zubehör oder Waffenteil und kannst dieses demontieren oder erneut montieren.
+In der Detailansicht findest du unter dem Tab "Zubehör" die Informationen zum Zubehör oder Waffenteil und kannst dieses demontieren oder erneut montieren.
 Im Bild der Kachelansicht wird oben angezeigt, worauf das Objekt aktuell montiert ist.
 
             `,
@@ -421,22 +419,22 @@ In the detail view under the tab "accessories" you will find the information of 
 In the tile view image, on the top, it is shown on which accessory, weapon part or weapon something is currently mounted to.
 `,
             fr: `
-QuickMount te permet de «monter» rapidement un accessoire ou une pièce d'arme sur une arme, un autre accessoire ou une autre pièce d'arme.
+QuickMount te permet de "monter" rapidement un accessoire ou une pièce d'arme sur une arme, un autre accessoire ou une autre pièce d'arme.
 Ainsi, tu sais toujours sur quelle arme un accessoire est monté ou quelles armes possèdent quels accessoires.
 Une liste pratique et catégorisée (avec images) te permet de sélectionner rapidement l'arme, l'accessoire ou la pièce d'arme souhaitée.
 
 Dans l'image de la vue en tuiles, tu trouveras en bas les icônes correspondant au type d'accessoire ou de pièce d'arme actuellement monté.
-Dans la vue détaillée, sous l'onglet «accessoires», tu trouveras les informations concernant l'accessoire ou la pièce d'arme. Tu peux également démonter ou remonter l'accessoire ou la pièce d'arme.
+Dans la vue détaillée, sous l'onglet "accessoires", tu trouveras les informations concernant l'accessoire ou la pièce d'arme. Tu peux également démonter ou remonter l'accessoire ou la pièce d'arme.
 Dans l'image de la vue en tuiles, les éléments en haut indiquent sur quel accessoire, quelle pièce d'arme ou quelle arme l'objet est actuellement monté.
 
             `,
             it: `
-QuickMount ti permette di «montare» rapidamente un accessorio o un componente d'arma su un'arma, un altro accessorio o un altro componente d'arma.
+QuickMount ti permette di "montare" rapidamente un accessorio o un componente d'arma su un'arma, un altro accessorio o un altro componente d'arma.
 In questo modo sai sempre su quale arma è montato un accessorio o quali accessori sono installati su una determinata arma.
 Una pratica lista categorizzata (con immagini) ti permette di selezionare rapidamente l'arma, l'accessorio o il componente d'arma desiderato.
 
 Nell'immagine della vista a riquadri, in basso trovi le icone corrispondenti al tipo di accessorio o componente d'arma attualmente montato.
-Nella vista dettagliata, sotto la scheda «accessori», trovi le informazioni sull'accessorio o sul componente d'arma e puoi smontarlo o rimontarlo.
+Nella vista dettagliata, sotto la scheda "accessori", trovi le informazioni sull'accessorio o sul componente d'arma e puoi smontarlo o rimontarlo.
 Nell'immagine della vista a riquadri, in alto viene mostrato su quale accessorio, componente d'arma o arma è attualmente montato l'oggetto.
 
             `,
@@ -453,15 +451,15 @@ Nell'immagine della vista a riquadri, in alto viene mostrato su quale accessorio
         text: {
             de: `
 QR-Codes sind eine schnelle und einfache Möglichkeit, dein Inventar physisch zu verwalten.
-Wenn du bereits QR-Codes in deiner Sammlung verwendest, sei es Codes auf Etiketten an deinen Waffen oder Code-Aufkleber auf Munitionsboxen, scanne beim Erstellen eines neuen Sammlungseintrags einfach den bestehenden Code – und dieser Code ist nun damit verknüpft.
-Verwende den Scan-Button in der Sammlungsübersicht, um deinen Code zu scannen. Der verknüpfte Sammlungseintrag wird sofort angezeigt – egal, wo du dich gerade in der App befindest.
+Wenn du bereits QR-Codes in deiner Sammlung verwendest, sei es Codes auf Etiketten an deinen Waffen oder Code-Aufkleber auf Munitionsboxen, scanne beim Erstellen eines neuen Sammlungseintrags einfach den bestehenden Code - und dieser Code ist nun damit verknüpft.
+Verwende den Scan-Button in der Sammlungsübersicht, um deinen Code zu scannen. Der verknüpfte Sammlungseintrag wird sofort angezeigt - egal, wo du dich gerade in der App befindest.
 
 Aber was, wenn du noch keine QR-Codes hast, sie aber gerne verwenden möchtest?
 Kein Problem, Arsenal verfügt über einen vollständig anpassbaren QR-Code-Etikettengenerator!
-Wähle aus, für welche Sammlung du Codes erstellen möchtest, welche Einträge enthalten sein sollen (oder einfach alles), welche Informationen auf dem Etikett erscheinen sollen (oder keine, wenn du nur den Code möchtest), wähle das Format – und los geht's!
+Wähle aus, für welche Sammlung du Codes erstellen möchtest, welche Einträge enthalten sein sollen (oder einfach alles), welche Informationen auf dem Etikett erscheinen sollen (oder keine, wenn du nur den Code möchtest), wähle das Format - und los geht's!
 Arsenal erstellt ein PDF mit den QR-Code-Etiketten, die direkt gedruckt werden können!
 
-Es stehen mehrere vordefinierte Formate zur Verfügung (darunter die gängigsten Avery/Zweckform-Formate) – entweder im DIN-A4- oder US-Letter-Format. Natürlich kannst du auch dein eigenes benutzerdefiniertes Format erstellen und speichern, genau wie in Microsoft Word!
+Es stehen mehrere vordefinierte Formate zur Verfügung (darunter die gängigsten Avery/Zweckform-Formate) - entweder im DIN-A4- oder US-Letter-Format. Natürlich kannst du auch dein eigenes benutzerdefiniertes Format erstellen und speichern, genau wie in Microsoft Word!
 Du möchtest keine QR-Codes verwenden, aber Etiketten wären trotzdem praktisch? Kein Problem, lass den QR-Code einfach weg!
             `,
             en: `
@@ -644,7 +642,7 @@ Eine weitere Kernfunktion jeder guten Sammlungsverwaltung sind PDF-Listenexporte
     - Bewilligungsreferenz
     - Erwerbsdatum
 
-    Dies ist eine schnelle und einfache Möglichkeit, eine vollständige Liste deiner Waffen bereitzustellen – sei es für Versicherungszwecke, auf Anfrage einer Behörde oder für was auch immer du sie benötigst.
+    Dies ist eine schnelle und einfache Möglichkeit, eine vollständige Liste deiner Waffen bereitzustellen - sei es für Versicherungszwecke, auf Anfrage einer Behörde oder für was auch immer du sie benötigst.
 
 - __Benutzerdefinierte Liste__
     Damit kannst du eine PDF-Liste jeder gewünschten Sammlung mit beliebigen Informationen erstellen.
@@ -670,7 +668,7 @@ Je nach ausgewähltem Wohnsitzland werden zusätzliche vordefinierte Listen ange
 
         Diese Liste existiert, weil sie von einigen Benutzern gewünscht wurde: Manche Waffenbüros möchten eine vollständige Liste deiner Sammlung und nicht nur der Waffen, die unter Artikel 5 fallen.
 
-Zusätzlich kann jeder Sammlungseintrag als «Galerieausdruck» gedruckt werden. Dieser zeigt jedes Bild, alle Tags und sämtliche Attribute.
+Zusätzlich kann jeder Sammlungseintrag als "Galerieausdruck" gedruckt werden. Dieser zeigt jedes Bild, alle Tags und sämtliche Attribute.
 Dies ist nützlich, wenn du eine physische Darstellung zur Präsentation möchtest oder wenn du etwas verkaufen möchtest und dafür einen Flyer für das Anschlagbrett deines Vereins benötigst.
             `,
             en: `
@@ -726,8 +724,8 @@ Une autre fonctionnalité essentielle de toute bonne application de gestion de c
 
 - __Liste personnalisée__
     Cette option te permet d'imprimer une liste PDF de la collection de ton choix avec les informations que tu souhaites.
-    Besoin d'une liste de toutes tes armes pour ton assurance et tu veux inclure la valeur, mais pas le numéro de série ? Aucun problème !
-    Tu souhaites une liste papier de ta collection de munitions avec uniquement la désignation et le calibre ? La voici !
+    Besoin d'une liste de toutes tes armes pour ton assurance et tu veux inclure la valeur, mais pas le numéro de série? Aucun problème!
+    Tu souhaites une liste papier de ta collection de munitions avec uniquement la désignation et le calibre? La voici!
 
 Selon le pays de résidence sélectionné, des listes prédéfinies supplémentaires sont proposées. Actuellement, celles-ci sont :
 - Suisse
@@ -748,7 +746,7 @@ Selon le pays de résidence sélectionné, des listes prédéfinies supplémenta
 
         Cette liste existe car certains utilisateurs l'ont demandée : certains bureaux des armes souhaitent recevoir une liste complète de ta collection, et pas uniquement des armes soumises à l'article 5.
 
-De plus, chaque élément de collection peut être imprimé sous forme de « fiche galerie », qui affiche toutes les images, les tags et toutes les informations associées.
+De plus, chaque élément de collection peut être imprimé sous forme de "fiche galerie", qui affiche toutes les images, les tags et toutes les informations associées.
 C'est utile si tu souhaites avoir une représentation physique pour l'affichage ou si tu veux vendre un objet et créer un flyer pour le tableau d'affichage de ton club.
             `,
             it: `
@@ -790,7 +788,7 @@ In base al paese di residenza selezionato vengono offerte ulteriori liste predef
 
         Questa lista esiste perché è stata richiesta da alcuni utenti: alcuni uffici armi richiedono un elenco completo della collezione, non solo delle armi soggette all'articolo 5.
 
-Inoltre, ogni elemento della collezione può essere stampato come «scheda galleria», che mostra tutte le immagini, i tag e tutti gli attributi.
+Inoltre, ogni elemento della collezione può essere stampato come "scheda galleria", che mostra tutte le immagini, i tag e tutti gli attributi.
 È utile se vuoi avere una rappresentazione fisica da esporre oppure se vuoi vendere qualcosa e hai bisogno di un volantino per la bacheca del tuo club.
 
             `,
@@ -814,7 +812,7 @@ Um zukünftige zusätzliche Einheiten-Attribute zu ermöglichen, steht auch eine
 
 Du kannst diese Werte jederzeit ändern. Die Datenbank speichert jeden Wert strikt in Milligramm beziehungsweise Millimeter und rechnet ihn in deine gewünschte Anzeigeeinheit um.
 
-Bei Pulver wird empfohlen, die Gewichtseinheit auf die üblichen kommerziellen Einheiten einzustellen – Kilogramm oder Gramm in metrischen Ländern, Pfund oder Unzen in Ländern mit imperialem System.
+Bei Pulver wird empfohlen, die Gewichtseinheit auf die üblichen kommerziellen Einheiten einzustellen - Kilogramm oder Gramm in metrischen Ländern, Pfund oder Unzen in Ländern mit imperialem System.
 Bei jeder Bestandserhöhung oder -verringerung kannst du die gewünschte Einheit erneut auswählen. So kannst du beispielsweise Pulver in Kilogramm einlagern, aber eine Verringerung in Grain erfassen, wenn du Pulver zum Wiederladen verwendet hast.
 
 Bei Währungen kannst du jede beliebige Weltwährung einstellen.
@@ -843,8 +841,8 @@ As for inflation, it is planned to integrate yearly inflation percentages for ev
             fr: `
 Selon l'endroit où tu vis sur cette planète, tu es habitué à certaines unités de mesure. Cependant, il arrive que tu veuilles ou doives utiliser d'autres unités. Arsenal te laisse la liberté de choisir quelle unité de longueur ou de poids afficher pour chaque utilisation.
 
-Tout en métrique sauf pour la poudre ? Aucun problème.
-Le poids des balles en onces ? Un choix étrange, mais c'est toi qui décides.
+Tout en métrique sauf pour la poudre? Aucun problème.
+Le poids des balles en onces? Un choix étrange, mais c'est toi qui décides.
 
 Afin de pouvoir intégrer de futures unités supplémentaires, une unité générale de poids et de longueur est également disponible.
 
@@ -965,7 +963,7 @@ In questo modo puoi monitorare le tue spese e l'andamento dei prezzi nel tempo.
 Es ist ungewöhnlich, aber es kann vorkommen, dass etwas aus deiner Sammlung an jemand anderen verkauft wird.
 Arsenal bietet (widerwillig) eine Funktion an, um einen Eintrag als verkauft zu markieren, behält ihn aber weiterhin in deiner Datenbank. Du kannst wählen, ob er weiterhin in deiner Sammlung angezeigt werden soll (ausgegraut) oder ob er vollständig ausgeblendet werden soll.
 
-Beim «Verkauf» eines Objekts kannst du die Details der Transaktion eingeben, wie zum Beispiel den Namen des Käufers, das Verkaufsdatum, den Verkaufspreis, allfällige Bewilligungsreferenzen und persönliche Notizen.
+Beim "Verkauf" eines Objekts kannst du die Details der Transaktion eingeben, wie zum Beispiel den Namen des Käufers, das Verkaufsdatum, den Verkaufspreis, allfällige Bewilligungsreferenzen und persönliche Notizen.
 Diese Details können später nicht mehr geändert werden. Stelle daher sicher, dass sie korrekt sind. Sie werden oberhalb aller anderen Attribute angezeigt, wenn du einen verkauften Eintrag in deiner Sammlung ansiehst.
             `,
             en: `
@@ -979,14 +977,14 @@ These details cannot be amended later, so make sure they are correct. They will 
 C'est quelque chose d'inhabituel, mais il peut arriver qu'un objet de ta collection soit vendu à quelqu'un d'autre.
 Arsenal propose (à contrecœur) une fonctionnalité permettant de marquer un élément comme vendu, tout en le conservant dans ta base de données. Tu peux choisir si tu souhaites encore l'afficher dans ta collection (grisé) ou le masquer complètement.
 
-Lors de la « vente » d'un objet, tu peux saisir les détails de la transaction, comme le nom de l'acheteur, la date de vente, le prix de vente, les références des permis ainsi que des notes personnelles.
+Lors de la "vente" d'un objet, tu peux saisir les détails de la transaction, comme le nom de l'acheteur, la date de vente, le prix de vente, les références des permis ainsi que des notes personnelles.
 Ces informations ne peuvent plus être modifiées par la suite, assure-toi donc qu'elles sont correctes. Elles seront affichées au-dessus de tous les autres attributs lorsque tu consulteras un élément vendu dans ta collection.
 `,
             it: `
 È qualcosa di raro, ma può capitare che un oggetto della tua collezione venga venduto a qualcun altro.
 Arsenal offre (a malincuore) una funzionalità per contrassegnare un elemento come venduto, mantenendolo comunque nel tuo database. Puoi scegliere se vuoi continuare a visualizzarlo nella tua collezione (in grigio) oppure nasconderlo completamente.
 
-Quando «vendi» un oggetto, puoi inserire i dettagli della transazione, come il nome dell'acquirente, la data di vendita, il prezzo di vendita, eventuali riferimenti ai permessi e note personali.
+Quando "vendi" un oggetto, puoi inserire i dettagli della transazione, come il nome dell'acquirente, la data di vendita, il prezzo di vendita, eventuali riferimenti ai permessi e note personali.
 Questi dettagli non possono essere modificati in seguito, quindi assicurati che siano corretti. Verranno visualizzati sopra tutti gli altri attributi quando visualizzi un elemento venduto nella tua collezione.
 
             `,
@@ -1004,9 +1002,9 @@ Questi dettagli non possono essere modificati in seguito, quindi assicurati che 
             de: `
 Schlagworte sind eine praktische Möglichkeit, Einträge in einer Sammlung zu gruppieren.
 
-Wenn du zum Beispiel deine Büchersammlung nach dem Thema «Schweizer Militärwaffen» filtern möchtest, versehe die entsprechenden Sammlungseinträge einfach mit einem Schlagwort und wende den Sammlungsfilter an.
+Wenn du zum Beispiel deine Büchersammlung nach dem Thema "Schweizer Militärwaffen" filtern möchtest, versehe die entsprechenden Sammlungseinträge einfach mit einem Schlagwort und wende den Sammlungsfilter an.
 Sie sind auch nützlich, um deine Waffen nach Typ zu gruppieren. Jeder hat seine eigenen Vorlieben:
-Der eine möchte nur eine allgemeine Unterscheidung zwischen Gewehren, Pistolen und Revolvern. Der andere möchte tiefer unterscheiden – Vorderladerrevolver, Perkussionsrevolver, Magnum-Revolver usw.
+Der eine möchte nur eine allgemeine Unterscheidung zwischen Gewehren, Pistolen und Revolvern. Der andere möchte tiefer unterscheiden - Vorderladerrevolver, Perkussionsrevolver, Magnum-Revolver usw.
 Mit Schlagworten kannst du dein eigenes System zur Waffenklassifizierung festlegen.
 
 Du kannst beliebige Schlagworte verwenden. Du musst sie auch nicht hundertmal neu eingeben: Arsenal bietet eine praktische Verwaltung für Schlagworte und behält den Überblick über bereits vorhandene Schlagworte.
@@ -1024,7 +1022,7 @@ You can use any tags you like. You also do not need to write them a hundred time
             fr: `
 Les tags sont un moyen pratique de regrouper les éléments d'une collection.
 
-Si, par exemple, tu souhaites filtrer ta collection de livres sur le thème « Armes militaires suisses », il te suffit d'ajouter un tag aux éléments correspondants et d'appliquer le filtre de collection.
+Si, par exemple, tu souhaites filtrer ta collection de livres sur le thème "Armes militaires suisses", il te suffit d'ajouter un tag aux éléments correspondants et d'appliquer le filtre de collection.
 C'est également utile pour classer tes armes par type. Chacun a ses propres préférences :
 Certains veulent simplement une distinction générale entre fusils, pistolets et revolvers. D'autres souhaitent aller plus loin : revolvers à chargement par la bouche, revolvers à poudre noire, revolvers Magnum, etc.
 Avec les tags, tu peux définir toi-même ton propre système de classification des armes.
@@ -1034,7 +1032,7 @@ Tu peux utiliser les tags que tu souhaites. Tu n'as pas non plus besoin de les s
             it: `
 I tag sono un modo pratico per raggruppare gli elementi di una collezione.
 
-Se, ad esempio, vuoi filtrare la tua collezione di libri per il tema «Armi militari svizzere», ti basta aggiungere un tag agli elementi corrispondenti e applicare il filtro della collezione.
+Se, ad esempio, vuoi filtrare la tua collezione di libri per il tema "Armi militari svizzere", ti basta aggiungere un tag agli elementi corrispondenti e applicare il filtro della collezione.
 Sono anche utili per raggruppare le tue armi per tipologia. Ognuno ha le proprie preferenze:
 Qualcuno vuole solo una distinzione generale tra fucili, pistole e revolver. Altri vogliono una classificazione più dettagliata: revolver a caricamento anteriore, revolver ad avancarica, revolver Magnum, ecc.
 Con i tag puoi decidere autonomamente il tuo sistema di classificazione delle armi.
