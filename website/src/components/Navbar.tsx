@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Language } from "../types/types_global"
 import s from "../styles/navbar.module.css"
-import { section_collectionItems_title, section_supportedCalibers } from "../text/text_details"
+import { section_collectionItems_title, section_supportedCalibers, section_supportedFunctionality, section_supportedFunctionality_details } from "../text/text_details"
 
 interface Props{
     language: Language
@@ -81,6 +81,7 @@ export default function Navbar({language}:Props){
                         <li className={s.mobileMenu}>
                             <a className={s.link} href={`/${language}/details`}>Details</a>
                             <a className={s.sublink} href={`/${language}/details#supportedCollections`}>{section_collectionItems_title.title[language]}</a>
+                            <a className={s.sublink} href={`/${language}/details#supportedFunctionality`}>{section_supportedFunctionality.title[language]}</a>
                             <a className={s.sublink} href={`/${language}/details#supportedCalibers`}>{section_supportedCalibers.title[language]}</a>
                         </li>
                         <li>

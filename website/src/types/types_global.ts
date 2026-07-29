@@ -23,3 +23,5 @@ export interface SimpleTranslation_StringArrayName{
     it: (string | string[] | {name: string})[]
     ch?: (string | string[] | {name: string})[]
 }
+
+export type functionalityIcons = "quickShot" | "quickStock" | "quickMount" | "qrCode" | "importExport" | "pdf" | "units" | "history" | "costHistory" | "sold" | "tags"
