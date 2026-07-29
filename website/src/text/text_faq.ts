@@ -29,14 +29,14 @@ export const faq: FAQ_Section[] = [
         content: [
             {
                 question: {
-                    de: `Braucht Arsenal ein Konto?`,
+                    de: `Braucht Arsenal ein Benutzerkonto?`,
                     en: `Does Arsenal require an account?`,
                     fr: `Arsenal a-t-il besoin d’un compte?`,
                     it: `Arsenal richiede un account?`
                 },
                 answer: {
                     de: `
-Nein, Arsenal hat keine Benutzerkonten, Logins oder Registrierungen.
+Nein, Arsenal funktioniert gänzlich ohne Benutzerkonten, Logins oder Registrierungen.
 `,
                     en: `
 No, Arsenal has no user accounts, login or registration.
@@ -58,7 +58,7 @@ No, Arsenal non ha account utente, login o registrazione.
                 },
                 answer: {
                     de: `
-Deine Sammlungsdatenbank wird lokal auf deinem Gerät gespeichert und ist nur für dich zugänglich.
+Die Datenbanken werden lokal auf deinem Gerät gespeichert und sind nur für dich zugänglich.
 `,
                     en: `
 Your collection database is stored locally on your device and only you have access to it.
@@ -82,7 +82,7 @@ Il tuo database di collezioni è memorizzato localmente sul tuo dispositivo e so
                     de: `
 Ja.
 Arsenal verwendet SQLCipher, eine Open-Source-Datenbankverschlüsselungsbibliothek, um deine Daten mit AES-256 zu verschlüsseln.
-Der Verschlüsselungsschlüssel wird auf deinem Gerät erstellt und in der iOS-Keychain oder im Android-Keystore gespeichert - er verlässt dein Gerät nie.
+Der Schlüssel wird auf deinem Gerät erstellt und in der iOS-Keychain oder im Android-Keystore gespeichert - er verlässt dein Gerät nie.
 `,
                     en: `
 Yes.
@@ -111,8 +111,8 @@ La chiave di crittografia viene generata sul tuo dispositivo e memorizzata nel K
                 },
                 answer: {
                     de: `
-Entschlüsselungsfehler sind extrem selten und weisen in der Regel auf eine Beschädigung des Verschlüsselungsschlüssels oder des Secure Storage hin.
-Leider kann die Datenbank ohne den Verschlüsselungsschlüssel nicht wiederhergestellt werden. Daher sind regelmässige Backups dringend zu empfehlen.
+Entschlüsselungsfehler sind extrem selten und weisen in der Regel auf einen korrupten Schlüssel hin oder ein Problem mit dem Secure Storage.
+Leider kann die Datenbank ohne den Schlüssel nicht wiederhergestellt werden. Daher sind regelmässige Backups dringend zu empfehlen.
 `,
                     en: `
 Decryption failures are extremely rare and usually indicate corruption of the encryption key or secure storage. 
@@ -139,9 +139,9 @@ Purtroppo, senza la chiave di crittografia, il database non può essere recupera
                 answer: {
                     de: `
 Arsenal benötigt folgende Berechtigungen:
-- Zugriff auf dein Dateisystem
-    Dies ist notwendig, um deine Datenbank zu importieren und zu exportieren und Bilder aus deiner Galerie auszuwählen
-- Zugriff auf deine Kamera
+- Zugriff auf das Dateisystem
+    Dies ist notwendig, um die Datenbank zu importieren/exportieren und Bilder aus der Galerie auszuwählen
+- Zugriff auf die Kamera
     Dies ist notwendig, um Fotos deiner Sammlungsstücke direkt in der App zu machen und QR-Codes zu scannen
 `,
                     en: `
@@ -177,7 +177,7 @@ Arsenal ha bisogno di permessi:
                 },
                 answer: {
                     de: `
-Nein, Arsenal sammelt selbst keine Analysen, Telemetriedaten, Nutzungsstatistiken oder Datensätze und leitet diese auch nicht an den Entwickler weiter.
+Nein, Arsenal sammelt selbst keine Analyse- oder Telemetriedaten, Nutzungsstatistiken oder Datensätze und leitet diese auch nicht an den Entwickler weiter.
 
 Beachte, dass Google Play und der Apple App Store möglicherweise eigene Diagnose-, Kauf- oder Downloadinformationen nach ihren jeweiligen Datenschutzrichtlinien sammeln.
 Dies liegt ausserhalb der Kontrolle von Arsenal und beinhaltet keine Anwendungsdaten.
@@ -216,16 +216,16 @@ Questo non è sotto il controllo di Arsenal e non include alcun dato dell’app.
         content: [
             {
                 question: {
-                    de: `Erfüllt oder ersetzt die Nutzung von Arsenal irgendwelche gesetzlichen Pflichten?`,
+                    de: `Erfüllt oder ersetzt die Nutzung von Arsenal irgendwelche gesetzlichen Pflichten oder Prozesse?`,
                     en: `Does using Arsenal fulfill or replace any legal record-keeping obligations?`,
                     fr: `L’utilisation d’Arsenal remplace-t-elle ou complète-t-elle les obligations légales de tenue de registres?`,
                     it: `L’utilizzo di Arsenal soddisfa o sostituisce qualsiasi obbligo di conservazione legale?`
                 },
                 answer: {
                     de: `
-Arsenal ersetzt keine offiziellen Dokumente und ist nicht als rechtliche Alternative für bestehende Dokumente oder rechtliche Rahmenbedingungen akkreditiert.
-Es ist ein persönliches Werkzeug, um deine Waffen und zugehörige Sammlungen für den persönlichen Gebrauch zu verwalten.
-Es bietet jedoch die Möglichkeit, Sammlungsberichte zu erstellen, z. B. Waffenlisten, die an spezifische Anforderungen angepasst werden können - z. B. für Versicherungen oder staatliche Behörden.
+Arsenal ersetzt keine offiziellen Dokumente oder Prozesse und ist nicht als rechtliche Alternative für bestehende Dokumente oder Prozesse, oder rechtliche Rahmenbedingungen akkreditiert.
+Es ist eine persönliche Applikation, um deine Waffen und zugehörige Sammlungen für den persönlichen Gebrauch zu verwalten.
+Es bietet jedoch die Möglichkeit, Listen der Sammlungen zu erstellen, z. B. Waffenlisten, die an spezifische Anforderungen angepasst werden können - z.B. für Versicherungen oder waffenrechtliche Behörden.
 `,
                     en: `
 Arsenal does not replace any official documents, nor is it accredited to function as a legal alternative for existing documents or legal frameworks.
@@ -255,7 +255,7 @@ Tuttavia, ti offre la possibilità di generare report sulle collezioni, ad esemp
                     de: `
 Nein.
 Deine Sammlung bleibt privat und auf deinem Gerät gespeichert. Nur du hast Zugriff darauf.
-Der Entwickler hat keinen Zugriff auf deine Sammlung, da sie nie dein Gerät verlässt.
+Weder die Polizei, der Entwickler, noch irgendwelche anderen Behörden haben Zugriff auf deine Sammlung, da sie nie dein Gerät verlässt.
 `,
                     en: `
 No. 
@@ -288,7 +288,7 @@ Lo sviluppatore non ha accesso ai tuoi dati di collezione perché questi non esc
         content: [
             {
                 question: {
-                    de: `Was passiert, wenn ich mein Handy verliere oder ersetze? Kann ich meine Sammlung wiederherstellen?`,
+                    de: `Was passiert, wenn ich mein Gerät verliere oder ersetze? Kann ich meine Sammlung wiederherstellen?`,
                     en: `What happens if I lose or replace my phone — can I restore my collection?`,
                     fr: `Que se passe-t-il si je perds ou remplace mon téléphone? Peux-je restaurer ma collection?`,
                     it: `Cosa succede se perdo o cambio il telefono? Posso ripristinare la mia collezione?`
@@ -298,7 +298,7 @@ Lo sviluppatore non ha accesso ai tuoi dati di collezione perché questi non esc
 Der Datenschutz und die daraus resultierende Vermeidung jeglicher Netzwerkverbindung gehen mit dem Nachteil einher, dass es keine Cloud-Sicherung oder Server-Synchronisierung gibt.
 Es liegt in deiner Verantwortung, regelmässig ein Backup deiner Datenbank zu erstellen. Du kannst dies über die verschiedenen Exportoptionen tun.
 
-Wenn du dein Handy wechselst, exportiere einfach die Datenbank von deinem alten Handy und importiere sie in dein neues Handy.
+Wenn du dein Gerät wechselst, exportiere einfach die Datenbank von deinem alten Gerät und importiere sie in dein neues.
 `,
                     en: `
 The privacy focus and subsequent avoidance of any network connectivity whatsoever comes with the caveat that there is no cloud backup or server synchronization.
@@ -333,7 +333,7 @@ Ja, du kannst deine eigenen Excel-Dateien (im CSV-Format) importieren. Die Feldz
 
 Achte darauf, dass die Kaliber genau so benannt sind, wie in der App angegeben, sonst funktioniert die Funktion "QuickShot" nicht. Eine Liste der Kaliber findest du hier. Mehrere Kaliber werden durch ein Komma gefolgt von einem Leerzeichen ", " getrennt.
 
-Bitte beachte, dass beim Import als CSV-Datei keine Bilder unterstützt werden, diese musst du in der App hinzufügen.
+Bitte beachte, dass beim Import als CSV-Datei keine Bilder dabei sind, diese musst du in der App hinzufügen.
 `,
                     en: `
 Yes, your own Excel files (in CSV format) can be imported. The handling of the fields can be configured directly in the app.
@@ -364,7 +364,7 @@ Tieni presente che l’importazione come file CSV non supporta le immagini, ques
 /* #################### Pricing & Access #################### */
     {
         title: {
-            de: `Preis und Zugriff`,
+            de: `Preis & Zugang`,
             en: `Pricing & Access`,
             fr: `Prix et accès`,
             it: `Prezzi e accesso`
@@ -379,7 +379,7 @@ Tieni presente che l’importazione come file CSV non supporta le immagini, ques
                 },
                 answer: {
                     de: `
-Arsenal ist ein einmaliger Kauf. Kaufe es einmal und nutze es für immer, inklusive aller zukünftigen Updates.
+Arsenal ist ein einmaliger Kauf - Einmal kaufen, immer nutzen, inklusive aller zukünftigen Updates.
 `,
                     en: `
 Arsenal is strictly a one-time purchase. Buy once, use forever, including any future updates.
@@ -402,7 +402,7 @@ Arsenal è un acquisto una tantum. Acquista una volta e usalo per sempre, inclus
                 answer: {
                     de: `
 Wenn du die App löschst (deinstallierst), wird auch die Datenbank gelöscht, sodass deine Daten verloren gehen, wenn du sie nicht gesichert hast.
-Das Gleiche gilt, wenn du die App-Daten über die Telefoneinstellungen löschst.
+Das Gleiche gilt, wenn du die App-Daten über die Geräteeinstellungen löschst.
 `,
                     en: `
 Deleting (uninstalling) the app deletes the database as well, so your data is lost if you did not back it up.
@@ -428,7 +428,7 @@ Lo stesso vale quando elimini i dati dell’app tramite le impostazioni del tele
                 answer: {
                     de: `
 Nein, Arsenal bietet momentan keine Testversion an.
-Da die App einmalig gekauft wird, bieten sowohl der Google Play Store als auch der Apple App Store die Möglichkeit, das Geld zurückzubekommen, falls die App nicht deinen Erwartungen entspricht.
+Da die App als einmaliger Kauf angeboten wird, kann das Geld über den Google Playstore/Apple Appstore zurückgefordert werden, falls die App nicht den Erwartungen entspricht.
 `,
                     en: `
 No, Arsenal currently doesn't offer a trial version. 
@@ -449,7 +449,7 @@ Poiché l’app è un acquisto una tantum, sia Google Play che l’App Store di 
 /* #################### Practical Use #################### */
     {
         title: {
-            de: `Praktischer Gebrauch`,
+            de: `Bedienung`,
             en: `Practical Use`,
             fr: `Utilisation pratique`,
             it: `Uso pratico`
@@ -465,7 +465,7 @@ Poiché l’app è un acquisto una tantum, sia Google Play che l’App Store di 
                 answer: {
                     de: `
 Arsenal ist für Android und iOS verfügbar.
-Es benötigt Android 7.0 oder neuer bzw. iOS 15.5 oder neuer.
+Benötigt wird Android 7.0 oder neuer bzw. iOS 15.5 oder neuer.
 `,
                     en: `
 Arsenal is available for both Android and iOS.
@@ -490,9 +490,9 @@ Per Android è richiesto Android 7.0 o superiore, per iOS 15.5 o superiore.
                 },
                 answer: {
                     de: `
-Arsenal wurde mit Blick auf einen reinen Offline-Betrieb konzipiert und benötigt keine Internetverbindung, um zu funktionieren.
+Arsenal wurde rein als Offline-App konzipiert und benötigt keine Internetverbindung, um zu funktionieren.
 
-Der Abschnitt "Über" enthält Links zu externen Ressourcen, die eine Internetverbindung zum Anzeigen benötigen.
+Der Menüpunkt "Über" in der App enthält Links zu externen Ressourcen, die eine Internetverbindung zum Anzeigen benötigen.
 Alle Funktionen zur Verwaltung der Sammlung funktionieren weiterhin vollständig offline.
 `,
                     en: `
@@ -555,7 +555,7 @@ Arsenal non sincronizza i dispositivi automaticamente perché non utilizza servi
                 answer: {
                     de: `
 Ja.
-Arsenal bietet eine flexible PDF-Exportgenerierung mit vordefinierten und anpassbaren Exporten, die auf deine spezifischen Anforderungen zugeschnitten sind.
+Arsenal bietet flexible PDF-Exporte mit vordefinierten und frei anpassbaren Listen, je nach dem wofür du sie grade brauchst.
 `,
                     en: `
 Yes.
@@ -573,14 +573,14 @@ Arsenal offre una generazione flessibile di PDF con esportazioni predefinite e p
             },
             {
                 question: {
-                    de: `Kann ich benutzerdefinierte Attribute erstellen, die nicht bereits vorgefertigt sind?`,
+                    de: `Kann ich benutzerdefinierte Attribute für Sammlungsobjekte erstellen?`,
                     en: `Can I create custom attributes beyond what's built in?`,
                     fr: `Puis-je créer des attributs personnalisés qui ne sont pas déjà préconfigurés?`,
                     it: `Posso creare attributi personalizzati che non sono già predefiniti?`
                 },
                 answer: {
                     de: `
-Nein, die Attribute sind fix und nicht erweiterbar.
+Nein, die Attribute sind fix und nicht erweiterbar. 
 Das soll Konflikte mit zukünftigen Updates vermeiden.
 `,
                     en: `
@@ -606,12 +606,12 @@ Ceci est fait pour éviter tout conflit avec les futures mises à jour.
                 },
                 answer: {
                     de: `
-Nein, die Kaliber sind fest und nicht erweiterbar.
+Nein, die Kaliber sind fix und nicht erweiterbar.
 Das soll Konflikte mit zukünftigen Updates vermeiden und die QuickShot/QuickStock-Funktionalität synchron halten - QuickShot/QuickStock sind abhängig vom korrekten Kaliberformat.
 
-Falls ein Kaliber fehlt, kannst du es anfordern, indem du eine Nachricht an den Entwickler schreibst. Es wird dann im nächsten Update hinzugefügt.
+Falls ein Kaliber fehlt, schreib dem Entwickler eine Nachricht. Es wird dann im nächsten Update hinzugefügt.
 
-Du kannst diese Einschränkung umgehen, indem du eine CSV-Datei importierst, in der die Kalibereinträge nicht validiert werden.
+Diese Einschränkung kann umgangen werden, indem du eine CSV-Datei importierst, wobei die Kalibereinträge nicht validiert werden.
 Das wird aber nicht empfohlen und kann zu unerwartetem Verhalten führen.
 Sichere die Datenbank, bevor du das versuchst!
 `,
@@ -687,7 +687,7 @@ Gli articoli venduti rimangono nel database a meno che non vengano cancellati es
                 answer: {
                     de: `
 Die App unterstützt momentan Englisch, Deutsch, Französisch, Italienisch und Rumantsch Grischun.
-Das Wechseln der Sprache ist nahtlos und jederzeit möglich.
+Das Wechseln der Sprache ist jederzeit nahtlos möglich.
 `,
                     en: `
 The app currently supports English, German, French, Italian and Rumantsch Grischun.
@@ -723,7 +723,7 @@ Il cambio di lingua avviene senza problemi e può essere effettuato in qualsiasi
                 },
                 answer: {
                     de: `
-Es gibt tatsächlich einige alternative Apps, vor allem für Android, die den gleichen Zweck wie Arsenal erfüllen. Allerdings:
+Es gibt tatsächlich einige alternative Apps, vor allem für Android, die den gleichen Zweck wie Arsenal erfüllen (es gibt sogar eine die gleich heisst!). Allerdings:
 - sind die meisten US-zentrisch
 - scheinen sie keine Sprachauswahl zu haben oder nutzen eine automatische Übersetzung
 - scheinen sie nicht den gleichen Funktionsumfang zu haben, oder wenn doch, sind sie ziemlich unintuitiv und umständlich
@@ -813,7 +813,7 @@ Alla fine, ognuno decide autonomamente quale app, se ce n’è una, è la più a
         content: [
             {
                 question: {
-                    de: `Kann ich den Fortschritt der App-Entwicklung einsehen?`,
+                    de: `Kann ich den Entwicklungsstand der App einsehen?`,
                     en: `Can I see the development progress of the app?`,
                     fr: `Puis-je suivre l’évolution de l’application?`,
                     it: `Posso vedere i progressi dello sviluppo dell’app?`
@@ -835,7 +835,7 @@ Sì, lo stato attuale dello sviluppo, comprese le funzionalità pianificate e ri
             },
             {
                 question: {
-                    de: `Wo kann ich Feedback, Kritik und Wünsche einbringen?`,
+                    de: `Wo kann ich Feedback, Kritik und Wünsche anbringen?`,
                     en: `Where can I voice my feedback, critique and wishes?`,
                     fr: `Où puis-je faire part de mes commentaires, critiques et souhaits?`,
                     it: `Dove posso esprimere i miei commenti, critiche e desideri?`
@@ -932,9 +932,9 @@ Qualsiasi futura funzionalità intelligente, come l’OCR, sarà progettata per 
                 answer: {
                     de: `
 Ja.
-KI wird als Hilfsmittel für die Entwicklung eingesetzt, ähnlich wie Dokumentationen, Fachbücher oder spezialisierte Foren.
-Arsenal wird nicht von KI generiert. Der Entwickler verfügt über langjährige Erfahrung mit JavaScript, TypeScript und React, die vor der Entstehung moderner KI-Tools gesammelt wurde.
-Jeder KI-generierte Vorschlag wird kritisch geprüft, getestet und manuell angepasst, bevor er in die App integriert wird.
+KI wird als Hilfsmittel für die Entwicklung eingesetzt, in gleicher Form wie offizielle Dokumentationen, Fachbücher oder spezialisierte Foren.
+Arsenal wird nicht von KI generiert. Der Entwickler verfügt über langjährige Erfahrung mit JavaScript/TypeScript und React, schon vor der Entstehung moderner KI-Tools.
+Jeder KI-generierte Vorschlag wird kritisch geprüft, getestet und manuell angepasst, bevor er allenfalls in die App integriert wird.
 `,
                     en: `
 Yes.
@@ -965,7 +965,7 @@ Ogni suggerimento generato dall’AI viene esaminato criticamente, testato e ada
                 },
                 answer: {
                     de: `
-Arsenal wurde mit Blick auf Privatsphäre, Offline-Funktionalität und langfristige Zuverlässigkeit konzipiert. Cloudbasierte KI-Dienste erfordern in der Regel die Übertragung von Daten an externe Anbieter und verursachen laufende Betriebskosten.
+Arsenal wurde mit Fokus auf Privatsphäre, Offline-Funktionalität und langfristige Zuverlässigkeit konzipiert. Cloudbasierte KI-Dienste erfordern in der Regel die Übertragung von Daten an externe Anbieter und verursachen laufende Betriebskosten.
 
 Um auch offline voll funktionsfähig zu bleiben, unabhängig von KI-Diensten von Drittanbietern und als einmalige Anschaffung ohne Abonnements oder wiederkehrende Gebühren verfügbar zu sein, verzichtet Arsenal bewusst auf cloudbasierte KI-Dienste.
 
