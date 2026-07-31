@@ -63,17 +63,32 @@ const baseURL = `https://arsenal-app.ch/`
         <meta property="og:image"               content=`${baseURL}assets/feature_${language}.png` />
         <meta property="og:image:alt"           content={metadata_featureImageAlt[language]} />
         <meta property="og:url"                 content=`${baseURL}${language}/` />
-        <meta property="og:type"                content="website" />
+        <meta property="og:type"                content="website" /><meta property="og:site_name" content="Arsenal App" />
+        <meta property="product:price:amount" content="5.00" />
+        <meta property="product:price:currency" content="CHF" />
         <script type="application/ld+json" set:html={JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 "name": metadata_appName[language],
+                "alternateName": [
+                    "Arsenal Gun Collection",
+                    "Arsenal Waffen & Sammlung",
+                    "Arsenal Collection d'Armes",
+                    "Arsenal Collezione d'Armi"
+                ],
                 "operatingSystem": "Android, iOS",
                 "applicationCategory": "UtilitiesApplication",
+                "applicationSubCategory": "Inventory Management",
                 "description": metadata_description[language],
                 "url": `${baseURL}${language}/`,
                 "inLanguage": ["de", "en", "fr", "it", "rm"],
+                "countryOfOrigin": "CH",
                 "author": {
+                    "@type": "Person",
+                    "name": "Marcel Weber",
+                    "url": "https://mrweber.ch"
+                },
+                "publisher": {
                     "@type": "Person",
                     "name": "Marcel Weber",
                     "url": "https://mrweber.ch"
@@ -86,6 +101,22 @@ const baseURL = `https://arsenal-app.ch/`
                 "downloadUrl": [
                     "https://play.google.com/store/apps/details?id=com.m00gendai.arsenal",
                     `https://apps.apple.com/app/arsenal-armamentarium/id6670214648`
+                ],
+                "sameAs": [
+                    "https://apps.apple.com/app/arsenal-armamentarium/id6670214648",
+                    "https://play.google.com/store/apps/details?id=com.m00gendai.arsenal",
+                    "https://www.reddit.com/user/schussfreude/",
+                    "https://x.com/Arsenal_App_CH",
+                    "https://www.facebook.com/p/Arsenal-Armamentarium-61566434522460/"
+                ],
+                "featureList": [
+                    "100% offline, encrypted local storage",
+                    "QuickShot round logging",
+                    "QuickStock consumables tracking",
+                    "QuickMount accessory linking",
+                    "QR code generation and scanning",
+                    "Custom PDF report generation",
+                    "CSV and full database import/export"
                 ],
                 ...(userRatingCount && userRatingCount > 0 && {
                     "aggregateRating": {
