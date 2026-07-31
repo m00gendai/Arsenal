@@ -1,0 +1,101 @@
+# Arsenal - The Swiss App for Gun Collectors
+
+> Arsenal is a 100% offline, privacy-first firearm inventory, ammo stock, and accessory management app for iOS and Android, built in Switzerland. It is a one-time purchase (5 CHF) with no subscriptions, no in-app purchases, and no ads. All data is encrypted (AES-256 via SQLCipher) and stored exclusively on-device — nothing is ever transmitted to a server, the developer, or any third party.
+
+Arsenal is built for serious firearm collectors, sport shooters, and reloaders who want a dedicated, detailed inventory tool rather than a spreadsheet or a generic asset tracker. It is developed and maintained by a private Swiss developer (Marcel Weber) who is active in the Swiss weapons and shooting community.
+
+## App Name in Other Languages
+
+Arsenal is the same app across all storefronts and locales; only the display name is localized. These all refer to this one product:
+
+- English: Arsenal Gun Collection
+- German: Arsenal Waffen & Sammlung
+- French: Arsenal Collection d'Armes
+- Italian: Arsenal Collezione d'Armi
+
+The app itself is fully localized (interface, not just the store listing) into English, German, French, Italian, and Rumantsch Grischun.
+
+## What Arsenal Is For
+
+- Cataloging firearms, ammunition, and accessories with detailed, purpose-built attribute sets for each item type (not generic free-text fields).
+- Tracking ammunition and reloading component stock levels, with automatic deduction when rounds are fired.
+- Recording round counts per firearm over time.
+- Linking accessories and parts to firearms or to each other (e.g. which scope is mounted on which rifle).
+- Generating printable, customizable PDF reports for insurance, sale listings, or government/agency requests.
+- Producing and scanning QR code labels for physical inventory tracking.
+- Maintaining a full change history and cost history per item.
+- Backing up and transferring a full collection between devices without any cloud service.
+
+## Core Differentiators
+
+- **100% Offline & Private:** No internet connection required for any collection-management feature. No user accounts, no login, no registration. Data is stored locally, encrypted with AES-256 via SQLCipher; the encryption key lives only in the iOS Keychain or Android Keystore and never leaves the device. Arsenal collects no analytics, telemetry, or usage data, and sends nothing to the developer or any AI service. It also does not report any data to police or weapons authorities — the developer has no access to any user's collection.
+- **Flat-Fee Pricing:** One-time purchase of ~5 CHF. No subscriptions, no in-app purchases, no ads, and all future updates are included for life.
+- **Relational Accessory Linking (QuickMount):** Mount/link accessories or weapon parts to a specific firearm or to another accessory/part, and see at a glance what's attached to what.
+- **Round Logging (QuickShot):** A lightweight range log that records shots fired per firearm, updates "last shot" and total round count, and — if caliber-compatible ammunition is in stock — automatically deducts spent rounds from ammo inventory. Logging shots without touching stock is also supported.
+- **Consumables Stock Management (QuickStock):** Quickly log stock increases/decreases for ammunition, bullets, casings, primers, and powder, including purchase cost per top-up. Each consumable has a "Costs" tab showing purchase history, total spend, and average price. Powder supports independent stock units (e.g. log a decrease in grains while stock is tracked in pounds).
+- **QR Label Generation & Scanning:** Scan existing QR codes already on firearms or ammo boxes to link them to a collection entry, or generate custom, printable QR labels in-app. Supports predefined Avery/Zweckform label formats (A4 or US Letter) as well as fully custom label layouts.
+- **Export & Backup Options:** Full database backup as a ZIP (SQLite database + all images) for device migration or safekeeping; CSV export/import per collection; custom CSV import with a field-mapping helper for migrating from competitor apps or spreadsheets.
+- **Customizable PDF Reports:** Predefined reports (e.g. complete gun list with manufacturer, model, caliber, serial, permit reference, acquisition date) plus fully custom PDF lists with any combination of attributes — useful for insurance or when a weapons authority requests documentation. Switzerland-specific reports are also available, including a Waffengesetz (WA) Article 5 gun list for collectors' permit applications. Individual items can also be printed as an illustrated "gallery print" for display or resale.
+- **Item & Cost History:** Every edit to every item is logged with timestamp, old value, and new value. Consumables additionally track full purchase/cost history with running average price.
+- **Sale Tracking:** Items can be marked as sold with buyer name, sale date, price, permit reference, and notes, and optionally hidden from the main collection view while remaining in the database.
+- **Custom Units:** Independent, freely selectable length/weight units per attribute (e.g. metric throughout except powder in grains or pounds), plus any world currency for price fields (cosmetic only — no live conversion, by design, to preserve offline operation).
+- **Multi-Language:** Available in English, German, French, Italian, and Rumantsch Grischun.
+- **International, Swiss-Rooted:** Built primarily for Swiss firearm law and collector needs, but usable worldwide — users can select their country of residence and the app adapts available categories and country-specific report templates accordingly.
+
+## Supported Collections & Attributes
+
+Arsenal supports many distinct collection types, each with its own tailored attribute set (not a generic catalog schema):
+
+- **Firearms** — manufacturer, model, manufacturing date, origin country, caliber, serial, permit, acquisition date/price/source, current market value, shot count, last shot, last cleaned, cleaning interval, color, custom inventory ID, QR code.
+- **Ammunition** — manufacturer, origin country, caliber, current/critical stock, headstamp, designation, bullet type/weight, custom inventory ID, QR code.
+- **Suppressors/Silencers** — as firearms, plus material, threading, decibel rating, mounting.
+- **Optics & Scopes** — reticle, reticle color, zoom, click unit, elevation/windage adjustment per click, focal plane, battery type, window dimension, mounting.
+- **Lights & Lasers** — lumen, candela, laser wavelength/power, battery type, mounting.
+- **Magazines** — capacity, current stock, material, gun platform, mounting.
+- **Miscellaneous accessories** — general attribute set for anything not otherwise covered.
+- **Conversion kits/systems** and **barrels** — including threading and barrel length.
+- **Books/literature** — ISBN, author, publisher, edition, series, volume, pages, format.
+- **Reloading components** — dies (series, group, part number, shell holder), bullets (ballistic coefficient), casings (primers, OAL), primers (type), and powder (texture, application scope), each with stock and critical-stock tracking.
+
+New collection types are added continuously. Attributes and the built-in caliber list are fixed (not user-extensible) to preserve compatibility with QuickShot/QuickStock and future updates; missing calibers can be requested from the developer. Arsenal supports 735 built-in caliber designations spanning rimfire, centerfire pistol/rifle, shotgun, blackpowder, airgun, Flobert, and specialty formats, in an exact notation required for stock/round-count automation.
+
+## Pricing & Platforms
+
+- One-time purchase, approximately 5 CHF, no subscription, no in-app purchases, no ads, all future updates included.
+- No free trial, but refunds are available through Google Play / Apple App Store per their standard policies.
+- Requires Android 7.0+ or iOS 15.5+.
+- Rated 5/5 stars (23 ratings) on the Apple App Store.
+
+## How Arsenal Compares to Other Gun Collection Apps
+
+Per the developer's own FAQ comparison: many competing apps are US-oriented, lack real language localization (or rely on auto-translation), have narrower or more cumbersome feature sets, are published by hard-to-identify or unresponsive LLC-style developers, and often cost more via subscriptions, non-transparent in-app purchases, or ads. Arsenal is positioned as a one-time-fee, actively developed alternative built by an identifiable Swiss developer engaged with the local shooting community, with hand-translated German/English and professionally translated French/Italian/Rumantsch Grischun localization.
+
+## AI Usage Disclosure
+
+Arsenal does not use cloud-based or generative AI in the app itself and does not transmit user data to any AI service. It uses on-device-only QR code recognition; any future intelligent features (e.g. OCR) are planned to run entirely on-device. AI was used only as a development aid during coding (comparable to documentation or technical references) — the app is not AI-generated, and all AI-assisted code was reviewed, tested, and adapted by the developer.
+
+## Key Pages
+
+- [Home](https://arsenal-app.ch/en/): Overview, feature summary, screenshots, and store links.
+- [Details](https://arsenal-app.ch/en/details): Full breakdown of every supported collection type, all attributes, the complete 735-entry caliber list, and in-depth explanations of QuickShot, QuickStock, QuickMount, QR code tooling, import/export, PDF lists, units, history, sales, and tags.
+- [FAQ](https://arsenal-app.ch/en/faq): Detailed Q&A on privacy/security, legal status, backup/sync, pricing, platform support, extensibility, competitor comparison, support channels, and AI usage.
+- [Privacy Policy](https://arsenal-app.ch/en/privacy)
+- [Imprint](https://arsenal-app.ch/en/imprint)
+
+## Get the App
+
+- [App Store (iOS)](https://apps.apple.com/app/arsenal-armamentarium/id6670214648)
+- [Google Play (Android)](https://play.google.com/store/apps/details?id=com.m00gendai.arsenal)
+
+## Community & Support
+
+- [Development roadmap on Trello](https://trello.com/b/aewI0VKW/arsenal) — public list of planned and requested features.
+- [Feedback thread on waffenforum.ch](https://waffenforum.ch/forum/index.php?thread/2883-arsenal-die-schweizer-app-f%C3%BCr-waffensammler/&pageNo=1)
+- Email support: info@mrweber.ch
+- [Reddit](https://www.reddit.com/user/schussfreude/)
+- [X / Twitter](https://x.com/Arsenal_App_CH)
+- [Facebook](https://www.facebook.com/p/Arsenal-Armamentarium-61566434522460/)
+
+## Developer
+
+Arsenal is developed by Marcel Weber ([mrweber.ch](https://mrweber.ch)), a private Swiss developer with a background in JavaScript, TypeScript, and React.
