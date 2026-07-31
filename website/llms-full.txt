@@ -1,0 +1,391 @@
+# Arsenal - The Swiss App for Gun Collectors (Full Reference)
+
+This is the exhaustive companion to llms.txt. It contains the complete, unabridged content of Arsenal's Home, Details, and FAQ pages, including the full caliber list, full per-collection attribute lists, and full FAQ text. Use llms.txt for a fast overview; use this file to answer specific, granular questions without needing to fetch additional pages.
+
+Official domain: https://arsenal-app.ch/en/
+App Store (iOS): https://apps.apple.com/app/arsenal-armamentarium/id6670214648
+Google Play (Android): https://play.google.com/store/apps/details?id=com.m00gendai.arsenal
+
+App name by locale: Arsenal Gun Collection (EN) / Arsenal Waffen & Sammlung (DE) / Arsenal Collection d'Armes (FR) / Arsenal Collezione d'Armi (IT). Interface fully localized into English, German, French, Italian, and Rumantsch Grischun.
+
+Rating: 5/5 stars from 23 ratings (Apple App Store).
+
+---
+
+## HOME PAGE CONTENT
+
+Arsenal is the firearm inventory and gun collection manager for serious collectors, made in Switzerland. Track your guns, ammo stock, and accessories - fully offline, one-time purchase (only 5 CHF), no subscription.
+
+Create a wide variety of collections, with photos and many parameters:
+- Firearms
+- Ammunition
+- Suppressors
+- Optics
+- Scopes
+- Lights & Lasers
+- Magazines
+- Miscellaneous Accessories
+- Conversion Kits
+- Barrels
+- Books
+- Reloading Components
+- and new collections are added continuously!
+
+Each entry has a history, so every change can be tracked at any time. You can also record sales. Consumable items (ammunition, powder, bullets, etc.) additionally include a cost overview.
+
+Smart tools:
+- QuickShot for quickly logging round counts, linked to your ammunition inventory
+- QuickStock for easy management of consumables such as ammunition, powder, bullets, and more, including cost tracking
+- QuickMount to conveniently assign accessories and parts to a firearm or another accessory or part
+
+PDF exports are easy to generate too. Choose between predefined lists or create your own with exactly the attributes you need - for example for insurance purposes. CSV export/import is also integrated, as well as full database backup as a ZIP file including all images.
+
+Already using QR codes on your firearms? Integrate them seamlessly into the app and scan directly to the desired item. Not using QR labels yet? Create them right inside the app - using a wide range of predefined label formats (Avery) or define your own.
+
+Additional features: stock warnings, cleaning interval reminders, keyword filters, search and sort functions, autocomplete, multiple views and color themes (light and dark), freely selectable units of measurement, and more.
+
+Everything is 100% offline - no internet connection required. All data is stored locally on your device and can be exported at any time. No servers, no telemetry.
+
+Available in five languages: German, French, Italian, English and Rumantsch Grischun.
+
+Developed in Switzerland, primarily tailored to the needs of Swiss firearms collectors. International users can select their country (e.g. the USA), and the app automatically adapts by displaying country-specific firearm categories.
+
+One-time purchase, use forever, updates for as long as the app exists. No subscriptions, no in-app purchases, no ads!
+
+---
+
+## DETAILS PAGE — FULL ATTRIBUTE LISTS BY COLLECTION TYPE
+
+### Main Collections
+
+**Weapons (Firearms)**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Custom Inventory Identifier, QR-Code
+
+**Ammunition**
+Manufacturer, Origin Country, Caliber, Current stock, Headstamp, Critical stock, Designation, Last change of stock, Bullet type, Bullet weight, Custom Inventory Identifier, QR-Code
+
+### Accessories
+
+**Silencers**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Material, Threading, Decibel Rating, Custom Inventory Identifier, QR-Code
+
+**Optics**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Last Battery Change, Mounted on, Reticle, Reticle Color, Zoom, Click Unit, Elevation Adjustment per Click, Windage Adjustment per Click, Material, Footprint, Custom Inventory Identifier, QR-Code, Battery Type, Window Dimension
+
+**Scopes**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Last Battery Change, Mounted on, Reticle, Reticle Color, Zoom, Click Unit, Elevation Adjustment per Click, Windage Adjustment per Click, Material, Custom Inventory Identifier, QR-Code, Battery Type, Window Dimension, Focal Plane
+
+**Light & Laser**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Main Color, Lumen, Candela, Laser Wavelength, Laser Power, Last Battery Change, Mounted on, Custom Inventory Identifier, QR-Code, Battery Type
+
+**Magazines**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Capacity, Current stock, Material, Gun Platform, Custom Inventory Identifier, QR-Code
+
+**Miscellaneous**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisition Date, Price, Acquired from, Current market value, Main Color, Mounted on, Custom Inventory Identifier, QR-Code
+
+### Gun Parts
+
+**Conversion System**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code
+
+**Barrels**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Threading, Barrel length, Custom Inventory Identifier, QR-Code
+
+### Literature
+
+**Books**
+Acquisition Date, Price, Acquired from, Current market value, Language, Title, Subtitle, ISBN, Publishing Date, Author, Publisher, Edition, Book Series, Volume, Pages, Format, Custom Inventory Identifier, QR-Code
+
+### Reloading
+
+**Dies**
+Manufacturer, Model Name, Caliber, Acquisition Date, Price, Acquired from, Current market value, Custom Inventory Identifier, QR-Code, Series, Group, Part Number, Shell Holder
+
+**Bullets**
+Manufacturer, Model Name, Caliber, Current stock, Critical stock, Last change of stock, Bullet type, Bullet weight, Custom Inventory Identifier, QR-Code, Ballistic Coefficient
+
+**Casings**
+Manufacturer, Model Name, Caliber, Current stock, Material, Headstamp, Critical stock, Last change of stock, Custom Inventory Identifier, QR-Code, Primers, OAL (Overall Cartridge Length)
+
+**Primers**
+Manufacturer, Model Name, Current stock, Critical stock, Last change of stock, Custom Inventory Identifier, QR-Code, Type
+
+**Powder**
+Manufacturer, Designation, Last change of stock, Custom Inventory Identifier, QR-Code, Current stock, Critical stock, Texture, Application Scope
+
+Note: attributes and calibers are fixed and not user-extensible, to avoid conflicts with future updates and to keep QuickShot/QuickStock functioning correctly.
+
+---
+
+## DETAILS PAGE — ADDITIONAL FUNCTIONALITY (FULL TEXT)
+
+**QuickShot - Keep track of how many rounds went through your gun**
+QuickShot is a "rangelog light" and allows to log shots taken with a firearm directly from the collection overview. It is connected to the ammunition in the app, meaning QuickShot detects if you have caliber-compatible ammunition in stock. This allows you to not only quickly log a shooting session, but also directly subtract the spent rounds from your ammunition stock. You can also just log shots without touching your ammunition stock. Using QuickShot will update the used firearm with shots fired and date of last shooting, and the ammunition, if applicable.
+
+**QuickStock - Keep track of your consumables' stock increase and decrease**
+QuickStock is a smart utility to quickly top up your consumables (ammunition, bullets, casings, primers, powder) directly from the collection overview. You can quickly log increase and decrease of stock, and also add how much you paid for your top-up. In the detail view of your consumables, you will find a "costs" tab, which lists all top-ups, how much you paid, and what the average price is. For powder, you can specify the quantity unit, so you can log a decrease in grains despite having the powder amount unit set to pounds, for example.
+
+**QuickMount - Keep track of where your accessories or weapon parts are mounted to**
+QuickMount allows you to quickly "mount" an accessory or a weapon part to a gun, another accessory, or another weapon part. This way, you always know where an accessory is mounted, or which weapon has which accessories attached. A convenient, categorized list (with images) makes it easy to quickly select your target gun, accessory, or weapon part. In the tile view, icons at the bottom show the type of accessory or weapon part mounted; the detail view's "accessories" tab lets you unmount or remount; the tile view top shows what a part/accessory is currently mounted on.
+
+**QR Code Integration & Creation**
+QR Codes are a quick and easy way to physically track your inventory. If you already employ QR Codes (e.g. tags on guns or stickers on ammo boxes), simply scan the existing code when creating a new collection entry to link it. Use the scan button in the collection overview to scan a code and immediately display the linked item, no matter where you are in the app. If you don't have QR codes yet but want them, Arsenal features a complete customizable QR Code Label generator: select the collection, the items (or all of them), which attributes appear on the label (or none, for just the code), and the format — Arsenal generates a print-ready PDF. Several predefined formats are included (most commonly Avery/Zweckform) in DIN A4 or US Letter, or you can create and save your own custom format. QR codes can also be left off entirely if you just want plain labels.
+
+**Database Import/Export**
+Arsenal uses SQLite under the hood. Export formats:
+- Full Database Export: a zipped folder with the raw SQLite database and a folder with all images. This is the standard backup format and the one to use when switching devices.
+- CSV Export: a CSV file of the specified collection, useful for physical printouts or editing on a computer. Does not include images, only references to their on-device location — reimporting the CSV (without deleting app data) re-links images correctly.
+
+Import formats:
+- Full Database Import: imports the zipped database + images folder; requires the naming convention/format set automatically by the export.
+- Arsenal CSV Import: imports a file generated by Arsenal's own CSV Export from the same app version.
+- Custom CSV Import: imports any CSV, with manual column-to-database field mapping via an in-app helper dialog. Use this to migrate from a third-party app, a spreadsheet, or an older Arsenal CSV version.
+
+Important: the `caliber` field in imported CSVs must match Arsenal's expected caliber notation exactly, or QuickStock functionality and other behavior may be affected.
+
+**PDF Lists**
+Two universal PDF lists:
+- Complete Gun List (table): Manufacturer, Model Name, Caliber, Serial, Permit reference, Acquisition Date — for insurance, agency requests, or general documentation.
+- Custom List: any collection, any chosen attributes (e.g. value without serial for insurance, or just designation and caliber for an ammo list).
+
+Country-specific predefined lists (currently Switzerland):
+- Gun List according to WA Article 5 (table): Manufacturer, Model Name, Caliber, Serial, Permit reference, Acquisition Date, Reason why it is under Article 5 — useful for collectors' permit applications or when a weapons bureau requests an excerpt of prohibited items.
+- Complete Gun List with WA Article 5 properties: a hybrid list showing the full collection plus Article 5 status/reason, for bureaus wanting a complete list rather than only the Article 5 subset.
+
+Each collection item can also be printed as a "gallery print" showing every image, tags, and all attributes — useful for physical display or as a sales flyer.
+
+**Customizable Units**
+Freely choose length/weight units per purpose (e.g. metric throughout except powder, or bullet weight in ounces). A general weight and length unit is also provided for future attributes. You can change units anytime; the database always stores values in milligrams and millimeters internally and converts for display. For powder, it's recommended to use commercial units (kg/g for metric, lb/oz for imperial); stock increase/decrease can each use a different unit (e.g. top up in kilograms, log reloading usage in grains). Any world currency can be set for price fields, but this is cosmetic only — no currency conversion or inflation adjustment is applied, by design, to preserve strict offline operation. Most users use a single currency; if a purchase was made in another currency, enter the converted value. Yearly inflation percentages per country (from 1980 onward) are a planned future feature.
+
+**Item History**
+Every change/edit to a collection item is logged: when the change was made, what changed, the old value, and the new value. This provides both a full audit trail and a safety net if you enter an incorrect value and don't recall the original.
+
+**Cost History**
+Consumables (Ammunition, Bullets, Cases, Primers, Powder) have a Cost History tab showing purchase date, total amount, total price paid, and average price — useful for monitoring spending and price trends.
+
+**Mark as Sold**
+Items can be marked as sold while remaining in the database; you can choose to keep them visible (greyed out) or hide them entirely. When "selling," you can record buyer name, sell date, sell price, permit references, and personal notes. These details cannot be amended afterward, so accuracy at entry time matters. They are displayed above all other attributes when viewing a sold item.
+
+**Tags**
+Tags group items within a collection (e.g. tagging books under "Swiss Military Weapons," or classifying weapons by subtype — from a simple rifle/pistol/revolver split to fine-grained categories like toploading revolvers, cap & ball revolvers, magnum revolvers). Any tag scheme can be used; a management dialog tracks existing tags so you don't need to retype them.
+
+---
+
+## SUPPORTED CALIBERS (735 total)
+
+Some functionality (e.g. QuickShot) depends on exact caliber formatting. In-app guardrails enforce this format; imported custom data may need to be reformatted to match. Multiple calibers for one item are separated by ", " (comma + space), e.g.: `.357 S&W Magnum, .38 S&W Special`
+
+### 2mm (.79-.117)
+.10 Eichelberger Long Rifle, .10 Eichelberger Pup, .10 Eichelberger Squirrel, 2.34mm rimfire, 2mm pinfire, 2mm Kolibri
+
+### 3mm (.118-.156)
+.12 Cooper, .12 Eichelberger Carbine, .12 Eichelberger Long Rifle, .12 Eichelberger Win Mag RF, .14 Cooper, .14 Eichelberger Bee, .14 Eichelberger Dart, .14 Jet Junior, .14 Walker Hornet, .14-222, .14/222 Eichelberger Mag, 3mm Kolibri, 3mm US
+
+### 4mm (.157-.196)
+.17 Ackley Bee, .17 Bumble Bee, .17 HMR, .17 Hornet, .17 Mach 2, .17 Mach IV, .17 PMC/Aguila, .17 Remington, .17 Remington Fireball, .17 Winchester Super Magnum, 4mm Lienhard, 4mm M20 (4x10mm), 4.25mm Liliput, 4.38x30mm Libra, 4.5x26mm MKR, 4.5x40mmR, 4.6x30mm HK, 4.6x36mm, 4.85x49mm
+
+### 5mm (.197-.235)
+.19 Badger, .19 Calhoon Hornet, .19-223, .20 Tactical, .20 VarTarg, .204 Ruger, .21 Sharp, .218 Bee, .219 Zipper, .22 BB, .22 CB, .22 Creedmoor, .22 Hornet, .22 Long, .22 Long Rifle, .22 Remington Jet, .22 Remington Special, .22 Savage Hi-Power, .22 Short, .22 Spitfire, .22 TCM, .22 Winchester Centerfire, .22 Winchester Magnum Rimfire (.22 Magnum), .220 Russian, .220 Swift, .221 Remington Fireball, .222 Remington, .222 Remington Magnum, .223 Remington, .223 WSSM, .225 Winchester, .224 Weatherby Magnum, 20 Nosler, 22 Nosler, 22 PPC-USA, 224 Valkyrie, 5.43mm Louis Mattis, 5.45x18mm Soviet, 5.45x39mm, 5.5mm Velo Dog, 5.56x45mm NATO, 5.6mm GP90 (1990), 5.6x35mmR Vierling, 5.6x50mm Magnum (5.6x50mmR), 5.6x57mm, 5.6x61 Super Express vom Hofe, 5.6x61 R Super Express vom Hofe, 5.66x39mm, 5.8x21mm, 5.8x42mm DBP87, 5mm Bergmann, 5mm Bergmann Rimless, 5mm Clement, 5mm Craig, 5mm Pickert, 5mm Remington Rimfire Magnum, 5mm/35 SMc, FN 5.7x28mm
+
+### 6mm (.236-.275)
+.240 Apex, .240 Weatherby Magnum, .243 Winchester, .243 WSSM, .244 H&H Magnum, .25 ACP (.25 Auto), 6.35mm Browning, .25 NAA, .25 Remington, .25 WSSM, .25-06 Remington, .25-20 Winchester, .25-25 Stevens, .25-35 Winchester, .25-45 Sharps, .250-3000 Savage, .256 Newton, .256 Win Magnum, .257 Roberts, .257 Weatherby Magnum, .260 Remington, .264 Winchester Magnum, 24 Nosler, 255 GS, 26 Nosler, 6,5 G.A.P. 4S, 6mm AR, 6mm ARC, 6mm BR, 6mm Creedmoor, 6mm GT, 6mm Lee Navy, 6mm PPC, 6mm Remington (.244 Remington), 6mm XC, 6x62 Frères, 6x45mm, 6x45mm SAW, 6.45mm GP80 (1980) 6.45x48mm, 6.2x73 Super Express vom Hofe, 6.45x48mm XPL Swiss, 6.5 Precision Rifle Cartridge, 6.5 Weatherby Rebated Precision Magnum, 6.5-06 A-Square, 6.5-284 Norma, 6.5-300 Weatherby Magnum, 6.5x25mm CBJ, 6.5x47mm Lapua, 6.5x50mmSR Arisaka, 6.5x52mm Carcano, 6.5x53mmR, 6.5x54mm Mannlicher-Schönauer, 6.5x55mm Swedish (6.5x55mm Krag), 6.5x57mm Mauser, 6.5x58mm Vergueiro, 6.5x68mm, 6.5mm Bergmann, 6.5mm Creedmoor, 6.5mm Grendel, 6.5mm Remington Magnum
+
+### 7mm (.276-.314)
+.270 British, .270 Weatherby Magnum, .270 Winchester, .270 Winchester Short Magnum, .276 Enfield, .276 Pedersen, .277 FURY, .277 Wolverine, .27 Nosler, .280 Ackley Improved, .280 British, .280 Remington, .280 Ross, .280/30 British, .284 Winchester, .28 Nosler, .30 AMP, .30 Carbine, .30 Newton, .30 Pedersen, .30 Remington, .30 Short, .30 Super Carry, .30-03 Springfield, .30-06 Springfield, .30-30 Winchester, .30-40 Krag, .30-378 Weatherby Magnum, .300 H&H Magnum, .300 Lapua Magnum, .300 LRH, .300 Norma Magnum, .300 RUM, .300 RSAUM, .300 Savage, .300 Weatherby Magnum, .300 Werewolf, .300 Winchester Magnum, .300 Blaser Magnum, .300 WSM, 300 AAC Blackout, 300 HAM'R, 300 Precision Rifle Cartridge, 300 Ruger Compact Magnum, 30 BR, 30 Remington AR, .307 Winchester, .308 Norma Magnum, .308 Winchester, .30 Herrett, .30 R Blaser (7.62x68mm R), .32 ACP (7.65 Browning Short), .32 H&R Magnum, .32 Long Colt (.32 Colt), .32 NAA, .32 S&W Long (.32 Colt New Police), .32 Short Colt (.320 Revolver), .32 Smith & Wesson, .32-20 Winchester .32-20 WCF, .327 Federal Magnum, .303 British, .303 Savage, .30-378 Weatherby Magnum, 6.8 Western, 6.8mm Remington SPC, 7-30 Waters, 7.5 FK BRNO, 7.5x22mmR Nagant, 7.5x23mmR, 7.5x54mm French, 7.5x55mm Swiss, 7.5x56mm MAS Mod.1929, 7.5x58mm French (7.5x58 MAS), 7.5mm GP11 (1911) 7.5x55mm, 7.5mm GP90 (1890) 7.5x53mm, 7.5mm GP90/03 (1890) 7.5x53mm, 7.5mm GP90/23 (1890) 7.5x53mm, 7.5mm Rev Pat 82 (1882) 7.5x23mmR, 7.62x25mm Tokarev, 7.62x38mmR, 7.62x39mm M43, 7.62x40mm Wilson Tactical, 7.62x42mm, 7.62x45mm, 7.62x51mm NATO, 7.62x53mmR, 7.62x54mmR, 7.63x25mm Mauser, 7.65mm Longue, 7.65mm Mannlicher, 7.65mm Pist Pat 03 7.65x21mm, 7.65mm Roth-Sauer, 7.65x21mm Parabellum (7.65mm Luger), 7.65x25mm Borchardt, 7.65x53mm Argentine, 7.7x58mm Arisaka, 7.82 Warbird, 7x20mm Nambu, 7x33mm Sako, 7x57mm Mauser, 7x64mm, 7x61mm Sharpe & Hart, 7x67 Super Express vom Hofe, 7x73 Super Express vom Hofe, 7x75R Super Express vom Hofe, 7.92x24mm VBR, 7mm BR Remington, 7mm Dakota, 7mm Mauser Spanish Mauser .275 Rigby, 7mm PRC, 7mm Raptor, 7mm Remington Express, 7mm Remington Magnum, 7mm Remington SAUM, 7mm Remington Ultra Magnum, 7mm STW, 7mm Weatherby Magnum, 7mm WSM, 7mm Blaser Magnum, 7mm-06 Remington, 7mm-08 Remington, 7.5mm 1882 Ordnance 7.5mm Swiss Army Revolver, 7.5mm Swedish Nagant, 7.92x33mm Kurz
+
+### 8mm (.315-.353)
+.30 Super Carry, .320 Revolver, .32 ACP (.32 Auto), .32 Ballard Extra Long, .32 H&R Magnum, .32 Remington, .32 S&W (.32 S&W Short), .32 S&W Long, .32 Winchester Self-Loading, .32 Winchester Special, .32-40 Ballard, .325 WSM, .327 Federal Magnum, .333 Jeffery Flanged, .33 Nosler, .33 Winchester, .338 Blaser Mag., .338 Edge, .338 Federal, .338 Lapua Magnum, .338 Marlin Express, .338 Norma Magnum, .338 Remington Ultra Magnum, .338 Ruger Compact Magnum, .338 Weatherby RPM, .338 Whisper, .338 Winchester Magnum, .338-06, .338-378 Weatherby Magnum, .340 Weatherby Magnum, .348 Winchester, 8,5 x 68 Fanzoj, 8.5x55 Blaser, 8.6mm Blackout, 8mm French Ordnance 8mm Lebel Revolver 8x27mmR Règlementaire Mle 92, 8mm Lebel, 8mm Remington Magnum, 8mm Roth-Steyr, 8x22mm Nambu, 8x50mmR Mannlicher, 8x52mmR Mannlicher, 8x56mmR Kropatschek, 8x56mmR Mannlicher, 8x57mm IS/8mm Mauser, 8x58mmR Danish Krag, 8x59mm RB Breda, 8x60mm S, 8x63mm patron m/32, 8x64mm S, 8x68mm S
+
+### 9mm (.354-.393)
+.35 Remington, .35 Whelen, .35 Winchester, .35 Winchester Self-Loading, .351 Winchester Self-Loading, .356 TSW, .356 Winchester, .357 SIG, .357 S&W Magnum, .357 SuperMag, .357/44 Bain & Davis, .357 Remington Maximum, .358 Norma Magnum, .358 Winchester, .36 Nosler, .360 Buckhammer, .375 Winchester, .375 SuperMag, .375 Chey Tac (9.5x77mm), .375 H&H Magnum, .375 Remington Ultra Magnum, .375 Ruger, .375 SWISS P, .375 Weatherby Magnum, .376 Steyr, .378 Weatherby Magnum, .38 ACP (.38 Auto; 9x23mmSR), .38 AMU, .38 Short Colt, .38 Long Colt, .38 S&W (.38 S&W Short), .38 S&W Special, .38 Super (.38 Super Auto; 9x23mmSR), .38/.45 Clerke, .38-55 Winchester, .38-56 WCF, .38-72 Winchester, .375-416, .375 Snipe Tac, .375 SOE, .380 ACP (.380 Auto; 9x17mm), .960 Rowland, 9.3x57mm Mauser, 9.3x62mm, 9.3x64mm Brenneke, 9.3x66 Sako, 9.3x72mmR, 9.3x74mmR, 9.4x22mmR Nagant, 9.5x57mm Mannlicher-Schönauer, 9mm Action Express, 9mm Automatic, 9mm Browning Long, 9mm Federal (9x19mmR), 9mm Glisenti, 9mm Japanese, 9mm Jonson, 9mm Winchester Magnum, 9x18mm Makarov, 9x18mm Ultra, 9x19mm Parabellum (9mm Luger / Pist Pat 41 / Pist Pat 14), 9x21mm, 9x21mm Gyurza, 9x23mm Largo, 9x23mm Steyr, 9x23mm Winchester, 9x25mm Dillon, 9x25mm Mauser, 9x25mm Super Auto G, 9x30mm Grom, 9x39mm, 9x57mm Mauser
+
+### 10mm (.394-.432)
+.38-40 Winchester, .38-72 Winchester, .40 S&W, .40 Super, .40-60 Winchester, .40-72 Winchester, .400 Corbon, .400 Legend, .401 Winchester Self-Loading, .404 Jeffery, .405 Winchester, .408 Chey Tac, .414 Super Magnum, .416 Barrett, .416 Remington Magnum, .416 Rigby, .416 Ruger, .416 Weatherby Magnum, .41 Action Express, .41 Magnum, .41 Short (.41 Rimfire), .41 Short Colt, .41 Special, .44 AMP, .44 Russian, .44 Special, .44 Magnum, .44-40 Winchester, .444 Marlin, .445 Super Magnum, .450/400 3 inch Nitro Express, 10.3x60R, 10.3x68 Magnum, 10.4mm Italian, 10.4x38mm Swiss Rimfire, 10.4x47mm Italian M/70 Centerfire, 10.75x68mm Mauser, 10mm Auto, 10mm Magnum, 11mm German Serv
+
+### 11mm (.433-.471)
+.45 ACP (.45 Auto), .45 GAP, .45 Remington-Thompson, .45 Super, .45 Winchester Magnum, .455 Webley Auto, .460 Rowland, 11.35mm Schouboe, 11mm French Ordnance, 11mm German Service, .44 S&W Special, .44 Remington Magnum, .44 S&W Russian, .44 S&W American, .44 Webley (.442 R.I.C.), .44 Bulldog, .44 Colt, 11.75mm Montenegrin, .45 Webley, .45 Auto Rim, .454 Magnum, .45 Schofield, .45 Colt (.45 Long Colt), .454 Casull, .460 S&W Magnum, .455 Webley (Mk II), .455 Webley (.455 Colt), .450 Adams (Boxer Mk I), .476 Enfield (.476 Eley), .44-40 Winchester, .444 Marlin, 10.75mm Russian Berdan, 11mm Murata, .425 Westley Richards Magnum, 11.15mm Spanish Remington, 11mm Belgian Albini, 11mm Belgian Comblain, 11.2x72mm Schüler, 11.2x60mm Schüler (Mauser), 10.8x47mmR Martini Target, 11.15x42mmR M/67 and 11x58mmR M/77 Werndl, 11mm French Gras, .44 Henry, 11.15mm Mauser, 11.43mm Turkish, 11.43mm Egyptian, 11.4mm Werndl M/73, .500/450 Black Powder No.2 Musket, 11.4mm Brazilian Comblain, .450 Bushmaster, .45 Raptor, 11.5mm Spanish Reformado, 11.7mm Danish Remington, .500/450 Magnum Nitro Express, .450 No 2 Nitro Express (3½"), .577/450 Martini-Henry, .45-75 Winchester, .45-70 Government, 11mm Beaumont M/71/78, .450 Marlin, .450 Nitro Express (3¼"), .458 Winchester Magnum, .458 SOCOM, .460 Weatherby Magnum, .460 Steyr, .500/450 No.1 Express, .450 Rigby Rimless, .45-60 Winchester, 11.3mm Beaumont M/71, .457 Wild West Guns, .458 Lott, .500/465 Nitro Express, .465 H&H Magnum
+
+### 12mm (.472-.510)
+.470 Capstick, .470 Nitro Express, .475 A&M Magnum, .475 Linebaugh, .475 Nitro Express, .475 No. 2 Nitro Express, .475 Wildey Magnum, .476 Nitro Express, .480 Ruger, .50 Action Express, .50 Alaskan, .50 Auto Max, .50 Beowulf, .50 BMG (12.7x99mm NATO), .50 Bushwhacker, .50 GI, .500 Auto Max, .500 Linebaugh, .500 No. 2 Express (.577/500), .500 S&W Magnum, .500 S&W Special, .500 Wyoming Express, .505 Gibbs, .510 DTC Europ (.50 DTC), .510 Whisper, .577/.500 Magnum Nitro Express, 12.7x108mm, 12.7x55mm STs-130, 12.7x81mmSR (50 British)
+
+### 13mm (.511+)
+.500 Linebaugh, .500 Nitro Express, .50-70 Government, .50-90 Sharps, .50-110 Winchester, .50-140 Sharps, .55 Boys (13.9x99mmB), .56-56 Spencer, .577 Nitro Express, .577 Snider, .577 Tyrannosaur, .585 Nyati, .600 Nitro Express, .600 Overkill, .700 Nitro Express, .70-150 Winchester, .950 JDJ (24.1x70mm), 13mm Gyrojet, 13x64mm, 13.2mm TuF (13.2x92mmSR), 13.2x99mm Hotchkiss, 14.5x114mm, 14.5х148, 14.5х218, 14.5mm JDJ, 14x33mmR Wänzl, 15.24х40R Krnka, 15.5х106 BRG, 15х104 Brno, 20.3х95R Ghan, 20х150R, 23x152mmB
+
+### 20mm
+20×70RB (Oerlikon F), 20×72RB (Oerlikon S), 20×101RB (Oerlikon FF), 20×110RB (Oerlikon S), 20×138B (Long Solothurn), 20×102mm
+
+### 23mm
+23×152B
+
+### 25mm
+25×137mm, 25×163mm
+
+### 30mm
+30×113B, 30×165mm, 30×173mm
+
+### 37mm
+37×252SR, 37×263B
+
+### 40mm
+40×311R (Bofors L/60), 40×364R (Bofors L/70)
+
+### Shotgun
+2 bore: 3½ in (89mm); 4 bore: 3¼ in (83mm); 4 bore: 4 in (102mm); 6 bore; 8 bore: 3 in (76mm); 8 bore: 3¼ in (83mm); 8 bore: 3¾ in (95mm); 8 bore: 4 in (102mm); 10 bore: 2 9/16 in (65mm); 10 bore: 2 5/8 in (67mm); 10 bore: 2 7/8 in (73mm); 10 bore: 3 in (76mm); 10 bore: 3¼ in (83mm); 10 bore: 3½ in (89mm); 12 bore: 1¾ in (44mm); 12 bore: 2 in (51mm); 12 bore: 2¼ in (57mm); 12 bore: 2½ in (64mm); 12 bore: 2 21/32 in (67.5mm); 12 bore: 2¾ in (70mm); 12 bore: 3 in (76mm); 12 bore: 3½ in (89mm); 14 bore: 2½ in (64mm); 16 bore: 2½ in (64mm); 16 bore: 2 9/16 in (65mm); 16 bore: 2 5/8 in (67mm); 16 bore: 2¾ in (70mm); 16 bore: 3 in (76mm); 20 bore: 2½ in (64mm); 20 bore: 2¾ in (70mm); 20 bore: 3 in (76mm); 20 bore: 3½ in (89mm); 24 bore: 2½ in (64mm); 28 bore: 2½ in (64mm); 28 bore: 2¾ in (70mm); 28 bore: 3 in (76mm); 32 bore: 2½ in (64mm); .410 bore: 2 in (51mm); .410 bore: 2½ in (64mm); .410 bore: 3 in (76mm); .360 bore: 1¾ in (44mm); 9mm (No. 3 bore) short rimfire; 9mm (No. 3 bore) long rimfire; 7mm (No. 2 bore) rimfire; 6mm (No. 1 bore) short rimfire; 6mm (No. 1 bore) long rimfire
+
+### Flobert
+4mm Flobert, 6mm Flobert, 7mm Flobert, 9mm Flobert, 6mm Flobert Schrot, 6mm Flobert Schrot lang, 6mm Flobert Doppelschrot, 7mm Flobert Schrot, 7mm Flobert Schrot lang, 9mm Flobert Schrot, 9mm Flobert Schrot lang, 9mm Flobert Schrot kurz
+
+### Luft/Air/Aria/Vent (Airgun)
+.177 / 4.5mm, .22 / 5.5mm, .25 / 6.25mm, .30 / 7.62mm, .357 / 9.02mm, 6mm BB, 8mm BB
+
+### Blackpowder
+.307/7.80mm, .314/7.97mm, .323/8.20mm, .330/8.38mm, .345/8.76mm, .347/8.81mm, .350/8.89mm, .354/8.99mm, .362/9.19mm, .373/9.47mm, .375/9.52mm, .395/10.03mm, .400/10.16mm, .411/10.44mm, .415/10.54mm, .430/10.92mm, .435/11.05mm, .437/11.10mm, .440/11.18mm, .445/11.30mm, .447/11.35mm, .450/11.43mm, .451/11.45mm, .454/11.53mm, .457/11.61mm, .458/11.63mm, .459/11.66mm, .462/11.73mm, .464/11.78mm, .490/12.45mm, .495/12.57mm, .500/12.70mm, .504/12.80mm, .512/13.00mm, .535/13.59mm, .540/13.72mm, .541/13.74mm, .547/13.89mm, .575/14.60mm, .577/14.65mm, .580/14.73mm, .585/14.86mm, .614/15.60mm, .673/17.09mm, .675/17.14mm, .682/17.32mm, .695/17.65mm, .715/18.16mm, .732/18.59mm
+
+### Grenade & Ordnance Calibers
+22mm Grenade: 22×90mm NATO rifle grenade; 22mm spigot (blank-launched rifle grenade)
+30mm Grenade: 30×29mm (VOG-17/AGS-17); 30×30mm (AGS-30)
+37mm Grenade: 37×113mmSR (low-velocity); 37mm gas/signal cartridge
+40mm Grenade (low velocity): 40×46mm LV
+40mm Grenade (medium velocity): 40×51mm MV
+40mm Grenade (high velocity): 40×53mm HV
+51mm Grenade: 51mm mortar-grenade (French AGL)
+57mm RPG: 57mm PG-2 (RPG-2)
+66mm RPG: 66mm M72 LAW
+70mm RPG: 70mm PG-7V (early RPG-7)
+72-73mm RPG: 72.5mm RPG-26 Aglen
+80-85mm RPG: 84mm Carl Gustaf (M2/M3/M4); 85mm PG-7VL (RPG-7)
+90mm RPG: 90mm M67 recoilless/rocket family
+93mm RPG: 93mm PG-7VR tandem (RPG-7)
+100-106mm RPG: 105mm RPG-27 Tavolga; 105mm RPG-29 Vampir; 106mm Panzerfaust 3
+
+### Etc.
+Granaten, Flechettes, Plasma, Tennisbälle, Dihydrogenmonoxyd, Flammen, Gummiplömpel, Luft & Liebe
+(Note: this final "Etc" category appears to contain placeholder/joke entries in the source data, e.g. "tennis balls," "flames," "air & love" — included here for completeness but not to be treated as real ammunition types.)
+
+---
+
+## FAQ — FULL TEXT
+
+### Data Privacy and Security
+
+**Does Arsenal require an account?**
+No, Arsenal has no user accounts, login or registration.
+
+**Where is the data saved and who has access to it?**
+Your collection database is stored locally on your device and only you have access to it.
+
+**Is my data encrypted?**
+Yes. Arsenal uses SQLCipher, an open-source database encryption library, to encrypt your data with AES-256. The encryption key is generated on your device and stored in the iOS Keychain or Android Keystore — it never leaves your device.
+
+**What happens if I get a decryption error / my data suddenly becomes unreadable?**
+Decryption failures are extremely rare and usually indicate corruption of the encryption key or secure storage. Unfortunately, without the encryption key the database cannot be recovered. Regular backups are therefore strongly recommended.
+
+**What permissions does Arsenal need, and why?**
+Arsenal needs permission to access your file system (to import/export your database and select images from your gallery) and to access your camera (to take photos of collection items and scan QR codes).
+
+**Does Arsenal collect analytics?**
+No, Arsenal itself does not collect analytics, telemetry, usage statistics or collection data, nor does it transmit your collection to the developer. Google Play and the Apple App Store may collect their own diagnostic, purchase or download information per their own privacy policies — this is outside Arsenal's control and does not include any application data.
+
+### Legal
+
+**Does using Arsenal fulfill or replace any legal record-keeping obligations?**
+Arsenal does not replace any official documents, nor is it accredited to function as a legal alternative for existing documents or legal frameworks. It is a personal tool to track your firearm and related collections for personal use. It does, however, provide the possibility to generate collection reports (e.g. gun lists) tailored for specific requirements, such as insurance companies or government agencies.
+
+**Does Arsenal report anything to police or other weapons authorities?**
+No. Your collection data stays private, on your device, and only you have access to it. The developer has no access to your collection because it never leaves your device.
+
+### Data Backup, Synchronization & Portability
+
+**What happens if I lose or replace my phone — can I restore my collection?**
+The privacy focus and avoidance of network connectivity means there is no cloud backup or server synchronization. It is your responsibility to back up your database regularly via the export options. If you replace your phone, export the database from your old phone and import it on the new one.
+
+**Can I import data from Excel or a competitor app?**
+Yes, your own Excel files (in CSV format) can be imported, with field handling configured directly in the app. Calibers must be named exactly as specified in the app or the QuickShot function will not work (see the full caliber list above). Multiple calibers are separated by ", ". Importing as CSV does not support images — these must be added in the app.
+
+### Pricing & Access
+
+**Is Arsenal a one-time purchase or a subscription?**
+Arsenal is strictly a one-time purchase. Buy once, use forever, including any future updates.
+
+**What happens to my data if I delete the app or app data?**
+Deleting (uninstalling) the app deletes the database as well, so your data is lost if you did not back it up. The same applies when deleting app data via phone settings.
+
+**Is there a free trial or demo version?**
+No, Arsenal currently doesn't offer a trial version. Since the app is a one-time purchase, both Google Play and the Apple App Store offer refund options if the app doesn't meet expectations.
+
+### Practical Use
+
+**Which platforms are supported?**
+Arsenal is available for both Android and iOS. It requires Android 7.0 or newer, and iOS 15.5 or newer.
+
+**Does Arsenal work offline?**
+Yes, Arsenal has been built with strict offline operation in mind and does not require any internet connection to function. The About section contains links to external resources that require internet to display; all collection management features continue to work fully offline.
+
+**Can I use Arsenal on multiple devices?**
+Yes. Export your database from one device and import it on another. Arsenal intentionally does not synchronize devices automatically because it does not use cloud services.
+
+**Can I use the PDF exports for insurance documentation or a police-requested inventory list?**
+Yes. Arsenal features flexible PDF export generation with predefined and customizable exports tailored to specific needs.
+
+**Can I create custom attributes beyond what's built in?**
+No, the attributes are fixed and not extensible, to avoid conflicts with future updates.
+
+**Can I define custom calibers when they're not in the built-in list?**
+No, the calibers are fixed and not extensible, to avoid conflicts with future updates and to keep QuickShot/QuickStock functionality in sync (both depend on the correct caliber format). If a caliber is missing, you can request it from the developer and it will be added in the next update. You can bypass this restriction by importing a CSV where caliber entries are not validated, but this is not recommended and can lead to unexpected behavior — back up the database first if attempting this.
+
+**What happens to my collection if I sell a firearm to someone else — is there a transfer/handoff record?**
+Yes. Sales can be recorded with sell date, sell price, buyer permit reference, and personal remarks. Sold items remain in the database unless explicitly deleted, but can be hidden via settings.
+
+**What languages does the app support?**
+English, German, French, Italian, and Rumantsch Grischun. Changing language is seamless and can be done at any time.
+
+### General
+
+**I already use a competitor app, why should I switch to Arsenal?**
+There are several alternative apps, especially on Android, serving the same purpose as Arsenal. However, per the developer: most are US-oriented; they seem to have no language selection or employ auto-translation; they do not seem to have the same range of functions, or if they do, they seem unintuitive and cumbersome; the developer can sometimes be difficult to identify or contact (an LLC in front of the developer) and sometimes appears not to interact with the community; they can cost twice as much, may have non-transparent in-app purchases or advertising, or subscription-based payment models; some seem to not be in active development.
+
+Arsenal, on the other hand: is primarily tailored to Swiss needs but also usable worldwide, offering a choice in displayed units of measurement; is available in five languages, with German and English translated by hand and French, Italian and Rumantsch Grischun via a Swiss translation service; has a modern, simple, and functional user interface; has a private Swiss developer who is actively known in the Swiss weapons and shooting community and interacts with it; costs a one-time fee of 5 CHF for life, including all future updates, with no ads, subscriptions, or in-app purchases; is in constant development.
+
+Ultimately, everyone decides for themselves which app, if any, is best suited — sometimes a spreadsheet is sufficient.
+
+### Support
+
+**Can I see the development progress of the app?**
+Yes, the current development status, including planned and requested features, is published on Trello (English only): https://trello.com/b/aewI0VKW/arsenal
+
+**Where can I voice my feedback, critique and wishes?**
+Official thread on waffenforum.ch: https://waffenforum.ch/forum/index.php?thread/2883-arsenal-die-schweizer-app-f%C3%BCr-waffensammler/&pageNo=1
+Via email: info@mrweber.ch
+
+### AI - Artificial Intelligence
+
+**Does Arsenal send my data to AI services?**
+No, Arsenal does not send your data anywhere; it remains strictly on your device.
+
+**Does Arsenal have AI functionality?**
+Arsenal does not rely on cloud-based AI services or generative AI. It currently includes on-device QR code recognition, which processes data entirely on-device and transmits nothing externally. Any future intelligent features, such as OCR, will likewise be designed to run entirely on-device without transmitting data.
+
+**Was AI used during development? If so, in what capacity?**
+Yes. AI is used as a development aid in much the same way as documentation, technical books, or specialized forums. Arsenal is not generated by AI — the developer has extensive experience with JavaScript, TypeScript and React predating modern AI tools. Every AI-generated suggestion is critically reviewed, tested, and manually adapted before being incorporated into the app.
+
+**Why doesn't Arsenal rely on cloud-based AI?**
+Arsenal is designed around privacy, offline operation, and long-term reliability. Cloud-based AI services generally require transmitting data to external providers and incur ongoing operating costs. To remain fully functional offline, independent of third-party AI providers, and available as a one-time purchase without subscriptions or recurring fees, Arsenal intentionally does not rely on cloud-based AI services. On-device technologies, such as QR code recognition and potentially future OCR, are compatible with this philosophy because they process data entirely on-device.
+
+---
+
+## Related Files & Links
+
+- [llms.txt](https://arsenal-app.ch/llms.txt) — condensed overview
+- [Home](https://arsenal-app.ch/en/)
+- [Details](https://arsenal-app.ch/en/details)
+- [FAQ](https://arsenal-app.ch/en/faq)
+- [Privacy Policy](https://arsenal-app.ch/en/privacy)
+- [Imprint](https://arsenal-app.ch/en/imprint)
+- [App Store](https://apps.apple.com/app/arsenal-armamentarium/id6670214648)
+- [Google Play](https://play.google.com/store/apps/details?id=com.m00gendai.arsenal)
+- [Trello Roadmap](https://trello.com/b/aewI0VKW/arsenal)
+- [Reddit](https://www.reddit.com/user/schussfreude/)
+- [X / Twitter](https://x.com/Arsenal_App_CH)
+- [Facebook](https://www.facebook.com/p/Arsenal-Armamentarium-61566434522460/)
+- Developer: Marcel Weber, [mrweber.ch](https://mrweber.ch), info@mrweber.ch
