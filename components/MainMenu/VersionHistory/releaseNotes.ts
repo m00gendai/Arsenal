@@ -25,6 +25,84 @@ export interface Version {
 }
 
 export const versionHistory: Version[] = [
+     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V5.1.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V5.1.0",
+        de: {
+            text: `
+Neu:
+- Lokalisierung für Deutschland (WBK/NWR-Felder)
+- Anzeige des gewählten Landes im Hauptmenü
+
+Verbessert:
+- Suche in Sammlung und Kaliberdialog verbessert
+- Autocomplete wird nach gewähltem Text wieder minimiert
+- Sammlungsauswahl wird nach gewählter Sammlung wieder minimiert
+
+Behoben & Sonstiges:
+- Kleinere Anpassungen und Fehlerbehebungen
+- Diverse Updates und Codeanpassungen
+`,
+            ios: "",
+            android: null
+        },
+        en: {
+            text: `
+New:
+- Localization for Germany (WBK/NWR fields)
+- Display of the selected country in the main menu
+
+Improved:
+- Improved search in the collection and caliber dialog
+- Autocomplete is minimized again after selecting text
+- Collection selection is minimized again after selecting a collection
+
+Fixed & Other:
+- Minor adjustments and bug fixes
+- Various updates and code changes
+`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
+Nouveautés:
+- Localisation pour l’Allemagne (champs WBK/NWR)
+- Affichage du pays sélectionné dans le menu principal
+
+Améliorations:
+- Recherche améliorée dans la collection et la fenêtre de sélection du calibre
+- La liste de suggestions se réduit à nouveau après la sélection d’un texte
+- La sélection de la collection se réduit à nouveau après avoir choisi une collection
+
+Corrections et autres:
+- Petits ajustements et corrections de bugs
+- Diverses mises à jour et adaptations du code
+`,
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
+Novità:
+- Localizzazione per la Germania (campi WBK/NWR)
+- Visualizzazione del Paese selezionato nel menu principale
+
+Migliorato:
+- Ricerca migliorata nella collezione e nella finestra di selezione del calibro
+- L’elenco dei suggerimenti si riduce nuovamente dopo la selezione del testo
+- La selezione della collezione si riduce nuovamente dopo aver selezionato una collezione
+
+Corretto e altro:
+- Piccoli adeguamenti e correzioni di bug
+- Vari aggiornamenti e modifiche al codice
+`,
+            ios: null,
+            android: null
+        }
+    },
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
     |                           V5.0.0                            |
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
