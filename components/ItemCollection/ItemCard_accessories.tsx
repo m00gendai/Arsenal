@@ -14,6 +14,7 @@ import { db } from 'db/client';
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
 import { useEffect, useState } from 'react';
+import * as Device from 'expo-device';
 
 interface Props{
     item: ItemType
@@ -32,7 +33,8 @@ export default function ItemCard_accessories({ item }:Props){
     const attachedParts = partMount.filter(part => part.parentGunId === item.id || part.parentPartId === item.id)
 
       function setCardWith(){
-        const divisor = displaySettings.accessoryView === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : 2 : 1;
+        const columnNumbersForDeviceType = Device.deviceType === 1 ? 2 : Device.deviceType === 2 ? 3 : 2
+        const divisor = displaySettings.accessoryView === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : columnNumbersForDeviceType : 1;
         return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings.accessoryView === "grid" ? defaultViewPadding/2 : defaultViewPadding))
       }
 
