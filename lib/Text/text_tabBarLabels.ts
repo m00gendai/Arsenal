@@ -98,14 +98,14 @@ export const tabBarLabels: TabBarLabels = {
     },
     rifleLowerCollection: {
         de: "Abzugsgehäuse",
-        en: "Lower",
+        en: "Lower Receiver",
         fr: "Boîtier de détente",
         it: "Scatola dello scatto",
         ch: "Chascha da l’indriz da trair",
     },
     rifleUpperCollection: {
         de: "Verschlussgehäuse",
-        en: "Upper",
+        en: "Upper Receiver",
         fr: "Boîte de culasse",
         it: "Scatola dell’otturatore",
         ch: "Chascha da la serradira",
