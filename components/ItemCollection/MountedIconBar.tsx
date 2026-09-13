@@ -3,7 +3,7 @@ import { AccessoryMount, CollectionType, PartMount } from "lib/interfaces";
 import { View } from "react-native";
 import { Icon } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { determineAccessoryIcons } from "functions/determinators";
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon } from "functions/determinators";
 import { useItemStore } from "stores/useItemStore";
 
 interface Props{
@@ -47,7 +47,7 @@ export default function MountedIconBar({accessories, parts, accessoryView}:Props
             }}>
                <View style={{paddingLeft: defaultViewPadding, paddingRight: defaultViewPadding, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
                     {mountedStuff.map((item, index) =>{
-                        return <Icon key={`mountedBarIcon_${index}`} size={12} source={determineAccessoryIcons(item)} />
+                        return <Icon key={`mountedBarIcon_${index}`} size={12} source={determineIfCustomIcon(item) ? determineCustomIcon(item) : determineAccessoryIcons(item)} color={theme.colors.onPrimaryContainer}/>
                     })}
                 </View>
                   </View>
