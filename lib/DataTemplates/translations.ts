@@ -32,6 +32,10 @@ interface DataTemplateTranslations {
     edition: DataTemplateTranslation
     series: DataTemplateTranslation
     volume: DataTemplateTranslation
+    volume_printMagazine: DataTemplateTranslation
+    issue: DataTemplateTranslation
+    wholeNumber: DataTemplateTranslation
+    issn: DataTemplateTranslation
     pages: DataTemplateTranslation
     format: DataTemplateTranslation
     lumen: DataTemplateTranslation
@@ -361,6 +365,38 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Volume",
         it: "Volume",
         ch: "Cudesch",
+    },
+    "volume_printMagazine": {
+        name: "volume_printMagazine",
+        de: "Jahrgang",
+        en: "Year",
+        fr: "Année",
+        it: "Annata",
+        ch: "Annada",
+    },
+    issue: {
+        name: "issue", 
+        de: "Ausgabe",
+        en: "Issue",
+        fr: "Numéro",
+        it: "Numero",
+        ch: "Emissiun",
+    },
+    wholeNumber: {
+        name: "wholeNumber",
+        de: "Gesamtausgabe",
+        en: "Whole Number",
+        fr: "Numéro complet",
+        it: "Numero intero",
+        ch: "Numer cumplett",
+    },
+    issn: {
+        name: "issn",
+        de: "ISSN",
+        en: "ISSN",
+        fr: "ISSN",
+        it: "ISSN",
+        ch: "ISSN",
     },
     "pages": {
         name: "pages",

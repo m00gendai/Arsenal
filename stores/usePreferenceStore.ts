@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames, SortingTypesPart_PistolSlide, SortingTypesPart_PistolFrame, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames, SortingTypesPart_PistolSlide, SortingTypesPart_PistolFrame, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesLiterature_PrintMagazine} from "../lib/interfaces"
 import { Language } from "website/src/types/types_global"
 
 export type DisplayVariants = "grid" | "list" | "compactList"
@@ -22,6 +22,7 @@ interface GeneralSettings{
   displayImagesInListViewPart_RifleLower: boolean
   displayImagesInListViewPart_RifleUpper: boolean
   displayImagesInListViewLiterature_Book: boolean
+  displayImagesInListViewLiterature_PrintMagazine: boolean
   displayImagesInListViewReloading_Die: boolean
   displayImagesInListViewReloading_Bullet: boolean
   displayImagesInListViewReloading_Case: boolean
@@ -54,6 +55,7 @@ interface DisplaySettings{
   partCollection_ConversionKit: DisplayVariants
   partCollection_Barrel: DisplayVariants
   literatureCollection_Book: DisplayVariants
+  literatureCollection_PrintMagazine: DisplayVariants
   reloadingCollection_Die: DisplayVariants
   reloadingCollection_Bullet: DisplayVariants
   reloadingCollection_Case: DisplayVariants
@@ -78,6 +80,7 @@ export interface SorterSettings{
   partCollection_RifleLower: {type: SortingTypesPart_RifleLower, direction: "asc" | "desc", icon: string}
   partCollection_RifleUpper: {type: SortingTypesPart_RifleUpper, direction: "asc" | "desc", icon: string}
   literatureCollection_Book: {type: SortingTypesLiterature_Book, direction: "asc" | "desc", icon: string}
+  literatureCollection_PrintMagazine: {type: SortingTypesLiterature_PrintMagazine, direction: "asc" | "desc", icon: string}
   reloadingCollection_Die: {type: SortingTypesReloading_Die, direction: "asc" | "desc", icon: string}
   reloadingCollection_Bullet: {type: SortingTypesReloading_Bullet, direction: "asc" | "desc", icon: string}
   reloadingCollection_Case: {type: SortingTypesReloading_Case, direction: "asc" | "desc", icon: string}
@@ -101,6 +104,7 @@ interface FilterState{
   partCollection_RifleLower: boolean
   partCollection_RifleUpper: boolean
   literatureCollection_Book: boolean
+  literatureCollection_PrintMagazine: boolean
   reloadingCollection_Die: boolean
   reloadingCollection_Bullet: boolean
   reloadingCollection_Case: boolean
@@ -158,6 +162,7 @@ const initialState:InitialStoreState = {
       displayImagesInListViewPart_RifleLower: true,
       displayImagesInListViewPart_RifleUpper: true,
       displayImagesInListViewLiterature_Book: true,
+      displayImagesInListViewLiterature_PrintMagazine: true,
       displayImagesInListViewReloading_Die: true,
       displayImagesInListViewReloading_Bullet: true,
       displayImagesInListViewReloading_Case: true,
@@ -176,6 +181,7 @@ const initialState:InitialStoreState = {
     displaySettings: {
       gunCollection: "grid",
       ammoCollection: "grid",
+      literatureCollection_PrintMagazine: "grid",
       accessoryCollection_Silencer: "grid",
       accessoryCollection_Optic: "grid",
       accessoryCollection_Scope: "grid",
@@ -222,6 +228,7 @@ const initialState:InitialStoreState = {
       partCollection_RifleLower: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_RifleUpper: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       literatureCollection_Book: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      literatureCollection_PrintMagazine: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Die: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Bullet: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
@@ -245,6 +252,7 @@ const initialState:InitialStoreState = {
       partCollection_RifleLower: false,
       partCollection_RifleUpper: false,
       literatureCollection_Book: false,
+      literatureCollection_PrintMagazine: false,
       reloadingCollection_Die: false,
       reloadingCollection_Bullet: false,
       reloadingCollection_Case: false,

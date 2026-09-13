@@ -21,8 +21,8 @@ interface TabBarLabels{
     caseCollection: SimpleTranslation
     primerCollection: SimpleTranslation
     powderCollection: SimpleTranslation
-    /*printMagazineCollection: SimpleTranslation
-    swissMilitaryRegulationCollection: SimpleTranslation
+    printMagazineCollection: SimpleTranslation
+    /* swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
     diesCollection: SimpleTranslation
     
@@ -137,14 +137,14 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Livres",
         it: "Libri",
         ch: "Cudeschs",
-    }, /*
+    }, 
     printMagazineCollection: {
         de: "Magazine",
         en: "Magazines",
         fr: "Magazines",
         it: "Rivista",
         ch: "Revista",
-    },
+    }, /*
     swissMilitaryRegulationCollection: {
         de: "Reglemente Schweizer Armee",
         en: "Swiss Army Rulebooks",

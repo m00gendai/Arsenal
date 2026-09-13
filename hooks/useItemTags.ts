@@ -79,6 +79,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.literature_BookTags)
     )
 
+    const { data: literatureTags_PrintMagazine } = useLiveQuery(
+        db.select()
+        .from(schema.literature_PrintMagazineTags)
+    )
+
     const { data: reloadingTags_Die } = useLiveQuery(
         db.select()
         .from(schema.reloading_DieTags)
@@ -135,6 +140,8 @@ export function useItemTags(type: CollectionType) {
             return partTags_RifleUpper
         case "literatureCollection_Book":
             return literatureTags_Book
+        case "literatureCollection_PrintMagazine":
+            return literatureTags_PrintMagazine
         case "reloadingCollection_Die":
             return reloadingTags_Die
         case "reloadingCollection_Bullet":

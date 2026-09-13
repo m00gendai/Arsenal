@@ -637,6 +637,38 @@ export interface LiteratureType_Book{
   sold_remarks: string | null,
 }
 
+export interface LiteratureType_PrintMagazine{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string[]
+  language: string | null
+  title: string | null
+  subtitle: string | null
+  issn: string | null
+  publishingDate: string | null
+  publisher: string | null
+  volume_printMagazine: string | null
+  issue: string | null
+  wholeNumber: string | null
+  pages: string | null
+  format: string | null
+  acquisitionDate_unix: number | null
+  paidPrice: string | null
+  boughtFrom: string | null
+  marketValue: string | null
+  remarks: string | null
+  customInventoryDesignation: null | string
+  qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
+}
+
 export interface ReloadingType_Die{
   id: string
   createdAt: number
@@ -780,6 +812,7 @@ export type ItemType =  | GunType
                         | PartType_RifleLower
                         | PartType_RifleUpper
                         | LiteratureType_Book
+                        | LiteratureType_PrintMagazine
                         | ReloadingType_Die
                         | ReloadingType_Bullet
                         | ReloadingType_Case
@@ -801,6 +834,7 @@ export type CollectionType =  | "gunCollection"
                               | "partCollection_RifleLower"
                               | "partCollection_RifleUpper"
                               | "literatureCollection_Book"
+                              | "literatureCollection_PrintMagazine"
                               | "reloadingCollection_Die"
                               | "reloadingCollection_Bullet"
                               | "reloadingCollection_Case"
@@ -1028,6 +1062,14 @@ export type SortingTypesLiterature_Book = | "alphabetical"
                                           | "acquisitionDate" 
                                           | "pages" 
 
+export type SortingTypesLiterature_PrintMagazine =  | "alphabetical" 
+                                                    | "createdAt" 
+                                                    | "lastModifiedAt" 
+                                                    | "paidPrice" 
+                                                    | "marketValue" 
+                                                    | "acquisitionDate" 
+                                                    | "pages" 
+
 export type SortingTypesReloading_Die = | "alphabetical" 
                                         | "createdAt" 
                                         | "lastModifiedAt" 
@@ -1073,6 +1115,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesPart_RifleLower
                             | SortingTypesPart_RifleUpper
                             | SortingTypesLiterature_Book
+                            | SortingTypesLiterature_PrintMagazine
                             | SortingTypesReloading_Die
                             | SortingTypesReloading_Bullet
                             | SortingTypesReloading_Case
