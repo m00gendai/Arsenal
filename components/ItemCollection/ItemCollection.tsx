@@ -12,7 +12,7 @@ import { db } from "db/client"
 import * as schema from "db/schema"
 import { and, eq, count, ne } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
-import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
 import { useItemTags } from 'hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
@@ -187,7 +187,7 @@ const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[
       <AppBar collection={currentCollection} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {itemData.length === 0 ? 
         <View style={{position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
-          <Icon source={determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
+          <Icon source={determineIfCustomIcon(currentCollection) ? determineCustomIcon(currentCollection) : determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
         </View> : 
       null}
       {isSwitching ? 
