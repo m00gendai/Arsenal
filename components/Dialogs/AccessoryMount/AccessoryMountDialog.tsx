@@ -186,8 +186,32 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_PistolFrame.manufacturer}, ""), ${schema.partCollection_PistolFrame.model})`)))
     )
 
+    const { data: rifleLowerData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_RifleLower)
+        .where(
+            and(
+                ne(schema.partCollection_RifleLower.sold_isSold, true),
+                ne(schema.partCollection_RifleLower.id, itemData.id)
+            )
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_RifleLower.manufacturer}, ""), ${schema.partCollection_RifleLower.model})`)))
+    )
+
+    const { data: rifleUpperData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_RifleUpper)
+        .where(
+            and(
+                ne(schema.partCollection_RifleUpper.sold_isSold, true),
+                ne(schema.partCollection_RifleUpper.id, itemData.id)
+            )
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_RifleUpper.manufacturer}, ""), ${schema.partCollection_RifleUpper.model})`)))
+    )
+
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData, ...pistolSlideData, ...pistolFrameData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData, ...pistolSlideData, ...pistolFrameData, ...rifleLowerData, ...rifleUpperData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
     }
@@ -331,6 +355,16 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         {
             data: pistolFrameData,
             collection: "partCollection_PistolFrame",
+            category: "parts"
+        },
+        {
+            data: rifleLowerData,
+            collection: "partCollection_RifleLower",
+            category: "parts"
+        },
+        {
+            data: rifleUpperData,
+            collection: "partCollection_RifleUpper",
             category: "parts"
         },
     ]

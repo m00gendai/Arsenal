@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
+import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 export const defaultGridGap:number = 10
@@ -120,6 +120,8 @@ export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const requiredFieldsPart_Barrel:string[] = ["model"]
 export const requiredFieldsPart_PistolSlide:string[] = ["model"]
 export const requiredFieldsPart_PistolFrame:string[] = ["model"]
+export const requiredFieldsPart_RifleLower:string[] = ["model"]
+export const requiredFieldsPart_RifleUpper:string[] = ["model"]
 export const requiredFieldsLiterature_Book:string[] = ["title"]
 export const requiredFieldsReloading_Die:string[] = ["model"]
 export const requiredFieldsReloading_Bullet:string[] = ["model"]
@@ -168,6 +170,8 @@ export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quic
 export const cardActionsPart_Barrel: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
 export const cardActionsPart_PistolSlide: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
 export const cardActionsPart_PistolFrame: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_RifleLower: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_RifleUpper: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
 export const cardActionsLiterature_Book: string[] = ["delete", "clone"]
 export const cardActionsReloading_Die: string[] = ["delete", "clone"]
 export const cardActionsReloading_Bullet: string[] = ["delete", "clone", "quickStock"]
@@ -179,7 +183,7 @@ export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
 export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
 export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic", "accessoryCollection_Scope", "accessoryCollection_LightLaser", "accessoryCollection_Magazine", "accessoryCollection_Misc"]
-export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel", "partCollection_PistolSlide", "partCollection_PistolFrame"]
+export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel", "partCollection_PistolSlide", "partCollection_PistolFrame", "partCollection_RifleLower", "partCollection_RifleUpper"]
 export const screenNameParamsLiterature: CollectionType[] = ["literatureCollection_Book"]
 export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
 
@@ -209,6 +213,8 @@ export const sortingOptionsPart_ConversionKit:SortingTypesPart_ConversionKit[] =
 export const sortingOptionsPart_Barrel:SortingTypesPart_Barrel[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsPart_PistolSlide:SortingTypesPart_PistolSlide[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsPart_PistolFrame:SortingTypesPart_PistolFrame[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_RifleLower:SortingTypesPart_RifleLower[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_RifleUpper:SortingTypesPart_RifleUpper[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsLiterature_Book:SortingTypesLiterature_Book[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "pages"]
 export const sortingOptionsReloading_Die:SortingTypesReloading_Die[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Bullet:SortingTypesReloading_Bullet[] = ["alphabetical", "createdAt", "lastModifiedAt"]

@@ -64,6 +64,16 @@ export function useItemTags(type: CollectionType) {
         .from(schema.part_PistolFrameTags)
     )
 
+    const { data: partTags_RifleLower } = useLiveQuery(
+        db.select()
+        .from(schema.part_RifleLowerTags)
+    )
+
+    const { data: partTags_RifleUpper } = useLiveQuery(
+        db.select()
+        .from(schema.part_RifleUpperTags)
+    )
+
     const { data: literatureTags_Book } = useLiveQuery(
         db.select()
         .from(schema.literature_BookTags)
@@ -119,6 +129,10 @@ export function useItemTags(type: CollectionType) {
             return partTags_PistolSlide
         case "partCollection_PistolFrame":
             return partTags_PistolFrame
+        case "partCollection_RifleLower":
+            return partTags_RifleLower
+        case "partCollection_RifleUpper":
+            return partTags_RifleUpper
         case "literatureCollection_Book":
             return literatureTags_Book
         case "reloadingCollection_Die":

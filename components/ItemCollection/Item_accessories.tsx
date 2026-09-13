@@ -29,8 +29,10 @@ export default function Item_Accessories({ currentItem }: Props) {
     const [miscAccessoryData, setMiscAccessoryData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
     const [barrelData, setBarrelData] = useState([])
-    const [slideData, setSlideData] = useState([])
+    const [pistolSlideData, setpistolSlideData] = useState([])
     const [pistolFrameData, setPistolFrameData] = useState([])
+    const [rifleLowerData, setRifleLowerData] = useState([])
+    const [rifleUpperData, setRifleUpperData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -126,13 +128,13 @@ export default function Item_Accessories({ currentItem }: Props) {
 
         setBarrelData(barrelData)
 
-        const slideData = await db.select()
+        const pistolSlideData = await db.select()
           .from(schema.partCollection_PistolSlide)
           .where(
             inArray(schema.partCollection_PistolSlide.id, mountedIds)
           )
 
-        setSlideData(slideData)
+        setPistolSlideData(pistolSlideData)
 
         const pistolFrameData = await db.select()
           .from(schema.partCollection_PistolFrame)
@@ -141,6 +143,23 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setPistolFrameData(pistolFrameData)
+
+        const rifleLowerData = await db.select()
+          .from(schema.partCollection_RifleLower)
+          .where(
+            inArray(schema.partCollection_RifleLower.id, mountedIds)
+          )
+
+        setRifleLowerData(rifleLowerData)
+
+        const rifleUpperData = await db.select()
+          .from(schema.partCollection_RifleUpper)
+          .where(
+            inArray(schema.partCollection_RifleUpper.id, mountedIds)
+          )
+
+        setRifleUpperData(rifleUpperData)
+
       }
       getAccessoryData()
       getPartData()
@@ -183,11 +202,19 @@ const DATA:Section[] = [
   },
   {
     title: tabBarLabels.pistolSlideCollection[language],
-    data: slideData,
+    data: pistolSlideData,
   },
   {
     title: tabBarLabels.pistolFrameCollection[language],
     data: pistolFrameData,
+  },
+  {
+    title: tabBarLabels.rifleLowerCollection[language],
+    data: rifleLowerData,
+  },
+  {
+    title: tabBarLabels.rifleUpperCollection[language],
+    data: rifleUpperData,
   },
   {
     title: tabBarLabels.silencerCollection[language],
