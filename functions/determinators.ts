@@ -1,4 +1,4 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, PartType_PistolSlide, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { PreferredUnits, SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
@@ -6,7 +6,7 @@ import * as schema from "db/schema"
 import { or, like, sql, and } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, checkboxFields_ch, checkboxFields_us, printers_ch, printers_others, printers_us, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsPart_PistolSlide, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, checkboxFields_ch, checkboxFields_us, printers_ch, printers_others, printers_us, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsPart_PistolSlide, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsPart_PistolSlide, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
 import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
@@ -42,6 +42,8 @@ import sortReloadingCollection_Powder from "./sorters/sortReloadingCollection_Po
 import { reloadingCollection_Powder } from "db/schema";
 import { emptyPowderObject, powderRemarks, reloadingDataTemplate_Powder } from "lib/DataTemplates/reloadingDataTemplate_Powder";
 import { convertWeightUnitsToPreferredUnit } from "./utils";
+import sortPartCollection_PistolSlide from "./sorters/sortPartCollection_PistolSlide";
+import { emptyPistolSlideObject, partDataTemplate_PistolSlide, pistolSlideRemarks } from "lib/DataTemplates/partDataTemplate_PistolSlide";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -65,6 +67,8 @@ export function determineSchema(collection:CollectionType){
             return schema.partCollection_ConversionKit
         case "partCollection_Barrel":
             return schema.partCollection_Barrel
+        case "partCollection_PistolSlide":
+            return schema.partCollection_PistolSlide
         case "literatureCollection_Book":
             return schema.literatureCollection_Book
         case "reloadingCollection_Die":
@@ -102,6 +106,8 @@ export function determineSchemaStringFromTabBarLabel(collection:string){
             return "partCollection_ConversionKit"
         case "barrelCollection":
             return "partCollection_Barrel"
+        case "pistolSlideCollection":
+            return "partCollection_PistolSlide"
         case "bookCollection":
             return "literatureCollection_Book"
         case "dieCollection":
@@ -139,6 +145,8 @@ export function determineTagSchema(collection:CollectionType){
             return schema.part_ConversionKitTags
         case "partCollection_Barrel":
             return schema.part_BarrelTags
+        case "partCollection_PistolSlide":
+            return schema.part_PistolSlideTags
         case "literatureCollection_Book":
             return schema.literature_BookTags
         case "reloadingCollection_Die":
@@ -187,6 +195,9 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         case "partCollection_Barrel":{
             return sortPartCollection_Barrel(sortBy[collection].direction, sortBy[collection].type)
         };
+        case "partCollection_PistolSlide":{
+            return sortPartCollection_PistolSlide(sortBy[collection].direction, sortBy[collection].type)
+        }
         case "literatureCollection_Book":{
             return sortLiteratureCollection_Book(sortBy[collection].direction, sortBy[collection].type)
         }
@@ -318,6 +329,26 @@ export function determineSearchQueryFields(collection:CollectionType, searchQuer
                 )
             )
         }
+        case "partCollection_PistolSlide":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_ConversionKit":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
         case "literatureCollection_Book":{
             return and(
                 ...searchWords.map((word) =>
@@ -408,6 +439,8 @@ export function determineDataTemplate(collection: CollectionType){
             return partDataTemplate_ConversionKit
         case "partCollection_Barrel":
             return partDataTemplate_Barrel
+        case "partCollection_PistolSlide":
+            return partDataTemplate_PistolSlide
         case "literatureCollection_Book":
             return literatureDataTemplate_Book
         case "reloadingCollection_Die":
@@ -445,6 +478,8 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return conversionKitRemarks
         case "partCollection_Barrel":
             return barrelRemarks
+        case "partCollection_PistolSlide":
+            return pistolSlideRemarks
         case "literatureCollection_Book":
             return bookRemarks
         case "reloadingCollection_Die":
@@ -482,6 +517,8 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyConversionKitObject
         case "partCollection_Barrel":
             return emptyBarrelObject
+        case "partCollection_PistolSlide":
+            return emptyPistolSlideObject
         case "literatureCollection_Book":
             return emptyBookObject
         case "reloadingCollection_Die":
@@ -519,6 +556,8 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyConversionKitObject}
         case "partCollection_Barrel":
             return {...emptyBarrelObject}
+        case "partCollection_PistolSlide":
+            return {...emptyPistolSlideObject}
         case "literatureCollection_Book":
             return {...emptyBookObject}
         case "reloadingCollection_Die":
@@ -556,6 +595,8 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsPart_ConversionKit
         case "partCollection_Barrel":
             return requiredFieldsPart_Barrel
+        case "partCollection_PistolSlide":
+            return requiredFieldsPart_PistolSlide
         case "literatureCollection_Book":
             return requiredFieldsLiterature_Book
         case "reloadingCollection_Die":
@@ -593,6 +634,8 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsPart_ConversionKit
         case "partCollection_Barrel":
             return sortingOptionsPart_Barrel
+        case "partCollection_PistolSlide":
+            return sortingOptionsPart_PistolSlide
         case "literatureCollection_Book":
             return sortingOptionsLiterature_Book
         case "reloadingCollection_Die":
@@ -630,6 +673,8 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsPart_ConversionKit
         case "partCollection_Barrel":
             return cardActionsPart_Barrel
+        case "partCollection_PistolSlide":
+            return cardActionsPart_PistolSlide
         case "literatureCollection_Book":
             return cardActionsLiterature_Book
         case "reloadingCollection_Die":
@@ -659,7 +704,7 @@ export function determineIfCustomIcon(collection: CollectionType){
 export function determineCustomIcon(collection: CollectionType){
     switch(collection){
         case "partCollection_PistolSlide":
-            return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
+            return require("../assets/pistolSlide.png")
         case "partCollection_PistolFrame":
             return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
     }
@@ -724,6 +769,8 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.conversionCollection
         case "partCollection_Barrel":
             return tabBarLabels.barrelCollection
+        case "partCollection_PistolSlide":
+            return tabBarLabels.pistolSlideCollection
         case "literatureCollection_Book":
             return tabBarLabels.bookCollection
         case "reloadingCollection_Die":
@@ -823,6 +870,10 @@ export function determineCardTitle(collection: CollectionType, itemIn: ItemType,
             {   const item = itemIn as PartType_Barrel
                 return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
             }
+        case "partCollection_PistolSlide":
+            {   const item = itemIn as PartType_PistolSlide
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
         case "literatureCollection_Book":
             {   const item = itemIn as LiteratureType_Book
                 return `${item.title}${item.volume && item.volume.length != 0 ? ` (${dataTemplate_Translations.volume[language]} ${item.volume})` : ""}`
@@ -893,6 +944,10 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
         case "partCollection_Barrel":
             {   const item = itemIn as PartType_Barrel
                 return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
+            }
+        case "partCollection_PistolSlide":
+            {   const item = itemIn as PartType_PistolSlide
+                return item.serial && item.serial.length != 0 ? item.serial : " "
             }
         case "literatureCollection_Book":
             {   const item = itemIn as LiteratureType_Book

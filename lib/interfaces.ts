@@ -444,6 +444,46 @@ export interface PartType_Barrel{
   de_nwrId: string | null,
 }
 
+export interface PartType_PistolSlide{
+  id: string
+  createdAt: number
+  lastModifiedAt: number
+  images: string[]
+  tags: string []
+  manufacturer: string | null
+  model: string | null
+  manufacturingDate: string | null
+  originCountry: string | null
+  serial: string | null
+  permit: string | null
+  acquisitionDate_unix: number | null
+  paidPrice: string | null
+  boughtFrom: string | null
+  marketValue: string | null
+  shotCount: string | null
+  lastShotAt_unix: number | null
+  lastCleanedAt_unix: number | null
+  cleanInterval: null | string
+  cleanInterval_CustomTime: null | string
+  cleanInterval_ShotCount: null | string
+  cleanIntervalDisplay: null | string
+  mainColor: string | null
+  remarks: string | null
+  currentlyMountedOn: string | null
+  customInventoryDesignation: null | string
+  qrCode: null | string
+  sold_isSold: boolean,
+  sold_sellDate_unix: number | null,
+  sold_buyerName: string | null,
+  sold_sellPrice: string | null,
+  sold_buyerPermit: string | null,
+  sold_remarks: string | null,
+  de_wbkColor: string | null,
+  de_wbkNumber: string | null,
+  de_wbkRunningNumber: string | null,
+  de_nwrId: string | null,
+}
+
 export interface LiteratureType_Book{
   id: string
   createdAt: number
@@ -615,6 +655,7 @@ export type ItemType =  | GunType
                         | AccessoryType_Misc
                         | PartType_ConversionKit
                         | PartType_Barrel
+                        | PartType_PistolSlide
                         | LiteratureType_Book
                         | ReloadingType_Die
                         | ReloadingType_Bullet
@@ -632,6 +673,7 @@ export type CollectionType =  | "gunCollection"
                               | "accessoryCollection_Misc"
                               | "partCollection_ConversionKit"
                               | "partCollection_Barrel"
+                              | "partCollection_PistolSlide"
                               | "literatureCollection_Book"
                               | "reloadingCollection_Die"
                               | "reloadingCollection_Bullet"
@@ -812,6 +854,16 @@ export type SortingTypesPart_Barrel = | "alphabetical"
                                       | "lastCleanedAt" 
                                       | "lastShotAt"
 
+export type SortingTypesPart_PistolSlide =  | "alphabetical" 
+                                            | "createdAt" 
+                                            | "lastModifiedAt" 
+                                            | "caliber" 
+                                            | "paidPrice" 
+                                            | "marketValue"
+                                            | "acquisitionDate" 
+                                            | "lastCleanedAt" 
+                                            | "lastShotAt"
+
 export type SortingTypesLiterature_Book = | "alphabetical" 
                                           | "createdAt" 
                                           | "lastModifiedAt" 
@@ -860,6 +912,7 @@ export type SortingTypes =  | SortingTypesGun
                             | SortingTypesAccessory_Misc
                             | SortingTypesPart_ConversionKit
                             | SortingTypesPart_Barrel
+                            |SortingTypesPart_PistolSlide
                             | SortingTypesLiterature_Book
                             | SortingTypesReloading_Die
                             | SortingTypesReloading_Bullet
