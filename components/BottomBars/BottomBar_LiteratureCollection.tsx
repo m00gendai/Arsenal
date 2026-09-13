@@ -5,7 +5,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "lib/interfaces";
 import { useItemStore } from "stores/useItemStore";
-import { determineAccessoryIcons, determineTabBarLabel } from "functions/determinators";
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon, determineTabBarLabel } from "functions/determinators";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useBottomSheetTimingConfigs } from "@gorhom/bottom-sheet";
 import { Easing } from "react-native-reanimated";
@@ -63,7 +63,7 @@ export default function BottomBar_LiteratureCollection({handleNavigation, bottom
                             alignItems: 'center'}}
                     >
                         <Icon 
-                            source={determineAccessoryIcons(collection)}
+                            source={determineIfCustomIcon(collection) ? determineCustomIcon(collection) : determineAccessoryIcons(collection)}
                             size={48} 
                             color={currentCollection === collection ? theme.colors.primary : theme.colors.secondary} 
                         />
