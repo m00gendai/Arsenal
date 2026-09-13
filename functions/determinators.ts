@@ -805,6 +805,12 @@ export function determineIfCustomIcon(collection: CollectionType){
             return true
         case "partCollection_RifleUpper":
             return true
+        case "reloadingCollection_Bullet":
+            return true
+        case "reloadingCollection_Case":
+            return true
+        case "literatureCollection_Book":
+            return true
         default: 
             return false
     }
@@ -820,6 +826,12 @@ export function determineCustomIcon(collection: CollectionType){
             return require("../assets/rifleLower.png")
         case "partCollection_RifleUpper":
             return require("../assets/rifleUpper.png")
+        case "reloadingCollection_Bullet":
+            return require("../assets/bulletTips.png")
+        case "reloadingCollection_Case":
+            return require("../assets/casings.png")
+        case "literatureCollection_Book":
+            return require("../assets/book.png")
     }
 }
 
