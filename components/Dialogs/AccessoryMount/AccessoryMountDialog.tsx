@@ -13,7 +13,7 @@ import { useViewStore } from "stores/useViewStore";
 import { useItemStore } from "stores/useItemStore";
 import { useNavigation } from "@react-navigation/native";
 import { useTextStore } from "stores/useTextStore";
-import { determineAccessoryIcons, determineTabBarLabel } from "functions/determinators";
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon, determineTabBarLabel } from "functions/determinators";
 import { toastMessages } from "lib/Text/text_toastMessages";
 import { modalTexts } from "lib/Text/text_modals";
 import SelectRow from "./SelectRow";
@@ -162,8 +162,20 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_Barrel.manufacturer}, ""), ${schema.partCollection_Barrel.model})`)))
     )
 
+    const { data: pistolSlideData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_PistolSlide)
+        .where(
+            and(
+                ne(schema.partCollection_PistolSlide.sold_isSold, true),
+                ne(schema.partCollection_PistolSlide.id, itemData.id)
+            )
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_PistolSlide.manufacturer}, ""), ${schema.partCollection_PistolSlide.model})`)))
+    )
+
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData, ...pistolSlideData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
     }
@@ -299,6 +311,11 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
             collection: "partCollection_ConversionKit",
             category: "parts"
         },
+        {
+            data: pistolSlideData,
+            collection: "partCollection_PistolSlide",
+            category: "parts"
+        },
     ]
 
     return(
@@ -321,7 +338,7 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
                                         title={determineTabBarLabel(accordion.collection)[language]}
                                         style={accordion.data.some(item => item.id === checked) ? {backgroundColor: theme.colors.primary} : {}}
                                         titleStyle={accordion.data.some(item => item.id === checked) ? {color: theme.colors.onPrimary} : {}}
-                                        left={props => <List.Icon {...props} icon={determineAccessoryIcons(accordion.collection)} color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : ""} />}
+                                        left={props => <List.Icon {...props} icon={determineIfCustomIcon(accordion.collection) ? determineCustomIcon(accordion.collection) : determineAccessoryIcons(accordion.collection)} color={gunData.some(item => item.id === checked) ? theme.colors.onPrimary : theme.colors.onBackground} />}
                                     >
                                         {accordion.data.map((item, index) =>{
                                             return (
