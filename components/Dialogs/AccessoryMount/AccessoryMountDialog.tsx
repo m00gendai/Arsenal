@@ -174,8 +174,20 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_PistolSlide.manufacturer}, ""), ${schema.partCollection_PistolSlide.model})`)))
     )
 
+    const { data: pistolFrameData } = useLiveQuery(
+        db.select()
+        .from(schema.partCollection_PistolFrame)
+        .where(
+            and(
+                ne(schema.partCollection_PistolFrame.sold_isSold, true),
+                ne(schema.partCollection_PistolFrame.id, itemData.id)
+            )
+        )
+        .orderBy(asc((sql`COALESCE(NULLIF(${schema.partCollection_PistolFrame.manufacturer}, ""), ${schema.partCollection_PistolFrame.model})`)))
+    )
+
     function getItemName(){
-        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData, ...pistolSlideData].find(item => item.id === checked)
+        const selectedItem = [...gunData, ...silencerData, ...opticData, ...scopeData, ...lightLaserData, ...magazineData, ...miscAccessoryData, ...barrelData, ...conversionKitData, ...pistolSlideData, ...pistolFrameData].find(item => item.id === checked)
 
         return selectedItem ? `${selectedItem.manufacturer ? selectedItem.manufacturer : ""} ${selectedItem.model}` : ""
     }
@@ -314,6 +326,11 @@ export default function AccessoryMountDialog({data, itemData, setItemData, showM
         {
             data: pistolSlideData,
             collection: "partCollection_PistolSlide",
+            category: "parts"
+        },
+        {
+            data: pistolFrameData,
+            collection: "partCollection_PistolFrame",
             category: "parts"
         },
     ]

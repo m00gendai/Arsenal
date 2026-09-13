@@ -59,6 +59,11 @@ export function useItemTags(type: CollectionType) {
         .from(schema.part_PistolSlideTags)
     )
 
+    const { data: partTags_PistolFrame } = useLiveQuery(
+        db.select()
+        .from(schema.part_PistolFrameTags)
+    )
+
     const { data: literatureTags_Book } = useLiveQuery(
         db.select()
         .from(schema.literature_BookTags)
@@ -112,6 +117,8 @@ export function useItemTags(type: CollectionType) {
             return partTags_Barrel
         case "partCollection_PistolSlide":
             return partTags_PistolSlide
+        case "partCollection_PistolFrame":
+            return partTags_PistolFrame
         case "literatureCollection_Book":
             return literatureTags_Book
         case "reloadingCollection_Die":

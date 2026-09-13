@@ -30,6 +30,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const [conversionKitData, setConversionKitData] = useState([])
     const [barrelData, setBarrelData] = useState([])
     const [slideData, setSlideData] = useState([])
+    const [pistolFrameData, setPistolFrameData] = useState([])
 
     useEffect(()=>{
       async function getAccessoryData(){
@@ -132,6 +133,14 @@ export default function Item_Accessories({ currentItem }: Props) {
           )
 
         setSlideData(slideData)
+
+        const pistolFrameData = await db.select()
+          .from(schema.partCollection_PistolFrame)
+          .where(
+            inArray(schema.partCollection_PistolFrame.id, mountedIds)
+          )
+
+        setPistolFrameData(pistolFrameData)
       }
       getAccessoryData()
       getPartData()
@@ -175,6 +184,10 @@ const DATA:Section[] = [
   {
     title: tabBarLabels.pistolSlideCollection[language],
     data: slideData,
+  },
+  {
+    title: tabBarLabels.pistolFrameCollection[language],
+    data: pistolFrameData,
   },
   {
     title: tabBarLabels.silencerCollection[language],
