@@ -33,17 +33,19 @@ export const versionHistory: Version[] = [
         de: {
             text: `
 Neu:
+- Neue Sammlungen Waffenbestandteile
+- Neue Sammlung Literatur
 - Lokalisierung für Deutschland (WBK/NWR-Felder)
-- Anzeige des gewählten Landes im Hauptmenü
 
 Verbessert:
 - Suche in Sammlung und Kaliberdialog verbessert
 - Autocomplete wird nach gewähltem Text wieder minimiert
 - Sammlungsauswahl wird nach gewählter Sammlung wieder minimiert
+- (Teilweise) Neue Icons für Sammlungen
+- Darstellung für Tablets angepasst
 
 Behoben & Sonstiges:
 - Kleinere Anpassungen und Fehlerbehebungen
-- Diverse Updates und Codeanpassungen
 `,
             ios: "",
             android: null
@@ -51,17 +53,19 @@ Behoben & Sonstiges:
         en: {
             text: `
 New:
+- New weapon part collections
+- New literature collection
 - Localization for Germany (WBK/NWR fields)
-- Display of the selected country in the main menu
 
 Improved:
 - Improved search in the collection and caliber dialog
 - Autocomplete is minimized again after selecting text
 - Collection selection is minimized again after selecting a collection
+- (Some) New icons for collections
+- Tablet User Interface amended
 
 Fixed & Other:
 - Minor adjustments and bug fixes
-- Various updates and code changes
 `,
             ios: null,
             android: null
@@ -69,17 +73,18 @@ Fixed & Other:
         fr: {
             text: `
 Nouveautés:
+- Nouvelles collections de pièces d’armes & littéraire
 - Localisation pour l’Allemagne (champs WBK/NWR)
-- Affichage du pays sélectionné dans le menu principal
 
 Améliorations:
-- Recherche améliorée dans la collection et la fenêtre de sélection du calibre
+- Recherche améliorée
 - La liste de suggestions se réduit à nouveau après la sélection d’un texte
 - La sélection de la collection se réduit à nouveau après avoir choisi une collection
+- (Certains) Nouvelles icônes de collection
+- Interface utilisateur de la tablette modifiée
 
 Corrections et autres:
 - Petits ajustements et corrections de bugs
-- Diverses mises à jour et adaptations du code
 `,
             ios: null,
             android: null
@@ -87,17 +92,18 @@ Corrections et autres:
         it: {
             text: `
 Novità:
+- Nuove collezioni di parti per armi & letteratura
 - Localizzazione per la Germania (campi WBK/NWR)
-- Visualizzazione del Paese selezionato nel menu principale
 
 Migliorato:
-- Ricerca migliorata nella collezione e nella finestra di selezione del calibro
+- Ricerca migliorata
 - L’elenco dei suggerimenti si riduce nuovamente dopo la selezione del testo
 - La selezione della collezione si riduce nuovamente dopo aver selezionato una collezione
+- (Alcune) Nuove icone di collezione
+- Interfaccia utente tablet modificata
 
 Corretto e altro:
 - Piccoli adeguamenti e correzioni di bug
-- Vari aggiornamenti e modifiche al codice
 `,
             ios: null,
             android: null
