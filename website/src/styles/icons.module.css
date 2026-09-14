@@ -1,0 +1,48 @@
+.icon{
+    height: 2rem;
+    min-width: 2rem;
+    width: 2rem;
+    margin: 0 1rem;
+    background-color: var(--primary);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.pistolSlide{
+    -webkit-mask-image: url("../assets/collections/pistolSlide.png");
+    mask-image: url("../assets/collections/pistolSlide.png");
+}
+
+.pistolFrame{
+    -webkit-mask-image: url("../assets/collections/pistolFrame.png");
+    mask-image: url("../assets/collections/pistolFrame.png");
+}
+
+.rifleUpper{
+    -webkit-mask-image: url("../assets/collections/rifleUpper.png");
+    mask-image: url("../assets/collections/rifleUpper.png");
+}
+
+.rifleLower{
+    -webkit-mask-image: url("../assets/collections/rifleLower.png");
+    mask-image: url("../assets/collections/rifleLower.png");
+}
+
+.printMagazine{
+    -webkit-mask-image: url("../assets/collections/printMagazine.png");
+    mask-image: url("../assets/collections/printMagazine.png");
+}
+
+.book{
+    -webkit-mask-image: url("../assets/collections/book.png");
+    mask-image: url("../assets/collections/book.png");
+}
+
+.printMagazinr{
+    -webkit-mask-image: url("../assets/collections/printMagazine.png");
+    mask-image: url("../assets/collections/printMagazine.png");
+}

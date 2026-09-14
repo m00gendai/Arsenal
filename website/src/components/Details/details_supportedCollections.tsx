@@ -3,6 +3,7 @@ import { section_collectionItems_accessories, section_collectionItems_literature
 import type { Language } from "../../types/types_global";
 import s from "../../styles/supportedCollections.module.css"
 import t from "../../styles/accordion.module.css"
+import u from "../../styles/icons.module.css"
 import { ignoreIntervalFieldsForLogger } from "../../../../configs/configs";
 
 interface Props{
@@ -43,7 +44,9 @@ export default function Details_supportedCollections({language}:Props){
                 case "miscAccessoryCollection":
                     return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>help-circle-outline</title><path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z" /></svg>
                 case "bookCollection":
-                    return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>bookshelf</title><path d="M9 3V18H12V3H9M12 5L16 18L19 17L15 4L12 5M5 5V18H8V5H5M3 19V21H21V19H3Z" /></svg>
+                    return <div className={`${u.icon} ${u.book}`} role="img" aria-label="book" />
+                case "printMagazineCollection":
+                    return <div className={`${u.icon} ${u.printMagazine}`} role="img" aria-label="print magazine" />
                 case "dieCollection":
                     return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>lightbulb-cfl-spiral</title><path d="M11 2C10.84 2 10.69 2.03 10.55 2.1L8.55 3.1C7.56 3.66 8 5 9 5C9.16 5 9.32 4.95 9.45 4.9L11.45 3.9C12.43 3.36 12 2 11 2M15 4C14.83 4 14.69 4.03 14.55 4.1L8.55 7.1C7.56 7.68 8 9 9 9C9.18 9 9.32 8.95 9.45 8.9L15.45 5.9C16.41 5.43 16 4 15 4M15 8C14.84 8 14.69 8.03 14.55 8.1L8.7 11.03C8.2 11.25 8 11.6 8 12V14H7V17C7 17.55 7.44 18 8 18H16C16.55 18 17 17.55 17 17V14H16V13C16 12.44 15.55 12 15 12C14.45 12 14 12.45 14 13V14H10V12.62L15.45 9.9C16.42 9.34 16 8 15 8M9 20V21C9 21.57 9.46 22 10 22H14C14.56 22 15 21.55 15 21V20" /></svg>
                 case "bulletCollection":
@@ -54,6 +57,14 @@ export default function Details_supportedCollections({language}:Props){
                     return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>fire-circle</title><path d="M14.66 14.18C14.69 14.29 14.7 14.4 14.7 14.5C14.73 15.15 14.44 15.85 13.97 16.28C13.75 16.47 13.39 16.67 13.11 16.75C12.23 17.06 11.35 16.62 10.83 16.11C11.77 15.89 12.32 15.21 12.5 14.5C12.62 13.89 12.37 13.38 12.27 12.78C12.17 12.2 12.19 11.71 12.4 11.18C12.55 11.47 12.71 11.77 12.9 12C13.5 12.78 14.45 13.12 14.66 14.18M22 12C22 17.5 17.5 22 12 22S2 17.5 2 12 6.5 2 12 2 22 6.5 22 12M17.16 12.56L17.06 12.36C16.9 12 16.45 11.38 16.45 11.38C16.27 11.15 16.05 10.94 15.85 10.74C15.32 10.27 14.73 9.94 14.22 9.45C13.05 8.31 12.79 6.44 13.54 5C12.79 5.18 12.14 5.58 11.58 6.03C9.55 7.65 8.75 10.5 9.71 12.95C9.74 13.03 9.77 13.11 9.77 13.21C9.77 13.38 9.65 13.53 9.5 13.6C9.31 13.67 9.13 13.63 9 13.5C8.93 13.46 8.9 13.42 8.87 13.37C8 12.26 7.84 10.66 8.43 9.39C7.12 10.45 6.41 12.24 6.5 13.92C6.56 14.31 6.6 14.7 6.74 15.09C6.85 15.56 7.06 16 7.3 16.44C8.14 17.78 9.61 18.75 11.19 18.94C12.87 19.15 14.67 18.85 15.96 17.7C17.4 16.4 17.9 14.33 17.16 12.56Z" /></svg>
                 case "powderCollection":
                     return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>shaker</title><path d="M7 16C7 16.55 6.55 17 6 17S5 16.55 5 16C5 15.45 5.45 15 6 15S7 15.45 7 16M9 16C8.45 16 8 16.45 8 17S8.45 18 9 18 10 17.55 10 17 9.55 16 9 16M4 18C3.45 18 3 18.45 3 19S3.45 20 4 20 5 19.55 5 19 4.55 18 4 18M7 19C6.45 19 6 19.45 6 20S6.45 21 7 21 8 20.55 8 20 7.55 19 7 19M15.33 2.72L9.8 9.65L13.34 13.19L20.28 7.67C21.18 6.91 21.25 5.54 20.41 4.7L18.3 2.59C17.46 1.75 16.09 1.82 15.33 2.72M8.39 12.5L10.5 14.6C10.9 15 11.54 15 11.93 14.6L12.63 13.9L9.1 10.36L8.39 11.07C8 11.46 8 12.09 8.39 12.5Z" /></svg>
+                case "pistolSlideCollection":
+                    return <div className={`${u.icon} ${u.pistolSlide}`} role="img" aria-label="pistol slide" />
+                case "pistolFrameCollection":
+                    return <div className={`${u.icon} ${u.pistolFrame}`} role="img" aria-label="pistol frame" />
+                case "rifleUpperCollection":
+                    return <div className={`${u.icon} ${u.rifleUpper}`} role="img" aria-label="rifle upper" />
+                case "rifleLowerCollection":
+                    return <div className={`${u.icon} ${u.rifleLower}`} role="img" aria-label="rifle lower" />
                 default: 
                     return ""
             }
@@ -69,7 +80,6 @@ export default function Details_supportedCollections({language}:Props){
                 const collectionTitles = collection.text[language].filter(entry => typeof entry !== "object" && entry !== null && !Array.isArray(entry)) as string[]
                 const collectionContent = collection.text[language].filter(entry => Array.isArray(entry)) as string[][]
                 const collectionName = collection.text[language].filter(entry => typeof entry === "object" && entry !== null && !Array.isArray(entry)) as {name: string}[]
-                
                 return (
                     <React.Fragment key={`collection_${index}`}>
                         <h3 className={s.collection}>{collection.title[language]}</h3>
