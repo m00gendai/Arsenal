@@ -19,6 +19,11 @@ import { emptyCaseObject } from "../../../lib/DataTemplates/reloadingDataTemplat
 import { emptyBulletObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Bullet"
 import { emptyPrimerObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Primer"
 import { emptyPowderObject } from "../../../lib/DataTemplates/reloadingDataTemplate_Powder"
+import { emptyRifleLowerObject } from "../../../lib/DataTemplates/partDataTemplate_RifleLower";
+import { emptyRifleUpperObject } from "../../../lib/DataTemplates/partDataTemplate_RifleUpper";
+import { emptyPistolSlideObject } from "../../../lib/DataTemplates/partDataTemplate_PistolSlide";
+import { emptyPistolFrameObject } from "../../../lib/DataTemplates/partDataTemplate_PistolFrame";
+import { emptyPrintMagazineObject } from "../../../lib/DataTemplates/literatureDataTemplate_PrintMagazine";
 
 
 interface Section{
@@ -47,8 +52,13 @@ const miscAccessoryCollection   = dataTemplateConverter(emptyMiscAccessoryObject
 const opticCollection           = dataTemplateConverter(emptyOpticObject)
 const scopeCollection           = dataTemplateConverter(emptyScopeObject)
 const bookCollection            = dataTemplateConverter(emptyBookObject)
+const printMagazineCollection   = dataTemplateConverter(emptyPrintMagazineObject)
 const barrelCollection          = dataTemplateConverter(emptyBarrelObject)
 const conversionCollection      = dataTemplateConverter(emptyConversionKitObject)
+const rifleLowerCollection      = dataTemplateConverter(emptyRifleLowerObject)
+const rifleUpperCollection      = dataTemplateConverter(emptyRifleUpperObject)
+const pistolSlideCollection     = dataTemplateConverter(emptyPistolSlideObject)
+const pistolFrameCollection     = dataTemplateConverter(emptyPistolFrameObject)
 const dieCollection             = dataTemplateConverter(emptyDieObject)
 const bulletCollection          = dataTemplateConverter(emptyBulletObject)
 const caseCollection            = dataTemplateConverter(emptyCaseObject)
@@ -72,6 +82,7 @@ function buildSectionMain(lang: Language) {
         getTranslatedTitle("gunCollection", lang),
         getTranslatedData(gunCollection, lang),
         {name: "gunCollection"},
+        
         getTranslatedTitle("ammoCollection", lang),
         getTranslatedData(ammoCollection, lang),
         {name: "ammoCollection"},
@@ -83,18 +94,23 @@ function buildSectionAccessories(lang: Language) {
         getTranslatedTitle("silencerCollection", lang),
         getTranslatedData(silencerCollection, lang),
         {name: "silencerCollection"},
+        
         getTranslatedTitle("opticCollection", lang),
         getTranslatedData(opticCollection, lang),
         {name: "opticCollection"},
+        
         getTranslatedTitle("scopeCollection", lang),
         getTranslatedData(scopeCollection, lang),
         {name: "scopeCollection"},
+        
         getTranslatedTitle("lightLaserCollection", lang),
         getTranslatedData(lightLaserCollection, lang),
         {name: "lightLaserCollection"},
+        
         getTranslatedTitle("magazineCollection", lang),
         getTranslatedData(magazineCollection, lang),
         {name: "magazineCollection"},
+        
         getTranslatedTitle("miscAccessoryCollection", lang),
         getTranslatedData(miscAccessoryCollection, lang),
         {name: "miscAccessoryCollection"},
@@ -106,9 +122,26 @@ function buildSectionParts(lang: Language) {
         getTranslatedTitle("conversionCollection", lang),
         getTranslatedData(conversionCollection, lang),
         {name: "conversionCollection"},
+        
         getTranslatedTitle("barrelCollection", lang),
         getTranslatedData(barrelCollection, lang),
         {name: "barrelCollection"},
+
+        getTranslatedTitle("rifleLowerCollection", lang),
+        getTranslatedData(rifleLowerCollection, lang),
+        {name: "rifleLowerCollection"},
+
+        getTranslatedTitle("rifleUpperCollection", lang),
+        getTranslatedData(rifleUpperCollection, lang),
+        {name: "rifleUpperCollection"},
+
+        getTranslatedTitle("pistolSlideCollection", lang),
+        getTranslatedData(pistolSlideCollection, lang),
+        {name: "pistolSlideCollection"},
+
+        getTranslatedTitle("pistolFrameCollection", lang),
+        getTranslatedData(pistolFrameCollection, lang),
+        {name: "pistolFrameCollection"},
     ]
 }
 
@@ -117,6 +150,10 @@ function buildSectionLiterature(lang: Language) {
         getTranslatedTitle("bookCollection", lang),
         getTranslatedData(bookCollection, lang),
         {name: "bookCollection"},
+
+        getTranslatedTitle("printMagazineCollection", lang),
+        getTranslatedData(printMagazineCollection, lang),
+        {name: "printMagazineCollection"},
     ]
 }
 
@@ -125,15 +162,19 @@ function buildSectionReloading(lang: Language) {
         getTranslatedTitle("dieCollection", lang),
         getTranslatedData(dieCollection, lang),
         {name: "dieCollection"},
+        
         getTranslatedTitle("bulletCollection", lang),
         getTranslatedData(bulletCollection, lang),
         {name: "bulletCollection"},
+        
         getTranslatedTitle("caseCollection", lang),
         getTranslatedData(caseCollection, lang),
         {name: "caseCollection"},
+        
         getTranslatedTitle("primerCollection", lang),
         getTranslatedData(primerCollection, lang),
         {name: "primerCollection"},
+        
         getTranslatedTitle("powderCollection", lang),
         getTranslatedData(powderCollection, lang),
         {name: "powderCollection"},
@@ -150,19 +191,19 @@ export const section_collectionItems_title: Section = {
     text: {
         de: [
                 `Mit Arsenal können viele Sammlungen angelegt werden, über Waffen und Munition, Zubehör wie Optiken, Schalldämpfer und Laser bishin zu Büchern.
-                Die Sammlungen werden stetig ausgebaut, in Planung sind zum Beispiel mehr Literatur und mehr Waffenteile.`
+                Die Sammlungen werden stetig ausgebaut!`
             ],
         en: [
                 `With Arsenal, many collections can be created, from weapons and ammunition to accessories such as optics, silencers, and lasers, to books.
-                The collections are constantly being expanded, with more literature and more weapon parts.`
+                The collections are constantly being expanded!`
             ],
         fr: [
                 `De nombreuses collections peuvent être créées avec Arsenal, des armes et munitions, aux accessoires comme les optiques, les silencieux et les lasers, en passant par les livres.
-                Les collections sont en constante évolution, avec notamment plus de littérature et plus de pièces d’armes.`
+                Les collections sont en constante évolution!`
             ],
         it: [
                 `Con Arsenal si possono creare molte collezioni, dalle armi e munizioni, agli accessori come ottiche, silenziatori e laser, fino ai libri.
-                Le collezioni sono in continua espansione, con l’aggiunta di più letteratura e più parti di armi.`
+                Le collezioni sono in continua espansione!`
         ]
     }
 }
