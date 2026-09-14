@@ -120,7 +120,7 @@ export const tabBarLabels: TabBarLabels = {
     pistolFrameCollection: {
         de: "Griffstück",
         en: "Frame",
-        fr: "Carcasse ",
+        fr: "Carcasse",
         it: "Telaio",
         ch: "Chascha",
     },
