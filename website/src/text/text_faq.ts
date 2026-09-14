@@ -8,6 +8,7 @@ export interface FAQ_Section{
 export interface FAQ_QuestionAnswer{
     question: SimpleTranslation
     answer: SimpleTranslation
+    icon: string
 }
 
 export const title: SimpleTranslation ={
@@ -48,6 +49,7 @@ Non, Arsenal n’a pas de comptes utilisateurs, de connexion ou d’inscription.
 No, Arsenal non ha account utente, login o registrazione.
 `,
                 },
+                icon: "userAccount"
             },
             {
                 question: {
@@ -70,6 +72,7 @@ Ta base de données de collection est stockée localement sur ton appareil et tu
 Il tuo database di collezioni è memorizzato localmente sul tuo dispositivo e solo tu hai accesso ad esso.
 `,
                 },
+                icon: "dataSaveLocation"
             },
             {
                 question: {
@@ -101,6 +104,7 @@ Arsenal utilizza SQLCipher, una libreria di crittografia di database open source
 La chiave di crittografia viene generata sul tuo dispositivo e memorizzata nel Keychain di iOS o nel Keystore di Android: non esce mai dal tuo dispositivo.
 `,
                 },
+                icon: "dataEncryption"
             },
             {
                 question: {
@@ -128,6 +132,7 @@ I fallimenti nella decrittazione sono estremamente rari e di solito indicano una
 Purtroppo, senza la chiave di crittografia, il database non può essere recuperato. Per questo motivo, ti consigliamo vivamente di eseguire regolarmente dei backup.
 `,
                 },
+                icon: "encryptionError"
             },
             {
                 question: {
@@ -167,6 +172,7 @@ Arsenal ha bisogno di permessi:
     Questo è necessario per scattare foto dei tuoi oggetti di collezione direttamente dall’app e per scansionare i codici QR
 `,
                 },
+                icon: "permissions"
             },
             {
                 question: {
@@ -202,6 +208,7 @@ Tieni presente che Google Play e l’App Store di Apple potrebbero raccogliere i
 Questo non è sotto il controllo di Arsenal e non include alcun dato dell’app.
 `,
                 },
+                icon: "analytics"
             },
         ]
     },
@@ -243,6 +250,7 @@ Arsenal non sostituisce alcun documento ufficiale e non è autorizzato a fungere
 Tuttavia, ti offre la possibilità di generare report sulle collezioni, ad esempio elenchi di armi, che possono essere personalizzati in base a requisiti specifici, ad esempio per compagnie assicurative o enti governativi.
 `,
                 },
+                icon: "legal"
             },
             {
                 question: {
@@ -274,6 +282,7 @@ I tuoi dati di collezione rimangono privati sul tuo dispositivo e solo tu hai ac
 Lo sviluppatore non ha accesso ai tuoi dati di collezione perché questi non escono mai dal tuo dispositivo.
 `,
                 },
+                icon: "police"
             },
         ]
     },
@@ -319,6 +328,7 @@ La privacy è al primo posto e, di conseguenza, non c’è alcuna connessione di
 Se cambi telefono, esporta il database dal vecchio telefono e importalo nel nuovo.
 `,
                 },
+                icon: "lostPhone"
             },
             {
                 question: {
@@ -358,6 +368,7 @@ Tieni presente che i calibri devono avere esattamente il nome indicato nell’ap
 Tieni presente che l’importazione come file CSV non supporta le immagini, queste devono essere aggiunte nell’app.
 `,
                 },
+                icon: "import"
             },
         ]
     },
@@ -391,6 +402,7 @@ Arsenal est un achat unique. Tu l’achètes une fois et tu l’utilises à jama
 Arsenal è un acquisto una tantum. Acquista una volta e usalo per sempre, inclusi tutti gli aggiornamenti futuri.
 `,
                 },
+                icon: "payment"
             },
             {
                 question: {
@@ -417,6 +429,7 @@ Eliminando (disinstallando) l’app, elimini anche il database, quindi i tuoi da
 Lo stesso vale quando elimini i dati dell’app tramite le impostazioni del telefono.
 `,
                 },
+                icon: "dataDeletion"
             },
             {
                 question: {
@@ -443,6 +456,7 @@ No, al momento Arsenal non offre una versione di prova.
 Poiché l’app è un acquisto una tantum, sia Google Play che l’App Store di Apple offrono la possibilità di richiedere un rimborso se l’app non soddisfa le tue aspettative.
 `,
                 },
+                icon: "demo"
             },
         ]
     },
@@ -465,21 +479,90 @@ Poiché l’app è un acquisto una tantum, sia Google Play che l’App Store di 
                 answer: {
                     de: `
 Arsenal ist für Android und iOS verfügbar.
-Benötigt wird Android 7.0 oder neuer bzw. iOS 15.5 oder neuer.
+Benötigt wird
+- Android 7.0 oder neuer 
+    - Es werden sämtliche Android 7.0-fähigen Geräte und neuer unterstützt, allerdings läuft die App alles andere als flüssig auf derart alten Geräten:
+      Das Huawei MediaPad M5 lite (2018, Android 8.0, 3GB RAM) kann Arsenal nicht flüssig ausführen.
+      Entwickelt wurde Arsenal auf einem Samsung Galaxy S21FE im Jahre 2024, es wird also ein Gerät mit mindestens Android 14 und mehr als 1GB RAM empfohlen.
+
+- iOS 16.4 oder neuer
+    - ab iPhone 8
+    - ab iPhone X
+
+- iPadOS 16.4 oder neuer
+    - ab iPad 5. Generation
+    - ab iPad Air 3. Generation
+    - ab iPad Mini 5. Generation
+    - ab iPad Pro 12.9"
+    - ab iPad Pro 9.7"
+    - ab iPad Pro 10.5" 2. Generation
+    - ab iPad Pro 11"
 `,
                     en: `
 Arsenal is available for both Android and iOS.
-It requires Android 7.0 or newer, and iOS 15.5 or newer respectively.
+It requires
+- Android 7.0 or newer
+    - All Android 7.0-capable devices and newer are supported, however the app runs anything but smoothly on such old devices:
+      The Huawei MediaPad M5 lite (2018, Android 8.0, 3GB RAM) cannot run Arsenal smoothly.
+      Arsenal was developed on a Samsung Galaxy S21FE in 2024, so a device with at least Android 14 and more than 1GB RAM is recommended.
+
+- iOS 16.4 or newer
+    - from iPhone 8
+    - from iPhone X
+
+- iPadOS 16.4 or newer
+    - from iPad 5th Generation
+    - from iPad Air 3rd Generation
+    - from iPad Mini 5th Generation
+    - from iPad Pro 12.9"
+    - from iPad Pro 9.7"
+    - from iPad Pro 10.5" 2nd Generation
+    - from iPad Pro 11"
 `,
                     fr: `
 Arsenal est disponible pour Android et iOS.
-Il requiert Android 7.0 ou une version plus récente, et iOS 15.5 ou une version plus récente, respectivement.
+Il requiert
+- Android 7.0 ou plus récent
+    - Tous les appareils compatibles Android 7.0 et plus récents sont pris en charge, mais l’application ne fonctionne pas du tout de manière fluide sur des appareils aussi anciens:
+      La Huawei MediaPad M5 lite (2018, Android 8.0, 3 Gb de RAM) ne permet pas de faire tourner Arsenal de manière fluide.
+      Arsenal a été développé sur un Samsung Galaxy S21FE en 2024, il est donc recommandé d’utiliser un appareil avec au moins Android 14 et plus de 1 Gb de RAM.
+
+- iOS 16.4 ou plus récent
+    - de iPhone 8
+    - de iPhone X
+
+- iPadOS 16.4 ou plus récent
+    - de iPad 5e Generation
+    - de iPad Air 3e Generation
+    - de iPad Mini 5e  Generation
+    - de iPad Pro 12.9"
+    - de iPad Pro 9.7"
+    - de iPad Pro 10.5" 2de Generation
+    - de iPad Pro 11"
 `,
                     it: `
 Arsenal è disponibile sia per Android che per iOS.
-Per Android è richiesto Android 7.0 o superiore, per iOS 15.5 o superiore.
+Richiede
+- Android 7.0 o versioni successive
+    - Sono supportati tutti i dispositivi con Android 7.0 o versioni successive, ma l’app non gira in modo fluido su dispositivi così vecchi:
+      Il Huawei MediaPad M5 lite (2018, Android 8.0, 3 GB di RAM) non riesce a far girare Arsenal in modo fluido.
+      Arsenal è stato sviluppato su un Samsung Galaxy S21FE nel 2024, quindi si consiglia un dispositivo con almeno Android 14 e più di 1 GB di RAM.
+    
+- iOS 16.4 o più recente
+    - da iPhone 8
+    - da iPhone X
+
+- iPadOS 16.4 o più recente
+    - da iPad 5a Generation
+    - da iPad Air 3a Generation
+    - da iPad Mini 5a  Generation
+    - da iPad Pro 12.9"
+    - da iPad Pro 9.7"
+    - da iPad Pro 10.5" 2a Generation
+    - da iPad Pro 11"    
 `,
                 },
+                icon: "platforms"
             },
             {
                 question: {
@@ -514,6 +597,7 @@ La sezione Informazioni contiene link a risorse esterne che richiedono una conne
 Tutte le funzionalità di gestione della collezione continuano a funzionare completamente offline.
 `,
                 },
+                icon: "offline"
             },
             {
                 question: {
@@ -544,6 +628,7 @@ Esporta il tuo database da un dispositivo e importalo su un altro.
 Arsenal non sincronizza i dispositivi automaticamente perché non utilizza servizi cloud.
 `,
                 },
+                icon: "multipleDevices"
             },
             {
                 question: {
@@ -570,6 +655,7 @@ Sì.
 Arsenal offre una generazione flessibile di PDF con esportazioni predefinite e personalizzabili, adattate alle tue esigenze specifiche.
 `,
                 },
+                icon: "pdfExport"
             },
             {
                 question: {
@@ -596,6 +682,7 @@ Non, les attributs sont fixes et non extensibles.
 Ceci est fait pour éviter tout conflit avec les futures mises à jour.
 `,
                 },
+                icon: "customAttributes"
             },
             {
                 question: {
@@ -646,6 +733,7 @@ Tuttavia, non è consigliabile farlo, perché potrebbe portare a comportamenti i
 Esegui un backup del database prima di provare!
 `,
                 },
+                icon: "customCaliber"
             },
             {
                 question: {
@@ -676,6 +764,7 @@ Le vendite possono essere registrate con data di vendita, prezzo di vendita, rif
 Gli articoli venduti rimangono nel database a meno che non vengano cancellati esplicitamente, ma possono essere nascosti tramite le impostazioni.
 `,
                 },
+                icon: "sale"
             },
             {
                 question: {
@@ -702,6 +791,7 @@ L’app supporta attualmente le lingue inglese, tedesco, francese, italiano e ru
 Il cambio di lingua avviene senza problemi e può essere effettuato in qualsiasi momento.
 `,
                 },
+                icon: "languages"
             },
         ]
     },
@@ -799,6 +889,7 @@ Arsenal, d’altro canto:
 Alla fine, ognuno decide autonomamente quale app, se ce n’è una, è la più adatta alle proprie esigenze. A volte un foglio di calcolo Excel è sufficiente.
 `,
                 },
+                icon: "competitor"
             },
         ]
     },
@@ -832,6 +923,7 @@ Oui, l’état actuel du développement, y compris les fonctionnalités prévues
 Sì, lo stato attuale dello sviluppo, comprese le funzionalità pianificate e richieste, è pubblicato su [Trello (solo in inglese)](https://trello.com/b/aewI0VKW/arsenal).
 `,
                 },
+                icon: "developmentStatus"
             },
             {
                 question: {
@@ -858,6 +950,7 @@ Discussione ufficiale su [waffenforum.ch](https://waffenforum.ch/forum/index.php
 Tramite e-mail a info@mrweber.ch
 `,
                 },
+                icon: "feedback"
             },
         ]
     },
@@ -891,6 +984,7 @@ Non, Arsenal ne transmet pas tes données à qui que ce soit, elles restent stri
 No, Arsenal non invia i tuoi dati da nessuna parte, rimangono strettamente sul tuo dispositivo.
 `,
                 },
+                icon: "aiProcessing"
             },
             {
                 question: {
@@ -921,6 +1015,7 @@ Al momento, Arsenal include il riconoscimento di codici QR che elabora i dati in
 Qualsiasi futura funzionalità intelligente, come l’OCR, sarà progettata per funzionare interamente sul tuo dispositivo senza trasmettere i tuoi dati.
 `,
                 },
+                icon: "aiFunctionality"
             },
             {
                 question: {
@@ -955,6 +1050,7 @@ Arsenal non è generato dall’AI. Lo sviluppatore ha una vasta esperienza con J
 Ogni suggerimento generato dall’AI viene esaminato criticamente, testato e adattato manualmente prima di essere integrato nell’app.
 `,
                 },
+                icon: "aiUsage"
             },
             {
                 question: {
@@ -993,6 +1089,7 @@ Per poter funzionare completamente offline, senza dipendere da fornitori di AI d
 Le tecnologie integrate nel dispositivo, come il riconoscimento di codici QR e potenzialmente l’OCR in futuro, sono compatibili con questa filosofia perché elaborano i dati interamente sul tuo dispositivo.
 `,
                 },
+                icon: "aiCloud"
             },
         ]
     },
