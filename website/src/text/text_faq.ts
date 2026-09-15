@@ -139,7 +139,7 @@ Purtroppo, senza la chiave di crittografia, il database non può essere recupera
                     de: `Welche Berechtigungen benötigt Arsenal und warum?`,
                     en: `What permissions does Arsenal need, and why?`,
                     fr: `Quelles autorisations Arsenal doit-il obtenir et pourquoi?`,
-                    it: `Quelles autorisations Arsenal doit-il obtenir et pourquoi?`
+                    it: `Quali permessi richiede Arsenal e perché?`
                 },
                 answer: {
                     de: `
@@ -532,12 +532,12 @@ Il requiert
     - de iPhone X
 
 - iPadOS 16.4 ou plus récent
-    - de iPad 5e Generation
-    - de iPad Air 3e Generation
-    - de iPad Mini 5e  Generation
+    - de iPad 5e Génération
+    - de iPad Air 3e Génération
+    - de iPad Mini 5e Génération
     - de iPad Pro 12.9"
     - de iPad Pro 9.7"
-    - de iPad Pro 10.5" 2de Generation
+    - de iPad Pro 10.5" 2de Génération
     - de iPad Pro 11"
 `,
                     it: `
@@ -553,12 +553,12 @@ Richiede
     - da iPhone X
 
 - iPadOS 16.4 o più recente
-    - da iPad 5a Generation
-    - da iPad Air 3a Generation
-    - da iPad Mini 5a  Generation
+    - da iPad 5a Generazione
+    - da iPad Air 3a Generazione
+    - da iPad Mini 5a Generazione
     - da iPad Pro 12.9"
     - da iPad Pro 9.7"
-    - da iPad Pro 10.5" 2a Generation
+    - da iPad Pro 10.5" 2a Generazione
     - da iPad Pro 11"    
 `,
                 },
@@ -678,8 +678,8 @@ Non, les attributs sont fixes et non extensibles.
 Ceci est fait pour éviter tout conflit avec les futures mises à jour.
 `,
                     it: `
-Non, les attributs sont fixes et non extensibles.
-Ceci est fait pour éviter tout conflit avec les futures mises à jour.
+No, gli attributi sono fissi e non estendibili.
+Questo dovrebbe evitare conflitti con futuri aggiornamenti.
 `,
                 },
                 icon: "customAttributes"
@@ -806,90 +806,153 @@ Il cambio di lingua avviene senza problemi e può essere effettuato in qualsiasi
         content: [
             {
                 question: {
-                    de: `Ich nutze bereits eine Konkurrenz-App, warum sollte ich zu Arsenal wechseln?`,
-                    en: `I already use a competitor app, why should I switch to Arsenal?`,
-                    fr: `J’utilise déjà une autre application, pourquoi devrais-je passer à Arsenal?`,
-                    it: `Uso già un’altra app, perché dovrei passare ad Arsenal?`
+                    de: `Ich nutze bereits eine Konkurrenz-App, warum sollte ich wechseln und warum genau zu Arsenal?`,
+                    en: `I already use a competitor app, why should I switch and why to Arsenal specifically?`,
+                    fr: `J’utilise déjà une application concurrente, pourquoi devrais-je changer et pourquoi Arsenal en particulier?`,
+                    it: `Io uso già un’app concorrente, perché dovrei cambiare e perché proprio per Arsenal?`
                 },
                 answer: {
                     de: `
-Es gibt tatsächlich einige alternative Apps, vor allem für Android, die den gleichen Zweck wie Arsenal erfüllen (es gibt sogar eine die gleich heisst!). Allerdings:
-- sind die meisten US-zentrisch
-- scheinen sie keine Sprachauswahl zu haben oder nutzen eine automatische Übersetzung
-- scheinen sie nicht den gleichen Funktionsumfang zu haben, oder wenn doch, sind sie ziemlich unintuitiv und umständlich
-- ist der Entwickler manchmal schwer zu identifizieren oder zu kontaktieren (Entwickler hinter Firma) und scheint manchmal nicht mit der Community zu interagieren
-- können sie doppelt so teuer sein, teilweise nicht transparente In-App-Käufe oder Werbung enthalten oder bieten Abonnements an
-- scheinen einige nicht aktiv weiterentwickelt zu werden
+Es gibt tatsächlich einige alternative Apps, die den gleichen Zweck wie Arsenal erfüllen. Einige davon haben sogar ähnliche Namen, einige machen den Eindruck, als seien sie verdächtig ähnliche Kopien voneinander, inklsuive Fehler.
+- Die meisten sind USA-zentrisch.
+- Die meisten sind nur in Englisch, oder nutzen automatische Übersetzer.
+- Die meisten haben nicht den gleichen Funktionsumgang, oder wenn, dann sind diese nur rudimentär implementiert.
+- Die meisten Entwickler können manchmal schwer zu identifizieren oder zu kontaktieren sein (Entwickler hinter Firma, kein Austausch mit der Community).
+- Einige können doppelt so teuer sein, teilweise nicht transparente In-App-Käufe oder Werbung enthalten oder bieten Abonnements an.
+- Einige scheinen sich nicht mehr in aktiver Entwicklung zu befinden.
+- Einige scheinen klare Anzeichen von KI-generiertem Code aufzuweisen, anstatt dass sie händisch entwickelt wurden.
 
 Arsenal hingegen:
-- ist primär auf Schweizer Bedürfnisse zugeschnitten, aber auch weltweit nutzbar und bietet beispielsweise eine Auswahl an angezeigten Massangaben
-- ist in fünf Sprachen verfügbar, wobei die Übersetzungen ins Deutsche und Englische von Hand erstellt wurden und Französisch, Italienisch und Rumantsch Grischun von einem Schweizer Übersetzungsdienst
-- hat eine moderne, schlichte (so weit wie möglich) und funktionale Benutzeroberfläche
-- hat einen privaten Schweizer Entwickler, der in der Schweizer Waffen- und Schützen-Community aktiv bekannt ist und mit dieser interagiert
+- ist primär auf Schweizer Bedürfnisse zugeschnitten, aber auch weltweit nutzbar durch länderspezifische Funktionen und frei wählbare Masseinheiten.
+- ist in fünf Sprachen verfügbar, wobei die Übersetzungen ins Deutsche und Englische von Hand erstellt wurden. Französisch, Italienisch und Rumantsch Grischun wurden durch supertext.com, einem Schweizer Übersetzungsdienst, übersetzt und auf Kontext und Plausibilität geprüft.
+- bietet Funktionalität, die von einem wirklichen Waffensammler implementiert wurde, mit Rückmeldungen aus der Community, in steter Entwicklung und Verbesserung.
+- wird von einem privaten Schweizer Entwickler programmiert, der in der Schweizer Waffen- und Schützen-Community aktiv bekannt ist und mit dieser regelmässig interagiert.
 - kostet einmalig 5 CHF, inklusive aller zukünftigen Updates. Keine Werbung, keine Abonnements, keine In-App-Käufe.
 - wird ständig weiterentwickelt
+- wird von Hand in einem Code-Editor programmiert und nicht von einer KI via Prompts in einer KI-Umgebung generiert.
 
-Letztendlich entscheidet jeder selbst, welche App, wenn überhaupt, am besten geeignet ist. Manchmal reicht auch ein Excel-Sheet.
+Letztendlich entscheidet jeder selbst, welche App, wenn überhaupt, am besten geeignet ist.
 `,
                     en: `
-There are indeed several alternative apps, especially on Android, that serve the same purpose as Arsenal. However:
-- most are US-oriented
-- they seem to have no language selection or employ an auto-translation
-- they do not seem to have the same range of functions, or if they do, they seem quite unintuitive and cumbersome
-- the developer can sometimes be difficult to identify or contact (LLC in front of the developer) and sometimes appear to not interact with the community
-- they can cost twice as much, may have partly non-transparent in-app purchases or advertising or can offer subscription based payment models
-- some seem to not be in active development
+There are indeed several alternative apps that serve the same purpose as Arsenal, some are even similarly named, a few even feel like suspiciously close copies, bugs included. 
+- Most are US-oriented, so a lot of the features are of no use to a user outside of the US.
+- Most are in English only, or auto-translate their content.
+- Most do not have the same range of functionality, or if they do, it is mostly implemented rudimentary.
+- Most of the developers can sometimes be difficult to identify or contact (LLC in front of the developer, no community engagement).
+- Some can cost twice as much, may have partly non-transparent in-app purchases or advertising or offer subscription based payment models.
+- Some seem to not be in active development anymore.
+- Some seem to show telltale signs of AI-generated code rather than hands-on development
 
 Arsenal, on the other hand:
-- is primarily tailored to Swiss needs, but also usable worldwide and offers a choice in displayed units of measurement, for example
-- is available in five languages, with translations into German and English made by hand, and French, Italian and Rumantsch Grischun by using a Swiss Translation Service
-- has a modern, simple (as much as possible) and functional user interface
-- has a private Swiss developer who is actively known in the Swiss weapons and shooting community and interacts with that community
-- costs a one-time fee of 5 CHF for life, including all future updates. No ads, no subscriptions, no in-app purchases.
-- is in constant development
+- Is primarily tailored to Swiss needs, but is also usable worldwide through country specific functionality and free choice of units of measurement.
+- Is available in five languages, with translations into German and English made by hand. French, Italian and Rumantsch Grischun are translated via supertext.com, a Swiss translation service, and checked against plausibility and context awareness.
+- Features functionality implemented by an actual gun collector, with community feedback, in continuous development and improvement.
+- Is programmed by a private Swiss developer who is actively known in the Swiss weapons and shooting community and interacts with that community regularly.
+- Costs a one-time fee of 5 CHF for life, including all future updates. No ads, no subscriptions, no in-app purchases.
+- Is in constant development
+- Is programmed by hand in a code editor, not generated via prompts in an AI environment.
 
-Ultimately, everyone decides for themselves which app, if any, is best suited. Sometimes that Excel-Sheet is sufficient.
+Ultimately, everyone decides for themselves which app, if any, is best suited.
 `,
                     fr: `
-Il existe effectivement plusieurs applications alternatives, surtout sur Android, qui remplissent la même fonction qu’Arsenal. Cependant:
-- la plupart sont axées sur les États-Unis
-- elles ne proposent pas de sélection de langue ou utilisent une traduction automatique
-- elles ne semblent pas offrir la même gamme de fonctions, ou si elles le font, elles sont peu intuitives et peu pratiques
-- il est parfois difficile d’identifier ou de contacter le développeur (LLC devant le nom du développeur) et il semble parfois qu’il ne communique pas avec la communauté
-- elles peuvent coûter deux fois plus cher, proposer des achats intégrés ou de la publicité partiellement opaques ou encore des modèles de paiement par abonnement
-- certaines ne semblent pas être en développement actif
+Il existe effectivement quelques applications alternatives qui remplissent le même but qu’Arsenal. Certaines d’entre elles ont même des noms similaires, certaines donnent l’impression d’être des copies suspectement similaires, y compris en termes de bugs.
+- La plupart sont centrées sur les États-Unis.
+- La plupart ne sont disponibles qu’en anglais ou utilisent des traducteurs automatiques.
+- La plupart n’ont pas les mêmes fonctionnalités, ou si elles en ont, elles sont rudimentaires.
+- Les développeurs sont parfois difficiles à identifier ou à contacter (développeur derrière une entreprise, pas d’interaction avec la communauté).
+- Certaines sont deux fois plus chères, incluent des achats intégrés ou de la publicité non transparents, ou proposent des abonnements.
+- Certaines semblent ne plus être en développement actif.
+- Certaines semblent avoir été générées par une IA plutôt que développées manuellement.
 
 Arsenal, en revanche:
-- est principalement adapté aux besoins de la Suisse, mais peut aussi être utilisé dans le monde entier et offre un choix d’unités de mesure, par exemple
-- est disponible en cinq langues, dont le français, l’italien et le romanche grison, traduites par un service de traduction suisse, et l’allemand et l’anglais, traduites manuellement
-- possède une interface utilisateur moderne, simple (autant que possible) et fonctionnelle
-- a été développé par un développeur suisse privé qui est activement connu dans la communauté suisse des armes et du tir et qui communique avec cette communauté
-- coûte un montant unique de 5 CHF pour une utilisation à vie, y compris toutes les mises à jour futures. Pas de publicité, pas d’abonnement, pas d’achats intégrés.
-- est en développement permanent
+- est principalement conçu pour répondre aux besoins de la Suisse, mais peut aussi être utilisé dans le monde entier grâce à des fonctionnalités spécifiques à chaque pays et à la possibilité de choisir les unités de mesure.
+- est disponible en cinq langues, les traductions en allemand et en anglais ayant été faites manuellement. Le français, l’italien et le romanche grison ont été traduits par supertext.com, un service de traduction suisse, et vérifiés pour leur pertinence et leur cohérence.
+- offre des fonctionnalités qui ont été mises en place par un véritable collectionneur d’armes à feu, avec des retours de la communauté, en constante évolution et amélioration.
+- est programmée par un développeur suisse indépendant, connu et actif dans la communauté suisse des armes à feu et des tireurs, et qui interagit régulièrement avec elle.
+- coûte une somme unique de 5 CHF, incluant toutes les mises à jour futures. Pas de publicité, pas d’abonnement, pas d’achats intégrés.
+- est en constante évolution
+- est programmée manuellement dans un éditeur de code et non générée par une IA via des prompts dans un environnement d’IA.
 
-En fin de compte, chacun décide lui-même quelle application, si tant est qu’il en utilise une, est la plus adaptée. Parfois, une feuille de calcul Excel suffit.
+En fin de compte, chacun décide lui-même quelle application, si tant est qu’il en utilise une, est la plus adaptée.
 `,
                     it: `
-Esistono effettivamente diverse app alternative, soprattutto per Android, che svolgono la stessa funzione di Arsenal. Tuttavia:
-- la maggior parte di esse è orientata verso il mercato statunitense
-- non sembrano offrire la possibilità di scegliere la lingua o utilizzano una traduzione automatica
-- non sembrano avere la stessa gamma di funzioni, oppure, se le hanno, sembrano poco intuitive e complicate
-- a volte è difficile identificare o contattare lo sviluppatore (LLC davanti al nome dello sviluppatore) e a volte sembra che non interagisca con la comunità
-- possono costare il doppio, possono avere acquisti in-app o pubblicità non del tutto trasparenti o possono offrire modelli di pagamento basati su abbonamento
-- alcune sembrano non essere più in fase di sviluppo attivo
+Ci sono effettivamente alcune app alternative che svolgono lo stesso ruolo di Arsenal. Alcune di queste hanno persino nomi simili, altre sembrano essere copie sospettosamente simili l’una dell’altra, inclusi gli stessi bug.
+- La maggior parte di queste app è incentrata sugli Stati Uniti.
+- La maggior parte di queste app è disponibile solo in inglese o utilizza traduttori automatici.
+- La maggior parte di queste app non ha le stesse funzionalità di Arsenal, o se le ha, sono implementate in modo rudimentale.
+- I loro sviluppatori sono a volte difficili da identificare o contattare (sviluppatori dietro una società, nessun contatto con la comunità).
+- Alcune di queste app sono due volte più costose, includono acquisti in-app o pubblicità non trasparenti o offrono abbonamenti.
+- Alcune di queste app sembrano non essere più in fase di sviluppo attivo.
+- Alcune di queste app sembrano avere chiari segni di codice generato da intelligenza artificiale, invece di essere state sviluppate manualmente.
 
-Arsenal, d’altro canto:
-- è principalmente pensata per le esigenze svizzere, ma è utilizzabile in tutto il mondo e offre la possibilità di scegliere le unità di misura da visualizzare, per esempio
-- è disponibile in cinque lingue, con traduzioni in tedesco e inglese realizzate a mano e in francese, italiano e rumantsch grischun tramite un servizio di traduzione svizzero
-- ha un’interfaccia utente moderna, semplice (per quanto possibile) e funzionale
-- è stata creata da uno sviluppatore svizzero privato che è ben conosciuto nella comunità svizzera di armi e di tiro e che interagisce con questa comunità
-- costa una tariffa una tantum di 5 CHF per l’intera vita, inclusi tutti gli aggiornamenti futuri. Non ci sono pubblicità, abbonamenti o acquisti in-app.
-- è in costante fase di sviluppo
+Arsenal invece:
+- è progettata principalmente per le esigenze svizzere, ma è utilizzabile in tutto il mondo grazie a funzionalità specifiche per paese e unità di misura selezionabili.
+- è disponibile in cinque lingue, con traduzioni in tedesco e inglese realizzate manualmente. Il francese, l’italiano e il romancio grigionese sono stati tradotti da supertext.com, un servizio di traduzione svizzero, e sono stati controllati per coerenza e plausibilità.
+- offre funzionalità implementate da un vero collezionista di armi, con feedback della comunità, in costante sviluppo e miglioramento.
+- è programmato da uno sviluppatore svizzero privato, ben noto e attivo nella comunità svizzera di armi e tiratori, con cui interagisce regolarmente.
+- costa una tantum 5 CHF, inclusi tutti gli aggiornamenti futuri. Nessuna pubblicità, nessun abbonamento, nessun acquisto in-app.
+- è in costante sviluppo
+- è programmato a mano in un editor di codice e non generato da un’IA tramite prompt in un ambiente di intelligenza artificiale.
 
-Alla fine, ognuno decide autonomamente quale app, se ce n’è una, è la più adatta alle proprie esigenze. A volte un foglio di calcolo Excel è sufficiente.
+In definitiva, spetta a ciascuno decidere quale app, se ce n’è una, sia la più adatta.
 `,
                 },
                 icon: "competitor"
+            },
+            {
+                question: {
+                    de: `Warum sollte ich überhaupt eine App nutzen, ich habe eine Excel-Tabelle, die tut ihrne Job genau so gut!`,
+                    en: `Why should I use an app in the first place, I have an Excel sheet that does its job just fine!`,
+                    fr: `Pourquoi devrais-je utiliser une application alors que j’ai un tableur Excel qui fait aussi bien le travail!`,
+                    it: `Perché dovrei usare un’app? Ho un foglio di calcolo Excel che fa esattamente lo stesso lavoro!`,
+                },
+                answer: {
+                    de: `
+Nun, manchmal ist die Excel-Tabelle absolut ausreichend und man braucht keine App.
+Die Tabelle kann jedoch ziemlich mühsam werden wenn man Verbindungen zwischen den Einträgen darstellen will (zum Beispiel wenn man eine Optik auf eine Pistole montieren will),
+oder wenn man das zugrundeliegende Datenschema zu ändern versucht.
+
+Arsenal ist im Prinzip einfach eine hübsche Darstellung einer Datenbank mit Sicherheitsvorkehrungen. Man hat die Datenbank in der Hosentasche immer dabei, wenn man also die Waffenbörse besucht und nicht sicher ist,
+ob man ein Buch schon hat oder wie viel Schuss 7.65 Browning noch zu Hause sind, mit Arsenal kann man es schnell und bequem herausfinden.
+
+Wenn man all dies nicht will oder braucht, dann ist Arsenal (oder jede andere App) nicht das Richtige. Niemand _muss_ eine App benutzen. Arsenal löst ein vorhandenes Problem, aber 
+wenn man dieses Problem selbst nicht hat, dann braucht man auch keine Lösung dafür.
+                    `,
+                    en: `
+Well, sometimes that Excel sheet is perfectly fine and sufficient and you don’t need an app.
+The Excel sheet gets cumbersome pretty quickly if you are trying to implement relations between entries (such as attaching an optic to a pistol),
+or when you try to alter the underlying data schema. 
+
+Arsenal is basically a pretty user interface for a database that has guardrails in place. You have it with you in your pocket, so if you’re at this gun show and are not sure if you already have a book, or how much 7.65 Browning ammo 
+you still have at home, Arsenal can show you that quickly and comfortably.
+
+If you don’t need or want all that fluff, Arsenal (or any other app) isn’t for you. Nobody _has_ to use an app. Arsenal solves a real problem, but if you don’t have that problem, you don’t need
+the solution.
+ `,
+                    fr: `
+Parfois, un simple tableur Excel est suffisant et il n’est pas nécessaire d’avoir une application.
+Mais si tu veux créer des liens entre les entrées (par exemple, si tu veux monter une optique sur un pistolet),
+ou si tu essaies de modifier le schéma de données sous-jacent, le tableur peut devenir assez pénible.
+
+Arsenal est essentiellement une jolie façon de présenter une base de données avec des mesures de sécurité. Tu as la base de données dans ta poche, donc si tu visites un magasin d’armes et que tu n’es pas sûr d’avoir déjà acheté un livre,
+ou si tu veux savoir combien de cartouches 7.65 Browning il te reste à la maison, tu peux le vérifier rapidement et facilement avec Arsenal.
+
+Si tu ne veux pas ou n’as pas besoin de tout cela, Arsenal (ou n’importe quelle autre application) n’est pas pour toi. Personne n’est _obligé_ d’utiliser une application. Arsenal résout un problème existant, mais
+si tu ne rencontres pas ce problème, tu n’as pas besoin de la solution.
+                    `,
+                    it: `
+A volte, un semplice foglio di calcolo di Excel è sufficiente e non hai bisogno di un’app.
+Ma se vuoi creare delle connessioni tra le voci (ad esempio, montare un mirino su una pistola),
+o se vuoi modificare lo schema dei dati sottostante, il foglio di calcolo può diventare piuttosto complicato.
+
+Arsenal è essenzialmente un bel modo di visualizzare un database con alcune precauzioni di sicurezza. Hai il database in tasca, quindi se vai in un negozio di armi e non sei sicuro di avere già un libro o di quanti proiettili da 7.65 Browning hai a casa,
+con Arsenal puoi scoprirlo in modo rapido e semplice.
+
+Se non vuoi o non hai bisogno di tutto questo, Arsenal (o qualsiasi altra app) non fa per te. Nessuno è _obbligato_ a usare un’app. Arsenal risolve un problema esistente, ma
+se non hai questo problema, non hai bisogno di una soluzione.
+`,
+                },
+                icon: "excel"
             },
         ]
     },
