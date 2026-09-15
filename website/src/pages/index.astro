@@ -1,4 +1,4 @@
 ---
-const preferredLanguage = Astro.preferredLocale
-return Astro.redirect(`/${preferredLanguage}/`);
+const preferredLanguage = Astro.preferredLocale ?? 'en'
+return Astro.redirect(`/${preferredLanguage}/`, 301)
 ---
