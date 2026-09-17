@@ -12,6 +12,7 @@ import { useViewStore } from "stores/useViewStore";
 import { ScrollView } from "react-native-gesture-handler";
 import Onboarding_CountrySelect from "./Onboarding_CountrySelect";
 import { distUnitNames, weightUnitNames } from "lib/interfaces";
+import * as Device from 'expo-device';
 
 export default function OnboardingDialog(){
 
@@ -87,6 +88,8 @@ export default function OnboardingDialog(){
         setOnboardingVisible(false)
         setHasBeenOnboarded(true)
     }
+
+    const modalWidthFactor = Device.deviceType === 1 ? 85 : Device.deviceType === 2 ? 65 : 85
     
     return(
 
@@ -108,7 +111,7 @@ export default function OnboardingDialog(){
                     <View 
                         style={{
                             borderRadius: 25, 
-                            width: (Dimensions.get("window").width/100)*85, 
+                            width: (Dimensions.get("window").width/100)*modalWidthFactor, 
                             height: (Dimensions.get("window").height/100)*85, 
                             display: "flex", 
                             flexDirection: "column", 

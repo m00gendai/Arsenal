@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Dimensions } from "react-native";
 import { Button, Dialog, HelperText, IconButton, List, Text, TextInput } from "react-native-paper";
 import { usePreferenceStore } from "../stores/usePreferenceStore";
 import { defaultViewPadding } from "../configs/configs";
@@ -11,6 +11,7 @@ import * as schema from "../db/schema"
 import { eq, or, inArray } from 'drizzle-orm';
 import { useItemStore } from "stores/useItemStore";
 import { v4 as uuidv4 } from 'uuid';
+import * as Device from 'expo-device';
 
 export default function QuickShot({navigation}){
 
@@ -239,11 +240,11 @@ useEffect(()=>{
     }));
   };
 
-  
+  const modalWidthFactor = Device.deviceType === 1 ? 85 : Device.deviceType === 2 ? 65 : 85
 
 return(
 <View style={{width: "100%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", flexWrap: "wrap", backgroundColor: theme.colors.backdrop}}>
-                    <View style={{width: "85%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flexWrap: "wrap"}}>
+                    <View style={{width: (Dimensions.get("window").width/100)*modalWidthFactor, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flexWrap: "wrap"}}>
                         <View style={{backgroundColor: theme.colors.background, width: "100%", height: "75%"}}>
                             <List.Section style={{flex: 1}}>
                    <View style={{borderTopLeftRadius: 25, borderTopRightRadius: 25, width: "100%", backgroundColor: theme.colors.background, borderBottomColor: theme.colors.primary, borderBottomWidth: 1, marginBottom: 5}}>
