@@ -13,7 +13,6 @@ import MountedIconBar from './MountedIconBar';
 import { useDatabaseStore } from 'stores/useDatabaseStore';
 import { determineCardSubtitle, determineCardTitle, determinePlaceHolderImage } from 'functions/determinators';
 import MountedTextBar from './MountedTextBar';
-import * as Device from 'expo-device';
 
 interface Props{
     item: ItemType
@@ -67,7 +66,7 @@ export default function ItemCard({ item }:Props){
     }
 
     function setCardWith(){
-        const columnNumbersForDeviceType = Device.deviceType === 1 ? 2 : Device.deviceType === 2 ? 3 : 2
+        const columnNumbersForDeviceType = generalSettings.gridColumns
         const divisor = displaySettings[currentCollection] === "grid" ? Dimensions.get("window").width > Dimensions.get("window").height ? 4 : columnNumbersForDeviceType : 1;
         return (Dimensions.get("window").width / divisor) - (defaultGridGap + (displaySettings[currentCollection] === "grid" ? defaultViewPadding/2 : defaultViewPadding))
     }
@@ -163,7 +162,7 @@ export default function ItemCard({ item }:Props){
                             <Card.Cover 
                                 source={validateImage(item) ? { uri: `${FileSystem.documentDirectory}${item.images[0].split("/").pop()}`} : determinePlaceHolderImage(currentCollection)} 
                                 style={{
-                                    height: 100,
+                                    height: (setCardWith()/16)*9,
                                 }}
                             />
                             {(attachedAccessories.length || attachedParts.length) ? 
