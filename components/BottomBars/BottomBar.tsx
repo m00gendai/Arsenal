@@ -16,7 +16,6 @@ import { CollectionType, Screens, StackParamList } from "lib/interfaces";
 import { useItemStore } from "stores/useItemStore";
 import BottomBar_PartCollection from "./BottomBar_PartCollection";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import { tabBarLabels } from "lib/Text/text_tabBarLabels";
 import BottomBar_ReloadingCollection from "./BottomBar_ReloadingCollection";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PREFERENCES } from "configs/configs_DB";
