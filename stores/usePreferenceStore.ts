@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
 import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames, SortingTypesPart_PistolSlide, SortingTypesPart_PistolFrame, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesLiterature_PrintMagazine} from "../lib/interfaces"
 import { Language } from "website/src/types/types_global"
+import * as Device from 'expo-device';
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -37,6 +38,7 @@ interface GeneralSettings{
   scanBeep: boolean
   rememberLastScreen: boolean
   displaySoldItems: boolean
+  gridColumns: number
 }
 
 interface DisplaySettings{
@@ -176,7 +178,8 @@ const initialState:InitialStoreState = {
       hintsDisplay: true,
       scanBeep: false,
       rememberLastScreen: true,
-      displaySoldItems: true
+      displaySoldItems: true,
+      gridColumns: Device.deviceType === 1 ? 2 : Device.deviceType === 2 ? 3 : 2
     },
     displaySettings: {
       gunCollection: "grid",
