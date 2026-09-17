@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
-import { defaultViewPadding, screenNameParamsAccessory } from "configs/configs";
+import { defaultBottomBarIconSize, defaultViewPadding, screenNameParamsAccessory } from "configs/configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "lib/interfaces";
@@ -64,7 +64,7 @@ export default function BottomBar_AccessoryCollection({handleNavigation, bottomB
                     >
                         <Icon 
                             source={determineIfCustomIcon(collection) ? determineCustomIcon(collection) : determineAccessoryIcons(collection)}
-                            size={48} 
+                            size={defaultBottomBarIconSize} 
                             color={currentCollection === collection ? theme.colors.primary : theme.colors.secondary} 
                         />
                         <Text 

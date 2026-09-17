@@ -1,5 +1,6 @@
 import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesLiterature_PrintMagazine, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
+import * as Device from 'expo-device';
 
 export const defaultGridGap:number = 10
 
@@ -7,7 +8,9 @@ export const defaultViewPadding:number = 10
 
 export const defaultModalBackdrop:string = "rgba(0,0,0,0.1)"
 
-export const defaultBottomBarHeight:number = 60
+export const defaultBottomBarHeight:number = Device.deviceType === 1 ? 60 : Device.deviceType === 2 ? 90 : 60
+export const defaultBottomBarMainIconSize: number = Device.deviceType === 1 ? 24 : Device.deviceType === 2 ? 48 : 24
+export const defaultBottomBarIconSize: number = Device.deviceType === 1 ? 48 : Device.deviceType === 2 ? 60 : 48
 
 export const defaultSearchBarHeight:number = 56
 

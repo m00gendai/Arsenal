@@ -3,7 +3,7 @@ import { Card, Icon, IconButton, Text } from "react-native-paper";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs/configs";
+import { defaultBottomBarHeight, defaultBottomBarMainIconSize, defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs/configs";
 import { Easing, useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
@@ -116,7 +116,7 @@ export default function BottomBar({screen, bottomBarRef, snapStateRef, bottomBar
         {screenNameParamsMain.map(screenName =>{
           return(
             <TouchableOpacity key={screenName} onPress={()=>handleOnPress(screenName)} style={{ alignItems: 'center' }}>
-              <Icon source={screenName === "gunCollection" ? "pistol" : "ammunition"} size={24} color={screen === screenName ? theme.colors.primary : theme.colors.secondary} />
+              <Icon source={screenName === "gunCollection" ? "pistol" : "ammunition"} size={defaultBottomBarMainIconSize} color={screen === screenName ? theme.colors.primary : theme.colors.secondary} />
               <Text style={{ color: screen === screenName ? theme.colors.primary : theme.colors.secondary, marginTop: 4 }}>{determineTabBarLabel(screenName)[language]}</Text>
             </TouchableOpacity>
           )
