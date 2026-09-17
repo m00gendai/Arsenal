@@ -29,7 +29,7 @@ export default function Item_Accessories({ currentItem }: Props) {
     const [miscAccessoryData, setMiscAccessoryData] = useState([])
     const [conversionKitData, setConversionKitData] = useState([])
     const [barrelData, setBarrelData] = useState([])
-    const [pistolSlideData, setpistolSlideData] = useState([])
+    const [pistolSlideData, setPistolSlideData] = useState([])
     const [pistolFrameData, setPistolFrameData] = useState([])
     const [rifleLowerData, setRifleLowerData] = useState([])
     const [rifleUpperData, setRifleUpperData] = useState([])
