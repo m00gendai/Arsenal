@@ -24,7 +24,6 @@ import * as StoreReview from 'expo-store-review';
 import { alarm } from 'functions/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PREFERENCES } from 'configs/configs_DB';
-import * as Device from 'expo-device';
 
 export default function ItemCollection({navigation}){
 
@@ -144,13 +143,7 @@ useEffect(()=>{
   const { width, height } = Dimensions.get("window");
 const isLandscape = width > height;
 
-function getGridColumns(){
-    const columnNumbersForDeviceType = Device.deviceType === 1 ? 2 : Device.deviceType === 2 ? 3 : 2
-const numColumns = isLandscape ? 4 : displaySettings[currentCollection] === "grid" ? columnNumbersForDeviceType : 1;
-return numColumns
-}
-
-const numColumns = getGridColumns()
+const numColumns = generalSettings.gridColumns
 
 const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[currentCollection] === "grid" ? "grid2" : "list"}` 
 
@@ -199,7 +192,7 @@ const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[
     initialNumToRender={10}
     contentContainerStyle={{ gap: defaultGridGap }}
     columnWrapperStyle={numColumns > 1 ? { gap: defaultGridGap } : undefined}
-    key={listKey}
+    key={`${listKey}_${numColumns}`}
     style={{
       height: "100%",
       width: "100%",
