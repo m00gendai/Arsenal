@@ -4,7 +4,7 @@ export const IS_RC = process.env.APP_VARIANT === "releaseCandidate"
 
 export default {
   "expo": {
-    "name": IS_DEV ? " Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
+    "name": IS_DEV ? "Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
     "version": "5.1.0",
     "orientation": "portrait",
@@ -21,6 +21,7 @@ export default {
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs access to your camera to take photos.",
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to save photos.",
+         "NSLocationWhenInUseUsageDescription": "This app does not use your location. This permission is required by a camera library dependency and is not used by this app.",
       },
       "config":
       { 
@@ -34,10 +35,6 @@ export default {
       },
       "package": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal.pre" : IS_RC ? "com.m00gendai.arsenal.rc" : "com.m00gendai.arsenal",
       "versionCode": 14,
-      "permissions": [
-        "android.permission.READ_MEDIA_IMAGES",
-        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
-      ]
     },
     "web": {
       "favicon": "./assets/appIconC.png"
@@ -51,9 +48,14 @@ export default {
       "expo-font",
       "expo-status-bar",
       [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Arsenal needs access to your camera to take photos."
+        }
+      ],
+      [
         "./plugins/withAndroidMainActivityAttributes",
         {
-          "android:largeHeap": false,
           "android:hardwareAccelerated": true
         }
       ],
@@ -83,8 +85,9 @@ export default {
       [
       "react-native-vision-camera",
       {
-        "cameraPermissionText": "Arsenal needs access to your Camera.",
-        "enableCodeScanner": true
+        "cameraPermissionText": "Arsenal needs access to your camera to take photos.",
+        "enableCodeScanner": true,
+        "enableLocation": false
       }
     ],
     ],

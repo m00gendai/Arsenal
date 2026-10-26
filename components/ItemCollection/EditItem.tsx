@@ -223,7 +223,7 @@ export default function EditGun({navigation}){
         }
     
         const pickCameraAsync = async (indx:number) =>{
-            const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
+            const permission = await ImagePicker.requestCameraPermissionsAsync();
     
             if(!permission){
                 setGranted(false)

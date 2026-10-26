@@ -219,14 +219,13 @@ export default function NewItem({navigation}){
     }
 
     const pickCameraAsync = async (indx:number) =>{
-        const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
+        const permission = await ImagePicker.requestCameraPermissionsAsync();
 
-        if(!permission){
-            setGranted(false)
-            return
-        } else {
-            setGranted(true)
-        }
+    if (!permission.granted) {
+        setGranted(false);
+        return;
+    }
+    setGranted(true);
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
@@ -243,7 +242,7 @@ export default function NewItem({navigation}){
             const destination = new Directory(Paths.document)
    
             try {
-                file.move(destination)
+                await file.move(destination)
 
                 const fileName = manipImage.uri.split('/').pop()
                 const permanentUri = `${Paths.document.uri}${fileName}`
