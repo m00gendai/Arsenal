@@ -25,6 +25,7 @@ export default function OnboardingDialog(){
 
     const [generalWeightUnit, setGeneralWeightUnit] = useState<weightUnitNames>("g")
     const [selectedBulletWeight, setSelectedBulletWeight] = useState<weightUnitNames>("gr")
+    const [selectShotWeight, setSelectedShotWeight] = useState<weightUnitNames>("g")
     const [selectedPowderWeight, setSelectedPowderWeight] = useState<weightUnitNames>("kg")
 
     const [generalLengthUnit, setGeneralLengthUnit] = useState<distUnitNames>("cm")
@@ -67,6 +68,7 @@ export default function OnboardingDialog(){
             selectedCurrency: selectedCurrency,
             generalWeightUnit: generalWeightUnit,
             bulletWeightUnit: selectedBulletWeight,
+            shotWeightUnit: selectShotWeight,
             powderWeightUnit: selectedPowderWeight,
             criticalPowderWeightUnit: selectedPowderWeight,
             generalLengthUnit: generalLengthUnit,
@@ -170,6 +172,8 @@ export default function OnboardingDialog(){
                                     setGeneralWeightUnit={setGeneralWeightUnit} 
                                     selectedBulletWeight={selectedBulletWeight} 
                                     setSelectedBulletWeight={setSelectedBulletWeight} 
+                                    selectedShotWeight={selectShotWeight}
+                                    setSelectedShotWeight={setSelectedShotWeight}
                                     selectedPowderWeight={selectedPowderWeight}
                                     setSelectedPowderWeight={setSelectedPowderWeight}/>
                                     

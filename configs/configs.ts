@@ -134,16 +134,20 @@ export const requiredFieldsReloading_Primer: string[] = ["model"]
 export const requiredFieldsReloading_Powder: string[] = ["designation"]
 export const requiredFieldsSellDialog:string[] = ["sold_buyerName"]
 
+export const generalLengthPrefixFields:string[] = ["overallLength"]
+export const generalWeightPrefixFields:string[] = []
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
+export const shotWeightPrefixFields:string[] = ["shotWeight"]
 export const powderWeightPrefixFields:string[] = ["powderWeight", "criticalPowderWeight"]
 export const barrelLengthPrefixFields:string[] = ["barrelLength"]
+
 export const caseLengthPrefixFields:string[] = ["caseLength"]
 
-export const unitFields_Weight: string[] = [...bulletWeightPrefixFields, ...powderWeightPrefixFields]
-export const unitFields_Length: string[] = [...barrelLengthPrefixFields, ...caseLengthPrefixFields]
+export const unitFields_Weight: string[] = [...generalWeightPrefixFields ,...bulletWeightPrefixFields, ...shotWeightPrefixFields, ...powderWeightPrefixFields]
+export const unitFields_Length: string[] = [...generalLengthPrefixFields, ...barrelLengthPrefixFields, ...caseLengthPrefixFields]
 
-export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "barrelLength", "caseLength", "powderWeight", "criticalPowderWeight"]
+export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "shotWeight", "barrelLength", "overallLength", "caseLength", "powderWeight", "criticalPowderWeight"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]
 export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]

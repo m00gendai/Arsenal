@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper';
 import { useEffect, useRef, useState } from 'react';
 import { ItemType } from '../lib/interfaces';
 import { View, Pressable, Keyboard, Platform } from 'react-native';
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caseLengthPrefixFields, currencyPrefixFields, fieldsForAutocomplete, maxCharCountText, numberTextFields, powderWeightPrefixFields, requiredFieldsAmmo, requiredFieldsGun, unitFields_Length, unitFields_Weight } from '../configs/configs';
+import { generalLengthPrefixFields, barrelLengthPrefixFields, bulletWeightPrefixFields, caseLengthPrefixFields, currencyPrefixFields, fieldsForAutocomplete, maxCharCountText, numberTextFields, powderWeightPrefixFields, requiredFieldsAmmo, requiredFieldsGun, shotWeightPrefixFields, unitFields_Length, unitFields_Weight } from '../configs/configs';
 import { usePreferenceStore } from 'stores/usePreferenceStore';
 import Autocomplete from './Autocomplete';
 import { convertLengthUnitsToMillimeter, convertLengthUnitsToPreferredUnit, convertWeightUnitsToMilligram, convertWeightUnitsToPreferredUnit } from 'functions/utils';
@@ -118,8 +118,20 @@ useEffect(() => {
                         bulletWeightPrefixFields.includes(data) ? 
                         <TextInput.Affix text={`${preferredUnits.bulletWeightUnit} `} /> 
                         :
+                        shotWeightPrefixFields.includes(data) ?
+                        <TextInput.Affix text={`${preferredUnits.shotWeightUnit} `} /> 
+                        :
+                        powderWeightPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.powderWeightUnit} `} /> 
+                        :
+                        null
+                    }
+                    right={
                         barrelLengthPrefixFields.includes(data) ? 
                         <TextInput.Affix text={`${preferredUnits.barrelLengthUnit} `} /> 
+                        :
+                        generalLengthPrefixFields.includes(data) ? 
+                        <TextInput.Affix text={`${preferredUnits.generalLengthUnit} `} /> 
                         :
                         caseLengthPrefixFields.includes(data) ? 
                         <TextInput.Affix text={`${preferredUnits.caseLengthUnit} `} /> 

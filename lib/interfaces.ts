@@ -37,6 +37,9 @@ export interface GunTypeDetails{
   de_wbkNumber: string | null,
   de_wbkRunningNumber: string | null,
   de_nwrId: string | null,
+  overallLength: string | null
+  barrelLength: string | null
+  thread: string | null
 }
 
 export interface GunTypeStatus{

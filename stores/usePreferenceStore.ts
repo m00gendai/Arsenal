@@ -118,6 +118,7 @@ export interface PreferredUnits{
   selectedCurrency: string
   generalWeightUnit: weightUnitNames
   bulletWeightUnit: weightUnitNames
+  shotWeightUnit: weightUnitNames
   powderWeightUnit: weightUnitNames
   criticalPowderWeightUnit: weightUnitNames
   generalLengthUnit: distUnitNames
@@ -209,6 +210,7 @@ const initialState:InitialStoreState = {
       selectedCurrency: "CHF",
       generalWeightUnit: "gr",
       bulletWeightUnit: "gr",
+      shotWeightUnit: "g",
       powderWeightUnit: "g",
       criticalPowderWeightUnit: "g",
       generalLengthUnit: "cm",

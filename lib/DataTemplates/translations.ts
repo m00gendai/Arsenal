@@ -85,6 +85,11 @@ interface DataTemplateTranslations {
     de_wbkNumber: DataTemplateTranslation
     de_wbkRunningNumber: DataTemplateTranslation
     de_nwrId: DataTemplateTranslation
+    shotWeight: DataTemplateTranslation
+    velocity: DataTemplateTranslation
+    drameq: DataTemplateTranslation
+    casingType: DataTemplateTranslation
+    overallLength: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -790,6 +795,46 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "🇩🇪 ID del Registro nazionale delle armi",
         ch: "🇩🇪 ID dal Register naziunal d’armas"
     },
+    "shotWeight":{
+        name: "shotWeight",
+        de: "Schrotgewicht",
+        en: "Shot Weight",
+        fr: "Poids du plomb",
+        it: "Peso del piombo",
+        ch: "Pais da la plomma"
+    },
+    "casingType":{
+        name: "casingType",
+        de: "Hülsenart",
+        en: "Casing Type",
+        fr: "Type de gaine",
+        it: "Tipo di copertura",
+        ch: "Tip da la coperchetta"
+    },
+    "velocity": {
+        name: "velocity",
+        de: "Geschwindigkeit",
+        en: "Velocity",
+        fr: "Vélocité",
+        it: "Velocità",
+        ch: "Velocitad"
+    },
+    "drameq": {
+        name: "drameq",
+        de: "Dram eq",
+        en: "Dram eq",
+        fr: "Dram eq",
+        it: "Dram eq",
+        ch: "Dram eq"
+    },
+    "overallLength": {
+        name: "overallLength",
+        de: "Gesamtlänge",
+        en: "Overall Length",
+        fr: "Longueur totale",
+        it: "Lunghezza complessiva",
+        ch: "Lunghezza totala"
+    }
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {

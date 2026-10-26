@@ -3,7 +3,7 @@ import { Checkbox, Text, IconButton } from 'react-native-paper';
 import { determineCountryCheckboxes, determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions, dropDownTriggerFields, powderWeightPrefixFields } from "configs/configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions, dropDownTriggerFields, powderWeightPrefixFields, shotWeightPrefixFields } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit } from "functions/utils";
@@ -65,6 +65,9 @@ export default function Item_details(){
         }
         if(bulletWeightPrefixFields.includes(dataItem.name)){
             return `${preferredUnits.bulletWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
+        }
+        if(shotWeightPrefixFields.includes(dataItem.name)){
+            return `${preferredUnits.shotWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
         }
         if(powderWeightPrefixFields.includes(dataItem.name)){
             return `${preferredUnits.powderWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
