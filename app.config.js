@@ -35,6 +35,11 @@ export default {
       },
       "package": IS_DEV ? "com.m00gendai.arsenal.dev" : IS_PREV ? "com.m00gendai.arsenal.pre" : IS_RC ? "com.m00gendai.arsenal.rc" : "com.m00gendai.arsenal",
       "versionCode": 14,
+      "blockedPermissions": [
+            "android.permission.READ_MEDIA_IMAGES",
+            "android.permission.READ_MEDIA_VIDEO",
+            "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+        ]
     },
     "web": {
       "favicon": "./assets/appIconC.png"
