@@ -36,6 +36,7 @@ Neu:
 - Neue Sammlungen Waffenbestandteile
 - Neue Sammlung Literatur
 - Lokalisierung für Deutschland (WBK/NWR-Felder)
+- Neue Attribute für Waffen (3) und Munition (4)
 
 Verbessert:
 - Suche in Sammlung und Kaliberdialog verbessert
@@ -56,6 +57,7 @@ New:
 - New weapon part collections
 - New literature collection
 - Localization for Germany (WBK/NWR fields)
+- New attributes for guns (3) and ammo (4)
 
 Improved:
 - Improved search in the collection and caliber dialog
@@ -75,16 +77,17 @@ Fixed & Other:
 Nouveautés:
 - Nouvelles collections de pièces d’armes & littéraire
 - Localisation pour l’Allemagne (champs WBK/NWR)
+- Nouveaux attributs pour les armes (3) et munitions (4)
 
 Améliorations:
 - Recherche améliorée
-- La liste de suggestions se réduit à nouveau après la sélection d’un texte
-- La sélection de la collection se réduit à nouveau après avoir choisi une collection
-- (Certains) Nouvelles icônes de collection
+- La liste de suggestions se réduit après la sélection d’un texte
+- La sélection de la collection se réduit après avoir choisi une collection
+- Nouvelles icônes de collection
 - Interface utilisateur de la tablette modifiée
 
 Corrections et autres:
-- Petits ajustements et corrections de bugs
+- Petits ajustements & corrections de bugs
 `,
             ios: null,
             android: null
@@ -94,6 +97,7 @@ Corrections et autres:
 Novità:
 - Nuove collezioni di parti per armi & letteratura
 - Localizzazione per la Germania (campi WBK/NWR)
+- Nuovi attributi per le armi (3) e le munizioni (4)
 
 Migliorato:
 - Ricerca migliorata
