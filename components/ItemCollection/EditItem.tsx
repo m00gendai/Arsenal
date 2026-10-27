@@ -154,15 +154,6 @@ export default function EditGun({navigation}){
     }
   
     const pickImageAsync = async (indx:number) =>{
-            const permission: ImagePicker.MediaLibraryPermissionResponse = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    
-            if(!permission){
-                setGranted(false)
-                return
-            } else {
-                setGranted(true)
-            }
-    
             let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 quality: 0.8,
