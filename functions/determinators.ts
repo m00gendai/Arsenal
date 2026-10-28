@@ -1,12 +1,12 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, PartType_Barrel, PartType_ConversionKit, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
+import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, LiteratureType_PrintMagazine, PartType_Barrel, PartType_ConversionKit, PartType_PistolFrame, PartType_PistolSlide, PartType_RifleLower, PartType_RifleUpper, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { PreferredUnits, SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
 import * as schema from "db/schema"
-import { or, like, sql } from 'drizzle-orm';
+import { or, like, sql, and } from 'drizzle-orm';
 import { emptyGunObject, gunDataTemplate, gunRemarks } from "lib/DataTemplates/gunDataTemplate";
 import { ammoDataTemplate, ammoRemarks, emptyAmmoObject } from "lib/DataTemplates/ammoDataTemplate";
-import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, checkboxFields_ch, checkboxFields_us, printers_ch, printers_others, printers_us, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
+import { cardActionsAccessory_LightLaser, cardActionsAccessory_Magazine, cardActionsAccessory_Misc, cardActionsAccessory_Optic, cardActionsAccessory_Scope, cardActionsAccessory_Silencer, cardActionsAmmo, cardActionsGun, cardActionsLiterature_Book, cardActionsLiterature_PrintMagazine, cardActionsPart_Barrel, cardActionsPart_ConversionKit, cardActionsPart_PistolFrame, cardActionsPart_PistolSlide, cardActionsPart_RifleLower, cardActionsPart_RifleUpper, cardActionsReloading_Bullet, cardActionsReloading_Case, cardActionsReloading_Die, cardActionsReloading_Powder, cardActionsReloading_Primer, checkboxFields_ch, checkboxFields_us, printers_ch, printers_others, printers_us, requiredFieldsAccessory_LightLaser, requiredFieldsAccessory_Magazine, requiredFieldsAccessory_Misc, requiredFieldsAccessory_Optic, requiredFieldsAccessory_Scope, requiredFieldsAccessory_Silencer, requiredFieldsAmmo, requiredFieldsGun, requiredFieldsLiterature_Book, requiredFieldsLiterature_PrintMagazine, requiredFieldsPart_Barrel, requiredFieldsPart_ConversionKit, requiredFieldsPart_PistolFrame, requiredFieldsPart_PistolSlide, requiredFieldsPart_RifleLower, requiredFieldsPart_RifleUpper, requiredFieldsReloading_Bullet, requiredFieldsReloading_Case, requiredFieldsReloading_Die, requiredFieldsReloading_Powder, requiredFieldsReloading_Primer, sortingOptionsAccessory_LightLaser, sortingOptionsAccessory_Magazine, sortingOptionsAccessory_Misc, sortingOptionsAccessory_Optic, sortingOptionsAccessory_Scope, sortingOptionsAccessory_Silencer, sortingOptionsAmmo, sortingOptionsGun, sortingOptionsLiterature_Book, sortingOptionsLiterature_PrintMagazine, sortingOptionsPart_Barrel, sortingOptionsPart_ConversionKit, sortingOptionsPart_PistolFrame, sortingOptionsPart_PistolSlide, sortingOptionsPart_RifleLower, sortingOptionsPart_RifleUpper, sortingOptionsReloading_Bullet, sortingOptionsReloading_Case, sortingOptionsReloading_Die, sortingOptionsReloading_Powder, sortingOptionsReloading_Primer } from "configs/configs";
 import sortAccessoryCollection_Silencer from "./sorters/sortAccessoryCollection_Silencer";
 import { accessoryDataTemplate_Silencer, emptySilencerObject, silencerRemarks } from "lib/DataTemplates/accessoryDataTemplate_Silencer";
 import sortAccessoryCollection_Optic from "./sorters/sortAccessoryCollection_Optic";
@@ -42,6 +42,16 @@ import sortReloadingCollection_Powder from "./sorters/sortReloadingCollection_Po
 import { reloadingCollection_Powder } from "db/schema";
 import { emptyPowderObject, powderRemarks, reloadingDataTemplate_Powder } from "lib/DataTemplates/reloadingDataTemplate_Powder";
 import { convertWeightUnitsToPreferredUnit } from "./utils";
+import sortPartCollection_PistolSlide from "./sorters/sortPartCollection_PistolSlide";
+import { emptyPistolSlideObject, partDataTemplate_PistolSlide, pistolSlideRemarks } from "lib/DataTemplates/partDataTemplate_PistolSlide";
+import sortPartCollection_PistolFrame from "./sorters/sortPartCollection_PistolFrame";
+import { emptyPistolFrameObject, partDataTemplate_PistolFrame, pistolFrameRemarks } from "lib/DataTemplates/partDataTemplate_PistolFrame";
+import sortPartCollection_RifleLower from "./sorters/sortPartCollection_RifleLower";
+import sortPartCollection_RifleUpper from "./sorters/sortPartCollection_RifleUpper";
+import { emptyRifleLowerObject, partDataTemplate_RifleLower, rifleLowerRemarks } from "lib/DataTemplates/partDataTemplate_RifleLower";
+import { emptyRifleUpperObject, partDataTemplate_RifleUpper, rifleUpperRemarks } from "lib/DataTemplates/partDataTemplate_RifleUpper";
+import sortLiteratureCollection_PrintMagazine from "./sorters/sortLiteratureCollection_PrintMagazine";
+import { emptyPrintMagazineObject, literatureDataTemplate_PrintMagazine, printMagazineRemarks } from "lib/DataTemplates/literatureDataTemplate_PrintMagazine";
 
 export function determineSchema(collection:CollectionType){
     switch(collection){
@@ -65,8 +75,18 @@ export function determineSchema(collection:CollectionType){
             return schema.partCollection_ConversionKit
         case "partCollection_Barrel":
             return schema.partCollection_Barrel
+        case "partCollection_PistolSlide":
+            return schema.partCollection_PistolSlide
+        case "partCollection_PistolFrame":
+            return schema.partCollection_PistolFrame
+        case "partCollection_RifleLower":
+            return schema.partCollection_RifleLower
+        case "partCollection_RifleUpper":
+            return schema.partCollection_RifleUpper
         case "literatureCollection_Book":
             return schema.literatureCollection_Book
+        case "literatureCollection_PrintMagazine":
+            return schema.literatureCollection_PrintMagazine
         case "reloadingCollection_Die":
             return schema.reloadingCollection_Die
         case "reloadingCollection_Bullet":
@@ -102,8 +122,18 @@ export function determineSchemaStringFromTabBarLabel(collection:string){
             return "partCollection_ConversionKit"
         case "barrelCollection":
             return "partCollection_Barrel"
+        case "pistolSlideCollection":
+            return "partCollection_PistolSlide"
+        case "pistolFrameCollection":
+            return "partCollection_PistolFrame"
+        case "rifleLowerCollection":
+            return "partCollection_RifleLower"
+        case "rifleUpperCollection":
+            return "partCollection_RifleUpper"
         case "bookCollection":
             return "literatureCollection_Book"
+        case "printMagazineCollection":
+            return "literatureCollection_PrintMagazine"
         case "dieCollection":
             return "reloadingCollection_Die"
         case "bulletCollection":
@@ -139,8 +169,18 @@ export function determineTagSchema(collection:CollectionType){
             return schema.part_ConversionKitTags
         case "partCollection_Barrel":
             return schema.part_BarrelTags
+        case "partCollection_PistolSlide":
+            return schema.part_PistolSlideTags
+        case "partCollection_PistolFrame":
+            return schema.part_PistolFrameTags
+        case "partCollection_RifleLower":
+            return schema.part_RifleLowerTags
+        case "partCollection_RifleUpper":
+            return schema.part_RifleUpperTags
         case "literatureCollection_Book":
             return schema.literature_BookTags
+        case "literatureCollection_PrintMagazine":
+            return schema.literature_PrintMagazineTags
         case "reloadingCollection_Die":
             return schema.reloading_DieTags
         case "reloadingCollection_Bullet":
@@ -187,8 +227,23 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
         case "partCollection_Barrel":{
             return sortPartCollection_Barrel(sortBy[collection].direction, sortBy[collection].type)
         };
+        case "partCollection_PistolSlide":{
+            return sortPartCollection_PistolSlide(sortBy[collection].direction, sortBy[collection].type)
+        }
+        case "partCollection_PistolFrame":{
+            return sortPartCollection_PistolFrame(sortBy[collection].direction, sortBy[collection].type)
+        }
+        case "partCollection_RifleLower":{
+            return sortPartCollection_RifleLower(sortBy[collection].direction, sortBy[collection].type)
+        }
+        case "partCollection_RifleUpper":{
+            return sortPartCollection_RifleUpper(sortBy[collection].direction, sortBy[collection].type)
+        }
         case "literatureCollection_Book":{
             return sortLiteratureCollection_Book(sortBy[collection].direction, sortBy[collection].type)
+        }
+        case "literatureCollection_PrintMagazine":{
+            return sortLiteratureCollection_PrintMagazine(sortBy[collection].direction, sortBy[collection].type)
         }
         case "reloadingCollection_Die":{
             return sortReloadingCollection_Die(sortBy[collection].direction, sortBy[collection].type)
@@ -209,71 +264,239 @@ export function determineSortingFunction(collection:CollectionType, sortBy: Sort
 }
 
 export function determineSearchQueryFields(collection:CollectionType, searchQuery:string){
+    const searchWords = searchQuery
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0);
+
     switch(collection){
         
         case "gunCollection":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "ammoCollection":{
-            return  or(like(sql`COALESCE(${schema[collection].designation}, '')`, `%${searchQuery}%`),
-                like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].designation}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].caliber}, '')`, `%${word}%`),
+                    )
+                )
+            )
         }
         case "accessoryCollection_Silencer":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "accessoryCollection_Optic":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "accessoryCollection_Scope":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "accessoryCollection_LightLaser":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "accessoryCollection_Magazine":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "accessoryCollection_Misc":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "partCollection_ConversionKit":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "partCollection_Barrel":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].caliber}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_PistolSlide":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_PistolFrame":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_RifleLower":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_RifleUpper":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "partCollection_ConversionKit":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "literatureCollection_Book":{
-            return or(like(sql`COALESCE(${schema[collection].title}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].subtitle}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].title}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].subtitle}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].series}, '')`, `%${word}%`)
+                    )
+                )
+            )
+        }
+        case "literatureCollection_PrintMagazine":{
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].title}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].subtitle}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].issue}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "reloadingCollection_Die":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].caliber}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "reloadingCollection_Bullet":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].caliber}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "reloadingCollection_Case":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].caliber}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "reloadingCollection_Primer":{
-            return or(like(sql`COALESCE(${schema[collection].model}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].model}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
         case "reloadingCollection_Powder":{
-            return or(like(sql`COALESCE(${schema[collection].designation}, '')`, `%${searchQuery}%`),
-                 like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${searchQuery}%`))
+            return and(
+                ...searchWords.map((word) =>
+                    or(
+                        like(sql`COALESCE(${schema[collection].designation}, '')`, `%${word}%`),
+                        like(sql`COALESCE(${schema[collection].manufacturer}, '')`, `%${word}%`)
+                    )
+                )
+            )
         }
     }
 }
@@ -301,8 +524,18 @@ export function determineDataTemplate(collection: CollectionType){
             return partDataTemplate_ConversionKit
         case "partCollection_Barrel":
             return partDataTemplate_Barrel
+        case "partCollection_PistolSlide":
+            return partDataTemplate_PistolSlide
+        case "partCollection_PistolFrame":
+            return partDataTemplate_PistolFrame
+        case "partCollection_RifleLower":
+            return partDataTemplate_RifleLower
+        case "partCollection_RifleUpper":
+            return partDataTemplate_RifleUpper
         case "literatureCollection_Book":
             return literatureDataTemplate_Book
+        case "literatureCollection_PrintMagazine":
+            return literatureDataTemplate_PrintMagazine
         case "reloadingCollection_Die":
             return reloadingDataTemplate_Die
         case "reloadingCollection_Bullet":
@@ -338,8 +571,18 @@ export function determineRemarkDataTemplate(collection: CollectionType){
             return conversionKitRemarks
         case "partCollection_Barrel":
             return barrelRemarks
+        case "partCollection_PistolSlide":
+            return pistolSlideRemarks
+        case "partCollection_PistolFrame":
+            return pistolFrameRemarks
+        case "partCollection_RifleLower":
+            return rifleLowerRemarks
+        case "partCollection_RifleUpper":
+            return rifleUpperRemarks
         case "literatureCollection_Book":
             return bookRemarks
+        case "literatureCollection_PrintMagazine":
+            return printMagazineRemarks
         case "reloadingCollection_Die":
             return dieRemarks
         case "reloadingCollection_Bullet":
@@ -375,8 +618,18 @@ export function determineEmptyObject(collection: CollectionType){
             return emptyConversionKitObject
         case "partCollection_Barrel":
             return emptyBarrelObject
+        case "partCollection_PistolSlide":
+            return emptyPistolSlideObject
+        case "partCollection_PistolFrame":
+            return emptyPistolFrameObject
+        case "partCollection_RifleLower":
+            return emptyRifleLowerObject
+        case "partCollection_RifleUpper":
+            return emptyRifleUpperObject
         case "literatureCollection_Book":
             return emptyBookObject
+        case "literatureCollection_PrintMagazine":  
+            return emptyPrintMagazineObject
         case "reloadingCollection_Die":
             return emptyDieObject
         case "reloadingCollection_Bullet":
@@ -412,8 +665,18 @@ export function determineEmptyObjectReturns(collection: CollectionType){
             return {...emptyConversionKitObject}
         case "partCollection_Barrel":
             return {...emptyBarrelObject}
+        case "partCollection_PistolSlide":
+            return {...emptyPistolSlideObject}
+        case "partCollection_PistolFrame":
+            return {...emptyPistolFrameObject}
+        case "partCollection_RifleLower":
+            return {...emptyRifleLowerObject}
+        case "partCollection_RifleUpper":
+            return {...emptyRifleUpperObject}
         case "literatureCollection_Book":
             return {...emptyBookObject}
+        case "literatureCollection_PrintMagazine":  
+            return {...emptyPrintMagazineObject}
         case "reloadingCollection_Die":
             return {...emptyDieObject}
         case "reloadingCollection_Bullet":
@@ -449,8 +712,18 @@ export function determineRequiredFields(collection: CollectionType){
             return requiredFieldsPart_ConversionKit
         case "partCollection_Barrel":
             return requiredFieldsPart_Barrel
+        case "partCollection_PistolSlide":
+            return requiredFieldsPart_PistolSlide
+        case "partCollection_PistolFrame":
+            return requiredFieldsPart_PistolFrame
+        case "partCollection_RifleLower":
+            return requiredFieldsPart_RifleLower
+        case "partCollection_RifleUpper":
+            return requiredFieldsPart_RifleUpper
         case "literatureCollection_Book":
             return requiredFieldsLiterature_Book
+        case "literatureCollection_PrintMagazine":
+            return requiredFieldsLiterature_PrintMagazine
         case "reloadingCollection_Die":
             return requiredFieldsReloading_Die
         case "reloadingCollection_Bullet":
@@ -486,8 +759,18 @@ export function determineSortingOptions(collection: CollectionType){
             return sortingOptionsPart_ConversionKit
         case "partCollection_Barrel":
             return sortingOptionsPart_Barrel
+        case "partCollection_PistolSlide":
+            return sortingOptionsPart_PistolSlide
+        case "partCollection_PistolFrame":
+            return sortingOptionsPart_PistolFrame
+        case "partCollection_RifleLower":
+            return sortingOptionsPart_RifleLower
+        case "partCollection_RifleUpper":
+            return sortingOptionsPart_RifleUpper
         case "literatureCollection_Book":
             return sortingOptionsLiterature_Book
+        case "literatureCollection_PrintMagazine":
+            return sortingOptionsLiterature_PrintMagazine
         case "reloadingCollection_Die":
             return sortingOptionsReloading_Die
         case "reloadingCollection_Bullet":
@@ -523,8 +806,18 @@ export function determineCardOptions(collection: CollectionType){
             return cardActionsPart_ConversionKit
         case "partCollection_Barrel":
             return cardActionsPart_Barrel
+        case "partCollection_PistolSlide":
+            return cardActionsPart_PistolSlide
+        case "partCollection_PistolFrame":
+            return cardActionsPart_PistolFrame
+        case "partCollection_RifleLower":
+            return cardActionsPart_RifleLower
+        case "partCollection_RifleUpper":
+            return cardActionsPart_RifleUpper
         case "literatureCollection_Book":
             return cardActionsLiterature_Book
+        case "literatureCollection_PrintMagazine":
+            return cardActionsLiterature_PrintMagazine
         case "reloadingCollection_Die":
             return cardActionsReloading_Die
         case "reloadingCollection_Bullet":
@@ -544,6 +837,18 @@ export function determineIfCustomIcon(collection: CollectionType){
             return true
         case "partCollection_PistolFrame":
             return true
+        case "partCollection_RifleLower":
+            return true
+        case "partCollection_RifleUpper":
+            return true
+        case "reloadingCollection_Bullet":
+            return true
+        case "reloadingCollection_Case":
+            return true
+        case "literatureCollection_Book":
+            return true
+        case "literatureCollection_PrintMagazine":
+            return true
         default: 
             return false
     }
@@ -552,9 +857,21 @@ export function determineIfCustomIcon(collection: CollectionType){
 export function determineCustomIcon(collection: CollectionType){
     switch(collection){
         case "partCollection_PistolSlide":
-            return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
+            return require("../assets/pistolSlide.png")
         case "partCollection_PistolFrame":
-            return require("../assets/775788_several different realistic rifles and pistols on _xl-1024-v1-0.png")
+            return require("../assets/pistolFrame.png")
+        case "partCollection_RifleLower":
+            return require("../assets/rifleLower.png")
+        case "partCollection_RifleUpper":
+            return require("../assets/rifleUpper.png")
+        case "reloadingCollection_Bullet":
+            return require("../assets/bulletTips.png")
+        case "reloadingCollection_Case":
+            return require("../assets/casings.png")
+        case "literatureCollection_Book":
+            return require("../assets/book.png")
+        case "literatureCollection_PrintMagazine":
+            return require("../assets/printMagazine.png")
     }
 }
 
@@ -617,8 +934,18 @@ export function determineTabBarLabel(collection: CollectionType){
             return tabBarLabels.conversionCollection
         case "partCollection_Barrel":
             return tabBarLabels.barrelCollection
+        case "partCollection_PistolSlide":
+            return tabBarLabels.pistolSlideCollection
+        case "partCollection_PistolFrame":
+            return tabBarLabels.pistolFrameCollection
+        case "partCollection_RifleLower":
+            return tabBarLabels.rifleLowerCollection
+        case "partCollection_RifleUpper":
+            return tabBarLabels.rifleUpperCollection
         case "literatureCollection_Book":
             return tabBarLabels.bookCollection
+        case "literatureCollection_PrintMagazine":  
+            return tabBarLabels.printMagazineCollection
         case "reloadingCollection_Die":
             return tabBarLabels.dieCollection
         case "reloadingCollection_Bullet":
@@ -716,9 +1043,29 @@ export function determineCardTitle(collection: CollectionType, itemIn: ItemType,
             {   const item = itemIn as PartType_Barrel
                 return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
             }
+        case "partCollection_PistolSlide":
+            {   const item = itemIn as PartType_PistolSlide
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "partCollection_PistolFrame":
+            {   const item = itemIn as PartType_PistolFrame
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "partCollection_RifleLower":
+            {   const item = itemIn as PartType_RifleLower
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
+        case "partCollection_RifleUpper":
+            {   const item = itemIn as PartType_RifleUpper
+                return `${item.manufacturer && item.manufacturer.length != 0 ? `${item.manufacturer}` : ""}${item.manufacturer && item.manufacturer.length != 0 ? ` ` : ""}${item.model}`
+            }
         case "literatureCollection_Book":
             {   const item = itemIn as LiteratureType_Book
                 return `${item.title}${item.volume && item.volume.length != 0 ? ` (${dataTemplate_Translations.volume[language]} ${item.volume})` : ""}`
+            }
+        case "literatureCollection_PrintMagazine":
+            {   const item = itemIn as LiteratureType_PrintMagazine
+                return `${item.title}${item.volume_printMagazine && item.volume_printMagazine.length != 0 ? ` ${item.volume_printMagazine}` : ""}`
             }
         case "reloadingCollection_Die":
             {   const item = itemIn as ReloadingType_Die
@@ -787,9 +1134,29 @@ export function determineCardSubtitle(collection: CollectionType, itemIn: ItemTy
             {   const item = itemIn as PartType_Barrel
                 return item.caliber ? getShortCaliberName(item.caliber, caliberDisplayNameList).join(", ") : " "
             }
+        case "partCollection_PistolSlide":
+            {   const item = itemIn as PartType_PistolSlide
+                return item.serial && item.serial.length != 0 ? item.serial : " "
+            }
+        case "partCollection_PistolFrame":
+            {   const item = itemIn as PartType_PistolFrame
+                return item.serial && item.serial.length != 0 ? item.serial : " "
+            }
+        case "partCollection_RifleLower":
+            {   const item = itemIn as PartType_RifleLower
+                return item.serial && item.serial.length != 0 ? item.serial : " "
+            }
+        case "partCollection_RifleUpper":
+            {   const item = itemIn as PartType_RifleUpper
+                return item.serial && item.serial.length != 0 ? item.serial : " "
+            }
         case "literatureCollection_Book":
             {   const item = itemIn as LiteratureType_Book
                 return `${item.subtitle && item.subtitle.length != 0 ? `${item.subtitle}` : " "}`
+            }
+        case "literatureCollection_PrintMagazine":
+            {   const item = itemIn as LiteratureType_PrintMagazine
+                return `${item.issue && item.issue.length != 0 ? `${item.issue} ${item.wholeNumber && item.wholeNumber.length != 0 ? `(${item.wholeNumber})` : " "}` : " "}`
             }
         case "reloadingCollection_Die":
             {   const item = itemIn as ReloadingType_Die
@@ -820,7 +1187,7 @@ export function determineCountryCheckboxes(iso:SupportedCountries){
             return checkboxFields_ch
         case "us":
             return checkboxFields_us
-        case "--":
+        default: 
             return []
     }
 }
@@ -845,6 +1212,20 @@ export function determinePlaceHolderImage(collection: CollectionType){
         return require("../assets/Placeholder_Reloading.png")
     }
 }
+
+export function determineCountryImage(county: SupportedCountries){
+    switch(county){
+        case "ch": 
+            return require("../assets/switzerland.png")
+        case "us": 
+            return require("../assets/usa.png")
+        case "de": 
+            return require("../assets/germany.png")
+        default:
+            return require("../assets/worldmap.png")
+    }
+}
+        
 
 export function determineCostLoggerSchema(collection: CollectionType){
     switch(collection){

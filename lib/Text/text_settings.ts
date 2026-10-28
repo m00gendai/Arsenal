@@ -48,6 +48,8 @@ interface DisplaySettingsLabels{
     caliberDisplayName: SimpleTranslation
     titleBelowImage: SimpleTranslation
     displaySoldItems: SimpleTranslation
+    gridColumns: SimpleTranslation
+    gridColumnsLabel: SimpleTranslation
 }
 
 export const preferenceTitles:PreferenceTitle = {
@@ -343,6 +345,20 @@ export const displaySettingsLabels: DisplaySettingsLabels = {
         fr: "Afficher les objets vendus dans la collection",
         it: "Mostra gli oggetti venduti nella collezione",
         ch: "Mussar las chosas vendidas en la collecziun",
+    },
+    gridColumns: {
+        de: "Anzahl Spalten für Kachelansicht",
+        en: "Tile View Columns",
+        fr: "Nombre de colonnes pour la vue en mosaïque",
+        it: "Numero di colonne per la visualizzazione a mosaico",
+        ch: "Dumber da colonnas per la vista da plattinas"
+    },
+    gridColumnsLabel: {
+        de: "Spalten",
+        en: "Columns",
+        fr: "Colonnes",
+        it: "Colonne",
+        ch: "Colonnas"
     }
 }
 

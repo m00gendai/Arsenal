@@ -124,7 +124,9 @@ export default function About(){
                 
                 <Divider style={{marginTop: 5, marginBottom: 5, width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                 
-                <Text>Splash & Icon: Designed by dgim-studio / Freepik</Text>
+                <Text>Splash & App Icon: Magnific (Freepik)/dgim-studio</Text>
+                <Text>Icons: Pictogrammers/mdi & game-icons.net</Text>
+                <Text>Countries: djaiss/mapsicon</Text>
             </View>
         </List.Accordion>
         {developerSettingsVisible ? <DeveloperSettings /> : null}

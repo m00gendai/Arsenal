@@ -14,7 +14,7 @@ import { generateGradient, imageHandling, itemDataValidation } from 'functions/u
 import { db } from "db/client"
 import * as schema from "db/schema"
 import { eq } from 'drizzle-orm';
-import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, stockTriggerFields } from 'configs/configs';
+import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, dropDownTriggerFields, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, stockTriggerFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -33,6 +33,7 @@ import NewText_CodeScanner from 'components/NewText_CodeScanner';
 import { gunDeleteAlert, imageDeleteAlert, unsavedChangesAlert, validationFailedAlert } from 'lib/Text/text_alerts';
 import { toastMessages } from 'lib/Text/text_toastMessages';
 import NewText_QuickStockPicker from 'components/NewText_QuickStockPicker';
+import NewText_DropDownPicker from 'components/NewText_DropDownPicker';
 
 
 export default function EditGun({navigation}){
@@ -153,15 +154,6 @@ export default function EditGun({navigation}){
     }
   
     const pickImageAsync = async (indx:number) =>{
-            const permission: ImagePicker.MediaLibraryPermissionResponse = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    
-            if(!permission){
-                setGranted(false)
-                return
-            } else {
-                setGranted(true)
-            }
-    
             let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 quality: 0.8,
@@ -222,7 +214,7 @@ export default function EditGun({navigation}){
         }
     
         const pickCameraAsync = async (indx:number) =>{
-            const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
+            const permission = await ImagePicker.requestCameraPermissionsAsync();
     
             if(!permission){
                 setGranted(false)
@@ -388,6 +380,14 @@ function swapItems(arr: string[], from: number, to: number){
     setItemData({ ...itemData, images: copy })
 }
 
+function hasCountryPrefix(name: string): boolean {
+        return name.length > 3 && name[2] === "_"
+    }
+
+    function matchesCountry(name: string, country: string): boolean {
+        return name.slice(0, 2).toLowerCase() === country.toLowerCase();
+    }
+
     return(
         <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
             <Appbar style={{width: "100%"}}>
@@ -482,6 +482,10 @@ function swapItems(arr: string[], from: number, to: number){
                     }}>
                         <NewChipArea data={"status"} itemData={itemData} setItemData={setItemData}/>
                             {determineDataTemplate(currentCollection).map(data=>{
+                                const isGenericField = !hasCountryPrefix(data.name)
+                                    const isCurrentCountryField = hasCountryPrefix(data.name) && matchesCountry(data.name, country)
+                                    const shouldShowField = isGenericField || isCurrentCountryField
+                                if(shouldShowField){
                                 return(
                                     <View 
                                         id={data.name}
@@ -508,10 +512,12 @@ function swapItems(arr: string[], from: number, to: number){
                                             <NewText_CodeScanner data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         stockTriggerFields.includes(data.name) ?
                                             <NewText_QuickStockPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        dropDownTriggerFields.includes(data.name) ?
+                                            <NewText_DropDownPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} />}
                                     </View>
                                 )
-                            })}
+                            }})}
                             {currentCollection === "gunCollection" ? <NewCheckboxArea itemData={itemData} setItemData={setItemData}/> : null}
                         <NewTextArea data={determineRemarkDataTemplate(currentCollection).name} itemData={itemData} setItemData={setItemData} label={determineRemarkDataTemplate(currentCollection)[language]}/>
                     </View>

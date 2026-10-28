@@ -1,5 +1,6 @@
-import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
+import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesLiterature_PrintMagazine, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
+import * as Device from 'expo-device';
 
 export const defaultGridGap:number = 10
 
@@ -7,7 +8,9 @@ export const defaultViewPadding:number = 10
 
 export const defaultModalBackdrop:string = "rgba(0,0,0,0.1)"
 
-export const defaultBottomBarHeight:number = 60
+export const defaultBottomBarHeight:number = Device.deviceType === 1 ? 60 : Device.deviceType === 2 ? 90 : 60
+export const defaultBottomBarMainIconSize: number = Device.deviceType === 1 ? 24 : Device.deviceType === 2 ? 48 : 24
+export const defaultBottomBarIconSize: number = Device.deviceType === 1 ? 48 : Device.deviceType === 2 ? 60 : 48
 
 export const defaultSearchBarHeight:number = 56
 
@@ -46,6 +49,13 @@ export const countrySelection:CountrySelection[] = [
         it: "Svizzera",
         ch: "Svizra"
     }, iso: "ch"},
+    {flag: "🇩🇪", name: {
+        de: "Deutschland",
+        en: "Germany",
+        fr: "Allemagne",
+        it: "Germania",
+        ch: "Germania"
+    }, iso: "de"},
     {flag: "🇺🇸", name: {
         de: "Vereinigte Staaten von Amerika",
         en: "United States of America",
@@ -111,7 +121,12 @@ export const requiredFieldsAccessory_Magazine:string[] = ["model"]
 export const requiredFieldsAccessory_Misc:string[] = ["model"]
 export const requiredFieldsPart_ConversionKit:string[] = ["model"]
 export const requiredFieldsPart_Barrel:string[] = ["model"]
+export const requiredFieldsPart_PistolSlide:string[] = ["model"]
+export const requiredFieldsPart_PistolFrame:string[] = ["model"]
+export const requiredFieldsPart_RifleLower:string[] = ["model"]
+export const requiredFieldsPart_RifleUpper:string[] = ["model"]
 export const requiredFieldsLiterature_Book:string[] = ["title"]
+export const requiredFieldsLiterature_PrintMagazine:string[] = ["issue"]
 export const requiredFieldsReloading_Die:string[] = ["model"]
 export const requiredFieldsReloading_Bullet:string[] = ["model"]
 export const requiredFieldsReloading_Case: string[] = ["model"]
@@ -119,16 +134,20 @@ export const requiredFieldsReloading_Primer: string[] = ["model"]
 export const requiredFieldsReloading_Powder: string[] = ["designation"]
 export const requiredFieldsSellDialog:string[] = ["sold_buyerName"]
 
+export const generalLengthPrefixFields:string[] = ["overallLength"]
+export const generalWeightPrefixFields:string[] = []
 export const currencyPrefixFields:string[] = ["paidPrice", "marketValue"]
 export const bulletWeightPrefixFields:string[] = ["bulletWeight"]
+export const shotWeightPrefixFields:string[] = ["shotWeight"]
 export const powderWeightPrefixFields:string[] = ["powderWeight", "criticalPowderWeight"]
 export const barrelLengthPrefixFields:string[] = ["barrelLength"]
+
 export const caseLengthPrefixFields:string[] = ["caseLength"]
 
-export const unitFields_Weight: string[] = [...bulletWeightPrefixFields, ...powderWeightPrefixFields]
-export const unitFields_Length: string[] = [...barrelLengthPrefixFields, ...caseLengthPrefixFields]
+export const unitFields_Weight: string[] = [...generalWeightPrefixFields ,...bulletWeightPrefixFields, ...shotWeightPrefixFields, ...powderWeightPrefixFields]
+export const unitFields_Length: string[] = [...generalLengthPrefixFields, ...barrelLengthPrefixFields, ...caseLengthPrefixFields]
 
-export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "barrelLength", "caseLength", "powderWeight", "criticalPowderWeight"]
+export const numberTextFields: string[] = ["shotCount", "currentStock", "criticalStock", "marketValue", "paidPrice", "decibelRating", "lumen", "candela", "capacity", "pages", "edition", "bulletWeight", "shotWeight", "barrelLength", "overallLength", "caseLength", "powderWeight", "criticalPowderWeight"]
 
 export const datePickerTriggerFields: string[] =  ["acquisitionDate_unix", "lastCleanedAt_unix", "lastShotAt_unix", "lastTopUpAt_unix", "batteryLastChangedAt_unix"]
 export const legacyDatePickerTriggerFields: string[] =  ["acquisitionDate", "lastCleanedAt", "lastShotAt", "lastTopUpAt"]
@@ -140,6 +159,7 @@ export const ignoreIntervalFieldsForLogger: string[] = ["cleanInterval", "cleanI
 export const mountedOnTriggerFields: string[] = ["currentlyMountedOn"]
 export const codeTriggerFields: string[] = ["qrCode"]
 export const stockTriggerFields: string[] = ["currentStock"]
+export const dropDownTriggerFields: string[] = ["de_wbkColor"]
 
 export const nonFreeTextFields: string[] = [...numberTextFields, ...datePickerTriggerFields, ...legacyDatePickerTriggerFields, ...colorPickerTriggerFields, ...caliberPickerTriggerFields, ...intervalPickerTriggerFields, ...mountedOnTriggerFields, ...codeTriggerFields]
 export const fieldsForAutocomplete: string[] = ["manufacturer", "designation", "model", "title", "subtitle", "author", "originCountry", "boughtFrom", "thread", "material", "zoom", "reticle", "platform", "language", "publisher", "series"]
@@ -156,7 +176,12 @@ export const cardActionsAccessory_Magazine: string[] = ["delete", "clone", "quic
 export const cardActionsAccessory_Misc: string[] = ["delete", "clone", "quickMount"]
 export const cardActionsPart_ConversionKit: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
 export const cardActionsPart_Barrel: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_PistolSlide: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_PistolFrame: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_RifleLower: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
+export const cardActionsPart_RifleUpper: string[] = ["delete", "clone", "quickMount", "quickShot", "quickClean"]
 export const cardActionsLiterature_Book: string[] = ["delete", "clone"]
+export const cardActionsLiterature_PrintMagazine: string[] = ["delete", "clone"]
 export const cardActionsReloading_Die: string[] = ["delete", "clone"]
 export const cardActionsReloading_Bullet: string[] = ["delete", "clone", "quickStock"]
 export const cardActionsReloading_Case: string[] = ["delete", "clone", "quickStock"]
@@ -167,8 +192,8 @@ export const cardActionsMountedOn: string[] = ["goto", "unmount", "remount"]
 
 export const screenNameParamsMain:CollectionType[] = ["gunCollection", "ammoCollection"]
 export const screenNameParamsAccessory:CollectionType[] = ["accessoryCollection_Silencer", "accessoryCollection_Optic", "accessoryCollection_Scope", "accessoryCollection_LightLaser", "accessoryCollection_Magazine", "accessoryCollection_Misc"]
-export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel"]
-export const screenNameParamsLiterature: CollectionType[] = ["literatureCollection_Book"]
+export const screenNameParamsPart:CollectionType[] = ["partCollection_ConversionKit", "partCollection_Barrel", "partCollection_PistolSlide", "partCollection_PistolFrame", "partCollection_RifleLower", "partCollection_RifleUpper"]
+export const screenNameParamsLiterature: CollectionType[] = ["literatureCollection_Book", "literatureCollection_PrintMagazine"]
 export const screenNameParamsReloading:CollectionType[] = ["reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
 
 export const screenNameParamsAll:CollectionType[] = [...screenNameParamsMain, ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature, ...screenNameParamsReloading]
@@ -182,7 +207,7 @@ export const collectionImportTables: (CollectionType | string)[] = [...screenNam
 export const numberBadgeCollections: CollectionType[] = ["ammoCollection", "accessoryCollection_Magazine", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 export const criticalStockCollections: CollectionType[] = ["ammoCollection", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer"]
 
-export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
+export const accessoryExceptions: CollectionType[] = ["ammoCollection", "literatureCollection_Book", "literatureCollection_PrintMagazine","reloadingCollection_Die", "reloadingCollection_Bullet", "reloadingCollection_Case", "reloadingCollection_Primer", "reloadingCollection_Powder"]
 export const costExceptions: CollectionType[] = ["gunCollection", ...screenNameParamsAccessory, ...screenNameParamsPart, ...screenNameParamsLiterature]
 
 export const sortingOptionsGun:SortingTypesGun[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
@@ -195,7 +220,12 @@ export const sortingOptionsAccessory_Magazine:SortingTypesAccessory_Magazine[] =
 export const sortingOptionsAccessory_Misc:SortingTypesAccessory_Misc[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt"]
 export const sortingOptionsPart_ConversionKit:SortingTypesPart_ConversionKit[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsPart_Barrel:SortingTypesPart_Barrel[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_PistolSlide:SortingTypesPart_PistolSlide[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_PistolFrame:SortingTypesPart_PistolFrame[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_RifleLower:SortingTypesPart_RifleLower[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
+export const sortingOptionsPart_RifleUpper:SortingTypesPart_RifleUpper[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "lastShotAt", "lastCleanedAt"]
 export const sortingOptionsLiterature_Book:SortingTypesLiterature_Book[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "pages"]
+export const sortingOptionsLiterature_PrintMagazine:SortingTypesLiterature_PrintMagazine[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt", "pages"]
 export const sortingOptionsReloading_Die:SortingTypesReloading_Die[] = ["alphabetical", "paidPrice", "marketValue", "acquisitionDate", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Bullet:SortingTypesReloading_Bullet[] = ["alphabetical", "createdAt", "lastModifiedAt"]
 export const sortingOptionsReloading_Case:SortingTypesReloading_Case[] = ["alphabetical", "createdAt", "lastModifiedAt"]
@@ -209,3 +239,10 @@ export const checkboxFields_us = ["pistol", "rifle", "shotgun", "sbr", "sbs", "a
 export const printers_ch: ListPrinter[] = ["gunCollection", "gunCollectionArt5", "gunCollectionHybrid", "custom"]
 export const printers_us: ListPrinter[] = ["gunCollection", "custom"]
 export const printers_others: ListPrinter[] = ["gunCollection", "custom"]
+
+export const countryExclusiveFields: Record<SupportedCountries, string[]> = {
+    ch: [],
+    de: ["de_wbkColor", "de_wbkNumber", "de_wbkRunningNumber", "de_nwrId"],
+    us: [],
+    "--": []
+}

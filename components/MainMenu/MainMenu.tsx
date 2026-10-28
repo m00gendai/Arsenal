@@ -1,4 +1,4 @@
-import { ScrollView, TouchableNativeFeedback, View, Dimensions } from "react-native"
+import { ScrollView, TouchableNativeFeedback, View, Dimensions, Image } from "react-native"
 import { useViewStore } from "stores/useViewStore"
 import { Icon } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
@@ -12,11 +12,13 @@ import LanguageSelection from "./LanguageSelection"
 import EditData from "./EditData/EditData"
 import VersionHistory from "./VersionHistory/VersionHistory"
 import QRCodes from "./QRCodes/QRCodes"
+import { defaultViewPadding } from "configs/configs"
+import { determineCountryImage } from "functions/determinators"
 
 export default function MainMenu({navigation}){
 
     const { setMainMenuOpen, setHideBottomSheet } = useViewStore()
-    const { theme } = usePreferenceStore()
+    const { theme, country } = usePreferenceStore()
    
     useEffect(()=>{
         const trigger = navigation.addListener("focus", function(){
@@ -37,19 +39,63 @@ export default function MainMenu({navigation}){
         navigation.goBack()
     }
 
+    const image = determineCountryImage(country)
+    const { width, height } = Image.resolveAssetSource(image)
+
     return(
         <View style={{height: "100%", width: Dimensions.get("window").width > Dimensions.get("window").height ? "60%" : "100%"}}>
             <View style={{width: "100%", height: "100%"}}>
-                <TouchableNativeFeedback onPress={()=>handleCloseMenu()}>
-                    <View style={{width: "100%", height: 50, display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", paddingLeft: 20, backgroundColor: theme.colors.primary}}>
-                        <Icon source="arrow-left" size={20} color={theme.colors.onPrimary}/>
+                <View style={{backgroundColor: theme.colors.primary}}>
+                    <View 
+                        pointerEvents="none" 
+                        style={{
+                            height: "100%", 
+                            width: "100%", 
+                            backgroundColor: "transparent", 
+                            position: "absolute", 
+                            top: 0,
+                            left: 0,
+                            zIndex: 0,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View style={{
+                            height: "100%",
+                            aspectRatio: width > height ? width/height : height/width,
+                            backgroundColor: "transparent", 
+                            flexDirection: "row",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                            padding: defaultViewPadding
+                        }}>
+                            <Image 
+                                source={image} 
+                                style={{
+                                    height: "100%", 
+                                    width: "100%",
+                                    objectFit: "contain", 
+                                    backgroundColor: "transparent",
+                                    tintColor: theme.colors.primaryContainer,
+                                    
+                                }}
+                            />
+                        </View>
                     </View>
-                </TouchableNativeFeedback>
+                    <TouchableNativeFeedback onPress={()=>handleCloseMenu()}>
+                        <View style={{width: "100%", height: 50, display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center", paddingLeft: 20}}>
+                            <Icon source="arrow-left" size={20} color={theme.colors.onPrimary}/>
+                        </View>
+                    </TouchableNativeFeedback>
+
+                    <LanguageSelection />
+ 
+                </View>
                 <View style={{padding: 0, display: "flex", height: "100%", flexDirection: "column", flexWrap: "wrap"}}>
                     <View style={{width: "100%", flex: 15}}>
                         <ScrollView>
-
-                            <LanguageSelection />
 
                             <DatabaseOperations />
 
@@ -69,7 +115,7 @@ export default function MainMenu({navigation}){
 
                         </ScrollView>
                     </View>
-                    <View style={{width: "100%", flex: 1, padding: 0, marginTop: 10, marginBottom: 10, elevation: 4, backgroundColor: theme.colors.primary}}>
+                    <View style={{width: "100%", flex: 1, padding: 0, marginTop: 10, marginBottom: 100, elevation: 4, backgroundColor: theme.colors.primary}}>
                     </View>
                 </View>
             </View>           

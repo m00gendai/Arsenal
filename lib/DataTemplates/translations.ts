@@ -32,6 +32,10 @@ interface DataTemplateTranslations {
     edition: DataTemplateTranslation
     series: DataTemplateTranslation
     volume: DataTemplateTranslation
+    volume_printMagazine: DataTemplateTranslation
+    issue: DataTemplateTranslation
+    wholeNumber: DataTemplateTranslation
+    issn: DataTemplateTranslation
     pages: DataTemplateTranslation
     format: DataTemplateTranslation
     lumen: DataTemplateTranslation
@@ -77,6 +81,15 @@ interface DataTemplateTranslations {
     batteryType: DataTemplateTranslation
     glassDimensions: DataTemplateTranslation
     focalPlane: DataTemplateTranslation
+    de_wbkColor: DataTemplateTranslation
+    de_wbkNumber: DataTemplateTranslation
+    de_wbkRunningNumber: DataTemplateTranslation
+    de_nwrId: DataTemplateTranslation
+    shotWeight: DataTemplateTranslation
+    velocity: DataTemplateTranslation
+    drameq: DataTemplateTranslation
+    casingType: DataTemplateTranslation
+    overallLength: DataTemplateTranslation
 }
 
 interface DataTemplateTranslationRemarks {
@@ -357,6 +370,38 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         fr: "Volume",
         it: "Volume",
         ch: "Cudesch",
+    },
+    "volume_printMagazine": {
+        name: "volume_printMagazine",
+        de: "Jahrgang",
+        en: "Year",
+        fr: "Année",
+        it: "Annata",
+        ch: "Annada",
+    },
+    issue: {
+        name: "issue", 
+        de: "Ausgabe",
+        en: "Issue",
+        fr: "Numéro",
+        it: "Numero",
+        ch: "Emissiun",
+    },
+    wholeNumber: {
+        name: "wholeNumber",
+        de: "Gesamtausgabe",
+        en: "Whole Number",
+        fr: "Numéro complet",
+        it: "Numero intero",
+        ch: "Numer cumplett",
+    },
+    issn: {
+        name: "issn",
+        de: "ISSN",
+        en: "ISSN",
+        fr: "ISSN",
+        it: "ISSN",
+        ch: "ISSN",
     },
     "pages": {
         name: "pages",
@@ -718,6 +763,78 @@ export const dataTemplate_Translations: DataTemplateTranslations = {
         it: "Piano focale",
         ch: "Plan focal"
     },
+    "de_wbkColor":{
+        name: "de_wbkColor",
+        de: "🇩🇪 WBK Farbe",
+        en: "🇩🇪 Weapon Possession License Color",
+        fr: "🇩🇪 Couleur de la carte de possession d’armes",
+        it: "🇩🇪 Colore della carta di possesso di armi",
+        ch: "🇩🇪 Culur da la carta da possess d’armas"
+    },
+    "de_wbkNumber":{
+        name: "de_wbkNumber",
+        de: "🇩🇪 WBK Nummer",
+        en: "🇩🇪 Weapon Possession License Number",
+        fr: "🇩🇪 Numéro de la carte de possession d’armes",
+        it: "🇩🇪 Numero della carta di possesso di armi",
+        ch: "🇩🇪 Numra da la carta da possess d’armas"
+    },
+    "de_wbkRunningNumber":{
+        name: "de_wbkRunningNumber",
+        de: "🇩🇪 Laufende Nummer",
+        en: "🇩🇪 Running Number",
+        fr: "🇩🇪 Numéro d’ordre",
+        it: "🇩🇪 Numero progressivo",
+        ch: "🇩🇪 Numra current"
+    },
+    "de_nwrId":{
+        name: "de_nwrId",
+        de: "🇩🇪 NWR-ID",
+        en: "🇩🇪 National Weapons Register ID",
+        fr: "🇩🇪 ID du Registre national des armes",
+        it: "🇩🇪 ID del Registro nazionale delle armi",
+        ch: "🇩🇪 ID dal Register naziunal d’armas"
+    },
+    "shotWeight":{
+        name: "shotWeight",
+        de: "Schrotgewicht",
+        en: "Shot Weight",
+        fr: "Poids du plomb",
+        it: "Peso del piombo",
+        ch: "Pais da la plomma"
+    },
+    "casingType":{
+        name: "casingType",
+        de: "Hülsenart",
+        en: "Casing Type",
+        fr: "Type de gaine",
+        it: "Tipo di copertura",
+        ch: "Tip da la coperchetta"
+    },
+    "velocity": {
+        name: "velocity",
+        de: "Geschwindigkeit",
+        en: "Velocity",
+        fr: "Vélocité",
+        it: "Velocità",
+        ch: "Velocitad"
+    },
+    "drameq": {
+        name: "drameq",
+        de: "Dram eq",
+        en: "Dram eq",
+        fr: "Dram eq",
+        it: "Dram eq",
+        ch: "Dram eq"
+    },
+    "overallLength": {
+        name: "overallLength",
+        de: "Gesamtlänge",
+        en: "Overall Length",
+        fr: "Longueur totale",
+        it: "Lunghezza complessiva",
+        ch: "Lunghezza totala"
+    }
 }
 
 export const dataTemplate_TranslationRemarks: DataTemplateTranslationRemarks = {

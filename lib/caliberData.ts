@@ -106,6 +106,7 @@ export const calibers:Caliber[] = [
             {"name": ".223 WSSM"},
             {"name": ".225 Winchester"},
             {"name": ".224 Weatherby Magnum"},
+            {"name": ".22-250 Remington (5.7x48mm) / .22 Varminter / .22 Wotkyns Original Swift"},
             {"name": "20 Nosler"},
             {"name": "22 Nosler"},
             {"name": "22 PPC-USA"},
@@ -158,7 +159,9 @@ export const calibers:Caliber[] = [
             {"name": ".25-25 Stevens"},
             {"name": ".25-35 Winchester"},
             {"name": ".25-45 Sharps"},
-            {"name": ".250-3000 Savage"},
+            {"name": ".250-3000 Savage (6.5x48mm)",
+                "displayName": "250 Savage"
+            },
             {"name": ".256 Newton"},
             {"name": ".256 Win Magnum"},
             {"name": ".257 Roberts"},

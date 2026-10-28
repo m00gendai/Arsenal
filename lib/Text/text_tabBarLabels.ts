@@ -9,6 +9,10 @@ interface TabBarLabels{
     lightLaserCollection: SimpleTranslation
     conversionCollection: SimpleTranslation
     barrelCollection: SimpleTranslation
+    rifleLowerCollection: SimpleTranslation
+    rifleUpperCollection: SimpleTranslation
+    pistolSlideCollection: SimpleTranslation
+    pistolFrameCollection: SimpleTranslation
     magazineCollection: SimpleTranslation
     miscAccessoryCollection: SimpleTranslation
     bookCollection: SimpleTranslation
@@ -17,8 +21,8 @@ interface TabBarLabels{
     caseCollection: SimpleTranslation
     primerCollection: SimpleTranslation
     powderCollection: SimpleTranslation
-    /*printMagazineCollection: SimpleTranslation
-    swissMilitaryRegulationCollection: SimpleTranslation
+    printMagazineCollection: SimpleTranslation
+    /* swissMilitaryRegulationCollection: SimpleTranslation
     literatureMiscCollection: SimpleTranslation
     diesCollection: SimpleTranslation
     
@@ -92,6 +96,34 @@ export const tabBarLabels: TabBarLabels = {
         it: "Canne",
         ch: "Channa",
     },
+    rifleLowerCollection: {
+        de: "Abzugsgehäuse",
+        en: "Lower Receiver",
+        fr: "Boîtier de détente",
+        it: "Scatola dello scatto",
+        ch: "Chascha da l’indriz da trair",
+    },
+    rifleUpperCollection: {
+        de: "Verschlussgehäuse",
+        en: "Upper Receiver",
+        fr: "Boîte de culasse",
+        it: "Scatola dell’otturatore",
+        ch: "Chascha da la serradira",
+    },
+    pistolSlideCollection: {
+        de: "Schlitten",
+        en: "Slide",
+        fr: "Glissière",
+        it: "Carrello",
+        ch: "Schlitteda",  
+    },
+    pistolFrameCollection: {
+        de: "Griffstück",
+        en: "Frame",
+        fr: "Carcasse",
+        it: "Telaio",
+        ch: "Chascha",
+    },
     miscAccessoryCollection: {
         de: "Diverses",
         en: "Miscellaneous",
@@ -105,14 +137,14 @@ export const tabBarLabels: TabBarLabels = {
         fr: "Livres",
         it: "Libri",
         ch: "Cudeschs",
-    }, /*
+    }, 
     printMagazineCollection: {
         de: "Magazine",
         en: "Magazines",
         fr: "Magazines",
         it: "Rivista",
         ch: "Revista",
-    },
+    }, /*
     swissMilitaryRegulationCollection: {
         de: "Reglemente Schweizer Armee",
         en: "Swiss Army Rulebooks",

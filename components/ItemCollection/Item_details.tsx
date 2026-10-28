@@ -3,12 +3,13 @@ import { Checkbox, Text, IconButton } from 'react-native-paper';
 import { determineCountryCheckboxes, determineDataTemplate, determineRemarkDataTemplate } from 'functions/determinators';
 import { useItemStore } from "stores/useItemStore";
 import { usePreferenceStore } from "stores/usePreferenceStore";
-import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions, powderWeightPrefixFields } from "configs/configs";
+import { barrelLengthPrefixFields, bulletWeightPrefixFields, caliberPickerTriggerFields, caseLengthPrefixFields, cleanIntervalOptions, colorPickerTriggerFields, currencyPrefixFields, datePickerTriggerFields, dateTimeOptions, dropDownTriggerFields, powderWeightPrefixFields, shotWeightPrefixFields } from "configs/configs";
 import { cleanIntervals, shotLabel } from "lib/textTemplates";
 import { GetColorName } from 'hex-color-to-color-name';
 import { checkDate, convertLengthUnitsToPreferredUnit, convertWeightUnitsToPreferredUnit } from "functions/utils";
 import { checkBoxes } from "lib/DataTemplates/gunDataTemplate";
 import { getShortCaliberName } from "functions/getShortCaliber";
+import { dropDownPickerOptions } from "lib/dropDownPickerOptions";
 
 export default function Item_details(){
 
@@ -65,6 +66,9 @@ export default function Item_details(){
         if(bulletWeightPrefixFields.includes(dataItem.name)){
             return `${preferredUnits.bulletWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
         }
+        if(shotWeightPrefixFields.includes(dataItem.name)){
+            return `${preferredUnits.shotWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
+        }
         if(powderWeightPrefixFields.includes(dataItem.name)){
             return `${preferredUnits.powderWeightUnit} ${currentItem[dataItem.name] ? convertWeightUnitsToPreferredUnit(preferredUnits, dataItem.name, currentItem[dataItem.name])  :  ""}` 
         }
@@ -91,14 +95,34 @@ export default function Item_details(){
                 return `Invalid Date catch: ${currentItem[dataItem.name]}`
             }
         }
+        if(dropDownTriggerFields.includes(dataItem.name) && dataItem.name in currentItem && currentItem[dataItem.name]){
+            const targetValues = dropDownPickerOptions[dataItem.name][language]
+            const targetValue = targetValues.filter(value => value.value === currentItem[dataItem.name])[0]
+
+            return targetValue.label
+        }
 
         return currentItem[dataItem.name]
     }
 
+    function hasCountryPrefix(name: string): boolean {
+        return name.length > 3 && name[2] === "_"
+    }
+
+    function matchesCountry(name: string, country: string): boolean {
+        return name.slice(0, 2).toLowerCase() === country.toLowerCase();
+    }
+
     return(
+
+
         <View>
                         {determineDataTemplate(currentCollection).map((dataItem, index)=>{
-                            if(!generalSettings.emptyFields){
+                                    const isGenericField = !hasCountryPrefix(dataItem.name)
+                                    const isCurrentCountryField = hasCountryPrefix(dataItem.name) && matchesCountry(dataItem.name, country)
+                                    const shouldShowField = isGenericField || isCurrentCountryField
+
+                            if(!generalSettings.emptyFields && shouldShowField){
                                 return(
                                     <View key={`${dataItem.name}`} style={{flex: 1, flexDirection: "column"}} >
 {/* Textfield Label in selected language */}
@@ -124,7 +148,7 @@ export default function Item_details(){
                                         null}
                                     </View>
                                 )
-                            } else if(currentItem[dataItem.name]){
+                            } else if(currentItem[dataItem.name] && shouldShowField){
                             return(
                                 <View key={`${dataItem.name}`} style={{flex: 1, flexDirection: "column"}} >
                                     {/* Textfield Label in selected language */}

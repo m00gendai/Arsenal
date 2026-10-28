@@ -18,6 +18,7 @@ export default function Settings_Units(){
 
     const [generalWeightUnit, setGeneralWeightUnit] = useState<string>(preferredUnits.generalWeightUnit)
     const [selectedBulletWeight, setSelectedBulletWeight] = useState<string>(preferredUnits.bulletWeightUnit)
+    const [selectedShotWeight, setSelectedShotWeight] = useState<string>(preferredUnits.shotWeightUnit)
     const [selectedPowderWeight, setSelectedPowderWeight] = useState<string>(preferredUnits.powderWeightUnit)
     const [generalLengthUnit, setGeneralLengthUnit] = useState<string>(preferredUnits.generalLengthUnit)
     const [barrelLengthUnit, setBarrelLengthUnit] = useState<string>(preferredUnits.barrelLengthUnit)
@@ -30,6 +31,7 @@ export default function Settings_Units(){
                 selectedCurrency: selectedCurrency,
                 generalWeightUnit: generalWeightUnit,
                 bulletWeightUnit: selectedBulletWeight,
+                shotWeightUnit: selectedShotWeight,
                 powderWeightUnit: selectedPowderWeight,
                 criticalPowderWeightUnit: selectedPowderWeight,
                 generalLengthUnit: generalLengthUnit,
@@ -48,7 +50,7 @@ export default function Settings_Units(){
             setPreferredUnits(onboardingPreferences)
         }
         saveUnits()
-    },[generalLengthUnit, barrelLengthUnit, caseLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency])
+    },[generalLengthUnit, barrelLengthUnit, caseLengthUnit, generalWeightUnit, selectedBulletWeight, selectedPowderWeight, selectedCurrency, selectedShotWeight])
 
     const weightData = weightUnits.map(unit => {
             return(
@@ -88,6 +90,14 @@ export default function Settings_Units(){
             fr: "Unité du poids du projectile",
             it: "Unità del peso del proiettile",
             ch: "Unitad dal pais dal projectil",
+        }
+
+        const weightLabelShotWeight: SimpleTranslation = {
+            de: "Einheit Schrotgewicht",
+            en: "Unit Shot Weight",
+            fr: "Unité du poids de la grenaille",
+            it: "Unità del peso del piombo",
+            ch: "Unitad dal pais da la grana",
         }
     
         const weightLabelPowderWeight: SimpleTranslation = {
@@ -156,6 +166,16 @@ export default function Settings_Units(){
                                 options={weightData}
                                 value={selectedBulletWeight}
                                 onSelect={setSelectedBulletWeight}
+                                menuContentStyle={{height: "100%"}}
+                            />
+                        </View>
+
+                        <View style={{width: "100%"}}>
+                            <Dropdown
+                                label={weightLabelShotWeight[language]}
+                                options={weightData}
+                                value={selectedShotWeight}
+                                onSelect={setSelectedShotWeight}
                                 menuContentStyle={{height: "100%"}}
                             />
                         </View>

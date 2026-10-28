@@ -14,7 +14,7 @@ import NewChipArea from 'components/NewChipArea';
 import { File, Directory, Paths } from 'expo-file-system';
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
+import { caliberPickerTriggerFields, codeTriggerFields, colorPickerTriggerFields, datePickerTriggerFields, defaultViewPadding, dropDownTriggerFields, fieldsForAutocomplete, intervalPickerTriggerFields, mountedOnTriggerFields, nonFreeTextFields } from 'configs/configs';
 import NewText_DatePicker from 'components/NewText_DatePicker';
 import NewText_ColorPicker from 'components/NewText_ColorPicker';
 import NewText_CaliberPicker from 'components/NewText_CaliberPicker';
@@ -33,11 +33,12 @@ import { imageDeleteAlert, unsavedChangesAlert, validationFailedAlert } from 'li
 import { toastMessages } from 'lib/Text/text_toastMessages';
 import { eq, asc, inArray } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import NewText_DropDownPicker from 'components/NewText_DropDownPicker';
 
 
 export default function NewItem({navigation}){
     
-    const { language, theme, generalSettings } = usePreferenceStore()
+    const { language, theme, generalSettings, country } = usePreferenceStore()
     const { currentItem, setCurrentItem, currentCollection, setCurrentCollection } = useItemStore()
     const { setHideBottomSheet, setAlohaSnackbarVisible } = useViewStore()
     const { setAlohaSnackbarText } = useTextStore()
@@ -149,15 +150,6 @@ export default function NewItem({navigation}){
     }
     
     const pickImageAsync = async (indx:number) =>{
-        const permission: ImagePicker.MediaLibraryPermissionResponse = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
-        if(!permission){
-            setGranted(false)
-            return
-        } else {
-            setGranted(true)
-        }
-
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             quality: 0.8,
@@ -218,14 +210,13 @@ export default function NewItem({navigation}){
     }
 
     const pickCameraAsync = async (indx:number) =>{
-        const permission: ImagePicker.MediaLibraryPermissionResponse | ImagePicker.CameraPermissionResponse = Platform.OS === "android" ? await ImagePicker.requestMediaLibraryPermissionsAsync() : await ImagePicker.requestCameraPermissionsAsync()
+        const permission = await ImagePicker.requestCameraPermissionsAsync();
 
-        if(!permission){
-            setGranted(false)
-            return
-        } else {
-            setGranted(true)
-        }
+    if (!permission.granted) {
+        setGranted(false);
+        return;
+    }
+    setGranted(true);
 
         let result: ImagePicker.ImagePickerResult = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
@@ -242,7 +233,7 @@ export default function NewItem({navigation}){
             const destination = new Directory(Paths.document)
    
             try {
-                file.move(destination)
+                await file.move(destination)
 
                 const fileName = manipImage.uri.split('/').pop()
                 const permanentUri = `${Paths.document.uri}${fileName}`
@@ -353,6 +344,14 @@ export default function NewItem({navigation}){
         setSelectedImage(copy)
         setItemData({ ...itemData, images: copy })
     }
+
+    function hasCountryPrefix(name: string): boolean {
+        return name.length > 3 && name[2] === "_"
+    }
+
+    function matchesCountry(name: string, country: string): boolean {
+        return name.slice(0, 2).toLowerCase() === country.toLowerCase();
+    }
     
     return(
         <KeyboardAvoidingView behavior='padding' style={{flex: 1}}>
@@ -459,6 +458,10 @@ export default function NewItem({navigation}){
                     }}>
                         <NewChipArea data={"status"} itemData={itemData} setItemData={setItemData}/>
                             {determineDataTemplate(currentCollection).map(data=>{
+                                const isGenericField = !hasCountryPrefix(data.name)
+                                    const isCurrentCountryField = hasCountryPrefix(data.name) && matchesCountry(data.name, country)
+                                    const shouldShowField = isGenericField || isCurrentCountryField
+                                if(shouldShowField){
                                 return(
                                     <View 
                                         id={data.name}
@@ -483,10 +486,12 @@ export default function NewItem({navigation}){
                                             <NewText_MountedOnPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                         codeTriggerFields.includes(data.name) ?
                                             <NewText_CodeScanner data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
+                                        dropDownTriggerFields.includes(data.name) ?
+                                            <NewText_DropDownPicker data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} /> :
                                             <NewText_Text data={data.name} itemData={itemData} setItemData={setItemData} label={data[language]} autocompleteData={allAutocompleteData?.filter(d => d.field === data.name) ?? []}/>}
                                     </View>
                                 )
-                            })}
+                            }})}
                             {currentCollection === "gunCollection" ? <NewCheckboxArea itemData={itemData} setItemData={setItemData} /> : null}
                         <NewTextArea data={determineRemarkDataTemplate(currentCollection).name} itemData={itemData} setItemData={setItemData} label={determineRemarkDataTemplate(currentCollection)[language]}/>
                     </View>
