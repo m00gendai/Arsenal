@@ -33,7 +33,8 @@ import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-rean
 import BottomSheet, { BottomSheetFooter, BottomSheetHandleProps, BottomSheetView } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomBar from './components/BottomBars/BottomBar';
-import { defaultBottomBarHeight, defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs/configs';
+import { defaultBottomBarTextHeight, defaultViewPadding, legacyDatePickerTriggerFields, screenNameParamsAll } from './configs/configs';
+import { defaultBottomBarHeight } from './configs/expo_configs'
 import ItemCollection from 'components/ItemCollection/ItemCollection';
 import Item from 'components/ItemCollection/Item';
 import NewItem from 'components/ItemCollection/NewItem';
