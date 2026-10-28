@@ -1,6 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import { Divider, Icon, Text } from "react-native-paper";
-import { defaultBottomBarIconSize, defaultViewPadding, screenNameParamsAccessory } from "configs/configs";
+import { defaultViewPadding, screenNameParamsAccessory } from "configs/configs";
+import { defaultBottomBarIconSize } from "configs/expo_configs";
 import { usePreferenceStore } from "stores/usePreferenceStore";
 import { mainCollectionCategories } from "lib/textTemplates";
 import { CollectionType } from "lib/interfaces";
