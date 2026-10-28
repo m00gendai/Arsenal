@@ -12,7 +12,7 @@ import { db } from "db/client"
 import * as schema from "db/schema"
 import { and, eq, count, ne } from 'drizzle-orm';
 import { useItemStore } from 'stores/useItemStore';
-import { determineAccessoryIcons, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
+import { determineAccessoryIcons, determineCustomIcon, determineIfCustomIcon, determineSchema, determineSearchQueryFields, determineSortingFunction } from 'functions/determinators';
 import AppBar from 'components/AppBar';
 import { useItemTags } from 'hooks/useItemTags';
 import CardOptionsMenu from 'components/CardOptionsMenu';
@@ -143,7 +143,8 @@ useEffect(()=>{
   const { width, height } = Dimensions.get("window");
 const isLandscape = width > height;
 
-const numColumns = isLandscape ? 4 : displaySettings[currentCollection] === "grid" ? 2 : 1;
+const numColumns = generalSettings.gridColumns
+
 const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[currentCollection] === "grid" ? "grid2" : "list"}` 
 
   function filterCollection(){
@@ -179,7 +180,7 @@ const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[
       <AppBar collection={currentCollection} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       {itemData.length === 0 ? 
         <View style={{position: "absolute", width: "100%", height: "100%", justifyContent: "center", alignItems: "center"}}>
-          <Icon source={determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
+          <Icon source={determineIfCustomIcon(currentCollection) ? determineCustomIcon(currentCollection) : determineAccessoryIcons(currentCollection)} size={200} color={theme.colors.surfaceVariant}/>
         </View> : 
       null}
       {isSwitching ? 
@@ -191,7 +192,7 @@ const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[
     initialNumToRender={10}
     contentContainerStyle={{ gap: defaultGridGap }}
     columnWrapperStyle={numColumns > 1 ? { gap: defaultGridGap } : undefined}
-    key={listKey}
+    key={`${listKey}_${numColumns}`}
     style={{
       height: "100%",
       width: "100%",

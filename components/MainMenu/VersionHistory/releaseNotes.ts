@@ -25,6 +25,94 @@ export interface Version {
 }
 
 export const versionHistory: Version[] = [
+     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V5.1.0                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V5.1.0",
+        de: {
+            text: `
+Neu:
+- Neue Sammlungen Waffenbestandteile
+- Neue Sammlung Literatur
+- Lokalisierung für Deutschland (WBK/NWR-Felder)
+- Neue Attribute für Waffen (3) und Munition (4)
+
+Verbessert:
+- Suche in Sammlung und Kaliberdialog verbessert
+- Autocomplete wird nach gewähltem Text wieder minimiert
+- Sammlungsauswahl wird nach gewählter Sammlung wieder minimiert
+- (Teilweise) Neue Icons für Sammlungen
+- Darstellung für Tablets angepasst
+
+Behoben & Sonstiges:
+- Kleinere Anpassungen und Fehlerbehebungen
+`,
+            ios: "",
+            android: null
+        },
+        en: {
+            text: `
+New:
+- New weapon part collections
+- New literature collection
+- Localization for Germany (WBK/NWR fields)
+- New attributes for guns (3) and ammo (4)
+
+Improved:
+- Improved search in the collection and caliber dialog
+- Autocomplete is minimized again after selecting text
+- Collection selection is minimized again after selecting a collection
+- (Some) New icons for collections
+- Tablet User Interface amended
+
+Fixed & Other:
+- Minor adjustments and bug fixes
+`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
+Nouveautés:
+- Nouvelles collections de pièces d’armes & littéraire
+- Localisation pour l’Allemagne (champs WBK/NWR)
+- Nouveaux attributs pour les armes (3) et munitions (4)
+
+Améliorations:
+- Recherche améliorée
+- La liste de suggestions se réduit après la sélection d’un texte
+- La sélection de la collection se réduit après avoir choisi une collection
+- Nouvelles icônes de collection
+- Interface utilisateur de la tablette modifiée
+
+Corrections et autres:
+- Petits ajustements & corrections de bugs
+`,
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
+Novità:
+- Nuove collezioni di parti per armi & letteratura
+- Localizzazione per la Germania (campi WBK/NWR)
+- Nuovi attributi per le armi (3) e le munizioni (4)
+
+Migliorato:
+- Ricerca migliorata
+- L’elenco dei suggerimenti si riduce nuovamente dopo la selezione del testo
+- La selezione della collezione si riduce nuovamente dopo aver selezionato una collezione
+- (Alcune) Nuove icone di collezione
+- Interfaccia utente tablet modificata
+
+Corretto e altro:
+- Piccoli adeguamenti e correzioni di bug
+`,
+            ios: null,
+            android: null
+        }
+    },
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
     |                           V5.0.0                            |
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -11,6 +11,8 @@ interface Props{
     setGeneralWeightUnit: React.Dispatch<React.SetStateAction<string>>
     selectedBulletWeight: string
     setSelectedBulletWeight: React.Dispatch<React.SetStateAction<string>>
+    selectedShotWeight: string
+    setSelectedShotWeight: React.Dispatch<React.SetStateAction<string>>
     selectedPowderWeight: string
     setSelectedPowderWeight: React.Dispatch<React.SetStateAction<string>>
     generalLengthUnit: string 
@@ -27,6 +29,8 @@ export default function Onboarding_WeightSelect(
         setGeneralWeightUnit,  
         selectedBulletWeight, 
         setSelectedBulletWeight, 
+        selectedShotWeight,
+        setSelectedShotWeight,
         selectedPowderWeight, 
         setSelectedPowderWeight,
         generalLengthUnit, 
@@ -92,6 +96,14 @@ Props){
         ch: "Unitad dal pais dal projectil",
     }
 
+    const weightLabelShotWeight: SimpleTranslation = {
+        de: "Einheit Schrotgewicht",
+        en: "Unit Shot Weight",
+        fr: "Unité du poids de la grenaille",
+        it: "Unità del peso del piombo",
+        ch: "Unitad dal pais da la grana",
+    }
+
     const weightLabelPowderWeight: SimpleTranslation = {
         de: "Einheit Pulvergewicht*",
         en: "Unit Powder Weight*",
@@ -123,6 +135,14 @@ Props){
                 options={weightData}
                 value={selectedBulletWeight}
                 onSelect={setSelectedBulletWeight}
+                menuContentStyle={{height: "100%"}}
+            />
+
+            <Dropdown
+                label={weightLabelShotWeight[language]}
+                options={weightData}
+                value={selectedShotWeight}
+                onSelect={setSelectedShotWeight}
                 menuContentStyle={{height: "100%"}}
             />
 

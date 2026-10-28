@@ -92,7 +92,7 @@ export async function printSingleItem(item:ItemType, collection: CollectionType,
                                         </strong>
                                     </td>
                                     <td>
-                                        ${entry[0] === "caliber" ? getShortCaliberNameFromArray(entry[1], caliberDisplayNameList, shortCaliber).join("<br>") : entry[1] === null ? "" : datePickerTriggerFields.includes(entry[0]) ? parseDate(entry[1]) : entry[1]}
+                                        ${entry[0] === "caliber" ? (entry[1] ? getShortCaliberNameFromArray(entry[1], caliberDisplayNameList, shortCaliber).join("<br>") : "") : entry[1] === null ? "" : datePickerTriggerFields.includes(entry[0]) ? parseDate(entry[1]) : entry[1]}
                                     </td>
                                 </tr>`
                             }).join("")}

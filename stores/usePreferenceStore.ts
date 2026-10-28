@@ -1,6 +1,8 @@
 import { create } from "zustand"
 import { colorThemes } from "../lib/colorThemes"
-import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames} from "../lib/interfaces"
+import { Color, Languages, SortingTypesGun, SortingTypesAmmo, SortingTypesAccessory_Silencer, CollectionType, SortingTypes, SortingTypesAccessory_Optic, SortingTypesPart_ConversionKit, SortingTypesAccessory_LightLaser, SortingTypesPart_Barrel, SortingTypesAccessory_Scope, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesLiterature_Book, SortingTypesReloading_Die, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Primer, SortingTypesReloading_Powder, SupportedCountries, weightUnitNames, distUnitNames, SortingTypesPart_PistolSlide, SortingTypesPart_PistolFrame, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesLiterature_PrintMagazine} from "../lib/interfaces"
+import { Language } from "website/src/types/types_global"
+import * as Device from 'expo-device';
 
 export type DisplayVariants = "grid" | "list" | "compactList"
 
@@ -16,7 +18,12 @@ interface GeneralSettings{
   displayImagesInListViewAccessory_Misc: boolean
   displayImagesInListViewPart_ConversionKit: boolean
   displayImagesInListViewPart_Barrel: boolean
+  displayImagesInListViewPart_PistolSlide: boolean
+  displayImagesInListViewPart_PistolFrame: boolean
+  displayImagesInListViewPart_RifleLower: boolean
+  displayImagesInListViewPart_RifleUpper: boolean
   displayImagesInListViewLiterature_Book: boolean
+  displayImagesInListViewLiterature_PrintMagazine: boolean
   displayImagesInListViewReloading_Die: boolean
   displayImagesInListViewReloading_Bullet: boolean
   displayImagesInListViewReloading_Case: boolean
@@ -31,6 +38,7 @@ interface GeneralSettings{
   scanBeep: boolean
   rememberLastScreen: boolean
   displaySoldItems: boolean
+  gridColumns: number
 }
 
 interface DisplaySettings{
@@ -42,9 +50,14 @@ interface DisplaySettings{
   accessoryCollection_LightLaser: DisplayVariants
   accessoryCollection_Magazine: DisplayVariants
   accessoryCollection_Misc: DisplayVariants
+  partCollection_PistolSlide: DisplayVariants
+  partCollection_PistolFrame: DisplayVariants
+  partCollection_RifleLower: DisplayVariants
+  partCollection_RifleUpper: DisplayVariants
   partCollection_ConversionKit: DisplayVariants
   partCollection_Barrel: DisplayVariants
   literatureCollection_Book: DisplayVariants
+  literatureCollection_PrintMagazine: DisplayVariants
   reloadingCollection_Die: DisplayVariants
   reloadingCollection_Bullet: DisplayVariants
   reloadingCollection_Case: DisplayVariants
@@ -64,7 +77,12 @@ export interface SorterSettings{
   accessoryCollection_Misc: {type: SortingTypesAccessory_Misc, direction: "asc" | "desc", icon: string}
   partCollection_ConversionKit: {type: SortingTypesPart_ConversionKit, direction: "asc" | "desc", icon: string}
   partCollection_Barrel: {type: SortingTypesPart_Barrel, direction: "asc" | "desc", icon: string}
+  partCollection_PistolSlide: {type: SortingTypesPart_PistolSlide, direction: "asc" | "desc", icon: string}
+  partCollection_PistolFrame: {type: SortingTypesPart_PistolFrame, direction: "asc" | "desc", icon: string}
+  partCollection_RifleLower: {type: SortingTypesPart_RifleLower, direction: "asc" | "desc", icon: string}
+  partCollection_RifleUpper: {type: SortingTypesPart_RifleUpper, direction: "asc" | "desc", icon: string}
   literatureCollection_Book: {type: SortingTypesLiterature_Book, direction: "asc" | "desc", icon: string}
+  literatureCollection_PrintMagazine: {type: SortingTypesLiterature_PrintMagazine, direction: "asc" | "desc", icon: string}
   reloadingCollection_Die: {type: SortingTypesReloading_Die, direction: "asc" | "desc", icon: string}
   reloadingCollection_Bullet: {type: SortingTypesReloading_Bullet, direction: "asc" | "desc", icon: string}
   reloadingCollection_Case: {type: SortingTypesReloading_Case, direction: "asc" | "desc", icon: string}
@@ -83,7 +101,12 @@ interface FilterState{
   accessoryCollection_Misc: boolean
   partCollection_ConversionKit: boolean
   partCollection_Barrel: boolean
+  partCollection_PistolSlide: boolean
+  partCollection_PistolFrame: boolean
+  partCollection_RifleLower: boolean
+  partCollection_RifleUpper: boolean
   literatureCollection_Book: boolean
+  literatureCollection_PrintMagazine: boolean
   reloadingCollection_Die: boolean
   reloadingCollection_Bullet: boolean
   reloadingCollection_Case: boolean
@@ -95,6 +118,7 @@ export interface PreferredUnits{
   selectedCurrency: string
   generalWeightUnit: weightUnitNames
   bulletWeightUnit: weightUnitNames
+  shotWeightUnit: weightUnitNames
   powderWeightUnit: weightUnitNames
   criticalPowderWeightUnit: weightUnitNames
   generalLengthUnit: distUnitNames
@@ -136,7 +160,12 @@ const initialState:InitialStoreState = {
       displayImagesInListViewAccessory_Misc: true,
       displayImagesInListViewPart_ConversionKit: true,
       displayImagesInListViewPart_Barrel: true,
+      displayImagesInListViewPart_PistolSlide: true,
+      displayImagesInListViewPart_PistolFrame: true,
+      displayImagesInListViewPart_RifleLower: true,
+      displayImagesInListViewPart_RifleUpper: true,
       displayImagesInListViewLiterature_Book: true,
+      displayImagesInListViewLiterature_PrintMagazine: true,
       displayImagesInListViewReloading_Die: true,
       displayImagesInListViewReloading_Bullet: true,
       displayImagesInListViewReloading_Case: true,
@@ -150,11 +179,13 @@ const initialState:InitialStoreState = {
       hintsDisplay: true,
       scanBeep: false,
       rememberLastScreen: true,
-      displaySoldItems: true
+      displaySoldItems: true,
+      gridColumns: Device.deviceType === 1 ? 2 : Device.deviceType === 2 ? 3 : 2
     },
     displaySettings: {
       gunCollection: "grid",
       ammoCollection: "grid",
+      literatureCollection_PrintMagazine: "grid",
       accessoryCollection_Silencer: "grid",
       accessoryCollection_Optic: "grid",
       accessoryCollection_Scope: "grid",
@@ -163,6 +194,10 @@ const initialState:InitialStoreState = {
       accessoryCollection_Misc: "grid",
       partCollection_ConversionKit: "grid",
       partCollection_Barrel: "grid",
+      partCollection_PistolSlide: "grid",
+      partCollection_PistolFrame: "grid",
+      partCollection_RifleLower: "grid",
+      partCollection_RifleUpper: "grid",
       literatureCollection_Book: "grid",
       reloadingCollection_Die: "grid",
       reloadingCollection_Bullet: "grid",
@@ -175,6 +210,7 @@ const initialState:InitialStoreState = {
       selectedCurrency: "CHF",
       generalWeightUnit: "gr",
       bulletWeightUnit: "gr",
+      shotWeightUnit: "g",
       powderWeightUnit: "g",
       criticalPowderWeightUnit: "g",
       generalLengthUnit: "cm",
@@ -192,7 +228,12 @@ const initialState:InitialStoreState = {
       accessoryCollection_Misc: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_ConversionKit: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       partCollection_Barrel: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_PistolSlide: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_PistolFrame: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_RifleLower: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      partCollection_RifleUpper: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       literatureCollection_Book: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
+      literatureCollection_PrintMagazine: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Die: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Bullet: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
       reloadingCollection_Case: {type: "alphabetical", direction: "asc", icon: "alphabetical-variant"},
@@ -211,7 +252,12 @@ const initialState:InitialStoreState = {
       accessoryCollection_Misc: false,
       partCollection_ConversionKit: false,
       partCollection_Barrel: false,
+      partCollection_PistolSlide: false,
+      partCollection_PistolFrame: false,
+      partCollection_RifleLower: false,
+      partCollection_RifleUpper: false,
       literatureCollection_Book: false,
+      literatureCollection_PrintMagazine: false,
       reloadingCollection_Die: false,
       reloadingCollection_Bullet: false,
       reloadingCollection_Case: false,
@@ -228,12 +274,12 @@ const initialState:InitialStoreState = {
 
 
 interface StoreFunctions {
-    switchLanguage: (lang: string) => void
+    switchLanguage: (lang: Language) => void
     switchTheme: (name: string) => void,
     switchCountry: (iso: SupportedCountries) => void
     setGeneralSettings: (settings: GeneralSettings) => void
     setPreferredUnits: (units: PreferredUnits) => void
-    setCaliberDisplayNameList: (calibers: {name: string, displayName?: string}[]) => void
+    setCaliberDisplayNameList: (calibers: {name: string}[]) => void
     setDisplaySettings: (settings: DisplaySettings) => void
     setSortBy: (collection: keyof SorterSettings, settings: SorterSettings[keyof SorterSettings]) => void
     setFilterOn: (status: FilterState) => void
@@ -256,7 +302,7 @@ interface StoreFunctions {
     setGeneralSettings: (settings: GeneralSettings) => set((state) => ({generalSettings: settings})),
     setPreferredUnits: (settings: PreferredUnits) => set((state) => ({preferredUnits: settings})),
     setDisplaySettings: (settings: DisplaySettings) => set((state) => ({displaySettings: settings})),
-    setCaliberDisplayNameList: (calibers: {name: string, displayName: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
+    setCaliberDisplayNameList: (calibers: {name: string}[])  => set((state) =>({caliberDisplayNameList: calibers})),
     setSortBy: (collection, settings) => set((state) => ({
       sortBy: { 
         ...state.sortBy, 

@@ -54,9 +54,34 @@ export function useItemTags(type: CollectionType) {
         .from(schema.part_BarrelTags)
     )
 
+    const { data: partTags_PistolSlide } = useLiveQuery(
+        db.select()
+        .from(schema.part_PistolSlideTags)
+    )
+
+    const { data: partTags_PistolFrame } = useLiveQuery(
+        db.select()
+        .from(schema.part_PistolFrameTags)
+    )
+
+    const { data: partTags_RifleLower } = useLiveQuery(
+        db.select()
+        .from(schema.part_RifleLowerTags)
+    )
+
+    const { data: partTags_RifleUpper } = useLiveQuery(
+        db.select()
+        .from(schema.part_RifleUpperTags)
+    )
+
     const { data: literatureTags_Book } = useLiveQuery(
         db.select()
         .from(schema.literature_BookTags)
+    )
+
+    const { data: literatureTags_PrintMagazine } = useLiveQuery(
+        db.select()
+        .from(schema.literature_PrintMagazineTags)
     )
 
     const { data: reloadingTags_Die } = useLiveQuery(
@@ -105,8 +130,18 @@ export function useItemTags(type: CollectionType) {
             return partTags_ConversionKit
         case "partCollection_Barrel":
             return partTags_Barrel
+        case "partCollection_PistolSlide":
+            return partTags_PistolSlide
+        case "partCollection_PistolFrame":
+            return partTags_PistolFrame
+        case "partCollection_RifleLower":
+            return partTags_RifleLower
+        case "partCollection_RifleUpper":
+            return partTags_RifleUpper
         case "literatureCollection_Book":
             return literatureTags_Book
+        case "literatureCollection_PrintMagazine":
+            return literatureTags_PrintMagazine
         case "reloadingCollection_Die":
             return reloadingTags_Die
         case "reloadingCollection_Bullet":

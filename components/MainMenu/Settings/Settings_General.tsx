@@ -53,28 +53,28 @@ export default function Settings_General(){
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.resizeImages[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.resizeImages} onValueChange={()=>generalSettings.resizeImages ? handleSwitchesAlert("resizeImages") : handleSwitches("resizeImages")} />
+                            <View style={{flex: 3, flexDirection: "row", justifyContent: "flex-end"}}><Switch value={generalSettings.resizeImages} onValueChange={()=>generalSettings.resizeImages ? handleSwitchesAlert("resizeImages") : handleSwitches("resizeImages")} /></View>
                         </View>
                         
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.loginGuard[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} />
+                            <View style={{flex: 3, flexDirection: "row", justifyContent: "flex-end"}}><Switch value={generalSettings.loginGuard} onValueChange={()=>handleSwitchesAlert("loginGuard")} /></View>
                         </View>
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.hintsDisplay[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.hintsDisplay} onValueChange={()=>handleSwitches("hintsDisplay")} />
+                            <View style={{flex: 3, flexDirection: "row", justifyContent: "flex-end"}}><Switch value={generalSettings.hintsDisplay} onValueChange={()=>handleSwitches("hintsDisplay")} /></View>
                         </View>
 
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
                         
                         <View style={{display: "flex", flexWrap: "nowrap", justifyContent: "space-between", alignItems: "center", flexDirection: "row", width: "100%"}}>
                             <Text style={{flex: 7}}>{generalSettingsLabels.rememberLastScreen[language]}</Text>
-                            <Switch style={{flex: 3}} value={generalSettings.rememberLastScreen} onValueChange={()=>handleSwitches("rememberLastScreen")} />
+                            <View style={{flex: 3, flexDirection: "row", justifyContent: "flex-end"}}><Switch value={generalSettings.rememberLastScreen} onValueChange={()=>handleSwitches("rememberLastScreen")} /></View>
                         </View>
 {/*
                         <Divider style={{width: "100%", borderWidth: 0.5, borderColor: theme.colors.onSecondary}} />
