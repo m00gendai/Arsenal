@@ -26,6 +26,44 @@ export interface Version {
 
 export const versionHistory: Version[] = [
      /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V5.1.1                            |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V5.1.1",
+        de: {
+            text: `
+Behoben:
+- Anzeigefelhler in Listenansichten
+`,
+            ios: "",
+            android: null
+        },
+        en: {
+            text: `
+Fixed:
+- Display issues in list views
+`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
+Corrections:
+- Erreurs d’affichage dans les vues de liste
+`,
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
+Corretto:
+- Errori di visualizzazione nelle viste elenco
+`,
+            ios: null,
+            android: null
+        }
+    },
+     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
     |                           V5.1.0                            |
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     {
