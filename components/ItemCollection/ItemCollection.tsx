@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { ActivityIndicator, FAB, Icon } from 'react-native-paper';
 import { defaultGridGap, defaultViewPadding } from 'configs/configs';
-import { defaultBottomBarHeight } from './configs/expo_configs'
+import { defaultBottomBarHeight } from 'configs/expo_configs'
 import { AccessoryMount, ItemType, PartMount, Tag } from 'lib/interfaces';
 import { useViewStore } from 'stores/useViewStore';
 import { usePreferenceStore } from 'stores/usePreferenceStore';

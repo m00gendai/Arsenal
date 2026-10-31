@@ -4,7 +4,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { defaultBottomBarTextHeight, defaultViewPadding, screenNameParamsMain } from "configs/configs";
-import { defaultBottomBarHeight, defaultBottomBarMainIconSize } from './configs/expo_configs'
+import { defaultBottomBarHeight, defaultBottomBarMainIconSize } from 'configs/expo_configs'
 import { Easing, useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
