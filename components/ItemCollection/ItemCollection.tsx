@@ -144,7 +144,7 @@ useEffect(()=>{
   const { width, height } = Dimensions.get("window");
 const isLandscape = width > height;
 
-const numColumns = generalSettings.gridColumns
+const numColumns = displaySettings[currentCollection] === "grid" ? generalSettings.gridColumns : 1
 
 const listKey = `${currentCollection}-${isLandscape ? "grid4" : displaySettings[currentCollection] === "grid" ? "grid2" : "list"}` 
 
