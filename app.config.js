@@ -72,6 +72,10 @@ export default {
         {
           "ios": {
             "deploymentTarget": "16.4"
+          },
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
           }
         }
       ],
