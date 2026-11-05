@@ -49,10 +49,11 @@ import migrateLegacyDateAndCaliberFields from 'functions/legacy/migrateLegacyDat
 import { snapshot } from 'node:test';
 import EditAutocomplete from 'components/MainMenu/EditData/EditAutoComplete';
 import EditCustomLabels from 'components/MainMenu/EditData/EdiCustomLabels';
-import Statistics from 'components/MainMenu/Statistics/Statistics';
+import ViewStatistics from 'components/MainMenu/Statistics/ViewStatistics';
 import GenerateQRCodes from 'components/MainMenu/QRCodes/GenerateQRCodes';
 import { AppDb } from 'db/client';
 import * as SQLite from 'expo-sqlite';
+import ViewGranularStatistics from 'components/MainMenu/Statistics/ViewGranularStatistics';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -519,8 +520,14 @@ const { bottom } = useSafeAreaInsets();
               />
 
               <Stack.Screen
-                name="Statistics"
-                component={Statistics}
+                name="ViewStatistics"
+                component={ViewStatistics}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
+
+              <Stack.Screen
+                name="ViewGranularStatistics"
+                component={ViewGranularStatistics}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 

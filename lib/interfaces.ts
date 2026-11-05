@@ -1164,7 +1164,8 @@ export type StackParamList = {
   QuickMount: {item: ItemType}
   EditAutocomplete: undefined
   EditCustomLabels: undefined
-  Statistics: undefined
+  ViewStatistics: undefined
+  ViewGranularStatistics: {label: string}
   GenerateQRCodes: {collection: CollectionType, label: string}
 }
 
