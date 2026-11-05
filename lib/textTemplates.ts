@@ -227,7 +227,7 @@ export const databaseOperations:DatabaseOperation = {
     }
 }
 
-interface MainCollectionCategories {
+export interface MainCollectionCategories {
     gunCollection: SimpleTranslation
     ammoCollection: SimpleTranslation
     accessoryCollection: SimpleTranslation
