@@ -1,3 +1,5 @@
+import { displayNameByName } from "lib/caliberData"
+
 export function getShortCaliberNameFromArray(calibers:string[], displayNames:{name:string, displayName?:string}[], shortCaliber: boolean){
     if(!shortCaliber){
         return calibers
@@ -23,4 +25,8 @@ export function getShortCaliberName(calibers:string[], caliberDisplayNameList:{n
         return match ? match.displayName : item;
     });
     return outputArray
+}
+
+export function getDisplayName(name: string): string {
+  return displayNameByName.get(name) ?? name
 }
