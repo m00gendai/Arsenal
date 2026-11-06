@@ -1299,7 +1299,6 @@ export function determineItemDesignation(collection: CollectionType, item: ItemT
         const localItem = item as LiteratureType
         const prefix = localItem.title ?? ""
         const suffix = localItem.subtitle ?? ""
-        console.log(`${prefix} ${suffix}`)
         return `${prefix} ${suffix}`
     }
     if(collection.startsWith("reloadingCollection")){
