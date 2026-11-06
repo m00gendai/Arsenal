@@ -1,4 +1,4 @@
-import { AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType_Book, LiteratureType_PrintMagazine, PartType_Barrel, PartType_ConversionKit, PartType_PistolFrame, PartType_PistolSlide, PartType_RifleLower, PartType_RifleUpper, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
+import { AccessoryType, AccessoryType_LightLaser, AccessoryType_Magazine, AccessoryType_Misc, AccessoryType_Optic, AccessoryType_Scope, AccessoryType_Silencer, AmmoType, CollectionType, GunType, ItemType, Languages, LiteratureType, LiteratureType_Book, LiteratureType_PrintMagazine, PartType, PartType_Barrel, PartType_ConversionKit, PartType_PistolFrame, PartType_PistolSlide, PartType_RifleLower, PartType_RifleUpper, ReloadingType, ReloadingType_Bullet, ReloadingType_Case, ReloadingType_Die, ReloadingType_Powder, ReloadingType_Primer, SupportedCountries, weightUnitNames } from "lib/interfaces";
 import sortGunCollection from "./sorters/sortGunCollection";
 import { PreferredUnits, SorterSettings } from "stores/usePreferenceStore";
 import sortAmmoCollection from "./sorters/sortAmmoCollection";
@@ -1267,5 +1267,45 @@ export function determineWeightUnitMultiplier(unit:weightUnitNames){
             return 100
         case "kg":
             return 1
+    }
+}
+
+export function determineItemDesignation(collection: CollectionType, item: ItemType){
+    if(collection.startsWith("gun")){
+        const localItem = item as GunType
+        const prefix = localItem.manufacturer ?? ""
+        const suffix = localItem.model ?? ""
+        return `${prefix} ${suffix}`
+    }
+    if(collection.startsWith("ammo")){
+        const localItem = item as AmmoType
+        const prefix = localItem.manufacturer ?? ""
+        const suffix = localItem.designation ?? ""
+        return `${prefix} ${suffix}`
+    }
+    if(collection.startsWith("accessoryCollection")){
+        const localItem = item as AccessoryType
+        const prefix = localItem.manufacturer ?? ""
+        const suffix = localItem.model ?? ""
+        return `${prefix} ${suffix}`
+    }
+    if(collection.startsWith("partCollection")){
+        const localItem = item as PartType
+        const prefix = localItem.manufacturer ?? ""
+        const suffix = localItem.model ?? ""
+        return `${prefix} ${suffix}`
+    }
+    if(collection.startsWith("literatureCollection")){
+        const localItem = item as LiteratureType
+        const prefix = localItem.title ?? ""
+        const suffix = localItem.subtitle ?? ""
+        console.log(`${prefix} ${suffix}`)
+        return `${prefix} ${suffix}`
+    }
+    if(collection.startsWith("reloadingCollection")){
+        const localItem = item as ReloadingType
+        const prefix = localItem.manufacturer ?? ""
+        const suffix = "model" in localItem ? localItem.model ?? "" : localItem.designation ?? ""
+        return `${prefix} ${suffix}`
     }
 }
