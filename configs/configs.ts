@@ -96,6 +96,16 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit"
 }
+
+export const collectionTopics = {
+    gunCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
+    ammoCollection: ["All", "manufacturer"],
+    accessoryCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
+    partCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
+    reloadingCollection: ["caliber", "manufacturer", "paidPrice", "boughtFrom"],
+    literatureCollection: ["author", "publisher", "language", "paidPrice", "boughtFrom"]
+}
+
 export const maxCharCountText = 200
 export const maxCharCountRemark = 5000
 
