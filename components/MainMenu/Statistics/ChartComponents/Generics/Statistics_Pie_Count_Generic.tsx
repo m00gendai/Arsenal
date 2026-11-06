@@ -3,19 +3,23 @@ import { Appbar, Divider, Icon, IconButton, Text, DataTable  } from "react-nativ
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
-import { eq, asc, count, ne } from 'drizzle-orm';
-import { screenNameParamsAll } from "configs/configs"
+import { eq, asc, count, ne, and } from 'drizzle-orm';
+import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useEffect, useMemo, useState } from "react"
-import { AmmoType, CollectionType } from "lib/interfaces"
+import { AmmoType, CollectionType, StackParamList } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
 import { rgbaToHex } from "functions/utils"
 import { BarChart, PieChart } from "react-native-chart-kit/v2";
-import { determineTabBarLabel } from "functions/determinators"
+import { determineItemDesignation, determineTabBarLabel } from "functions/determinators"
 import Item from "components/ItemCollection/Item"
 import { getDisplayName, getShortCaliberName, getShortCaliberNameFromArray } from "functions/getShortCaliber"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
+import ModalContainer from "components/ModalContainer"
+import { useItemStore } from "stores/useItemStore"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { useNavigation } from "@react-navigation/native"
 
 interface Props{
     collection: CollectionType
@@ -25,12 +29,40 @@ interface Props{
 export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-
+    const { setCurrentItem } = useItemStore()
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
+    
     const colorTheme = theme
     const [uniqueEntries, setUniqueEntries] = useState<{[key: string]: number}>({})
     const [total, setTotal] = useState<number>(0)
     const [maxSize, setMaxSize] = useState<number>(0)
     const [average, setAverage] = useState<number>(0)
+
+    const [detailsVisible, setDetailsVisible] = useState<boolean>(false)
+    const [modalItems, setModalItems] = useState<[string, string][]>([])
+    const [modalTopic, setModalTopic] = useState<string>("")
+
+    function handleConfirm(){
+        setDetailsVisible(prev => !prev)
+    }
+    function handleDetails(channel: string){
+        const entry = channel.slice(0, channel.lastIndexOf(":"))
+        setModalTopic(entry)
+        setDetailsVisible(true)
+
+        const detailItems = db.select().from(schema[collection]).where(and(ne(schema[collection].sold_isSold, true), eq(schema[collection][topic], entry))).all()
+        const detailItemArray = detailItems.map(item => {
+            return [item.id, determineItemDesignation(collection, item)]
+        })
+        setModalItems(detailItemArray)
+    }
+
+    function navigateToItem(id: string){
+        const itemWithId = db.select().from(schema[collection]).where(eq(schema[collection].id, id)).all()
+        setCurrentItem(itemWithId[0])
+        navigation.navigate("item")
+        setDetailsVisible(false)
+    }
 
     useEffect(()=>{
         setUniqueEntries({})
@@ -42,8 +74,6 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
             let localTotal = 0
             for(const screen of screenNameParamsAll){
                 if(screen.startsWith(collection)){
-                     console.log(`screen: ${screen}`)
-                console.log(`collection: ${collection}`)
                     const collectionSize = await db.select().from(schema[screen]).where(ne(schema[screen].sold_isSold, true))
                     for(const item of collectionSize){
                         if(localUniqueEntries[item[topic]]){
@@ -116,7 +146,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     data={pieData}
                     valueKey="share"
                     labelKey="channel"
-                    sliceSeparator={{ width: 2 }}
+                    sliceSeparator={{ width: 2, color: theme.colors.surfaceVariant }}
                     width={width}
                     height={height/2}
                     legend={false}
@@ -155,27 +185,60 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                                     {`${((total/total)*100).toFixed(2)}%`}
                                     </Text>
                                 </DataTable.Title>
+                                <DataTable.Title style={{flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} >
+                                    <View></View>
+                                </DataTable.Title>
                             </DataTable.Header>
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
                                             <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
-                                                <Text>{`${index+1}`}</Text>
+                                                <Text variant="labelSmall">{`${index+1}`}</Text>
                                             </View>
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3}} >
-                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
+                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.slice(0, item.channel.lastIndexOf(":")))}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/total)*100).toFixed(2)}%`}</DataTable.Cell>
+                                    <DataTable.Cell style={{flex: 1}}>
+                                        <IconButton onPress={()=>handleDetails(item.channel)} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={10} />
+                                    </DataTable.Cell>
                                 </DataTable.Row>
                             ))}
                         </DataTable>
                     </View>
                 </ScrollView>
             </View>
+            <ModalContainer
+                title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}
+                subtitle={null}
+                visible={detailsVisible}
+                setVisible={setDetailsVisible}
+                content={
+                    <View style={{width: "100%", height: "100%", position: "relative", padding: defaultViewPadding}}>
+                        <DataTable>
+                            {modalItems.map((modalItem, index) => {
+                                return (
+                                    <DataTable.Row key={`dataTableRow_${index}`} >
+                                        <DataTable.Cell style={{flex: 5}} >
+                                            <Text numberOfLines={10}>{modalItem[1]}</Text>
+                                        </DataTable.Cell>
+                                        <DataTable.Cell style={{flex: 1}} >
+                                            <IconButton icon="arrow-right" size={14} onPress={() => navigateToItem(modalItem[0])} style={{backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                )
+                            })}
+                        </DataTable>
+                    </View>
+                }
+                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
+                buttonCNL={null}
+                buttonDEL={null}
+            />
         </View>
     )
 }
