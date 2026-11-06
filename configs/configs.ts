@@ -98,13 +98,15 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
 }
 
 export const collectionTopics = {
-    gunCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
+    gunCollection: ["caliber", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
     ammoCollection: ["All", "manufacturer"],
     accessoryCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
     partCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
     reloadingCollection: ["caliber", "manufacturer", "paidPrice", "boughtFrom"],
     literatureCollection: ["author", "publisher", "language", "paidPrice", "boughtFrom"]
 }
+
+export const nonSubCollectionTopics = ["gunCollection", "ammoCollection"]
 
 export const maxCharCountText = 200
 export const maxCharCountRemark = 5000
