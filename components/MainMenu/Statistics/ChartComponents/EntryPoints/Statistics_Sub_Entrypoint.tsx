@@ -35,8 +35,6 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
         target: string,
         params: { label: CollectionType }
     ){
-        console.log(`target: ${target}`)
-        console.log(`params: ${params.label}`)
         navigation.navigate(target, params)
     }
 
@@ -100,7 +98,7 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
                     width={width}
                     height={height/2}
                     yDomain={{ min: 0, max: maxSize, nice: false }}
-                    formatXLabel={(value) => `${determineTabBarLabel(value.split(":")[0])[language]}`}
+                    formatXLabel={(value) => `${determineTabBarLabel(value.slice(0, value.lastIndexOf(":")))[language]}`}
                     theme={{
                         background: theme.colors.background,
                         plotBackground: theme.colors.background,
@@ -133,7 +131,7 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalCollectionSize)*100).toFixed(2)}%`}</DataTable.Cell>
                                     <DataTable.Cell>
-                                        <IconButton onPress={()=>goToSubGranular("ViewSubGranularStatistics", {label: item.channel.split(":")[0]})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
+                                        <IconButton onPress={()=>goToSubGranular("ViewSubGranularStatistics", {label: item.channel.slice(0, item.channel.lastIndexOf(":"))})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
                                     </DataTable.Cell>
                                 </DataTable.Row>
                             ))}

@@ -97,7 +97,7 @@ export default function Statistics_Entrypoint(){
                     labelKey="channel"
                     width={width}
                     height={height/2}
-                    sliceSeparator={{ width: 2}}
+                    sliceSeparator={{ width: 2, color: theme.colors.surfaceVariant}}
                     innerRadius={50}
                     colors={palette.map(a => a.hex)}
                     theme={{
@@ -112,7 +112,7 @@ export default function Statistics_Entrypoint(){
                         connectorColor: theme.colors.onBackground,
                         connectorLines: true,
                         offset: 25,
-                        formatLabel: ({ label }) => `${mainCollectionCategories[label.split(":")[0]][language]}`
+                        formatLabel: ({ label }) => `${mainCollectionCategories[label.slice(0, label.lastIndexOf(":"))][language]}`
                     }}
                     legend={false}
                     centerLabel={() => (
@@ -131,12 +131,12 @@ export default function Statistics_Entrypoint(){
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <Text>{`${mainCollectionCategories[item.channel.split(":")[0]][language]}`}</Text>
+                                        <Text>{`${mainCollectionCategories[item.channel.slice(0, item.channel.lastIndexOf(":"))][language]}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalCollectionSize)*100).toFixed(2)}%`}</DataTable.Cell>
                                     <DataTable.Cell>
-                                        <IconButton onPress={()=>goToGranular("ViewGranularStatistics", {label: item.channel.split(":")[0]})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
+                                        <IconButton onPress={()=>goToGranular("ViewGranularStatistics", {label: item.channel.slice(0, item.channel.lastIndexOf(":"))})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
                                     </DataTable.Cell>
                                 </DataTable.Row>
                             ))}
