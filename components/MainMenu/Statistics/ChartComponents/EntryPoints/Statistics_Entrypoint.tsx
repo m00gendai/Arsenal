@@ -18,7 +18,7 @@ import { PieChart } from "react-native-chart-kit/v2";
 import { mainCollectionCategories, MainCollectionCategories } from "lib/textTemplates"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 
-export default function Statistics_Count_All(){
+export default function Statistics_Entrypoint(){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const navigation = useNavigation<NavigationProp<StackParamList>>()

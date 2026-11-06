@@ -3,13 +3,13 @@ import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import { defaultViewPadding } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
-import Statistics_Count_All from "./ChartComponents/Statistics_Donut_Count_Total_All"
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
 import { useRef } from "react"
 import { useSharedValue } from "react-native-reanimated";
+import Statistics_Entrypoint from "./ChartComponents/EntryPoints/Statistics_Entrypoint"
 
 export default function ViewStatistics({navigation}){
 
@@ -73,7 +73,7 @@ export default function ViewStatistics({navigation}){
                             }}
                         >
                             {index === 0 ? 
-                                <Statistics_Count_All /> :
+                                <Statistics_Entrypoint /> :
                             null}
                         </Card>
                         

@@ -9,25 +9,36 @@ import { eq, asc, count, ne } from 'drizzle-orm';
 import { screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useEffect, useMemo, useState } from "react"
-import { CollectionType } from "lib/interfaces"
+import { CollectionType, StackParamList } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
 import { rgbaToHex } from "functions/utils"
 import { BarChart } from "react-native-chart-kit/v2";
 import { determineTabBarLabel } from "functions/determinators"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 
 interface Props{
     collection: CollectionType
 }
 
-export default function Statistics_Count_All({collection}:Props){
+export default function Statistics_Sub_Entrypoint({collection}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-    
+    const navigation = useNavigation<NavigationProp<StackParamList>>()
+
     const colorTheme = theme
     const [collectionSizes, setCollectionSizes] = useState<[CollectionType, number][]>([])
     const [totalCollectionSize, setTotalCollectionSize] = useState<number>(0)
     const [maxSize, setMaxSize] = useState<number>(0)
+
+    function goToSubGranular(
+        target: string,
+        params: { label: CollectionType }
+    ){
+        console.log(`target: ${target}`)
+        console.log(`params: ${params.label}`)
+        navigation.navigate(target, params)
+    }
 
     useEffect(()=>{
         setCollectionSizes([])
@@ -102,27 +113,28 @@ export default function Statistics_Count_All({collection}:Props){
                             width={bar.width} height={bar.height}
                             rx={radius}
                             fill={palette[bar.dataIndex].hex}
-                            stroke={theme.colors.background}
+                            stroke={theme.colors.surfaceVariant}
+                            strokeWidth={2}
                         />
                     )}
                 />
                 <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} ><Icon source="gift" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}}  ><Icon source="tally-mark-5" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} ><Icon source="percent-outline" size={24} /></DataTable.Title>
-                            </DataTable.Header>
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
+                                    <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "50%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        </View>
+                                    </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
                                         <Text>{`${determineTabBarLabel(collectionSizes[index][0])[language]}`}</Text>
-                                   
-
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalCollectionSize)*100).toFixed(2)}%`}</DataTable.Cell>
+                                    <DataTable.Cell>
+                                        <IconButton onPress={()=>goToSubGranular("ViewSubGranularStatistics", {label: item.channel.split(":")[0]})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
+                                    </DataTable.Cell>
                                 </DataTable.Row>
                             ))}
                         </DataTable>

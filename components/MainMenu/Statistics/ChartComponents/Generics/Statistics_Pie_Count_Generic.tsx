@@ -42,6 +42,8 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
             let localTotal = 0
             for(const screen of screenNameParamsAll){
                 if(screen.startsWith(collection)){
+                     console.log(`screen: ${screen}`)
+                console.log(`collection: ${collection}`)
                     const collectionSize = await db.select().from(schema[screen]).where(ne(schema[screen].sold_isSold, true))
                     for(const item of collectionSize){
                         if(localUniqueEntries[item[topic]]){
@@ -117,6 +119,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     sliceSeparator={{ width: 2 }}
                     width={width}
                     height={height/2}
+                    legend={false}
                     theme={{
                         background: theme.colors.background,
                         plotBackground: theme.colors.background,
@@ -126,7 +129,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     colors={palette.map(color => color.hex)}
                     arcLabels={{
                         minPercentage: 0,
-                        reservedWidth: 10,
+                        reservedWidth: 20,
                         connectorLength: 0,
                         formatLabel: ({ label, index }) =>
                         index < average ? `${index+1}` : ""
@@ -136,22 +139,34 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
-                                <DataTable.Title style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} ><Icon source="pound" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} ><Icon source="tag-text-outline" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 2}} numeric >{total}</DataTable.Title>
-                                <DataTable.Title style={{flex: 2}} numeric>{`${((total/total)*100).toFixed(2)}%`}</DataTable.Title>
+                                <DataTable.Title style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
+                                    <Icon source="pound" color={theme.colors.primary} size={24} />
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
+                                    <Icon source="tag-text-outline" color={theme.colors.primary} size={24} />
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} >
+                                    <Text variant="bodyMedium" style={{color: theme.colors.primary}}>
+                                        {total}
+                                    </Text>
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} >
+                                    <Text variant="bodyMedium" style={{color: theme.colors.primary}}>
+                                    {`${((total/total)*100).toFixed(2)}%`}
+                                    </Text>
+                                </DataTable.Title>
                             </DataTable.Header>
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
                                             <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
                                                 <Text>{`${index+1}`}</Text>
                                             </View>
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3}} >
-                                        <Text>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
+                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/total)*100).toFixed(2)}%`}</DataTable.Cell>

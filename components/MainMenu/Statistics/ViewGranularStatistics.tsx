@@ -1,9 +1,8 @@
 import { Dimensions, View } from "react-native"
 import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
-import { defaultViewPadding } from "configs/configs"
+import { collectionTopics, defaultViewPadding } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
-import Statistics_Count_All from "./ChartComponents/Statistics_Donut_Count_Total_All"
 import Carousel, {
   ICarouselInstance,
   Pagination,
@@ -12,10 +11,10 @@ import { useRef } from "react"
 import { useSharedValue } from "react-native-reanimated";
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { mainCollectionCategories, MainCollectionCategories } from "lib/textTemplates"
-import Statistics_Bars_Count from "./ChartComponents/Statistics_Bars_Count_Total"
-import Statistics_Bars_Ammo_Count from "./ChartComponents/Statistics_Bars_Ammo_Count"
-import Statistics_Pie_Count_Generic from "./ChartComponents/Statistics_Pie_Count_Generic"
-import { accessoryCollection, partCollection } from "db/schema"
+import Statistics_Pie_Count_Generic from "./ChartComponents/Generics/Statistics_Pie_Count_Generic"
+import Statistics_Bars_Price_Generic from "./ChartComponents/Generics/Statistics_Bars_Price_Generic"
+import Statistics_Sub_Entrypoint from "./ChartComponents/EntryPoints/Statistics_Sub_Entrypoint"
+import Statistics_Bars_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bars_Caliber_Count"
 
 interface RouteParams {
   label: MainCollectionCategories  
@@ -41,15 +40,6 @@ export default function ViewGranularStatistics(){
         })
     }
 
-    const collectionTopics = {
-        gunCollection: ["manufacturer", "originCountry", "boughtFrom"],
-        ammoCollection: ["All", "manufacturer"],
-        accessoryCollection: ["All"],
-        partCollection: ["All"],
-        reloadingCollection: ["All"],
-        literatureCollection: ["All"]
-    }
-    
     return(
         <View style={{flex: 1, paddingBottom: defaultViewPadding}}>
             <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
@@ -97,11 +87,13 @@ export default function ViewGranularStatistics(){
                         >
 {                                params.label.startsWith("ammoCollection") ? 
                                     collectionTopics[params.label][index] === "All" ? 
-                                        <Statistics_Bars_Ammo_Count collection={params.label} /> : 
+                                        <Statistics_Bars_Caliber_Count collection={params.label} /> : 
                                         <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                 params.label.startsWith("gunCollection") ?
+                                    collectionTopics[params.label][index] === "paidPrice" ? 
+                                    <Statistics_Bars_Price_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
                                     <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
-                                <Statistics_Bars_Count collection={params.label} /> }
+                                <Statistics_Sub_Entrypoint collection={params.label} /> }
                         </Card>
                         
                         </View>

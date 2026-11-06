@@ -9,56 +9,59 @@ import { eq, asc, count, ne } from 'drizzle-orm';
 import { screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useEffect, useMemo, useState } from "react"
-import { AmmoType, CollectionType } from "lib/interfaces"
+import { AmmoType, CollectionType, ItemType } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
 import { rgbaToHex } from "functions/utils"
 import { BarChart } from "react-native-chart-kit/v2";
-import { determineTabBarLabel } from "functions/determinators"
+import { determineItemDesignation, determineTabBarLabel } from "functions/determinators"
 import Item from "components/ItemCollection/Item"
 import { getDisplayName, getShortCaliberName, getShortCaliberNameFromArray } from "functions/getShortCaliber"
+import { dataTemplate_Translations } from "lib/DataTemplates/translations"
 
 interface Props{
     collection: CollectionType
+    topic: string
 }
 
-export default function Statistics_Bars_Ammo_Count({collection}:Props){
+export default function Statistics_Bars_Price_Generic({collection, topic}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     
     const colorTheme = theme
-    const [uniqueCalibers, setUniqueCalibers] = useState({})
-    const [totalShots, setTotalShots] = useState<number>(0)
+    const [entries, setEntries] = useState({})
+    const [total, setTotal] = useState<number>(0)
     const [maxSize, setMaxSize] = useState<number>(0)
 
     useEffect(()=>{
-        setUniqueCalibers({})
+        setEntries({})
         setMaxSize(0)
         async function getCollectionSize(){
-            let localUniqueCalibers = {}
+            let localEntries = {}
             let localMaxSize = 0
-            let localTotalShots = 0
+            let localTotal = 0
             for(const screen of screenNameParamsAll){
-                if(screen.startsWith(collection)){
-                    const collectionSize = await db.select().from(schema[screen]).where(ne(schema[screen].sold_isSold, true)) as AmmoType[]
+                console.log(`screen: ${screen}`)
+                console.log(`collection: ${collection}`)
+                if(screen.startsWith(`${collection}`)){
+                    const collectionSize = await db.select().from(schema[screen]).where(ne(schema[screen].sold_isSold, true)) as ItemType[]
                     for(const item of collectionSize){
-                        if(localUniqueCalibers[item.caliber[0]]){
-                            const currentCount = localUniqueCalibers[item.caliber[0]]
-                            const newCount = currentCount + item.currentStock
-                            localUniqueCalibers = {...localUniqueCalibers, [item.caliber[0]]: parseInt(newCount)}
-                        } else {
-                            localUniqueCalibers = {...localUniqueCalibers, [item.caliber[0]]: parseInt(item.currentStock)}
+                        if(item.paidPrice){
+                            const key = determineItemDesignation(collection, item)
+                            console.log(key)
+                            localEntries = {...localEntries, [key] : parseFloat(item.paidPrice)}
+                            if(item.paidPrice > localMaxSize){
+                                localMaxSize = parseFloat(item.paidPrice)
+                            }
+                            localTotal += parseFloat(item.paidPrice)
                         }
-                        if(item.currentStock > localMaxSize){
-                            localMaxSize = parseInt(item.currentStock)
-                        }
-                        localTotalShots += parseInt(item.currentStock)
                     }
                 }
             }
-            setUniqueCalibers(localUniqueCalibers)
+            console.log(localEntries)
+            setEntries(localEntries)
             setMaxSize(localMaxSize)
-            setTotalShots(localTotalShots)
+            setTotal(localTotal)
         }
         getCollectionSize()
     },[])
@@ -66,13 +69,13 @@ export default function Statistics_Bars_Ammo_Count({collection}:Props){
     const palette = useMemo(() => {
         const primaryColor = new ColorModel(rgbaToHex(theme.colors.primary))
         const paletteFromColor = new ColorPaletteGenerator({
-            precision: Math.ceil(Object.keys(uniqueCalibers).length/2),
+            precision: Math.ceil(Object.keys(entries).length),
             baseColor: primaryColor,
         })
-        return paletteFromColor.getRandomPalette({ length: Object.keys(uniqueCalibers).length, filterPasses: false, })
-    }, [theme.colors.primary, uniqueCalibers])
+        return paletteFromColor.getRandomPalette({ length: Object.keys(entries).length, filterPasses: false, })
+    }, [theme.colors.primary, entries])
 
-    const pieData = Object.entries(uniqueCalibers)
+    const pieData = Object.entries(entries)
     .map((collection, index) => {
         return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
     })
@@ -99,6 +102,7 @@ export default function Statistics_Bars_Ammo_Count({collection}:Props){
             alignItems: "flex-start",
         }}>
             <View>
+                <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
                 <BarChart
                     data={pieData}
                     xKey="channel"
@@ -124,7 +128,8 @@ export default function Statistics_Bars_Ammo_Count({collection}:Props){
                             width={bar.width} height={bar.height}
                             rx={radius}
                             fill={palette[bar.dataIndex].hex}
-                            stroke={theme.colors.background}
+                            stroke={theme.colors.surfaceVariant}
+                            strokeWidth={2}
                         />
                     )}
                 />
@@ -132,25 +137,37 @@ export default function Statistics_Bars_Ammo_Count({collection}:Props){
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
-                                <DataTable.Title style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} ><Icon source="pound" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} ><Icon source="ammunition" size={24} /></DataTable.Title>
-                                <DataTable.Title style={{flex: 2}} numeric >{totalShots}</DataTable.Title>
-                                <DataTable.Title style={{flex: 2}} numeric>{`${((totalShots/totalShots)*100).toFixed(2)}%`}</DataTable.Title>
+                                <DataTable.Title style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
+                                    <Icon source="pound" color={theme.colors.primary} size={24} />
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
+                                    <Icon source="tag-text-outline" color={theme.colors.primary} size={24} />
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} >
+                                    <Text variant="bodyMedium" style={{color: theme.colors.primary}}>
+                                        {total.toFixed(2)}
+                                    </Text>
+                                </DataTable.Title>
+                                <DataTable.Title style={{flex: 2, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}} >
+                                    <Text variant="bodyMedium" style={{color: theme.colors.primary}}>
+                                        {`${((total/total)*100).toFixed(2)}%`}
+                                    </Text>
+                                </DataTable.Title>
                             </DataTable.Header>
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
                                             <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
                                                 <Text>{`${index+1}`}</Text>
                                             </View>
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3}} >
-                                        <Text>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
+                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
                                     </DataTable.Cell>
-                                    <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
-                                    <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalShots)*100).toFixed(2)}%`}</DataTable.Cell>
+                                    <DataTable.Cell style={{flex: 2}} numeric>{item.share.toFixed(2)}</DataTable.Cell>
+                                    <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/total)*100).toFixed(2)}%`}</DataTable.Cell>
                                 </DataTable.Row>
                             ))}
                         </DataTable>
