@@ -41,14 +41,11 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
             let localMaxSize = 0
             let localTotal = 0
             for(const screen of screenNameParamsAll){
-                console.log(`screen: ${screen}`)
-                console.log(`collection: ${collection}`)
                 if(screen.startsWith(`${collection}`)){
                     const collectionSize = await db.select().from(schema[screen]).where(ne(schema[screen].sold_isSold, true)) as ItemType[]
                     for(const item of collectionSize){
                         if(item.paidPrice){
                             const key = determineItemDesignation(collection, item)
-                            console.log(key)
                             localEntries = {...localEntries, [key] : parseFloat(item.paidPrice)}
                             if(item.paidPrice > localMaxSize){
                                 localMaxSize = parseFloat(item.paidPrice)
@@ -58,7 +55,6 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                     }
                 }
             }
-            console.log(localEntries)
             setEntries(localEntries)
             setMaxSize(localMaxSize)
             setTotal(localTotal)
@@ -164,7 +160,7 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3}} >
-                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.split(":")[0])}`}</Text>
+                                        <Text numberOfLines={5}>{`${getDisplayName(item.channel.slice(0, item.channel.lastIndexOf(":")))}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share.toFixed(2)}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/total)*100).toFixed(2)}%`}</DataTable.Cell>
