@@ -43,6 +43,8 @@ export default function ViewSubGranularStatistics(){
             animated: true,
         })
     }
+
+    const carouselData = collectionTopics[params.label.split("_")[0]]
     
     return(
         <View style={{flex: 1, paddingBottom: defaultViewPadding}}>
@@ -56,11 +58,11 @@ export default function ViewSubGranularStatistics(){
                     ref={ref}
                     width={width}
                     height={Dimensions.get("window").height-192}
-                    data={collectionTopics[params.label.split("_")[0]]}
+                    data={carouselData}
                     autoFillData={false}
                     loop={false}
                     onProgressChange={progress}
-                    enabled={true}
+                    enabled={carouselData.length > 1 ? true : false}
                         onConfigurePanGesture={(gesture) => {
                         gesture
                         .activeOffsetX([-10, 10])   // activate only on horizontal swipe
@@ -100,14 +102,14 @@ export default function ViewSubGranularStatistics(){
                         </View>
                     )}
                 />
-                <Pagination.Basic
+                {carouselData.length > 1 ? <Pagination.Basic
                     progress={progress}
-                    data={collectionTopics[params.label.split("_")[0]]}
+                    data={carouselData}
                     dotStyle={{ backgroundColor: theme.colors.secondary, borderRadius: 50 }}
                     activeDotStyle={{ backgroundColor: theme.colors.primary, borderRadius: 50 }}
                     containerStyle={{ gap: 5, marginTop: 0 }}
                     onPress={onPressPagination}
-                />
+                /> :null}
 </View>
         </View>
     )

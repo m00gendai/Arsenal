@@ -1,7 +1,7 @@
 import { Dimensions, View } from "react-native"
 import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
-import { collectionTopics, defaultViewPadding } from "configs/configs"
+import { collectionTopics, defaultViewPadding, nonSubCollectionTopics } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
 import Carousel, {
   ICarouselInstance,
@@ -15,6 +15,7 @@ import Statistics_Pie_Count_Generic from "./ChartComponents/Generics/Statistics_
 import Statistics_Bars_Price_Generic from "./ChartComponents/Generics/Statistics_Bars_Price_Generic"
 import Statistics_Sub_Entrypoint from "./ChartComponents/EntryPoints/Statistics_Sub_Entrypoint"
 import Statistics_Bars_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bars_Caliber_Count"
+import Statistics_Line_Date_Generic from "./ChartComponents/Generics/Statistics_Line_Date_Generic"
 
 interface RouteParams {
   label: MainCollectionCategories  
@@ -40,6 +41,8 @@ export default function ViewGranularStatistics(){
         })
     }
 
+    const carouselData = nonSubCollectionTopics.includes(params.label.split("_")[0]) ? collectionTopics[params.label.split("_")[0]] : ["All"]
+
     return(
         <View style={{flex: 1, paddingBottom: defaultViewPadding}}>
             <Appbar style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
@@ -52,11 +55,11 @@ export default function ViewGranularStatistics(){
                     ref={ref}
                     width={width}
                     height={Dimensions.get("window").height-192}
-                    data={collectionTopics[params.label]}
+                    data={carouselData}
                     autoFillData={false}
                     loop={false}
                     onProgressChange={progress}
-                    enabled={true}
+                    enabled={carouselData.length > 1 ? true : false}
                         onConfigurePanGesture={(gesture) => {
                         gesture
                         .activeOffsetX([-10, 10])   // activate only on horizontal swipe
@@ -91,7 +94,11 @@ export default function ViewGranularStatistics(){
                                         <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                 params.label.startsWith("gunCollection") ?
                                     collectionTopics[params.label][index] === "paidPrice" ? 
-                                    <Statistics_Bars_Price_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
+                                        <Statistics_Bars_Price_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
+                                    collectionTopics[params.label][index] === "acquisitionDate_unix" ? 
+                                        <Statistics_Line_Date_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
+                                    collectionTopics[params.label][index] === "caliber" ? 
+                                        <Statistics_Bars_Caliber_Count collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
                                     <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
                                 <Statistics_Sub_Entrypoint collection={params.label} /> }
                         </Card>
@@ -99,14 +106,14 @@ export default function ViewGranularStatistics(){
                         </View>
                     )}
                 />
-                <Pagination.Basic
+                {carouselData.length > 1 ? <Pagination.Basic
                     progress={progress}
-                    data={collectionTopics[params.label]}
+                    data={carouselData}
                     dotStyle={{ backgroundColor: theme.colors.secondary, borderRadius: 50 }}
                     activeDotStyle={{ backgroundColor: theme.colors.primary, borderRadius: 50 }}
                     containerStyle={{ gap: 5, marginTop: 0 }}
                     onPress={onPressPagination}
-                />
+                /> : null}
 </View>
         </View>
     )

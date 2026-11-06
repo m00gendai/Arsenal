@@ -43,7 +43,7 @@ export default function ViewStatistics({navigation}){
                     autoFillData={false}
                     loop={false}
                     onProgressChange={progress}
-                    enabled={true}
+                    enabled={data.length > 1 ? true : false}
                         onConfigurePanGesture={(gesture) => {
                         gesture
                         .activeOffsetX([-10, 10])   // activate only on horizontal swipe
@@ -80,14 +80,14 @@ export default function ViewStatistics({navigation}){
                         </View>
                     )}
                 />
-                <Pagination.Basic
+                {data.length > 1 ? <Pagination.Basic
                     progress={progress}
                     data={data}
                     dotStyle={{ backgroundColor: theme.colors.secondary, borderRadius: 50 }}
                     activeDotStyle={{ backgroundColor: theme.colors.primary, borderRadius: 50 }}
                     containerStyle={{ gap: 5, marginTop: 0 }}
                     onPress={onPressPagination}
-                />
+                /> : null}
 </View>
         </View>
     )
