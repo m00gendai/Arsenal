@@ -54,6 +54,7 @@ import GenerateQRCodes from 'components/MainMenu/QRCodes/GenerateQRCodes';
 import { AppDb } from 'db/client';
 import * as SQLite from 'expo-sqlite';
 import ViewGranularStatistics from 'components/MainMenu/Statistics/ViewGranularStatistics';
+import ViewSubGranularStatistics from 'components/MainMenu/Statistics/ViewSubGranularStatistics';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -528,6 +529,12 @@ const { bottom } = useSafeAreaInsets();
               <Stack.Screen
                 name="ViewGranularStatistics"
                 component={ViewGranularStatistics}
+                options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
+              />
+
+              <Stack.Screen
+                name="ViewSubGranularStatistics"
+                component={ViewSubGranularStatistics}
                 options={{headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS}} 
               />
 

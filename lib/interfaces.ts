@@ -800,6 +800,29 @@ export interface ReloadingType_Powder {
   sold_remarks: string | null,
 }
 
+export type AccessoryType = | AccessoryType_LightLaser
+                            | AccessoryType_Magazine
+                            | AccessoryType_Misc
+                            | AccessoryType_Optic
+                            | AccessoryType_Scope
+                            | AccessoryType_Silencer
+
+export type ReloadingType = | ReloadingType_Bullet
+                            | ReloadingType_Case
+                            | ReloadingType_Die
+                            | ReloadingType_Powder
+                            | ReloadingType_Primer
+
+export type LiteratureType =    | LiteratureType_Book
+                                | LiteratureType_PrintMagazine
+
+export type PartType =  | PartType_Barrel
+                        | PartType_ConversionKit
+                        | PartType_PistolFrame
+                        | PartType_PistolSlide
+                        | PartType_RifleLower
+                        | PartType_RifleUpper
+
 export type ItemType =  | GunType 
                         | AmmoType 
                         | AccessoryType_Silencer 
@@ -1166,6 +1189,7 @@ export type StackParamList = {
   EditCustomLabels: undefined
   ViewStatistics: undefined
   ViewGranularStatistics: {label: string}
+  ViewSubGranularStatistics: {label: string}
   GenerateQRCodes: {collection: CollectionType, label: string}
 }
 
