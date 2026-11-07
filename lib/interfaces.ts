@@ -105,6 +105,10 @@ export interface AmmoType{
   bulletType: string,
   bulletWeight: string,
   headstamp: string | null
+  casingType: string | null
+  shotWeight: string | null
+  velocity: string | null
+  drameq: string | null
   currentStock: string
   lastTopUpAt_unix: number | null
   criticalStock: string
@@ -866,6 +870,34 @@ export type CollectionType =  | "gunCollection"
                               | "reloadingCollection_Case"
                               | "reloadingCollection_Primer"
                               | "reloadingCollection_Powder"
+
+export interface CollectionTopicMap{
+    gunCollection: GunType
+    ammoCollection: AmmoType
+    accessoryCollection_Silencer: AccessoryType_Silencer
+    accessoryCollection_Optic: AccessoryType_Optic
+    accessoryCollection_Scope: AccessoryType_Scope
+    accessoryCollection_LightLaser: AccessoryType_LightLaser
+    accessoryCollection_Magazine: AccessoryType_Magazine
+    accessoryCollection_Misc: AccessoryType_Misc
+    partCollection_ConversionKit: PartType_ConversionKit
+    partCollection_Barrel: PartType_Barrel
+    partCollection_PistolSlide: PartType_PistolSlide
+    partCollection_PistolFrame: PartType_PistolFrame
+    partCollection_RifleLower: PartType_RifleLower
+    partCollection_RifleUpper: PartType_RifleUpper
+    literatureCollection_Book: LiteratureType_Book
+    literatureCollection_PrintMagazine: LiteratureType_PrintMagazine
+    reloadingCollection_Die: ReloadingType_Die
+    reloadingCollection_Bullet: ReloadingType_Bullet
+    reloadingCollection_Case: ReloadingType_Case
+    reloadingCollection_Primer: ReloadingType_Primer
+    reloadingCollection_Powder: ReloadingType_Powder
+}
+
+export type CollectionTopics = {
+    [K in keyof CollectionTopicMap]: (keyof CollectionTopicMap[K] & string)[]
+}
 
 export type Screens = "itemCollection"
 
