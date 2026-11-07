@@ -1,4 +1,4 @@
-import { CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesLiterature_PrintMagazine, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
+import { CollectionTopics, CollectionType, CommonStyles, CountrySelection, Languages, ListPrinter, SortingTypesAccessory_LightLaser, SortingTypesAccessory_Magazine, SortingTypesAccessory_Misc, SortingTypesAccessory_Optic, SortingTypesAccessory_Scope, SortingTypesAccessory_Silencer, SortingTypesAmmo, SortingTypesGun, SortingTypesLiterature_Book, SortingTypesLiterature_PrintMagazine, SortingTypesPart_Barrel, SortingTypesPart_ConversionKit, SortingTypesPart_PistolFrame, SortingTypesPart_PistolSlide, SortingTypesPart_RifleLower, SortingTypesPart_RifleUpper, SortingTypesReloading_Bullet, SortingTypesReloading_Case, SortingTypesReloading_Die, SortingTypesReloading_Powder, SortingTypesReloading_Primer, SupportedCountries } from "../lib/interfaces"
 import { SimpleTranslation } from "../lib/textTemplates"
 
 
@@ -97,13 +97,29 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
     minute: "2-digit"
 }
 
-export const collectionTopics = {
-    gunCollection: ["caliber", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
-    ammoCollection: ["All", "manufacturer"],
-    accessoryCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
-    partCollection: ["manufacturer", "originCountry", "paidPrice", "boughtFrom"],
-    reloadingCollection: ["caliber", "manufacturer", "paidPrice", "boughtFrom"],
-    literatureCollection: ["author", "publisher", "language", "paidPrice", "boughtFrom"]
+// Note: If "caliber" is set, currentStock is automatically taken care of and only needs to be defined for non-caliber stock counts
+export const collectionTopics: CollectionTopics = {
+    gunCollection:                      ["caliber", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    ammoCollection:                     ["caliber", "manufacturer", "bulletType", "velocity"],
+    accessoryCollection_Silencer:       ["caliber", "manufacturer", "thread", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_Optic:          ["manufacturer", "footprint", "zoom", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_Scope:          ["manufacturer", "zoom", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_LightLaser:     ["manufacturer", "lumen", "laserPower", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_Magazine:       ["caliber", "capacity", "platform", "manufacturer", "originCountry"],
+    accessoryCollection_Misc:           ["manufacturer", "originCountry", "boughtFrom"],
+    partCollection_ConversionKit:       ["caliber", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    partCollection_Barrel:              ["caliber", "barrelLength", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    partCollection_PistolSlide:         ["manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    partCollection_PistolFrame:         ["manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    partCollection_RifleLower:          ["manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    partCollection_RifleUpper:          ["manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    literatureCollection_Book:          ["author", "publisher", "language", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    literatureCollection_PrintMagazine: ["title", "publisher", "language", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    reloadingCollection_Die:            ["caliber", "manufacturer", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    reloadingCollection_Bullet:         ["caliber", "bulletType", "manufacturer"],
+    reloadingCollection_Case:           ["caliber", "material", "manufacturer"],
+    reloadingCollection_Primer:         ["currentStock", "type", "manufacturer"],
+    reloadingCollection_Powder:         ["powderWeight", "manufacturer"]
 }
 
 export const nonSubCollectionTopics = ["gunCollection", "ammoCollection"]
