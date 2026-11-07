@@ -14,11 +14,14 @@ import { useNavigation, useRoute } from "@react-navigation/native"
 import { mainCollectionCategories, MainCollectionCategories } from "lib/textTemplates"
 import Statistics_Pie_Count_Generic from "./ChartComponents/Generics/Statistics_Pie_Count_Generic"
 import { accessoryCollection, partCollection } from "db/schema"
-import Statistics_Bars_Price_Generic from "./ChartComponents/Generics/Statistics_Bars_Price_Generic"
+import Statistics_Bar_Price_Generic from "./ChartComponents/Generics/Statistics_Bar_Price_Generic"
 import { CollectionType } from "lib/interfaces"
 import { tabBarLabels } from "lib/Text/text_tabBarLabels"
 import { determineTabBarLabel } from "functions/determinators"
-import Statistics_Bars_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bars_Caliber_Count"
+import Statistics_Bar_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bar_Caliber_Count"
+import Statistics_Line_Date_Generic from "./ChartComponents/Generics/Statistics_Area_Date_Generic"
+import Statistics_Bar_CurrentStock_Count from "./ChartComponents/Specifics/Statistics_Bar_CurrentStock_Count"
+import Statistics_Bar_PowderWeight_Count from "./ChartComponents/Specifics/Statistics_Bar_PowderWeight_Count"
 
 interface RouteParams {
   label: CollectionType  
@@ -44,7 +47,7 @@ export default function ViewSubGranularStatistics(){
         })
     }
 
-    const carouselData = collectionTopics[params.label.split("_")[0]]
+    const carouselData = collectionTopics[params.label]
     
     return(
         <View style={{flex: 1, paddingBottom: defaultViewPadding}}>
@@ -91,12 +94,17 @@ export default function ViewSubGranularStatistics(){
                                 padding: defaultViewPadding,
                             }}
                         >
-                            {collectionTopics[params.label.split("_")[0]][index] === "paidPrice" ? 
-                                <Statistics_Bars_Price_Generic collection={params.label} topic={collectionTopics[params.label.split("_")[0]][index]} /> :
-                            collectionTopics[params.label.split("_")[0]][index] === "caliber" ?
-                                <Statistics_Bars_Caliber_Count collection={params.label} topic={collectionTopics[params.label.split("_")[0]][index]} /> :
-                            <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label.split("_")[0]][index]} /> 
-                               }
+                            {collectionTopics[params.label][index] === "caliber" ? 
+                                <Statistics_Bar_Caliber_Count collection={params.label} /> : 
+                            collectionTopics[params.label][index] === "paidPrice" ? 
+                                <Statistics_Bar_Price_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
+                            collectionTopics[params.label][index] === "acquisitionDate_unix" ? 
+                                <Statistics_Line_Date_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
+                            collectionTopics[params.label][index] === "currentStock" ? 
+                                <Statistics_Bar_CurrentStock_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :
+                            collectionTopics[params.label][index] === "powderWeight" ? 
+                                <Statistics_Bar_PowderWeight_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :  
+                            <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} />}
                         </Card>
                         
                         </View>

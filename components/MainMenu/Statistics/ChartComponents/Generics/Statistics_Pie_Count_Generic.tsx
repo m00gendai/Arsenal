@@ -1,12 +1,12 @@
 import { LayoutChangeEvent, View } from "react-native"
-import { Appbar, Divider, Icon, IconButton, Text, DataTable  } from "react-native-paper"
+import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne, and } from 'drizzle-orm';
 import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, StackParamList } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
@@ -20,6 +20,7 @@ import ModalContainer from "components/ModalContainer"
 import { useItemStore } from "stores/useItemStore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
+import Chart_Pie from "../Charts/Chart_Pie"
 
 interface Props{
     collection: CollectionType
@@ -32,6 +33,8 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
     const { setCurrentItem } = useItemStore()
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
     
+    const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
+
     const colorTheme = theme
     const [uniqueEntries, setUniqueEntries] = useState<{[key: string]: number}>({})
     const [total, setTotal] = useState<number>(0)
@@ -113,23 +116,56 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
         return paletteFromColor.getRandomPalette({ length: Object.keys(uniqueEntries).length, filterPasses: false, })
     }, [theme.colors.primary, uniqueEntries, topic])
 
-    const pieData = Object.entries(uniqueEntries)
-    .map((collection, index) => {
-        return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
-    })
-    .sort((a, b) => {
-        const x = a.share
-        const y = b.share
-        return x < y ? 1 : x > y ? -1 : a.channel.localeCompare(b.channel)
-    })
+    const pieData = useMemo(() => {
+        return Object.entries(uniqueEntries)
+        .map((collection, index) => {
+            return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
+        })
+        .sort((a, b) => {
+            const x = a.share
+            const y = b.share
+            return x < y ? 1 : x > y ? -1 : a.channel.localeCompare(b.channel)
+        })
+    },[uniqueEntries])
 
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    
-    const onLayout = (e: LayoutChangeEvent) => {
-        setWidth(e.nativeEvent.layout.width)
-        setHeight(e.nativeEvent.layout.height)
-    }
+    const onLayout = useCallback((e: LayoutChangeEvent) => {
+        const w = Math.round(e.nativeEvent.layout.width)
+        const h = Math.round(e.nativeEvent.layout.height)
+        setChartContainerSize(prev =>
+            Math.abs(prev.width - w) >= 2 || Math.abs(prev.height - h) >= 2
+                ? { width: w, height: h }
+                : prev
+        )
+    }, [])
+
+    const chartHeight = Math.round(chartContainerSize.height / 2)
+
+    const chartTheme = useMemo(() => ({
+        background: theme.colors.background,
+        plotBackground: theme.colors.background,
+        text: theme.colors.onBackground,
+        mutedText: theme.colors.onBackground,
+    }), [colorTheme])
+
+    const chartColors = useMemo(() => {
+        return palette.map(color => color.hex)
+    },[palette])
+
+    const chartArcLabels_formatLabel = useCallback(({label, index}) => {
+        return index < average ? `${index+1}` : ""
+    }, [average])
+
+    const chartArcLabels = useMemo(() => ({
+        minPercentage: 0,
+        reservedWidth: 20,
+        connectorLength: 0,
+        formatLabel: chartArcLabels_formatLabel
+    }), [chartArcLabels_formatLabel])
+
+    const chartSliceSeparator = useMemo(() => ({
+        width: 2, 
+        color: theme.colors.surfaceVariant 
+    }), [theme])
 
     return(
         <View onLayout={onLayout} style={{
@@ -140,32 +176,10 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
             justifyContent: "center",
             alignItems: "flex-start",
         }}>
-            <View>
+            <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                <PieChart
-                    data={pieData}
-                    valueKey="share"
-                    labelKey="channel"
-                    sliceSeparator={{ width: 2, color: theme.colors.surfaceVariant }}
-                    width={width}
-                    height={height/2}
-                    legend={false}
-                    theme={{
-                        background: theme.colors.background,
-                        plotBackground: theme.colors.background,
-                        text: theme.colors.onBackground,
-                        mutedText: theme.colors.onBackground,
-                    }}
-                    colors={palette.map(color => color.hex)}
-                    arcLabels={{
-                        minPercentage: 0,
-                        reservedWidth: 20,
-                        connectorLength: 0,
-                        formatLabel: ({ label, index }) =>
-                        index < average ? `${index+1}` : ""
-                    }}
-                />
-                <ScrollView>
+                {chartHeight > 0 && <Chart_Pie data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} />}
+                {chartHeight > 0 ? <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -209,8 +223,11 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                                 </DataTable.Row>
                             ))}
                         </DataTable>
-                    </View>
-                </ScrollView>
+                    </View> 
+                </ScrollView> : 
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
+                    <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
+                </View>}
             </View>
             <ModalContainer
                 title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}

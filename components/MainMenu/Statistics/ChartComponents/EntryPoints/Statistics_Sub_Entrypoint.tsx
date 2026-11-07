@@ -1,14 +1,14 @@
 // Chart Kit example, not super customizable but the best there is...
 
 import { LayoutChangeEvent, View } from "react-native"
-import { Appbar, Divider, Icon, IconButton, Text, DataTable  } from "react-native-paper"
+import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne } from 'drizzle-orm';
 import { screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { CollectionType, StackParamList } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
@@ -16,6 +16,7 @@ import { rgbaToHex } from "functions/utils"
 import { BarChart } from "react-native-chart-kit/v2";
 import { determineTabBarLabel } from "functions/determinators"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import Chart_Bar from "../Charts/Chart_Bar"
 
 interface Props{
     collection: CollectionType
@@ -25,6 +26,8 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const navigation = useNavigation<NavigationProp<StackParamList>>()
+
+    const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
 
     const colorTheme = theme
     const [collectionSizes, setCollectionSizes] = useState<[CollectionType, number][]>([])
@@ -68,16 +71,51 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
         return paletteFromColor.getRandomPalette({ length: collectionSizes.length, filterPasses: false, })
     }, [theme.colors.primary, collectionSizes])
 
-    const pieData = collectionSizes.map((collection, index) => {
-        return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
-    })
+    const pieData = useMemo(() => {
+        return collectionSizes.map((collection, index) => {
+            return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
+        })
+    },[collectionSizes])
 
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const onLayout = (e: LayoutChangeEvent) => {
-        setWidth(e.nativeEvent.layout.width)
-        setHeight(e.nativeEvent.layout.height)
-    }
+    const onLayout = useCallback((e: LayoutChangeEvent) => {
+        const w = Math.round(e.nativeEvent.layout.width)
+        const h = Math.round(e.nativeEvent.layout.height)
+        setChartContainerSize(prev =>
+            Math.abs(prev.width - w) >= 2 || Math.abs(prev.height - h) >= 2
+                ? { width: w, height: h }
+                : prev
+        )
+    }, [])
+
+    const chartHeight = Math.round(chartContainerSize.height / 2)
+
+    const chartTheme = useMemo(() => ({
+        background: theme.colors.background,
+        plotBackground: theme.colors.background,
+        text: theme.colors.onBackground,
+        mutedText: theme.colors.onBackground,
+    }), [colorTheme])
+
+    const chartYDomain = useMemo(() => ({
+        min: 0, 
+        max: maxSize, 
+        nice: false
+    }), [maxSize])
+
+    const chartFormatXLabel = useCallback((value, index) => {
+        return `${determineTabBarLabel(value.slice(0, value.lastIndexOf(":")))[language]}`
+    }, [])
+
+    const chartRenderBar = useCallback(({ bar, radius }) => {
+        return <Rect
+            x={bar.x} y={bar.y}
+            width={bar.width} height={bar.height}
+            rx={radius}
+            fill={palette[bar.dataIndex].hex}
+            stroke={theme.colors.surfaceVariant}
+            strokeWidth={2}
+        />
+    }, [palette, theme.colors.surfaceVariant])
 
     return(
         <View onLayout={onLayout} style={{
@@ -88,35 +126,9 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
             justifyContent: "center",
             alignItems: "flex-start",
         }}>
-            <View>
-                <BarChart
-                    data={pieData}
-                    xKey="channel"
-                    yKey="share"
-                    orientation="horizontal"
-                    showValuesOnTopOfBars={false}
-                    width={width}
-                    height={height/2}
-                    yDomain={{ min: 0, max: maxSize, nice: false }}
-                    formatXLabel={(value) => `${determineTabBarLabel(value.slice(0, value.lastIndexOf(":")))[language]}`}
-                    theme={{
-                        background: theme.colors.background,
-                        plotBackground: theme.colors.background,
-                        text: theme.colors.onBackground,
-                        mutedText: theme.colors.onBackground,
-                    }}
-                    renderBar={({ bar, radius }) => (
-                        <Rect
-                            x={bar.x} y={bar.y}
-                            width={bar.width} height={bar.height}
-                            rx={radius}
-                            fill={palette[bar.dataIndex].hex}
-                            stroke={theme.colors.surfaceVariant}
-                            strokeWidth={2}
-                        />
-                    )}
-                />
-                <ScrollView>
+            <View style={{flex: 1}}>
+                {chartHeight > 0 && <Chart_Bar data={pieData} orientation={"horizontal"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} />}
+                {chartHeight > 0 ? <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             {pieData.map((item, index) => (
@@ -137,7 +149,10 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
                             ))}
                         </DataTable>
                     </View>
-                </ScrollView>
+                </ScrollView> : 
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
+                    <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
+                </View>}
             </View>
         </View>
     )

@@ -1,14 +1,14 @@
 // Chart Kit example, not super customizable but the best there is...
 
 import { LayoutChangeEvent, View } from "react-native"
-import { Appbar, Divider, Icon, IconButton, Text, DataTable  } from "react-native-paper"
+import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne } from 'drizzle-orm';
 import { screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, ItemType } from "lib/interfaces"
 import { Rect } from 'react-native-svg'
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
@@ -18,6 +18,7 @@ import { determineItemDesignation, determineTabBarLabel } from "functions/determ
 import Item from "components/ItemCollection/Item"
 import { getDisplayName, getShortCaliberName, getShortCaliberNameFromArray } from "functions/getShortCaliber"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
+import Chart_Bar from "../Charts/Chart_Bar"
 
 interface Props{
     collection: CollectionType
@@ -28,8 +29,10 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     
+    const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
+
     const colorTheme = theme
-    const [entries, setEntries] = useState({})
+    const [entries, setEntries] = useState<{[key: string]: number}>({})
     const [total, setTotal] = useState<number>(0)
     const [maxSize, setMaxSize] = useState<number>(0)
 
@@ -71,22 +74,54 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
         return paletteFromColor.getRandomPalette({ length: Object.keys(entries).length, filterPasses: false, })
     }, [theme.colors.primary, entries])
 
-    const pieData = Object.entries(entries)
-    .map((collection, index) => {
-        return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
-    })
-    .sort((a, b) => {
-        const x = a.share
-        const y = b.share
-        return x < y ? 1 : x > y ? -1 : 0
-    })
+    const pieData = useMemo(() => {
+        return Object.entries(entries)
+        .map((collection, index) => {
+            return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
+        })
+        .sort((a, b) => {
+            const x = a.share
+            const y = b.share
+            return x < y ? 1 : x > y ? -1 : 0
+        })
+    },[entries])
 
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const onLayout = (e: LayoutChangeEvent) => {
-        setWidth(e.nativeEvent.layout.width)
-        setHeight(e.nativeEvent.layout.height)
-    }
+    const onLayout = useCallback((e: LayoutChangeEvent) => {
+        const w = Math.round(e.nativeEvent.layout.width)
+        const h = Math.round(e.nativeEvent.layout.height)
+        setChartContainerSize(prev =>
+            Math.abs(prev.width - w) >= 2 || Math.abs(prev.height - h) >= 2
+                ? { width: w, height: h }
+                : prev
+        )
+    }, [])
+
+    const chartHeight = Math.round(chartContainerSize.height / 2)
+
+    const chartTheme = useMemo(() => ({
+        background: theme.colors.background,
+        plotBackground: theme.colors.background,
+        text: theme.colors.onBackground,
+        mutedText: theme.colors.onBackground,
+    }), [colorTheme])
+
+    const chartYDomain = useMemo(() => ({
+        min: 0, 
+        max: maxSize, 
+        nice: false
+    }), [maxSize])
+
+    const chartFormatXLabel = useCallback((value, index) => {
+        return `${index+1}`
+    }, [])
+
+    const chartRenderBar = useCallback(({ bar, radius }) => {
+        return <Rect
+            x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={radius}
+            fill={palette[bar.dataIndex]?.hex}
+            stroke={theme.colors.surfaceVariant} strokeWidth={2}
+        />
+    }, [palette, theme.colors.surfaceVariant])
 
     return(
         <View onLayout={onLayout} style={{
@@ -97,39 +132,10 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
             justifyContent: "center",
             alignItems: "flex-start",
         }}>
-            <View>
+            <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                <BarChart
-                    data={pieData}
-                    xKey="channel"
-                    yKey="share"
-                    orientation="vertical"
-                    showValuesOnTopOfBars={false}
-                    width={width}
-                    height={height/2}
-                    scrollable
-                    visiblePoints={10}
-                    initialIndex="start"
-                    yDomain={{ min: 0, max: maxSize, nice: false }}
-                    formatXLabel={(value, index) => `${index+1}`}
-                    theme={{
-                        background: theme.colors.background,
-                        plotBackground: theme.colors.background,
-                        text: theme.colors.onBackground,
-                        mutedText: theme.colors.onBackground,
-                    }}
-                    renderBar={({ bar, radius }) => (
-                        <Rect
-                            x={bar.x} y={bar.y}
-                            width={bar.width} height={bar.height}
-                            rx={radius}
-                            fill={palette[bar.dataIndex].hex}
-                            stroke={theme.colors.surfaceVariant}
-                            strokeWidth={2}
-                        />
-                    )}
-                />
-                <ScrollView>
+                {chartHeight > 0 && <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} />}
+                {chartHeight > 0 ? <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -155,7 +161,7 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
                                         <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
                                             <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
-                                                <Text>{`${index+1}`}</Text>
+                                                <Text variant="labelSmall">{`${index+1}`}</Text>
                                             </View>
                                         </View>
                                     </DataTable.Cell>
@@ -168,7 +174,10 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                             ))}
                         </DataTable>
                     </View>
-                </ScrollView>
+                </ScrollView> : 
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
+                    <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
+                </View>}
             </View>
         </View>
     )

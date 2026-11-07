@@ -1,7 +1,7 @@
 // Chart Kit example, not super customizable but the best there is...
 
-import { Dimensions, LayoutChangeEvent, View } from "react-native"
-import { Appbar, DataTable, Divider, Icon, IconButton, Text } from "react-native-paper"
+import { Dimensions, LayoutChangeEvent, View, Image } from "react-native"
+import { ActivityIndicator, Appbar, DataTable, Divider, Icon, IconButton, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
@@ -9,7 +9,7 @@ import { eq, asc, count, ne } from 'drizzle-orm';
 import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { preferenceTitles } from "lib/Text/text_settings"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { CollectionType, Screens, StackParamList } from "lib/interfaces"
 
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
@@ -17,11 +17,14 @@ import { rgbaToHex } from "functions/utils"
 import { PieChart } from "react-native-chart-kit/v2";
 import { mainCollectionCategories, MainCollectionCategories } from "lib/textTemplates"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import Chart_Donut from "../Charts/Chart_Donut"
 
 export default function Statistics_Entrypoint(){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const navigation = useNavigation<NavigationProp<StackParamList>>()
+
+    const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
     
     const colorTheme = theme
     const [collectionSizes, setCollectionSizes] = useState<[CollectionType, number][]>([])
@@ -70,16 +73,64 @@ export default function Statistics_Entrypoint(){
         return paletteFromColor.getRandomPalette({ length: collectionMainSizes.length, filterPasses: false, })
     }, [theme.colors.primary, collectionMainSizes])
 
-    const pieData = collectionMainSizes.map((collection, index) => {
-        return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
-    })
+    const pieData = useMemo(() => {
+        return collectionMainSizes.map((collection, index) => {
+            return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
+        })
+    },[collectionMainSizes])
 
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-  const onLayout = (e: LayoutChangeEvent) => {
-    setWidth(e.nativeEvent.layout.width)
-    setHeight(e.nativeEvent.layout.height)
-  }
+    const onLayout = useCallback((e: LayoutChangeEvent) => {
+        const w = Math.round(e.nativeEvent.layout.width)
+        const h = Math.round(e.nativeEvent.layout.height)
+        setChartContainerSize(prev =>
+            Math.abs(prev.width - w) >= 2 || Math.abs(prev.height - h) >= 2
+                ? { width: w, height: h }
+                : prev
+        )
+    }, [])
+
+    const chartHeight = Math.round(chartContainerSize.height / 2)
+    
+    const chartTheme = useMemo(() => ({
+        background: theme.colors.background,
+        plotBackground: theme.colors.background,
+        text: theme.colors.onBackground,
+        mutedText: theme.colors.onBackground,
+    }), [colorTheme])
+
+    const chartColors = useMemo(() => {
+        return palette.map(color => color.hex)
+    },[palette])
+
+    const chartArcLabels_formatLabel = useCallback(({label, index}) => {
+        return `${mainCollectionCategories[label.slice(0, label.lastIndexOf(":"))][language]}`
+    }, [mainCollectionCategories])
+
+    const chartArcLabels = useMemo(() => ({
+        minPercentage: 0.01,
+        reservedWidth: chartContainerSize.width/5,
+        connectorColor: theme.colors.onBackground,
+        connectorLines: true,
+        offset: 25,
+        formatLabel: chartArcLabels_formatLabel
+    }), [chartArcLabels_formatLabel, chartContainerSize.width])
+
+    const chartSliceSeparator = useMemo(() => ({
+        width: 2, 
+        color: theme.colors.surfaceVariant 
+    }), [theme])
+
+    const chartCenterLabel = useCallback(() => {
+        return (
+            <View style={{ alignItems: "center", borderRadius: "100%", overflow: "hidden", borderWidth: 2, borderColor: theme.colors.primary }}>
+                <Image
+                    source={require(`../../../../../assets/appIconC.png`)}
+                    style={{ width: 98, height: 98 }}
+                    resizeMode="cover"
+                />
+            </View>
+        )
+    }, [theme])
 
     return(
         <View onLayout={onLayout} style={{
@@ -90,38 +141,9 @@ export default function Statistics_Entrypoint(){
             justifyContent: "center",
             alignItems: "flex-start",
         }}>
-            <View>
-                <PieChart
-                    data={pieData}
-                    valueKey="share"
-                    labelKey="channel"
-                    width={width}
-                    height={height/2}
-                    sliceSeparator={{ width: 2, color: theme.colors.surfaceVariant}}
-                    innerRadius={50}
-                    colors={palette.map(a => a.hex)}
-                    theme={{
-                        background: theme.colors.background,
-                        plotBackground: theme.colors.background,
-                        text: theme.colors.primary,
-                        
-                    }}
-                    arcLabels={{
-                        minPercentage: 0.01,
-                        reservedWidth: width/5,
-                        connectorColor: theme.colors.onBackground,
-                        connectorLines: true,
-                        offset: 25,
-                        formatLabel: ({ label }) => `${mainCollectionCategories[label.slice(0, label.lastIndexOf(":"))][language]}`
-                    }}
-                    legend={false}
-                    centerLabel={() => (
-                        <View style={{ alignItems: "center" }}>
-                            <Icon source={"counter"} size={50} color={theme.colors.primary}/>
-                        </View>
-                    )}
-                />
-                <ScrollView>
+            <View style={{flex: 1}}>
+                {chartHeight > 0 && <Chart_Donut data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} centerLabel={chartCenterLabel}/>}
+                {chartHeight > 0 ? <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             {pieData.map((item, index) => (
@@ -142,7 +164,10 @@ export default function Statistics_Entrypoint(){
                             ))}
                         </DataTable>
                     </View>
-                </ScrollView>
+                </ScrollView> : 
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
+                    <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
+                </View>}
             </View>
         </View>
     )

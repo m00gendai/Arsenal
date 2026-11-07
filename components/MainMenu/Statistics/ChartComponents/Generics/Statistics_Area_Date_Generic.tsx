@@ -1,14 +1,14 @@
 // Chart Kit example, not super customizable but the best there is...
 
 import { LayoutChangeEvent, View } from "react-native"
-import { Appbar, Divider, Icon, IconButton, Text, DataTable  } from "react-native-paper"
+import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne, and, gte, lt } from 'drizzle-orm';
 import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, ItemType, StackParamList } from "lib/interfaces"
 import { G, Circle, Text as SvgText } from "react-native-svg";
 import { ColorModel, ColorPaletteGenerator } from '@martinlaxenaire/color-palette-generator'
@@ -22,6 +22,7 @@ import ModalContainer from "components/ModalContainer"
 import { useItemStore } from "stores/useItemStore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
+import Chart_Area from "../Charts/Chart_Area"
 
 interface Props{
     collection: CollectionType
@@ -33,6 +34,8 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
     const { setCurrentItem } = useItemStore()
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
+
+    const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
     
     const colorTheme = theme
     const [uniqueEntries, setUniqueEntries] = useState<{[key: string]: number}>({})
@@ -117,22 +120,79 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
         getCollectionSize()
     },[])
 
-    const pieData = Object.entries(uniqueEntries)
-    .map((collection, index) => {
-        return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
-    })
-    .sort((a, b) => {
-        const x = a.channel
-        const y = b.channel
-        return x < y ? 1 : x > y ? -1 : 0
-    })
+    const pieData = useMemo(() => {
+        return Object.entries(uniqueEntries)
+        .map((collection, index) => {
+            return {channel: `${collection[0]}: ${collection[1]}`, share: collection[1]}
+        })
+        .sort((a, b) => {
+            const x = a.channel
+            const y = b.channel
+            return x < y ? 1 : x > y ? -1 : 0
+        })
+    },[uniqueEntries])
 
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const onLayout = (e: LayoutChangeEvent) => {
-        setWidth(e.nativeEvent.layout.width)
-        setHeight(e.nativeEvent.layout.height)
-    }
+    const onLayout = useCallback((e: LayoutChangeEvent) => {
+        const w = Math.round(e.nativeEvent.layout.width)
+        const h = Math.round(e.nativeEvent.layout.height)
+        setChartContainerSize(prev =>
+            Math.abs(prev.width - w) >= 2 || Math.abs(prev.height - h) >= 2
+                ? { width: w, height: h }
+                : prev
+        )
+    }, [])
+
+    const chartHeight = Math.round(chartContainerSize.height / 2)
+
+    const chartTheme = useMemo(() => ({
+        background: theme.colors.background,
+        plotBackground: theme.colors.background,
+        text: theme.colors.onBackground,
+        mutedText: theme.colors.onBackground,
+    }), [colorTheme])
+
+    const chartFormatXLabel = useCallback((label, index) => {
+        return label.slice(0, label.lastIndexOf(":"))
+    }, [])
+
+    const chartSeries = useMemo(() => ([
+        { 
+            yKey: "share", 
+            label: "Revenue", 
+            color: theme.colors.primary, 
+            strokeWidth: 3, 
+            curve: "step",  
+            threshold: {
+                y: 1,
+                aboveColor: theme.colors.primary,
+                belowColor: theme.colors.error
+            }
+        }
+    ]), [theme])
+
+    const chartRenderDot = useCallback((props) => {
+        const { x, y, value } = props;
+
+        return value > 0 ? (
+            <G>
+                <Circle cx={x} cy={y} r={12} fill={theme.colors.primary} />
+                <Circle cx={x} cy={y} r={10} fill={theme.colors.background} />
+                <SvgText
+                    x={x}
+                    y={y}
+                    fill={theme.colors.onBackground}
+                    fontSize={10}
+                    fontWeight="bold"
+                    textAnchor="middle"
+                    alignmentBaseline="central"
+                >
+                    {value}
+                </SvgText>
+            </G>
+        ) 
+        : 
+            null
+    },[theme])
 
     return(
         <View onLayout={onLayout} style={{
@@ -143,70 +203,10 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
             justifyContent: "center",
             alignItems: "flex-start",
         }}>
-            <View>
+            <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                <AreaChart
-                    data={pieData}
-                    xKey="channel"
-                    yKey="share"
-                    width={width}
-                    height={height/2}
-                    scrollable
-                    visiblePoints={10}
-                    theme={{
-                        background: theme.colors.background,
-                        plotBackground: theme.colors.background,
-                        text: theme.colors.onBackground,
-                        mutedText: theme.colors.onBackground,
-                    }}
-                    formatXLabel={(label, index) =>
-                        label.slice(0, label.lastIndexOf(":"))
-                    }
-                    showHorizontalGridLines
-                    showVerticalGridLines
-                    edgeLabelPolicy="show"
-                    yAxisLabelWidth="stable"
-                    series={
-                        [
-                            { 
-                                yKey: "share", 
-                                label: "Revenue", 
-                                color: theme.colors.primary, 
-                                strokeWidth: 3, 
-                                curve: "step",  
-                                threshold: {
-                                    y: 1,
-                                    aboveColor: theme.colors.primary,
-                                    belowColor: theme.colors.error
-                                }
-                            }
-                        ]
-                    }
-                    renderDot={(props) => {
-                        const { x, y, value } = props;
-
-                        return value > 0 ? (
-                            <G>
-                                <Circle cx={x} cy={y} r={12} fill={theme.colors.primary} />
-                                <Circle cx={x} cy={y} r={10} fill={theme.colors.background} />
-                                <SvgText
-                                    x={x}
-                                    y={y}
-                                    fill={theme.colors.onBackground}
-                                    fontSize={10}
-                                    fontWeight="bold"
-                                    textAnchor="middle"
-                                    alignmentBaseline="central"
-                                >
-                                    {value}
-                                </SvgText>
-                            </G>
-                        ) 
-                        : 
-                            null
-                    }}
-                />
-                <ScrollView>
+                {chartHeight > 0 && <Chart_Area data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} formatXLabel={chartFormatXLabel} series={chartSeries} renderDot={chartRenderDot} />}
+                {chartHeight > 0 ? <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -241,7 +241,10 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
                             ))}
                         </DataTable>
                     </View>
-                </ScrollView>
+                </ScrollView> : 
+                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
+                    <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
+                </View>}
             </View>
             <ModalContainer
                 title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}

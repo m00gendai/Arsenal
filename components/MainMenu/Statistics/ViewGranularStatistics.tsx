@@ -12,10 +12,11 @@ import { useSharedValue } from "react-native-reanimated";
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { mainCollectionCategories, MainCollectionCategories } from "lib/textTemplates"
 import Statistics_Pie_Count_Generic from "./ChartComponents/Generics/Statistics_Pie_Count_Generic"
-import Statistics_Bars_Price_Generic from "./ChartComponents/Generics/Statistics_Bars_Price_Generic"
+import Statistics_Bar_Price_Generic from "./ChartComponents/Generics/Statistics_Bar_Price_Generic"
 import Statistics_Sub_Entrypoint from "./ChartComponents/EntryPoints/Statistics_Sub_Entrypoint"
-import Statistics_Bars_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bars_Caliber_Count"
-import Statistics_Line_Date_Generic from "./ChartComponents/Generics/Statistics_Line_Date_Generic"
+import Statistics_Bar_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bar_Caliber_Count"
+import Statistics_Line_Date_Generic from "./ChartComponents/Generics/Statistics_Area_Date_Generic"
+import Statistics_Bar_CurrentStock_Count from "./ChartComponents/Specifics/Statistics_Bar_CurrentStock_Count"
 
 interface RouteParams {
   label: MainCollectionCategories  
@@ -88,18 +89,16 @@ export default function ViewGranularStatistics(){
                                 padding: defaultViewPadding,
                             }}
                         >
-{                                params.label.startsWith("ammoCollection") ? 
-                                    collectionTopics[params.label][index] === "All" ? 
-                                        <Statistics_Bars_Caliber_Count collection={params.label} /> : 
-                                        <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
-                                params.label.startsWith("gunCollection") ?
-                                    collectionTopics[params.label][index] === "paidPrice" ? 
-                                        <Statistics_Bars_Price_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
-                                    collectionTopics[params.label][index] === "acquisitionDate_unix" ? 
-                                        <Statistics_Line_Date_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
+{                                nonSubCollectionTopics.includes(params.label) ? 
                                     collectionTopics[params.label][index] === "caliber" ? 
-                                        <Statistics_Bars_Caliber_Count collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
-                                    <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics.gunCollection[index]} /> :
+                                        <Statistics_Bar_Caliber_Count collection={params.label} /> : 
+                                    collectionTopics[params.label][index] === "paidPrice" ? 
+                                        <Statistics_Bar_Price_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
+                                    collectionTopics[params.label][index] === "acquisitionDate_unix" ? 
+                                        <Statistics_Line_Date_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
+                                    collectionTopics[params.label][index] === "currentStock" ? 
+                                        <Statistics_Bar_CurrentStock_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :    
+                                     <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                 <Statistics_Sub_Entrypoint collection={params.label} /> }
                         </Card>
                         
