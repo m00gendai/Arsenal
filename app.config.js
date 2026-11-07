@@ -75,7 +75,8 @@ export default {
           },
           "android": {
             "enableMinifyInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "extraProguardRules": "-dontwarn com.gemalto.jp2.JP2Decoder\n-dontwarn com.gemalto.jp2.**"
           }
         }
       ],
