@@ -1,12 +1,12 @@
 // Chart Kit example, not super customizable but the best there is...
 
-import { LayoutChangeEvent, View } from "react-native"
+import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne } from 'drizzle-orm';
-import { screenNameParamsAll } from "configs/configs"
+import { defaultCardRadius, defaultGridGap, defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, ItemType } from "lib/interfaces"
@@ -129,18 +129,18 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
             width: "100%",
             height: "100%",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "center",
-            alignItems: "flex-start",
+            alignItems: "center",
         }}>
-            <View style={{flex: 1}}>
-                <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            <Text style={{width: "100%"}} variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            <View style={{flex: 1, borderRadius: defaultCardRadius, overflow: "hidden"}}>
                 {chartHeight > 0 ? 
                     Object.entries(entries).length === 0 ? 
                         <NoDataPlaceHolder data={"chart-bar"} /> : 
                         <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} /> :
                     null}
-                {chartHeight > 0 ? Object.entries(entries).length === 0 ? null : <ScrollView>
+                {chartHeight > 0 ? Object.entries(entries).length === 0 ? null : <View>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -161,7 +161,22 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                                     </Text>
                                 </DataTable.Title>
                             </DataTable.Header>
-                            {pieData.map((item, index) => (
+                            <FlatList
+                                numColumns={1}
+                                initialNumToRender={10}
+                                contentContainerStyle={{ gap: defaultGridGap }}
+                                columnWrapperStyle={undefined}
+                                keyExtractor={(item, index) => `${item.channel.slice(0, item.channel.lastIndexOf(":"))}_${index}`}
+                                style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    paddingTop: defaultViewPadding,
+                                    paddingLeft: defaultViewPadding,
+                                    paddingRight: defaultViewPadding,
+                                    paddingBottom: 50,
+                                }}
+                                data={pieData}
+                                renderItem={({ item, index }) => 
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
                                         <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
@@ -175,11 +190,15 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share.toFixed(2)}</DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/total)*100).toFixed(2)}%`}</DataTable.Cell>
-                                </DataTable.Row>
-                            ))}
+                                </DataTable.Row>}
+                                
+                                ListHeaderComponent={null}
+                                ListFooterComponent={<View style={{ width: "100%", height: chartHeight*1.5 }} />}
+                                ListEmptyComponent={null}
+                                />
                         </DataTable>
                     </View>
-                </ScrollView> : 
+                </View> : 
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}

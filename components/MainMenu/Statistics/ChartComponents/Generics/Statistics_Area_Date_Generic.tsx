@@ -1,12 +1,12 @@
 // Chart Kit example, not super customizable but the best there is...
 
-import { LayoutChangeEvent, View } from "react-native"
+import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne, and, gte, lt } from 'drizzle-orm';
-import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
+import { defaultCardRadius, defaultGridGap, defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, ItemType, StackParamList } from "lib/interfaces"
@@ -200,18 +200,18 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
             width: "100%",
             height: "100%",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "center",
-            alignItems: "flex-start",
+            alignItems: "center",
         }}>
-            <View style={{flex: 1}}>
-                <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            <Text style={{width: "100%"}} variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            <View style={{flex: 1, borderRadius: defaultCardRadius, overflow: "hidden"}}>
                 {chartHeight > 0 ? 
                     Object.entries(uniqueEntries).length === 0 ? 
                         <NoDataPlaceHolder data={"chart-areaspline-variant"} /> : 
                         <Chart_Area data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} formatXLabel={chartFormatXLabel} series={chartSeries} renderDot={chartRenderDot} /> :
                     null}
-                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <ScrollView>
+                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <View>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -232,7 +232,22 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
                                     <View></View>
                                 </DataTable.Title>
                             </DataTable.Header>
-                            {pieData.map((item, index) => (
+                             <FlatList
+                                                            numColumns={1}
+                                                            initialNumToRender={10}
+                                                            contentContainerStyle={{ gap: defaultGridGap }}
+                                                            columnWrapperStyle={undefined}
+                                                            keyExtractor={(item, index) => `${item.channel.slice(0, item.channel.lastIndexOf(":"))}_${index}`}
+                                                            style={{
+                                                                height: "100%",
+                                                                width: "100%",
+                                                                paddingTop: defaultViewPadding,
+                                                                paddingLeft: defaultViewPadding,
+                                                                paddingRight: defaultViewPadding,
+                                                                paddingBottom: 50,
+                                                            }}
+                                                            data={pieData}
+                                                            renderItem={({ item, index }) => 
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 3}} >
                                         <Text numberOfLines={5}>{`${getDisplayName(item.channel.slice(0, item.channel.lastIndexOf(":")))}`}</Text>
@@ -242,11 +257,15 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
                                     <DataTable.Cell style={{flex: 1}}>
                                         <IconButton onPress={()=>handleDetails(item.channel)} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={10} />
                                     </DataTable.Cell>
-                                </DataTable.Row>
-                            ))}
+                                </DataTable.Row>}
+                                                                
+                                                                ListHeaderComponent={null}
+                                                                ListFooterComponent={<View style={{ width: "100%", height: chartHeight*1.5 }} />}
+                                                                ListEmptyComponent={null}
+                                                                />
                         </DataTable>
                     </View>
-                </ScrollView> : 
+                </View> : 
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}

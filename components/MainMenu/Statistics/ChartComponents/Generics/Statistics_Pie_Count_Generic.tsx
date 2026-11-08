@@ -1,10 +1,10 @@
-import { LayoutChangeEvent, View } from "react-native"
+import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { Appbar, Divider, Icon, IconButton, Text, DataTable, ActivityIndicator  } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne, and } from 'drizzle-orm';
-import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
+import { defaultCardRadius, defaultGridGap, defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { AmmoType, CollectionType, StackParamList } from "lib/interfaces"
@@ -22,6 +22,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
 import Chart_Pie from "../Charts/Chart_Pie"
 import NoDataPlaceHolder from "../NoDataPlaceholder"
+import { defaultBottomBarHeight } from "configs/expo_configs"
 
 interface Props{
     collection: CollectionType
@@ -171,18 +172,17 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
             width: "100%",
             height: "100%",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "center",
-            alignItems: "flex-start",
-        }}>
-            <View style={{flex: 1}}>
-                <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            alignItems: "center",
+        }}><Text style={{width: "100%"}} variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
+            <View style={{flex: 1, borderRadius: defaultCardRadius, overflow: "hidden"}}>
                 {chartHeight > 0 ? 
                     Object.entries(uniqueEntries).length === 0 ? 
                         <NoDataPlaceHolder data={"chart-pie"} /> : 
                         <Chart_Pie data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} /> :
                     null}
-                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <ScrollView>
+                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <View>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -206,8 +206,22 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                                     <View></View>
                                 </DataTable.Title>
                             </DataTable.Header>
-                            {pieData.map((item, index) => (
-                                <DataTable.Row key={`dataTableRow_${index}`} >
+                            <FlatList
+                                numColumns={1}
+                                initialNumToRender={10}
+                                contentContainerStyle={{ gap: defaultGridGap }}
+                                columnWrapperStyle={undefined}
+                                keyExtractor={(item, index) => `${item.channel.slice(0, item.channel.lastIndexOf(":"))}_${index}`}
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                  paddingTop: defaultViewPadding,
+                                  paddingLeft: defaultViewPadding,
+                                  paddingRight: defaultViewPadding,
+                                  paddingBottom: 50,
+                                }}
+                                data={pieData}
+                                renderItem={({ item, index }) => <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
                                         <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
                                             <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
@@ -223,11 +237,15 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                                     <DataTable.Cell style={{flex: 1}}>
                                         <IconButton onPress={()=>handleDetails(item.channel)} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={10} />
                                     </DataTable.Cell>
-                                </DataTable.Row>
-                            ))}
+                                </DataTable.Row>}
+
+                                ListHeaderComponent={null}
+                                ListFooterComponent={<View style={{ width: "100%", height: chartHeight*1.5 }} />}
+                                ListEmptyComponent={null}
+                              />
                         </DataTable>
                     </View> 
-                </ScrollView> : 
+                </View> : 
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}} >
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}
