@@ -21,6 +21,7 @@ import { useItemStore } from "stores/useItemStore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
 import Chart_Pie from "../Charts/Chart_Pie"
+import NoDataPlaceHolder from "../NoDataPlaceholder"
 
 interface Props{
     collection: CollectionType
@@ -86,9 +87,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                         } else {
                             if(item[topic]){
                                 localUniqueEntries = {...localUniqueEntries, [item[topic]]: 1}
-                            } else {
-                                localUniqueEntries = {...localUniqueEntries, "---": 1}
-                            }
+                            } 
                             
                         }
                         localTotal += 1
@@ -178,8 +177,12 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
         }}>
             <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                {chartHeight > 0 && <Chart_Pie data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} />}
-                {chartHeight > 0 ? <ScrollView>
+                {chartHeight > 0 ? 
+                    Object.entries(uniqueEntries).length === 0 ? 
+                        <NoDataPlaceHolder data={"chart-pie"} /> : 
+                        <Chart_Pie data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} /> :
+                    null}
+                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
@@ -229,7 +232,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}
             </View>
-            <ModalContainer
+             <ModalContainer
                 title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}
                 subtitle={null}
                 visible={detailsVisible}

@@ -19,6 +19,7 @@ import Item from "components/ItemCollection/Item"
 import { getDisplayName, getShortCaliberName, getShortCaliberNameFromArray } from "functions/getShortCaliber"
 import { dataTemplate_Translations } from "lib/DataTemplates/translations"
 import Chart_Bar from "../Charts/Chart_Bar"
+import NoDataPlaceHolder from "../NoDataPlaceholder"
 
 interface Props{
     collection: CollectionType
@@ -40,7 +41,7 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
         setEntries({})
         setMaxSize(0)
         async function getCollectionSize(){
-            let localEntries = {}
+            let localEntries:{[key: string]: number} = {}
             let localMaxSize = 0
             let localTotal = 0
             for(const screen of screenNameParamsAll){
@@ -134,8 +135,12 @@ export default function Statistics_Bars_Price_Generic({collection, topic}:Props)
         }}>
             <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                {chartHeight > 0 && <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} />}
-                {chartHeight > 0 ? <ScrollView>
+                {chartHeight > 0 ? 
+                    Object.entries(entries).length === 0 ? 
+                        <NoDataPlaceHolder data={"chart-bar"} /> : 
+                        <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} /> :
+                    null}
+                {chartHeight > 0 ? Object.entries(entries).length === 0 ? null : <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>

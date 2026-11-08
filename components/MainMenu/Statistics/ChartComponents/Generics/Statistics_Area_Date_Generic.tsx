@@ -23,6 +23,7 @@ import { useItemStore } from "stores/useItemStore"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
 import Chart_Area from "../Charts/Chart_Area"
+import NoDataPlaceHolder from "../NoDataPlaceholder"
 
 interface Props{
     collection: CollectionType
@@ -205,8 +206,12 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
         }}>
             <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations[topic][language]}`}</Text>
-                {chartHeight > 0 && <Chart_Area data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} formatXLabel={chartFormatXLabel} series={chartSeries} renderDot={chartRenderDot} />}
-                {chartHeight > 0 ? <ScrollView>
+                {chartHeight > 0 ? 
+                    Object.entries(uniqueEntries).length === 0 ? 
+                        <NoDataPlaceHolder data={"chart-areaspline-variant"} /> : 
+                        <Chart_Area data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} formatXLabel={chartFormatXLabel} series={chartSeries} renderDot={chartRenderDot} /> :
+                    null}
+                {chartHeight > 0 ? Object.entries(uniqueEntries).length === 0 ? null : <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>

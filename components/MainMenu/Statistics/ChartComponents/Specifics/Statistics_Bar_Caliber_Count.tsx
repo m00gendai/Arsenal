@@ -23,6 +23,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
 import ModalContainer from "components/ModalContainer"
 import Chart_Bar from "../Charts/Chart_Bar"
+import NoDataPlaceHolder from "../NoDataPlaceholder"
 
 interface Props{
     collection: CollectionType
@@ -72,7 +73,7 @@ export default function Statistics_Bar_Caliber_Count({collection}:Props){
         setUniqueCalibers({})
         setMaxSize(0)
         async function getCollectionSize(){
-            let localUniqueCalibers = {}
+            let localUniqueCalibers:{[key: string]: number} = {}
             let localMaxSize = 0
             let localTotalShots = 0
             for(const screen of screenNameParamsAll){
@@ -83,7 +84,7 @@ export default function Statistics_Bar_Caliber_Count({collection}:Props){
                         if("currentStock" in item){
                             if(localUniqueCalibers[itemCaliber]){
                                 const currentCount = localUniqueCalibers[itemCaliber]
-                                const newCount = currentCount + item.currentStock
+                                const newCount = currentCount + parseInt(item.currentStock)
                                 localUniqueCalibers = {...localUniqueCalibers, [itemCaliber]: parseInt(newCount)}
                             } else {
                                 localUniqueCalibers = {...localUniqueCalibers, [itemCaliber]: parseInt(item.currentStock)}
@@ -184,8 +185,11 @@ export default function Statistics_Bar_Caliber_Count({collection}:Props){
         }}>
             <View style={{flex: 1}}>
                 <Text variant="titleMedium">{`${dataTemplate_Translations["caliber"][language]}`}</Text>
-                {chartHeight > 0 && <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} />}
-                {chartHeight > 0 ? <ScrollView>
+                {chartHeight > 0 ? 
+                    Object.entries(uniqueCalibers).length === 0 ? 
+                        <NoDataPlaceHolder data={"chart-bar"} /> : <Chart_Bar data={pieData} orientation={"vertical"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} /> :
+                    null}
+                {chartHeight > 0 ? Object.entries(uniqueCalibers).length === 0 ? null : <ScrollView>
                     <View style={{backgroundColor: theme.colors.background}}>
                         <DataTable>
                             <DataTable.Header>
