@@ -103,15 +103,13 @@ export default function Statistics_Entrypoint(){
     },[palette])
 
     const chartArcLabels_formatLabel = useCallback(({label, index}) => {
-        return `${mainCollectionCategories[label.slice(0, label.lastIndexOf(":"))][language]}`
+        return `${index+1}`
     }, [mainCollectionCategories])
 
     const chartArcLabels = useMemo(() => ({
-        minPercentage: 0.01,
-        reservedWidth: chartContainerSize.width/5,
-        connectorColor: theme.colors.onBackground,
-        connectorLines: true,
-        offset: 25,
+        minPercentage: 0,
+        reservedWidth: 20,
+        connectorLength: 0,
         formatLabel: chartArcLabels_formatLabel
     }), [chartArcLabels_formatLabel, chartContainerSize.width])
 
@@ -122,10 +120,10 @@ export default function Statistics_Entrypoint(){
 
     const chartCenterLabel = useCallback(() => {
         return (
-            <View style={{ alignItems: "center", borderRadius: "100%", overflow: "hidden", borderWidth: 2, borderColor: theme.colors.primary }}>
+            <View style={{ alignItems: "center", borderRadius: "100%", overflow: "hidden", borderWidth: 2, borderColor: theme.colors.surfaceVariant }}>
                 <Image
                     source={require(`../../../../../assets/appIconC.png`)}
-                    style={{ width: 98, height: 98 }}
+                    style={{ width: ((chartHeight/5)*2)+6, height: ((chartHeight/5)*2)+6 }}
                     resizeMode="cover"
                 />
             </View>
@@ -149,14 +147,17 @@ export default function Statistics_Entrypoint(){
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: palette[index].hex, width: "50%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
+                                            <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                                <Text variant="labelSmall">{`${index+1}`}</Text>
+                                            </View>
                                         </View>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 3, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
                                         <Text>{`${mainCollectionCategories[item.channel.slice(0, item.channel.lastIndexOf(":"))][language]}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
-                                    <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalCollectionSize)*100).toFixed(2)}%`}</DataTable.Cell>
+                                    <DataTable.Cell style={{flex: 2}} numeric>{`${item.share ? ((item.share/totalCollectionSize)*100).toFixed(2) : ""}%`}</DataTable.Cell>
                                     <DataTable.Cell>
                                         <IconButton onPress={()=>goToGranular("ViewGranularStatistics", {label: item.channel.slice(0, item.channel.lastIndexOf(":"))})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
                                     </DataTable.Cell>

@@ -25,7 +25,7 @@ function Chart_Donut({data, sliceSeparator, width, height, theme, colors, arcLab
             width={width}
             height={height}
             sliceSeparator={sliceSeparator}
-            innerRadius={50}
+            innerRadius={width/5}
             colors={colors}
             theme={theme}
             arcLabels={arcLabels}
