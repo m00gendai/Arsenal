@@ -141,7 +141,7 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
                                         <Text>{`${determineTabBarLabel(collectionSizes[index][0])[language]}`}</Text>
                                     </DataTable.Cell>
                                     <DataTable.Cell style={{flex: 2}} numeric>{item.share}</DataTable.Cell>
-                                    <DataTable.Cell style={{flex: 2}} numeric>{`${((item.share/totalCollectionSize)*100).toFixed(2)}%`}</DataTable.Cell>
+                                    <DataTable.Cell style={{flex: 2}} numeric>{`${item.share ? ((item.share/totalCollectionSize)*100).toFixed(2) : ""}%`}</DataTable.Cell>
                                     <DataTable.Cell>
                                         <IconButton onPress={()=>goToSubGranular("ViewSubGranularStatistics", {label: item.channel.slice(0, item.channel.lastIndexOf(":"))})} icon={"arrow-right"} iconColor={colorTheme.colors.onPrimary} style={{backgroundColor: colorTheme.colors.primary}} size={14} />
                                     </DataTable.Cell>
