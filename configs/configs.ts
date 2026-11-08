@@ -3,8 +3,8 @@ import { SimpleTranslation } from "../lib/textTemplates"
 
 
 export const defaultGridGap:number = 10
-
 export const defaultViewPadding:number = 10
+export const defaultCardRadius = 12
 
 export const defaultModalBackdrop:string = "rgba(0,0,0,0.1)"
 
