@@ -6,7 +6,7 @@ import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne } from 'drizzle-orm';
-import { screenNameParamsAll } from "configs/configs"
+import { defaultCardRadius, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { CollectionType, StackParamList } from "lib/interfaces"
@@ -125,6 +125,9 @@ export default function Statistics_Sub_Entrypoint({collection}:Props){
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "flex-start",
+            borderRadius: defaultCardRadius,
+            backgroundColor: theme.colors.background,
+            overflow: "hidden",
         }}>
             <View style={{flex: 1}}>
                 {chartHeight > 0 && <Chart_Bar data={pieData} orientation={"horizontal"} width={chartContainerSize.width} height={chartHeight} yDomain={chartYDomain} formatXLabel={chartFormatXLabel} theme={chartTheme} chartRenderBar={chartRenderBar} />}

@@ -1,7 +1,7 @@
 import { Dimensions, View } from "react-native"
 import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
-import { collectionTopics, defaultViewPadding, nonSubCollectionTopics } from "configs/configs"
+import { collectionTopics, defaultCardRadius, defaultViewPadding, nonSubCollectionTopics } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
 import Carousel, {
   ICarouselInstance,
@@ -78,7 +78,7 @@ export default function ViewGranularStatistics(){
                                 padding: defaultViewPadding
                             }}    
                         >
-                        <Card
+                        <View
                             style={{
                                 width: "95%",
                                 height: "100%",
@@ -87,6 +87,7 @@ export default function ViewGranularStatistics(){
                                 flexDirection: "column",
                                 backgroundColor: theme.colors.surfaceVariant,
                                 padding: defaultViewPadding,
+                                borderRadius: defaultCardRadius
                             }}
                         >
 {                                nonSubCollectionTopics.includes(params.label) ? 
@@ -100,7 +101,7 @@ export default function ViewGranularStatistics(){
                                         <Statistics_Bar_CurrentStock_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :    
                                      <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                 <Statistics_Sub_Entrypoint collection={params.label} /> }
-                        </Card>
+                        </View>
                         
                         </View>
                     )}

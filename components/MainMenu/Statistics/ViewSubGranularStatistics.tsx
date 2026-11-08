@@ -1,7 +1,7 @@
 import { Dimensions, View } from "react-native"
 import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
-import { collectionTopics, defaultViewPadding } from "configs/configs"
+import { collectionTopics, defaultCardRadius, defaultViewPadding } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
 import Statistics_Count_All from "./ChartComponents/EntryPoints/Statistics_Entrypoint"
 import Carousel, {
@@ -80,10 +80,10 @@ export default function ViewSubGranularStatistics(){
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "flex-start",
-                                padding: defaultViewPadding
+                                padding: defaultViewPadding,
                             }}    
                         >
-                        <Card
+                        <View
                             style={{
                                 width: "95%",
                                 height: "100%",
@@ -92,6 +92,7 @@ export default function ViewSubGranularStatistics(){
                                 flexDirection: "column",
                                 backgroundColor: theme.colors.surfaceVariant,
                                 padding: defaultViewPadding,
+                                borderRadius: defaultCardRadius
                             }}
                         >
                             {collectionTopics[params.label][index] === "caliber" ? 
@@ -105,7 +106,7 @@ export default function ViewSubGranularStatistics(){
                             collectionTopics[params.label][index] === "powderWeight" ? 
                                 <Statistics_Bar_PowderWeight_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :  
                             <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} />}
-                        </Card>
+                        </View>
                         
                         </View>
                     )}

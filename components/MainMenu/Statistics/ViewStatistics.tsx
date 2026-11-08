@@ -1,7 +1,7 @@
 import { Dimensions, View } from "react-native"
 import { Appbar, Card } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
-import { defaultViewPadding } from "configs/configs"
+import { defaultCardRadius, defaultViewPadding } from "configs/configs"
 import { preferenceTitles } from "lib/Text/text_settings"
 import Carousel, {
   ICarouselInstance,
@@ -58,10 +58,10 @@ export default function ViewStatistics({navigation}){
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "flex-start",
-                                padding: defaultViewPadding
+                                padding: defaultViewPadding,
                             }}    
                         >
-                        <Card
+                        <View
                             style={{
                                 width: "95%",
                                 height: "100%",
@@ -70,12 +70,13 @@ export default function ViewStatistics({navigation}){
                                 flexDirection: "column",
                                 backgroundColor: theme.colors.surfaceVariant,
                                 padding: defaultViewPadding,
+                                borderRadius: defaultCardRadius
                             }}
                         >
                             {index === 0 ? 
                                 <Statistics_Entrypoint /> :
                             null}
-                        </Card>
+                        </View>
                         
                         </View>
                     )}

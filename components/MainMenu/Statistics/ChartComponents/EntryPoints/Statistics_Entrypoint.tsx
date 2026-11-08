@@ -1,12 +1,12 @@
 // Chart Kit example, not super customizable but the best there is...
 
-import { Dimensions, LayoutChangeEvent, View, Image } from "react-native"
+import { Dimensions, LayoutChangeEvent, View, Image, ViewStyle } from "react-native"
 import { ActivityIndicator, Appbar, DataTable, Divider, Icon, IconButton, Text } from "react-native-paper"
 import { usePreferenceStore } from "stores/usePreferenceStore"
 import * as schema from "db/schema"
 import { db } from "db/client"
 import { eq, asc, count, ne } from 'drizzle-orm';
-import { defaultViewPadding, screenNameParamsAll } from "configs/configs"
+import { defaultCardRadius, defaultViewPadding, screenNameParamsAll } from "configs/configs"
 import { ScrollView } from "react-native-gesture-handler"
 import { preferenceTitles } from "lib/Text/text_settings"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -122,8 +122,8 @@ export default function Statistics_Entrypoint(){
         return (
             <View style={{ alignItems: "center", borderRadius: "100%", overflow: "hidden", borderWidth: 2, borderColor: theme.colors.surfaceVariant }}>
                 <Image
-                    source={require(`../../../../../assets/appIconC.png`)}
-                    style={{ width: ((chartHeight/5)*2)+6, height: ((chartHeight/5)*2)+6 }}
+                    source={require(`../../../../../assets/appIcon_512.png`)}
+                    style={{ width: chartHeight/2, height: chartHeight/2 }}
                     resizeMode="cover"
                 />
             </View>
@@ -138,6 +138,9 @@ export default function Statistics_Entrypoint(){
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "flex-start",
+            borderRadius: defaultCardRadius,
+            backgroundColor: theme.colors.background,
+            overflow: "hidden",
         }}>
             <View style={{flex: 1}}>
                 {chartHeight > 0 && <Chart_Donut data={pieData} width={chartContainerSize.width} height={chartHeight} theme={chartTheme} colors={chartColors} sliceSeparator={chartSliceSeparator} arcLabels={chartArcLabels} centerLabel={chartCenterLabel}/>}
@@ -147,8 +150,8 @@ export default function Statistics_Entrypoint(){
                             {pieData.map((item, index) => (
                                 <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
-                                            <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", height: 28, aspectRatio: 1/1, backgroundColor: palette[index].hex, borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
+                                            <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", height: 20, aspectRatio: 1/1, backgroundColor: theme.colors.background, borderRadius: "100%"}}>
                                                 <Text variant="labelSmall">{`${index+1}`}</Text>
                                             </View>
                                         </View>
