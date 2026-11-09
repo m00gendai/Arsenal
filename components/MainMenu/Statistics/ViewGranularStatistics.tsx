@@ -17,6 +17,7 @@ import Statistics_Sub_Entrypoint from "./ChartComponents/EntryPoints/Statistics_
 import Statistics_Bar_Caliber_Count from "./ChartComponents/Specifics/Statistics_Bar_Caliber_Count"
 import Statistics_Line_Date_Generic from "./ChartComponents/Generics/Statistics_Area_Date_Generic"
 import Statistics_Bar_CurrentStock_Count from "./ChartComponents/Specifics/Statistics_Bar_CurrentStock_Count"
+import Statistics_Pie_Color_Count from "./ChartComponents/Specifics/Statistics_Pie_Color_Count.tsx"
 
 interface RouteParams {
   label: MainCollectionCategories  
@@ -98,7 +99,9 @@ export default function ViewGranularStatistics(){
                                     collectionTopics[params.label][index] === "acquisitionDate_unix" ? 
                                         <Statistics_Line_Date_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                     collectionTopics[params.label][index] === "currentStock" ? 
-                                        <Statistics_Bar_CurrentStock_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :    
+                                        <Statistics_Bar_CurrentStock_Count collection={params.label} topic={collectionTopics[params.label][index]} /> : 
+                                    collectionTopics[params.label][index] === "mainColor" ? 
+                                        <Statistics_Pie_Color_Count collection={params.label} topic={collectionTopics[params.label][index]} /> :    
                                      <Statistics_Pie_Count_Generic collection={params.label} topic={collectionTopics[params.label][index]} /> :
                                 <Statistics_Sub_Entrypoint collection={params.label} /> }
                         </View>
