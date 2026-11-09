@@ -128,7 +128,7 @@ export default function Statistics_Entrypoint(){
                 />
             </View>
         )
-    }, [theme])
+    }, [theme, chartHeight])
 
     return(
         <View onLayout={onLayout} style={{
