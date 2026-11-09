@@ -1275,7 +1275,8 @@ export function determineItemDesignation(collection: CollectionType, item: ItemT
         const localItem = item as GunType
         const prefix = localItem.manufacturer ?? ""
         const suffix = localItem.model ?? ""
-        return `${prefix} ${suffix}`
+        const postfix = localItem.serial ? `\n# ${localItem.serial}` : ""
+        return `${prefix} ${suffix}${postfix}`
     }
     if(collection.startsWith("ammo")){
         const localItem = item as AmmoType
@@ -1295,11 +1296,20 @@ export function determineItemDesignation(collection: CollectionType, item: ItemT
         const suffix = localItem.model ?? ""
         return `${prefix} ${suffix}`
     }
-    if(collection.startsWith("literatureCollection")){
-        const localItem = item as LiteratureType
+    if(collection.startsWith("literatureCollection_Book")){
+        const localItem = item as LiteratureType_Book
+        const prefix = localItem.series ? `${localItem.series}: \n` : ""
+        const suffix = localItem.title ?? ""
+        const postfix = localItem.volume ? ` (${localItem.volume})` : ""
+        return `${prefix}${suffix}${postfix}`
+    }
+    if(collection.startsWith("literatureCollection_PrintMagazine")){
+        const localItem = item as LiteratureType_PrintMagazine
         const prefix = localItem.title ?? ""
-        const suffix = localItem.subtitle ?? ""
-        return `${prefix} ${suffix}`
+        const suffix = localItem.issue ?? ""
+        const midfix = localItem.wholeNumber ?? ""
+        const postfix = localItem.volume_printMagazine ?? ""
+        return `${prefix} ${suffix} ${midfix} ${postfix}`
     }
     if(collection.startsWith("reloadingCollection")){
         const localItem = item as ReloadingType
