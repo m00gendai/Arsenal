@@ -99,11 +99,11 @@ export const pdfDateOptions:Intl.DateTimeFormatOptions = {
 
 // Note: If "caliber" is set, currentStock is automatically taken care of and only needs to be defined for non-caliber stock counts
 export const collectionTopics: CollectionTopics = {
-    gunCollection:                      ["caliber", "manufacturer", "originCountry", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    gunCollection:                      ["caliber", "manufacturer", "originCountry", "shotCount", "paidPrice", "boughtFrom", "acquisitionDate_unix", "mainColor"],
     ammoCollection:                     ["caliber", "manufacturer", "bulletType", "velocity"],
     accessoryCollection_Silencer:       ["caliber", "manufacturer", "thread", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
-    accessoryCollection_Optic:          ["manufacturer", "footprint", "zoom", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
-    accessoryCollection_Scope:          ["manufacturer", "zoom", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_Optic:          ["manufacturer", "footprint", "zoom", "reticle", "unit", "reticleColor", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
+    accessoryCollection_Scope:          ["manufacturer", "zoom", "unit", "reticle", "focalPlane", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
     accessoryCollection_LightLaser:     ["manufacturer", "lumen", "laserPower", "paidPrice", "boughtFrom", "acquisitionDate_unix"],
     accessoryCollection_Magazine:       ["caliber", "capacity", "platform", "manufacturer", "originCountry"],
     accessoryCollection_Misc:           ["manufacturer", "originCountry", "boughtFrom"],
