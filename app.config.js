@@ -38,7 +38,8 @@ export default {
       "blockedPermissions": [
             "android.permission.READ_MEDIA_IMAGES",
             "android.permission.READ_MEDIA_VIDEO",
-            "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+            "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+            "android.permission.RECORD_AUDIO",
         ]
     },
     "web": {
