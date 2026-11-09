@@ -24,6 +24,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { useNavigation } from "@react-navigation/native"
 import Chart_Area from "../Charts/Chart_Area"
 import NoDataPlaceHolder from "../NoDataPlaceholder"
+import GoToItemDialog from "../../GoToItemDialog"
 
 interface Props{
     collection: CollectionType
@@ -33,8 +34,6 @@ interface Props{
 export default function Statistics_Line_Date_Generic({collection, topic}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-    const { setCurrentItem } = useItemStore()
-    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
 
     const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
     
@@ -46,9 +45,7 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
     const [modalItems, setModalItems] = useState<[string, string][]>([])
     const [modalTopic, setModalTopic] = useState<string>("")
 
-    function handleConfirm(){
-        setDetailsVisible(prev => !prev)
-    }
+
     function handleDetails(channel: string){
         const entry = channel.slice(0, channel.lastIndexOf(":"))
         setModalTopic(entry)
@@ -67,12 +64,6 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
         setModalItems(detailItemArray)
     }
 
-    function navigateToItem(id: string){
-        const itemWithId = db.select().from(schema[collection]).where(eq(schema[collection].id, id)).all()
-        setCurrentItem(itemWithId[0])
-        navigation.navigate("item")
-        setDetailsVisible(false)
-    }
 
     function getYearRange(start: number, stop: number, step: number){
         return Array.from(
@@ -270,33 +261,7 @@ export default function Statistics_Line_Date_Generic({collection, topic}:Props){
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}
             </View>
-            <ModalContainer
-                title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}
-                subtitle={null}
-                visible={detailsVisible}
-                setVisible={setDetailsVisible}
-                content={
-                    <View style={{width: "100%", height: "100%", position: "relative", padding: defaultViewPadding}}>
-                        <DataTable>
-                            {modalItems.map((modalItem, index) => {
-                                return (
-                                    <DataTable.Row key={`dataTableRow_${index}`} >
-                                        <DataTable.Cell style={{flex: 5}} >
-                                            <Text numberOfLines={10}>{modalItem[1]}</Text>
-                                        </DataTable.Cell>
-                                        <DataTable.Cell style={{flex: 1}} >
-                                            <IconButton icon="arrow-right" size={14} onPress={() => navigateToItem(modalItem[0])} style={{backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>
-                                        </DataTable.Cell>
-                                    </DataTable.Row>
-                                )
-                            })}
-                        </DataTable>
-                    </View>
-                }
-                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
-                buttonCNL={null}
-                buttonDEL={null}
-            />
+            <GoToItemDialog collection={collection} topic={topic} modalTopic={modalTopic} items={modalItems} visible={detailsVisible} setVisible={setDetailsVisible} />
         </View>
     )
 }

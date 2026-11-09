@@ -23,6 +23,7 @@ import { useNavigation } from "@react-navigation/native"
 import Chart_Pie from "../Charts/Chart_Pie"
 import NoDataPlaceHolder from "../NoDataPlaceholder"
 import { defaultBottomBarHeight } from "configs/expo_configs"
+import GoToItemDialog from "../../GoToItemDialog"
 
 interface Props{
     collection: CollectionType
@@ -32,9 +33,7 @@ interface Props{
 export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
 
     const { language, switchLanguage, theme, switchTheme, generalSettings, setGeneralSettings, caliberDisplayNameList } = usePreferenceStore()
-    const { setCurrentItem } = useItemStore()
-    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>()
-    
+
     const [chartContainerSize, setChartContainerSize] = useState({ width: 0, height: 0 })
 
     const colorTheme = theme
@@ -47,9 +46,6 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
     const [modalItems, setModalItems] = useState<[string, string][]>([])
     const [modalTopic, setModalTopic] = useState<string>("")
 
-    function handleConfirm(){
-        setDetailsVisible(prev => !prev)
-    }
     function handleDetails(channel: string){
         const entry = channel.slice(0, channel.lastIndexOf(":"))
         setModalTopic(entry)
@@ -60,13 +56,6 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
             return [item.id, determineItemDesignation(collection, item)]
         })
         setModalItems(detailItemArray)
-    }
-
-    function navigateToItem(id: string){
-        const itemWithId = db.select().from(schema[collection]).where(eq(schema[collection].id, id)).all()
-        setCurrentItem(itemWithId[0])
-        navigation.navigate("item")
-        setDetailsVisible(false)
     }
 
     useEffect(()=>{
@@ -223,8 +212,8 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                                 data={pieData}
                                 renderItem={({ item, index }) => <DataTable.Row key={`dataTableRow_${index}`} >
                                     <DataTable.Cell style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", alignItems: "center", alignContent: "center"}} >
-                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: palette[index].hex, width: "80%", aspectRatio: "1/1", borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
-                                            <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", backgroundColor: theme.colors.background, width: "70%", aspectRatio: "1/1", borderRadius: "100%"}}>
+                                        <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", height: 28, aspectRatio: 1/1, backgroundColor: palette[index].hex, borderRadius: "100%", borderColor: theme.colors.surfaceVariant, borderWidth: 1}}>
+                                            <View style={{position: "relative", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", height: 20, aspectRatio: 1/1, backgroundColor: theme.colors.background, borderRadius: "100%"}}>
                                                 <Text variant="labelSmall">{`${index+1}`}</Text>
                                             </View>
                                         </View>
@@ -250,33 +239,7 @@ export default function Statistics_Pie_Count_Generic({collection, topic}:Props){
                     <ActivityIndicator animating={true} color={theme.colors.primary} size="large"/>
                 </View>}
             </View>
-             <ModalContainer
-                title={`${dataTemplate_Translations[topic][language]}: ${modalTopic}`}
-                subtitle={null}
-                visible={detailsVisible}
-                setVisible={setDetailsVisible}
-                content={
-                    <View style={{width: "100%", height: "100%", position: "relative", padding: defaultViewPadding}}>
-                        <DataTable>
-                            {modalItems.map((modalItem, index) => {
-                                return (
-                                    <DataTable.Row key={`dataTableRow_${index}`} >
-                                        <DataTable.Cell style={{flex: 5}} >
-                                            <Text numberOfLines={10}>{modalItem[1]}</Text>
-                                        </DataTable.Cell>
-                                        <DataTable.Cell style={{flex: 1}} >
-                                            <IconButton icon="arrow-right" size={14} onPress={() => navigateToItem(modalItem[0])} style={{backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>
-                                        </DataTable.Cell>
-                                    </DataTable.Row>
-                                )
-                            })}
-                        </DataTable>
-                    </View>
-                }
-                buttonACK={<IconButton icon="check" onPress={() => handleConfirm()} style={{width: 50, backgroundColor: theme.colors.primary}} iconColor={theme.colors.onPrimary}/>}
-                buttonCNL={null}
-                buttonDEL={null}
-            />
+             <GoToItemDialog collection={collection} topic={topic} modalTopic={modalTopic} items={modalItems} visible={detailsVisible} setVisible={setDetailsVisible} />
         </View>
     )
 }
