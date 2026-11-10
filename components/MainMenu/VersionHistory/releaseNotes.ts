@@ -29,7 +29,7 @@ export const versionHistory: Version[] = [
     |                           V5.2.0                        |
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     {
-        title: "V5.1.1",
+        title: "V5.2.0",
         de: {
             text: `
 Neu & Verbessert:
