@@ -1,4 +1,7 @@
 import Reviews from '../components/Reviews.tsx';
+import Gallery from '../components/Gallery.tsx';
+import Gallery_Single from '../components/Gallery_Single.tsx';
+import realisticScenario from '../assets/realisticScenario.png';
 
 # Arsenal - L’application suisse pour les collectionneurs d’armes
 
@@ -22,18 +25,28 @@ Crée une grande variété de **collections**, avec photos et de nombreux param�
 Chaque entrée dispose d’un **historique**, donc chaque modification est traçable à tout moment. Tu peux aussi enregistrer des **ventes**.\
 Les consommables (munitions, poudre, projectiles, etc.) disposent en outre d'un **aperçu des coûts**.
 
-Découvrez des **statistiques** détaillées et approfondies sur toutes vos collections et entrées, avec des graphiques !
+<Gallery client:only="react" language={props.language} topic="Collection"/>
+
+Découvrez des **statistiques** détaillées et approfondies sur toutes vos collections et entrées, avec des graphiques!\
+Quelle année détient le record du plus grand nombre d’armes achetées ? Analyse le nombre de livres que tu possèdes d’un auteur en particulier.\
+Essaie d’ignorer le graphique qui récapitule le montant total dépensé pour ta collection et profite plutôt du diagramme circulaire qui montre la répartition des couleurs de réticule!
+
+<Gallery client:only="react" language={props.language} topic="Statistics"/>
 
 Profite d'**outils intelligents** qui facilitent ton quotidien de collectionneur et de tireur :
 - QuickShot pour saisir rapidement le nombre de coups tirés, avec mise à jour automatique du stock de munitions
 - QuickStock pour gérer facilement les consommables tels que les munitions, la poudre ou les projectiles, avec suivi des coûts
 - QuickMount pour attribuer facilement des accessoires et pièces à une arme ou à un autre accessoire ou pièce
 
+<Gallery client:only="react" language={props.language} topic="Utility"/>
+
 Les **exports PDF** sont également simples à générer. Choisis parmi des listes prédéfinies ou **crée ta propre liste** avec les attributs dont tu as besoin - par exemple pour ton assurance.\
 L'**export/import** CSV est également intégré, ainsi que la sauvegarde complète sous forme de fichier ZIP avec la base de données et toutes les images.
 
 Tu as déjà équipé tes armes de **codes QR**? Intègre-les facilement dans l'application et accède directement à l'objet souhaité par simple scan.\
 Pas encore d'étiquettes QR? **Crée-les directement** dans l'application - avec une large gamme de formats prédéfinis (Avery Zweckform) ou définis le tien.
+
+<Gallery client:only="react" language={props.language} topic="Data"/>
 
 L'application propose également de **nombreuses autres fonctionnalités**:
 Alertes de stock, rappels d'entretien, filtres par mots-clés, recherche et tri, saisie automatique, différentes vues et palettes de couleurs (clair et sombre), unités de mesure personnalisables et bien plus encore.
@@ -52,3 +65,5 @@ Les pays actuellement pris en charge sont les suivants:
 – Allemagne
 
 **Achat unique, utilisation à vie**, mises à jour tant que l'application existe. **Pas d'abonnement, pas d'achats intégrés, pas de publicité!**
+
+<Gallery_Single image={realisticScenario} />
