@@ -9,7 +9,7 @@ interface Props{
     visible: boolean
     setVisible: (visible: boolean) => void
     title: string
-    subtitle: string
+    subtitle: string | null
     content: React.ReactNode
     buttonACK: React.ReactNode
     buttonCNL: React.ReactNode
@@ -24,36 +24,38 @@ export default function ModalContainer({visible, setVisible, title, subtitle, co
     const modalWidthFactor = Device.deviceType === 1 ? 85 : Device.deviceType === 2 ? 65 : 85
     
     return(
-                <Portal >
+        <Portal >
             <Modal visible={visible} onDismiss={()=>setVisible(false)}>
                 <View style={{width: "100%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", flexWrap: "wrap", backgroundColor: defaultModalBackdrop}}>
                     <View style={{borderRadius: 25, width: (Dimensions.get("window").width/100)*modalWidthFactor, height: (Dimensions.get("window").height/100)*85, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", flexWrap: "wrap", backgroundColor: theme.colors.background}}>
                         <View style={{borderTopLeftRadius: 25, borderTopRightRadius: 25, width: "100%", backgroundColor: theme.colors.background, borderBottomColor: theme.colors.primary, borderBottomWidth: 1, marginBottom: 5}}>
-                            <View style={{display: "flex", flexDirection: "row"}}><Text variant="titleLarge" style={{color: theme.colors.primary, padding: defaultViewPadding, flex: 9}}>{title}</Text><IconButton style={{flex: 1}} icon="help-circle-outline" onPress={()=>toggleSeeInfo(true)}/></View>
+                            <View style={{display: "flex", flexDirection: "row"}}>
+                                <Text variant="titleLarge" style={{color: theme.colors.primary, padding: defaultViewPadding, flex: 9}}>
+                                    {title}
+                                </Text>
+                                {subtitle ? <IconButton style={{flex: 1}} icon="help-circle-outline" onPress={()=>toggleSeeInfo(true)}/> : null}
+                            </View>
                         </View>
                         <View style={{flex: 8, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        {content}
+                            {content}
                         </View>
-                        <View style={{flex: 1, width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", backgroundColor: theme.colors.background, borderTopWidth: 1, borderTopColor: theme.colors.primary, padding: defaultViewPadding, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}}>
-                            {buttonACK}
-                            {buttonDEL}
-                            {buttonCNL}
-                        </View>
+                            <View style={{flex: 1, width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", backgroundColor: theme.colors.background, borderTopWidth: 1, borderTopColor: theme.colors.primary, padding: defaultViewPadding, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}}>
+                                {buttonACK}
+                                {buttonDEL}
+                                {buttonCNL}
+                            </View>
                     </View>
                 </View>
+                
                 <Dialog visible={seeInfo}>
-             <Dialog.Content>
-               <Text variant="bodyMedium">{subtitle}</Text>
-             </Dialog.Content>
-             <Dialog.Actions>
-          <Button onPress={() => toggleSeeInfo(false)}>OK</Button>
-        </Dialog.Actions>
-             </Dialog>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium">{subtitle}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button onPress={() => toggleSeeInfo(false)}>OK</Button>
+                    </Dialog.Actions>
+                </Dialog>
             </Modal>
-            
-            
         </Portal>
-
-           
     )
 }
