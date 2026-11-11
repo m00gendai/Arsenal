@@ -26,6 +26,44 @@ export interface Version {
 
 export const versionHistory: Version[] = [
      /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+    |                           V5.2.0                        |
+    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    {
+        title: "V5.2.0",
+        de: {
+            text: `
+Neu & Verbessert:
+Statistiken komplett überarbeitet: Jetzt neu detaillierte Statistiken inklusive Diagrammen zu allen Sammelgebieten und Einträgen.
+`,
+            ios: "",
+            android: null
+        },
+        en: {
+            text: `
+New & Improved:
+Statistics completely reworked: Now with detailed statistics including charts for all collections and entries.
+`,
+            ios: null,
+            android: null
+        },
+        fr: {
+            text: `
+Nouveau et amélioré :
+Statistiques entièrement repensées : découvrez désormais des statistiques détaillées, avec des graphiques pour toutes les collections et toutes les entrées.
+`,
+            ios: null,
+            android: null
+        },
+        it: {
+            text: `
+Novità e miglioramenti:
+Statistiche completamente rinnovate: ora con statistiche dettagliate, inclusi grafici per tutte le raccolte e tutte le voci.
+`,
+            ios: null,
+            android: null
+        }
+    },
+     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
     |                           V5.1.1                            |
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     {

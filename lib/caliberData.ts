@@ -1139,3 +1139,11 @@ export const calibers:Caliber[] = [
         ]
     }
 ]
+
+export const displayNameByName = new Map<string, string>(
+  calibers.flatMap((caliber) =>
+    caliber.variants
+      .filter((variant) => variant.displayName)
+      .map((variant) => [variant.name, variant.displayName!] as [string, string]),
+  ),
+)

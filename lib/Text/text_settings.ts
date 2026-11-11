@@ -24,6 +24,7 @@ interface PreferenceTitle{
     preferredUnits: SimpleTranslation
     about: SimpleTranslation
     statistics: SimpleTranslation
+    viewStatistics: SimpleTranslation
     editData: SimpleTranslation
     editData_Autocomplete: SimpleTranslation
     editData_customLabels: SimpleTranslation
@@ -213,6 +214,13 @@ export const preferenceTitles:PreferenceTitle = {
         fr: "Statistiques",
         it: "Statistiche",
         ch: "Statisticas",
+    },
+    viewStatistics:{
+        de: "Statistiken ansehen",
+        en: "View Statistics",
+        fr: "Voir les statistiques",
+        it: "Visualizza le statistiche",
+        ch: "Mussar las statisticas",
     },
     editData:{
         de: "Daten bearbeiten",

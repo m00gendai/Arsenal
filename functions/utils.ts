@@ -206,6 +206,25 @@ export function generateGradient(item: ItemType, theme:{name: string; colors: Co
     }
 }
 
+export function rgbaToHex(color: string, includeAlpha = false): string {
+    // already hex
+    if (color.startsWith("#")) return color
+
+    const match = color.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?\s*\)/i)
+    if (!match) return color // named color or unknown format, return as is
+
+    const toHex = (n: number) => Math.round(n).toString(16).padStart(2, "0")
+
+    const r = toHex(Number(match[1]))
+    const g = toHex(Number(match[2]))
+    const b = toHex(Number(match[3]))
+
+    if (includeAlpha && match[4] !== undefined) {
+        return `#${r}${g}${b}${toHex(Number(match[4]) * 255)}`
+    }
+    return `#${r}${g}${b}`
+}
+
 export function convertWeightUnitsToMilligram(preferredUnits: PreferredUnits, weightField:string, inputWeight:string){
     const unit:string = preferredUnits[`${weightField}Unit` as keyof PreferredUnits] as weightUnitNames
     const base = weightUnits.filter(weight => weight.iso === unit)

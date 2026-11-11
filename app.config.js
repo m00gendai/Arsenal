@@ -6,7 +6,7 @@ export default {
   "expo": {
     "name": IS_DEV ? "Arsenal DEV" : IS_PREV ? "Arsenal PRE" : IS_RC ? "Arsenal RC" : "Arsenal",
     "slug": "waffenschrank",
-    "version": "5.1.1",
+    "version": "5.2.0",
     "orientation": "portrait",
     "icon": "./assets/appIconC.png",
     "userInterfaceStyle": "light",
@@ -38,7 +38,8 @@ export default {
       "blockedPermissions": [
             "android.permission.READ_MEDIA_IMAGES",
             "android.permission.READ_MEDIA_VIDEO",
-            "android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+            "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+            "android.permission.RECORD_AUDIO",
         ]
     },
     "web": {
@@ -72,6 +73,11 @@ export default {
         {
           "ios": {
             "deploymentTarget": "16.4"
+          },
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "extraProguardRules": "-dontwarn com.gemalto.jp2.JP2Decoder\n-dontwarn com.gemalto.jp2.**"
           }
         }
       ],
