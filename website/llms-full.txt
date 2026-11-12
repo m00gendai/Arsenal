@@ -8,7 +8,8 @@ Google Play (Android): https://play.google.com/store/apps/details?id=com.m00gend
 
 App name by locale: Arsenal Gun Collection (EN) / Arsenal Waffen & Sammlung (DE) / Arsenal Collection d'Armes (FR) / Arsenal Collezione d'Armi (IT). Interface fully localized into English, German, French, Italian, and Rumantsch Grischun.
 
-Rating: 5/5 stars from 23 ratings (Apple App Store).
+Price: 5.00 CHF (one-time purchase).
+Rating: 5/5 stars from 25 ratings (Apple App Store).
 
 ---
 
@@ -20,18 +21,17 @@ Create a wide variety of collections, with photos and many parameters:
 - Firearms
 - Ammunition
 - Suppressors
-- Optics
-- Scopes
+- Optics & Scopes
 - Lights & Lasers
-- Magazines
-- Miscellaneous Accessories
-- Conversion Kits
-- Barrels
-- Books
+- Magazines & Miscellaneous Accessories
+- Weapon Parts
+- Books & Magazines (periodicals)
 - Reloading Components
 - and new collections are added continuously!
 
 Each entry has a history, so every change can be tracked at any time. You can also record sales. Consumable items (ammunition, powder, bullets, etc.) additionally include a cost overview.
+
+Statistics: detailed and insightful statistics for all your collections and entries, including charts. Examples given on the site: find out in which year you bought the most firearms, analyze how many books you own by a specific author, or view a pie chart of the distribution of reticle colors (the site also jokes about a chart summing up what you paid for your collection).
 
 Smart tools:
 - QuickShot for quickly logging round counts, linked to your ammunition inventory
@@ -48,7 +48,12 @@ Everything is 100% offline - no internet connection required. All data is stored
 
 Available in five languages: German, French, Italian, English and Rumantsch Grischun.
 
-Developed in Switzerland, primarily tailored to the needs of Swiss firearms collectors. International users can select their country (e.g. the USA), and the app automatically adapts by displaying country-specific firearm categories.
+Developed in Switzerland, primarily tailored to the needs of Swiss firearms collectors. International users can select their country (e.g. the USA), and the app automatically adapts by displaying country-specific firearm categories or input fields.
+
+Currently supported countries:
+- Switzerland
+- United States of America
+- Germany
 
 One-time purchase, use forever, updates for as long as the app exists. No subscriptions, no in-app purchases, no ads!
 
@@ -56,18 +61,20 @@ One-time purchase, use forever, updates for as long as the app exists. No subscr
 
 ## DETAILS PAGE — FULL ATTRIBUTE LISTS BY COLLECTION TYPE
 
+Note on country-specific fields: attributes marked [DE] are Germany-specific input fields, shown when the country is set to Germany. Spelling of "Acquisition Date" is normalized here (the site spells it "Acquision Date").
+
 ### Main Collections
 
 **Weapons (Firearms)**
-Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Custom Inventory Identifier, QR-Code
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Threading, Barrel length, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID, Overall Length
 
 **Ammunition**
-Manufacturer, Origin Country, Caliber, Current stock, Headstamp, Critical stock, Designation, Last change of stock, Bullet type, Bullet weight, Custom Inventory Identifier, QR-Code
+Manufacturer, Origin Country, Caliber, Current stock, Headstamp, Critical stock, Designation, Last change of stock, Bullet type, Bullet weight, Custom Inventory Identifier, QR-Code, Shot Weight, Casing Type, Velocity, Dram eq
 
 ### Accessories
 
 **Silencers**
-Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Material, Threading, Decibel Rating, Custom Inventory Identifier, QR-Code
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Material, Threading, Decibel Rating, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
 
 **Optics**
 Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Last Battery Change, Mounted on, Reticle, Reticle Color, Zoom, Click Unit, Elevation Adjustment per Click, Windage Adjustment per Click, Material, Footprint, Custom Inventory Identifier, QR-Code, Battery Type, Window Dimension
@@ -78,7 +85,7 @@ Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisitio
 **Light & Laser**
 Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Main Color, Lumen, Candela, Laser Wavelength, Laser Power, Last Battery Change, Mounted on, Custom Inventory Identifier, QR-Code, Battery Type
 
-**Magazines**
+**Magazines (firearm magazines)**
 Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Capacity, Current stock, Material, Gun Platform, Custom Inventory Identifier, QR-Code
 
 **Miscellaneous**
@@ -87,15 +94,30 @@ Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Acquisitio
 ### Gun Parts
 
 **Conversion System**
-Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
 
 **Barrels**
-Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Threading, Barrel length, Custom Inventory Identifier, QR-Code
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Caliber, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Threading, Barrel length, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
+
+**Lower Receiver**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
+
+**Upper Receiver**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
+
+**Slide**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
+
+**Frame**
+Manufacturer, Model Name, Manufacturing Date, Origin Country, Serial, Permit, Acquisition Date, Price, Acquired from, Current market value, Shot count, Last shot, Last cleaned, Cleaning interval, Main Color, Mounted on, Custom Inventory Identifier, QR-Code, [DE] Weapon Possession License Color, [DE] Weapon Possession License Number, [DE] Running Number, [DE] National Weapons Register ID
 
 ### Literature
 
 **Books**
 Acquisition Date, Price, Acquired from, Current market value, Language, Title, Subtitle, ISBN, Publishing Date, Author, Publisher, Edition, Book Series, Volume, Pages, Format, Custom Inventory Identifier, QR-Code
+
+**Magazines (periodicals)**
+Acquisition Date, Price, Acquired from, Current market value, Language, Title, Subtitle, Publishing Date, Publisher, Year, Issue, Whole Number, ISSN, Pages, Format, Custom Inventory Identifier, QR-Code
 
 ### Reloading
 
@@ -149,9 +171,9 @@ Two universal PDF lists:
 - Complete Gun List (table): Manufacturer, Model Name, Caliber, Serial, Permit reference, Acquisition Date — for insurance, agency requests, or general documentation.
 - Custom List: any collection, any chosen attributes (e.g. value without serial for insurance, or just designation and caliber for an ammo list).
 
-Country-specific predefined lists (currently Switzerland):
+Depending on the selected country of residence, additional predefined lists are offered. Currently (Switzerland):
 - Gun List according to WA Article 5 (table): Manufacturer, Model Name, Caliber, Serial, Permit reference, Acquisition Date, Reason why it is under Article 5 — useful for collectors' permit applications or when a weapons bureau requests an excerpt of prohibited items.
-- Complete Gun List with WA Article 5 properties: a hybrid list showing the full collection plus Article 5 status/reason, for bureaus wanting a complete list rather than only the Article 5 subset.
+- Complete Gun List with WA Article 5 properties: a hybrid list showing the full collection plus Article 5 status/reason, for bureaus wanting a complete list rather than only the Article 5 subset (added at users' request).
 
 Each collection item can also be printed as a "gallery print" showing every image, tags, and all attributes — useful for physical display or as a sales flyer.
 
@@ -168,48 +190,50 @@ Consumables (Ammunition, Bullets, Cases, Primers, Powder) have a Cost History ta
 Items can be marked as sold while remaining in the database; you can choose to keep them visible (greyed out) or hide them entirely. When "selling," you can record buyer name, sell date, sell price, permit references, and personal notes. These details cannot be amended afterward, so accuracy at entry time matters. They are displayed above all other attributes when viewing a sold item.
 
 **Tags**
-Tags group items within a collection (e.g. tagging books under "Swiss Military Weapons," or classifying weapons by subtype — from a simple rifle/pistol/revolver split to fine-grained categories like toploading revolvers, cap & ball revolvers, magnum revolvers). Any tag scheme can be used; a management dialog tracks existing tags so you don't need to retype them.
+Tags group items within a collection (e.g. tagging books under "Swiss Military Weapons", or classifying weapons by subtype — from a simple rifle/pistol/revolver split to fine-grained categories like toploading revolvers, cap & ball revolvers, magnum revolvers). Any tag scheme can be used; a management dialog tracks existing tags so you don't need to retype them.
 
 ---
 
-## SUPPORTED CALIBERS (735 total)
+## SUPPORTED CALIBERS (736 total)
 
 Some functionality (e.g. QuickShot) depends on exact caliber formatting. In-app guardrails enforce this format; imported custom data may need to be reformatted to match. Multiple calibers for one item are separated by ", " (comma + space), e.g.: `.357 S&W Magnum, .38 S&W Special`
 
-### 2mm (.79-.117)
+Strings below are reproduced exactly as published on the Details page (including en dashes, spacing and fraction notation), since exact notation matters for CSV import. Some entries appear in more than one size bucket in the app itself (e.g. .30 Super Carry, .32 H&R Magnum, .327 Federal Magnum, .444 Marlin, .44-40 Winchester, .500 Linebaugh, .30-378 Weatherby Magnum, .38-72 Winchester); this mirrors the source.
+
+### 2mm (.79 - .117)
 .10 Eichelberger Long Rifle, .10 Eichelberger Pup, .10 Eichelberger Squirrel, 2.34mm rimfire, 2mm pinfire, 2mm Kolibri
 
-### 3mm (.118-.156)
+### 3mm (.118 - .156)
 .12 Cooper, .12 Eichelberger Carbine, .12 Eichelberger Long Rifle, .12 Eichelberger Win Mag RF, .14 Cooper, .14 Eichelberger Bee, .14 Eichelberger Dart, .14 Jet Junior, .14 Walker Hornet, .14-222, .14/222 Eichelberger Mag, 3mm Kolibri, 3mm US
 
-### 4mm (.157-.196)
-.17 Ackley Bee, .17 Bumble Bee, .17 HMR, .17 Hornet, .17 Mach 2, .17 Mach IV, .17 PMC/Aguila, .17 Remington, .17 Remington Fireball, .17 Winchester Super Magnum, 4mm Lienhard, 4mm M20 (4x10mm), 4.25mm Liliput, 4.38x30mm Libra, 4.5x26mm MKR, 4.5x40mmR, 4.6x30mm HK, 4.6x36mm, 4.85x49mm
+### 4mm (.157 - .196)
+.17 Ackley Bee, .17 Bumble Bee, .17 HMR, .17 Hornet, .17 Mach 2, .17 Mach IV, .17 PMC/Aguila, .17 Remington, .17 Remington Fireball, .17 Winchester Super Magnum, 4mm Lienhard, 4mm M20 (4x10 mm), 4.25mm Liliput, 4.38x30mm Libra, 4.5x26mm MKR, 4.5x40mmR, 4.6x30mm HK, 4.6x36mm, 4.85x49mm
 
-### 5mm (.197-.235)
-.19 Badger, .19 Calhoon Hornet, .19-223, .20 Tactical, .20 VarTarg, .204 Ruger, .21 Sharp, .218 Bee, .219 Zipper, .22 BB, .22 CB, .22 Creedmoor, .22 Hornet, .22 Long, .22 Long Rifle, .22 Remington Jet, .22 Remington Special, .22 Savage Hi-Power, .22 Short, .22 Spitfire, .22 TCM, .22 Winchester Centerfire, .22 Winchester Magnum Rimfire (.22 Magnum), .220 Russian, .220 Swift, .221 Remington Fireball, .222 Remington, .222 Remington Magnum, .223 Remington, .223 WSSM, .225 Winchester, .224 Weatherby Magnum, 20 Nosler, 22 Nosler, 22 PPC-USA, 224 Valkyrie, 5.43mm Louis Mattis, 5.45x18mm Soviet, 5.45x39mm, 5.5mm Velo Dog, 5.56x45mm NATO, 5.6mm GP90 (1990), 5.6x35mmR Vierling, 5.6x50mm Magnum (5.6x50mmR), 5.6x57mm, 5.6x61 Super Express vom Hofe, 5.6x61 R Super Express vom Hofe, 5.66x39mm, 5.8x21mm, 5.8x42mm DBP87, 5mm Bergmann, 5mm Bergmann Rimless, 5mm Clement, 5mm Craig, 5mm Pickert, 5mm Remington Rimfire Magnum, 5mm/35 SMc, FN 5.7x28mm
+### 5mm (.197 - .235)
+.19 Badger, .19 Calhoon Hornet, .19-223, .20 Tactical, .20 VarTarg, .204 Ruger, .21 Sharp, .218 Bee, .219 Zipper, .22 BB, .22 CB, .22 Creedmoor, .22 Hornet, .22 Long, .22 Long Rifle, .22 Remington Jet, .22 Remington Special, .22 Savage Hi-Power, .22 Short, .22 Spitfire, .22 TCM, .22 Winchester Centerfire, .22 Winchester Magnum Rimfire (.22 Magnum), .220 Russian, .220 Swift, .221 Remington Fireball, .222 Remington, .222 Remington Magnum, .223 Remington, .223 WSSM, .225 Winchester, .224 Weatherby Magnum, .22-250 Remington (5.7x48mm) / .22 Varminter / .22 Wotkyns Original Swift, 20 Nosler, 22 Nosler, 22 PPC-USA, 224 Valkyrie, 5.43mm Louis Mattis, 5.45x18mm Soviet, 5.45x39mm, 5.5mm Velo Dog, 5.56x45mm NATO, 5.6mm GP90 (1990), 5.6x35mmR Vierling, 5.6x50mm Magnum (5.6x50mmR), 5.6x57mm, 5.6x61 Super Express vom Hofe, 5.6x61 R Super Express vom Hofe, 5.66x39mm, 5.8x21mm, 5.8x42mm DBP87, 5mm Bergmann, 5mm Bergmann Rimless, 5mm Clement, 5mm Craig, 5mm Pickert, 5mm Remington Rimfire Magnum, 5mm/35 SMc, FN 5.7x28mm
 
-### 6mm (.236-.275)
-.240 Apex, .240 Weatherby Magnum, .243 Winchester, .243 WSSM, .244 H&H Magnum, .25 ACP (.25 Auto), 6.35mm Browning, .25 NAA, .25 Remington, .25 WSSM, .25-06 Remington, .25-20 Winchester, .25-25 Stevens, .25-35 Winchester, .25-45 Sharps, .250-3000 Savage, .256 Newton, .256 Win Magnum, .257 Roberts, .257 Weatherby Magnum, .260 Remington, .264 Winchester Magnum, 24 Nosler, 255 GS, 26 Nosler, 6,5 G.A.P. 4S, 6mm AR, 6mm ARC, 6mm BR, 6mm Creedmoor, 6mm GT, 6mm Lee Navy, 6mm PPC, 6mm Remington (.244 Remington), 6mm XC, 6x62 Frères, 6x45mm, 6x45mm SAW, 6.45mm GP80 (1980) 6.45x48mm, 6.2x73 Super Express vom Hofe, 6.45x48mm XPL Swiss, 6.5 Precision Rifle Cartridge, 6.5 Weatherby Rebated Precision Magnum, 6.5-06 A-Square, 6.5-284 Norma, 6.5-300 Weatherby Magnum, 6.5x25mm CBJ, 6.5x47mm Lapua, 6.5x50mmSR Arisaka, 6.5x52mm Carcano, 6.5x53mmR, 6.5x54mm Mannlicher-Schönauer, 6.5x55mm Swedish (6.5x55mm Krag), 6.5x57mm Mauser, 6.5x58mm Vergueiro, 6.5x68mm, 6.5mm Bergmann, 6.5mm Creedmoor, 6.5mm Grendel, 6.5mm Remington Magnum
+### 6mm (.236 - .275)
+.240 Apex, .240 Weatherby Magnum, .243 Winchester, .243 WSSM, .244 H&H Magnum, .25 ACP (.25 Auto), 6.35mm Browning, .25 NAA, .25 Remington, .25 WSSM, .25-06 Remington, .25-20 Winchester, .25-25 Stevens, .25-35 Winchester, .25-45 Sharps, .250-3000 Savage (6.5x48mm), .256 Newton, .256 Win Magnum, .257 Roberts, .257 Weatherby Magnum, .260 Remington, .264 Winchester Magnum, 24 Nosler, 255 GS, 26 Nosler, 6,5 G.A.P. 4S, 6mm AR, 6mm ARC, 6mm BR, 6mm Creedmoor, 6mm GT, 6mm Lee Navy, 6mm PPC, 6mm Remington (.244 Remington), 6mm XC, 6x62 Frères, 6x45mm, 6x45mm SAW, 6.45mm GP80 (1980) 6.45x48mm, 6.2x73 Super Express vom Hofe, 6.45x48mm XPL Swiss, 6.5 Precision Rifle Cartridge, 6.5 Weatherby Rebated Precision Magnum, 6.5-06 A-Square, 6.5-284 Norma, 6.5-300 Weatherby Magnum, 6.5x25mm CBJ, 6.5x47mm Lapua, 6.5x50mmSR Arisaka, 6.5x52mm Carcano, 6.5x53mmR, 6.5x54mm Mannlicher–Schönauer, 6.5x55mm Swedish (aka 6.5x55mm Krag), 6.5x57mm Mauser, 6.5x58mm Vergueiro, 6.5x68mm, 6.5mm Bergmann, 6.5mm Creedmoor, 6.5mm Grendel, 6.5mm Remington Magnum
 
-### 7mm (.276-.314)
-.270 British, .270 Weatherby Magnum, .270 Winchester, .270 Winchester Short Magnum, .276 Enfield, .276 Pedersen, .277 FURY, .277 Wolverine, .27 Nosler, .280 Ackley Improved, .280 British, .280 Remington, .280 Ross, .280/30 British, .284 Winchester, .28 Nosler, .30 AMP, .30 Carbine, .30 Newton, .30 Pedersen, .30 Remington, .30 Short, .30 Super Carry, .30-03 Springfield, .30-06 Springfield, .30-30 Winchester, .30-40 Krag, .30-378 Weatherby Magnum, .300 H&H Magnum, .300 Lapua Magnum, .300 LRH, .300 Norma Magnum, .300 RUM, .300 RSAUM, .300 Savage, .300 Weatherby Magnum, .300 Werewolf, .300 Winchester Magnum, .300 Blaser Magnum, .300 WSM, 300 AAC Blackout, 300 HAM'R, 300 Precision Rifle Cartridge, 300 Ruger Compact Magnum, 30 BR, 30 Remington AR, .307 Winchester, .308 Norma Magnum, .308 Winchester, .30 Herrett, .30 R Blaser (7.62x68mm R), .32 ACP (7.65 Browning Short), .32 H&R Magnum, .32 Long Colt (.32 Colt), .32 NAA, .32 S&W Long (.32 Colt New Police), .32 Short Colt (.320 Revolver), .32 Smith & Wesson, .32-20 Winchester .32-20 WCF, .327 Federal Magnum, .303 British, .303 Savage, .30-378 Weatherby Magnum, 6.8 Western, 6.8mm Remington SPC, 7-30 Waters, 7.5 FK BRNO, 7.5x22mmR Nagant, 7.5x23mmR, 7.5x54mm French, 7.5x55mm Swiss, 7.5x56mm MAS Mod.1929, 7.5x58mm French (7.5x58 MAS), 7.5mm GP11 (1911) 7.5x55mm, 7.5mm GP90 (1890) 7.5x53mm, 7.5mm GP90/03 (1890) 7.5x53mm, 7.5mm GP90/23 (1890) 7.5x53mm, 7.5mm Rev Pat 82 (1882) 7.5x23mmR, 7.62x25mm Tokarev, 7.62x38mmR, 7.62x39mm M43, 7.62x40mm Wilson Tactical, 7.62x42mm, 7.62x45mm, 7.62x51mm NATO, 7.62x53mmR, 7.62x54mmR, 7.63x25mm Mauser, 7.65mm Longue, 7.65mm Mannlicher, 7.65mm Pist Pat 03 7.65x21mm, 7.65mm Roth-Sauer, 7.65x21mm Parabellum (7.65mm Luger), 7.65x25mm Borchardt, 7.65x53mm Argentine, 7.7x58mm Arisaka, 7.82 Warbird, 7x20mm Nambu, 7x33mm Sako, 7x57mm Mauser, 7x64mm, 7x61mm Sharpe & Hart, 7x67 Super Express vom Hofe, 7x73 Super Express vom Hofe, 7x75R Super Express vom Hofe, 7.92x24mm VBR, 7mm BR Remington, 7mm Dakota, 7mm Mauser Spanish Mauser .275 Rigby, 7mm PRC, 7mm Raptor, 7mm Remington Express, 7mm Remington Magnum, 7mm Remington SAUM, 7mm Remington Ultra Magnum, 7mm STW, 7mm Weatherby Magnum, 7mm WSM, 7mm Blaser Magnum, 7mm-06 Remington, 7mm-08 Remington, 7.5mm 1882 Ordnance 7.5mm Swiss Army Revolver, 7.5mm Swedish Nagant, 7.92x33mm Kurz
+### 7mm (.276 - .314)
+.270 British, .270 Weatherby Magnum, .270 Winchester, .270 Winchester Short Magnum, .276 Enfield, .276 Pedersen, .277 FURY, .277 Wolverine, .27 Nosler, .280 Ackley Improved, .280 British, .280 Remington, .280 Ross, .280/30 British, .284 Winchester, .28 Nosler, .30 AMP, .30 Carbine, .30 Newton, .30 Pedersen, .30 Remington, .30 Short, .30 Super Carry, .30-03 Springfield, .30-06 Springfield, .30-30 Winchester, .30-40 Krag, .30-378 Weatherby Magnum, .300 H&H Magnum, .300 Lapua Magnum, .300 LRH, .300 Norma Magnum, .300 RUM, .300 RSAUM, .300 Savage, .300 Weatherby Magnum, .300 Werewolf, .300 Winchester Magnum, .300 Blaser Magnum, .300 WSM (Winchester Short Magnum), 300 AAC Blackout, 300 HAM'R, 300 Precision Rifle Cartridge, 300 Ruger Compact Magnum, 30 BR, 30 Remington AR, .307 Winchester, .308 Norma Magnum, .308 Winchester, .30 Herrett, .30 R Blaser (7.62x68mm R), .32 ACP (7.65 Browning Short), .32 H&R Magnum, .32 Long Colt (.32 Colt), .32 NAA, .32 S&W Long (.32 Colt New Police), .32 Short Colt (.320 Revolver), .32 Smith & Wesson, .32-20 Winchester .32-20 WCF, .327 Federal Magnum, .303 British, .303 Savage, .30-378 Weatherby Magnum, 6.8 Western, 6.8mm Remington SPC, 7-30 Waters, 7.5 FK BRNO, 7.5x22mmR Nagant, 7.5x23mmR, 7.5x54mm French, 7.5x55mm Swiss, 7.5x56mm MAS Mod.1929, 7.5x58mm French (7.5x58 MAS), 7.5mm GP11 (1911) 7.5x55mm, 7.5mm GP90 (1890) 7.5x53mm, 7.5mm GP90/03 (1890) 7.5x53mm, 7.5mm GP90/23 (1890) 7.5x53mm, 7.5mm Rev Pat 82 (1882) 7.5x23mmR, 7.62x25mm Tokarev, 7.62x38mmR, 7.62x39mm M43, 7.62x40mm Wilson Tactical, 7.62x42mm, 7.62x45mm, 7.62x51mm NATO, 7.62x53mmR, 7.62x54mmR, 7.63x25mm Mauser, 7.65mm Longue, 7.65mm Mannlicher, 7.65mm Pist Pat 03 7.65x21mm, 7.65mm Roth–Sauer, 7.65x21mm Parabellum (7.65 mm Luger), 7.65x25mm Borchardt, 7.65x53mm Argentine, 7.7x58mm Arisaka, 7.82 Warbird, 7x20mm Nambu, 7x33mm Sako, 7x57mm Mauser, 7x64mm, 7x61mm Sharpe & Hart, 7x67 Super Express vom Hofe, 7x73 Super Express vom Hofe, 7x75R Super Express vom Hofe, 7.92x24mm VBR, 7mm BR Remington (bench rest), 7mm Dakota, 7mm Mauser Spanish Mauser .275 Rigby, 7mm PRC (Precision Rifle Cartridge), 7mm Raptor, 7mm Remington Express, 7mm Remington Magnum, 7mm Remington SAUM, 7mm Remington Ultra Magnum, 7mm STW (Shooting Times Westerner), 7mm Weatherby Magnum, 7mm WSM, 7mm Blaser Magnum, 7mm-06 Remington, 7mm-08 Remington, 7.5mm 1882 Ordnance 7.5mm Swiss Army Revolver, 7.5mm Swedish Nagant, 7.92x33mm Kurz
 
-### 8mm (.315-.353)
-.30 Super Carry, .320 Revolver, .32 ACP (.32 Auto), .32 Ballard Extra Long, .32 H&R Magnum, .32 Remington, .32 S&W (.32 S&W Short), .32 S&W Long, .32 Winchester Self-Loading, .32 Winchester Special, .32-40 Ballard, .325 WSM, .327 Federal Magnum, .333 Jeffery Flanged, .33 Nosler, .33 Winchester, .338 Blaser Mag., .338 Edge, .338 Federal, .338 Lapua Magnum, .338 Marlin Express, .338 Norma Magnum, .338 Remington Ultra Magnum, .338 Ruger Compact Magnum, .338 Weatherby RPM, .338 Whisper, .338 Winchester Magnum, .338-06, .338-378 Weatherby Magnum, .340 Weatherby Magnum, .348 Winchester, 8,5 x 68 Fanzoj, 8.5x55 Blaser, 8.6mm Blackout, 8mm French Ordnance 8mm Lebel Revolver 8x27mmR Règlementaire Mle 92, 8mm Lebel, 8mm Remington Magnum, 8mm Roth-Steyr, 8x22mm Nambu, 8x50mmR Mannlicher, 8x52mmR Mannlicher, 8x56mmR Kropatschek, 8x56mmR Mannlicher, 8x57mm IS/8mm Mauser, 8x58mmR Danish Krag, 8x59mm RB Breda, 8x60mm S, 8x63mm patron m/32, 8x64mm S, 8x68mm S
+### 8mm (.315 - .353)
+.30 Super Carry, .320 Revolver, .32 ACP (.32 Auto), .32 Ballard Extra Long, .32 H&R Magnum, .32 Remington, .32 S&W (.32 S&W Short), .32 S&W Long, .32 Winchester Self-Loading, .32 Winchester Special, .32-40 Ballard, .325 WSM, .327 Federal Magnum, .333 Jeffery Flanged, .33 Nosler, .33 Winchester, .338 Blaser Mag., .338 Edge, .338 Federal, .338 Lapua Magnum, .338 Marlin Express, .338 Norma Magnum, .338 Remington Ultra Magnum, .338 Ruger Compact Magnum, .338 Weatherby RPM, .338 Whisper, .338 Winchester Magnum, .338-06, .338-378 Weatherby Magnum, .340 Weatherby Magnum, .348 Winchester, 8,5 x 68 Fanzoj, 8.5x55 Blaser, 8.6 mm Blackout, 8mm French Ordnance 8mm Lebel Revolver 8x27mmR Règlementaire Mle 92, 8mm Lebel, 8mm Remington Magnum, 8mm Roth–Steyr, 8x22mm Nambu, 8x50mmR Mannlicher, 8x52mmR Mannlicher, 8x56mmR Kropatschek, 8x56mmR Mannlicher, 8x57mm IS/8mm Mauser, 8x58mmR Danish Krag, 8x59mm RB Breda, 8x60mm S, 8x63mm patron m/32, 8x64mm S, 8x68mm S
 
-### 9mm (.354-.393)
-.35 Remington, .35 Whelen, .35 Winchester, .35 Winchester Self-Loading, .351 Winchester Self-Loading, .356 TSW, .356 Winchester, .357 SIG, .357 S&W Magnum, .357 SuperMag, .357/44 Bain & Davis, .357 Remington Maximum, .358 Norma Magnum, .358 Winchester, .36 Nosler, .360 Buckhammer, .375 Winchester, .375 SuperMag, .375 Chey Tac (9.5x77mm), .375 H&H Magnum, .375 Remington Ultra Magnum, .375 Ruger, .375 SWISS P, .375 Weatherby Magnum, .376 Steyr, .378 Weatherby Magnum, .38 ACP (.38 Auto; 9x23mmSR), .38 AMU, .38 Short Colt, .38 Long Colt, .38 S&W (.38 S&W Short), .38 S&W Special, .38 Super (.38 Super Auto; 9x23mmSR), .38/.45 Clerke, .38-55 Winchester, .38-56 WCF, .38-72 Winchester, .375-416, .375 Snipe Tac, .375 SOE, .380 ACP (.380 Auto; 9x17mm), .960 Rowland, 9.3x57mm Mauser, 9.3x62mm, 9.3x64mm Brenneke, 9.3x66 Sako, 9.3x72mmR, 9.3x74mmR, 9.4x22mmR Nagant, 9.5x57mm Mannlicher-Schönauer, 9mm Action Express, 9mm Automatic, 9mm Browning Long, 9mm Federal (9x19mmR), 9mm Glisenti, 9mm Japanese, 9mm Jonson, 9mm Winchester Magnum, 9x18mm Makarov, 9x18mm Ultra, 9x19mm Parabellum (9mm Luger / Pist Pat 41 / Pist Pat 14), 9x21mm, 9x21mm Gyurza, 9x23mm Largo, 9x23mm Steyr, 9x23mm Winchester, 9x25mm Dillon, 9x25mm Mauser, 9x25mm Super Auto G, 9x30mm Grom, 9x39mm, 9x57mm Mauser
+### 9mm (.354 - .393)
+.35 Remington, .35 Whelen, .35 Winchester, .35 Winchester Self-Loading, .351 Winchester Self-Loading, .356 TSW, .356 Winchester, .357 SIG, .357 S&W Magnum, .357 SuperMag, .357/44 Bain & Davis, .357 Remington Maximum, .358 Norma Magnum, .358 Winchester, .36 Nosler, .360 Buckhammer, .375 Winchester, .375 SuperMag, .375 Chey Tac (9.5x77mm), .375 H&H Magnum, .375 Remington Ultra Magnum, .375 Ruger, .375 SWISS P, .375 Weatherby Magnum, .376 Steyr, .378 Weatherby Magnum, .38 ACP (.38 Auto; 9x23mmSR), .38 AMU (.38 Army Marksmanship Unit), .38 Short Colt, .38 Long Colt, .38 S&W (.38 S&W Short), .38 S&W Special, .38 Super (.38 Super Auto; 9x23mmSR), .38/.45 Clerke (.38/45 Auto), .38-55 Winchester, .38-56 WCF, .38-72 Winchester, .375-416, .375 Snipe Tac, .375 SOE, .380 ACP (.380 Auto; 9x17mm), .960 Rowland, 9.3x57mm Mauser, 9.3x62mm, 9.3x64mm Brenneke, 9.3x66 Sako, 9.3x72mmR, 9.3x74mmR, 9.4x22mmR Nagant, 9.5x57mm Mannlicher-Schönauer, 9mm Action Express, 9mm Automatic, 9mm Browning Long, 9mm Federal (9x19mmR), 9mm Glisenti, 9mm Japanese, 9mm Jonson, 9mm Winchester Magnum, 9x18mm Makarov, 9x18mm Ultra, 9x19mm Parabellum (9mm Luger / Pist Pat 41 / Pist Pat 14), 9x21mm, 9x21mm Gyurza, 9x23mm Largo, 9x23mm Steyr, 9x23mm Winchester, 9x25mm Dillon, 9x25mm Mauser, 9x25mm Super Auto G, 9x30mm Grom, 9x39mm, 9x57mm Mauser
 
-### 10mm (.394-.432)
-.38-40 Winchester, .38-72 Winchester, .40 S&W, .40 Super, .40-60 Winchester, .40-72 Winchester, .400 Corbon, .400 Legend, .401 Winchester Self-Loading, .404 Jeffery, .405 Winchester, .408 Chey Tac, .414 Super Magnum, .416 Barrett, .416 Remington Magnum, .416 Rigby, .416 Ruger, .416 Weatherby Magnum, .41 Action Express, .41 Magnum, .41 Short (.41 Rimfire), .41 Short Colt, .41 Special, .44 AMP, .44 Russian, .44 Special, .44 Magnum, .44-40 Winchester, .444 Marlin, .445 Super Magnum, .450/400 3 inch Nitro Express, 10.3x60R, 10.3x68 Magnum, 10.4mm Italian, 10.4x38mm Swiss Rimfire, 10.4x47mm Italian M/70 Centerfire, 10.75x68mm Mauser, 10mm Auto, 10mm Magnum, 11mm German Serv
+### 10mm (.394 - .432)
+.38-40 Winchester, .38-72 Winchester, .40 S&W, .40 Super, .40-60 Winchester, .40-72 Winchester, .400 Corbon, .400 Legend, .401 Winchester Self-Loading, .404 Jeffery, .405 Winchester, .408 Chey Tac, .414 Super Magnum, .416 Barrett, .416 Remington Magnum, .416 Rigby, .416 Ruger, .416 Weatherby Magnum, .41 Action Express, .41 Magnum, .41 Short (.41 Rimfire), .41 Short Colt, .41 Special, .44 AMP, .44 Russian, .44 Special, .44 Magnum, .44-40 Winchester, .444 Marlin, .445 Super Magnum, .450/400 3 inch Nitro Express, 10.3x60R, 10.3x68 Magnum, 10.4 mm Italian, 10.4x38mm Swiss Rimfire, 10.4x47mm Italian M/70 Centerfire, 10.75x68mm Mauser, 10mm Auto, 10mm Magnum, 11 mm German Serv
 
-### 11mm (.433-.471)
-.45 ACP (.45 Auto), .45 GAP, .45 Remington-Thompson, .45 Super, .45 Winchester Magnum, .455 Webley Auto, .460 Rowland, 11.35mm Schouboe, 11mm French Ordnance, 11mm German Service, .44 S&W Special, .44 Remington Magnum, .44 S&W Russian, .44 S&W American, .44 Webley (.442 R.I.C.), .44 Bulldog, .44 Colt, 11.75mm Montenegrin, .45 Webley, .45 Auto Rim, .454 Magnum, .45 Schofield, .45 Colt (.45 Long Colt), .454 Casull, .460 S&W Magnum, .455 Webley (Mk II), .455 Webley (.455 Colt), .450 Adams (Boxer Mk I), .476 Enfield (.476 Eley), .44-40 Winchester, .444 Marlin, 10.75mm Russian Berdan, 11mm Murata, .425 Westley Richards Magnum, 11.15mm Spanish Remington, 11mm Belgian Albini, 11mm Belgian Comblain, 11.2x72mm Schüler, 11.2x60mm Schüler (Mauser), 10.8x47mmR Martini Target, 11.15x42mmR M/67 and 11x58mmR M/77 Werndl, 11mm French Gras, .44 Henry, 11.15mm Mauser, 11.43mm Turkish, 11.43mm Egyptian, 11.4mm Werndl M/73, .500/450 Black Powder No.2 Musket, 11.4mm Brazilian Comblain, .450 Bushmaster, .45 Raptor, 11.5mm Spanish Reformado, 11.7mm Danish Remington, .500/450 Magnum Nitro Express, .450 No 2 Nitro Express (3½"), .577/450 Martini-Henry, .45-75 Winchester, .45-70 Government, 11mm Beaumont M/71/78, .450 Marlin, .450 Nitro Express (3¼"), .458 Winchester Magnum, .458 SOCOM, .460 Weatherby Magnum, .460 Steyr, .500/450 No.1 Express, .450 Rigby Rimless, .45-60 Winchester, 11.3mm Beaumont M/71, .457 Wild West Guns, .458 Lott, .500/465 Nitro Express, .465 H&H Magnum
+### 11mm (.433 - .471)
+.45 ACP (.45 Auto), .45 GAP, .45 Remington–Thompson, .45 Super, .45 Winchester Magnum, .455 Webley Auto, .460 Rowland, 11.35mm Schouboe, 11mm French Ordnance, 11mm German Service, .44 S&W Special, .44 Remington Magnum, .44 S&W Russian, .44 S&W American, .44 Webley (.442 R.I.C.), .44 Bulldog, .44 Colt, 11.75mm Montenegrin, .45 Webley, .45 Auto Rim, .454 Magnum, .45 Schofield (.45 Smith & Wesson), .45 Colt (.45 Long Colt), .454 Casull, .460 S&W Magnum, .455 Webley (.455 Webley Mk II), .455 Webley (.455 Colt), .450 Adams (.450 Boxer Mk I), .476 Enfield (.476 Eley), .44-40 Winchester, .444 Marlin, 10.75mm Russian Berdan, 11mm Murata, .425 Westley Richards Magnum, 11.15mm Spanish Remington, 11mm Belgian Albini, 11mm Belgian Comblain, 11.2x72mm Schüler, 11.2x60mm Schüler (Mauser), 10.8x47mmR Martini Target, 11.15x42mmR M/67 and 11x58mmR M/77 Werndl, 11mm French Gras, .44 Henry, 11.15mm Mauser, 11.43mm Turkish, 11.43mm Egyptian, 11.4mm Werndl M/73, .500/450 Black Powder No.2 Musket, 11.4mm Brazilian Comblain, .450 Bushmaster, .45 Raptor, 11.5mm Spanish Reformado, 11.7mm Danish Remington, .500/450 Magnum Nitro Express, .450 No 2 Nitro Express (31⁄2"), .577/450 Martini–Henry, .45-75 Winchester, .45-70 Government, 11mm Beaumont M/71/78, .450 Marlin, .450 Nitro Express (31⁄4"), .458 Winchester Magnum, .458 SOCOM, .460 Weatherby Magnum, .460 Steyr, .500/450 No.1 Express, .450 Rigby Rimless, .45-60 Winchester, 11.3mm Beaumont M/71, .457 Wild West Guns, .458 Lott, .500/465 Nitro Express, .465 H&H Magnum
 
-### 12mm (.472-.510)
+### 12mm (.472 - .510)
 .470 Capstick, .470 Nitro Express, .475 A&M Magnum, .475 Linebaugh, .475 Nitro Express, .475 No. 2 Nitro Express, .475 Wildey Magnum, .476 Nitro Express, .480 Ruger, .50 Action Express, .50 Alaskan, .50 Auto Max, .50 Beowulf, .50 BMG (12.7x99mm NATO), .50 Bushwhacker, .50 GI, .500 Auto Max, .500 Linebaugh, .500 No. 2 Express (.577/500), .500 S&W Magnum, .500 S&W Special, .500 Wyoming Express, .505 Gibbs, .510 DTC Europ (.50 DTC), .510 Whisper, .577/.500 Magnum Nitro Express, 12.7x108mm, 12.7x55mm STs-130, 12.7x81mmSR (50 British)
 
-### 13mm (.511+)
+### 13mm (.511 +)
 .500 Linebaugh, .500 Nitro Express, .50-70 Government, .50-90 Sharps, .50-110 Winchester, .50-140 Sharps, .55 Boys (13.9x99mmB), .56-56 Spencer, .577 Nitro Express, .577 Snider, .577 Tyrannosaur, .585 Nyati, .600 Nitro Express, .600 Overkill, .700 Nitro Express, .70-150 Winchester, .950 JDJ (24.1x70mm), 13mm Gyrojet, 13x64mm, 13.2mm TuF (13.2x92mmSR), 13.2x99mm Hotchkiss, 14.5x114mm, 14.5х148, 14.5х218, 14.5mm JDJ, 14x33mmR Wänzl, 15.24х40R Krnka, 15.5х106 BRG, 15х104 Brno, 20.3х95R Ghan, 20х150R, 23x152mmB
 
 ### 20mm
@@ -231,7 +255,7 @@ Some functionality (e.g. QuickShot) depends on exact caliber formatting. In-app 
 40×311R (Bofors L/60), 40×364R (Bofors L/70)
 
 ### Shotgun
-2 bore: 3½ in (89mm); 4 bore: 3¼ in (83mm); 4 bore: 4 in (102mm); 6 bore; 8 bore: 3 in (76mm); 8 bore: 3¼ in (83mm); 8 bore: 3¾ in (95mm); 8 bore: 4 in (102mm); 10 bore: 2 9/16 in (65mm); 10 bore: 2 5/8 in (67mm); 10 bore: 2 7/8 in (73mm); 10 bore: 3 in (76mm); 10 bore: 3¼ in (83mm); 10 bore: 3½ in (89mm); 12 bore: 1¾ in (44mm); 12 bore: 2 in (51mm); 12 bore: 2¼ in (57mm); 12 bore: 2½ in (64mm); 12 bore: 2 21/32 in (67.5mm); 12 bore: 2¾ in (70mm); 12 bore: 3 in (76mm); 12 bore: 3½ in (89mm); 14 bore: 2½ in (64mm); 16 bore: 2½ in (64mm); 16 bore: 2 9/16 in (65mm); 16 bore: 2 5/8 in (67mm); 16 bore: 2¾ in (70mm); 16 bore: 3 in (76mm); 20 bore: 2½ in (64mm); 20 bore: 2¾ in (70mm); 20 bore: 3 in (76mm); 20 bore: 3½ in (89mm); 24 bore: 2½ in (64mm); 28 bore: 2½ in (64mm); 28 bore: 2¾ in (70mm); 28 bore: 3 in (76mm); 32 bore: 2½ in (64mm); .410 bore: 2 in (51mm); .410 bore: 2½ in (64mm); .410 bore: 3 in (76mm); .360 bore: 1¾ in (44mm); 9mm (No. 3 bore) short rimfire; 9mm (No. 3 bore) long rimfire; 7mm (No. 2 bore) rimfire; 6mm (No. 1 bore) short rimfire; 6mm (No. 1 bore) long rimfire
+2 bore: 3+1⁄2 in (89mm); 4 bore: 3+1⁄4 in (83mm); 4 bore: 4 in (102mm); 6 bore; 8 bore: 3 in (76mm); 8 bore: 3+1⁄4 in (83mm); 8 bore: 3+3⁄4 in (95mm); 8 bore: 4 in (102mm); 10 bore: 2+9⁄16 in (65mm); 10 bore: 2+5⁄8 in (67mm); 10 bore: 2+7⁄8 in (73mm); 10 bore: 3 in (76mm); 10 bore: 3+1⁄4 in (83mm); 10 bore: 3+1⁄2 in (89mm); 12 bore: 1+3⁄4 in (44mm); 12 bore: 2 in (51mm); 12 bore: 2+1⁄4 in (57mm); 12 bore: 2+1⁄2 in (64mm); 12 bore: 2+21/32 in (67.5mm); 12 bore: 2+3⁄4 in (70mm); 12 bore: 3 in (76mm); 12 bore: 3+1⁄2 in (89mm); 14 bore: 2+1⁄2 in (64mm); 16 bore: 2+1⁄2 in (64mm); 16 bore: 2+9⁄16 in (65mm); 16 bore: 2+5⁄8 in (67mm); 16 bore: 2+3⁄4 in (70mm); 16 bore: 3 in (76mm); 20 bore: 2+1⁄2 in (64mm); 20 bore: 2+3⁄4 in (70mm); 20 bore: 3 in (76mm); 20 bore: 3+1⁄2 in (89mm); 24 bore: 2+1⁄2 in (64mm); 28 bore: 2+1⁄2 in (64mm); 28 bore: 2+3⁄4 in (70mm); 28 bore: 3 in (76mm); 32 bore: 2+1⁄2 in (64mm); .410 bore: 2 in (51mm); .410 bore: 2+1⁄2 in (64mm); .410 bore: 3 in (76mm); .360 bore: 1+3⁄4 in (44mm); 9 mm (No. 3 bore) short rimfire; 9 mm (No. 3 bore) long rimfire; 7 mm (No. 2 bore) rimfire; 6 mm (No. 1 bore) short rimfire; 6 mm (No. 1 bore) long rimfire
 
 ### Flobert
 4mm Flobert, 6mm Flobert, 7mm Flobert, 9mm Flobert, 6mm Flobert Schrot, 6mm Flobert Schrot lang, 6mm Flobert Doppelschrot, 7mm Flobert Schrot, 7mm Flobert Schrot lang, 9mm Flobert Schrot, 9mm Flobert Schrot lang, 9mm Flobert Schrot kurz
@@ -240,12 +264,12 @@ Some functionality (e.g. QuickShot) depends on exact caliber formatting. In-app 
 .177 / 4.5mm, .22 / 5.5mm, .25 / 6.25mm, .30 / 7.62mm, .357 / 9.02mm, 6mm BB, 8mm BB
 
 ### Blackpowder
-.307/7.80mm, .314/7.97mm, .323/8.20mm, .330/8.38mm, .345/8.76mm, .347/8.81mm, .350/8.89mm, .354/8.99mm, .362/9.19mm, .373/9.47mm, .375/9.52mm, .395/10.03mm, .400/10.16mm, .411/10.44mm, .415/10.54mm, .430/10.92mm, .435/11.05mm, .437/11.10mm, .440/11.18mm, .445/11.30mm, .447/11.35mm, .450/11.43mm, .451/11.45mm, .454/11.53mm, .457/11.61mm, .458/11.63mm, .459/11.66mm, .462/11.73mm, .464/11.78mm, .490/12.45mm, .495/12.57mm, .500/12.70mm, .504/12.80mm, .512/13.00mm, .535/13.59mm, .540/13.72mm, .541/13.74mm, .547/13.89mm, .575/14.60mm, .577/14.65mm, .580/14.73mm, .585/14.86mm, .614/15.60mm, .673/17.09mm, .675/17.14mm, .682/17.32mm, .695/17.65mm, .715/18.16mm, .732/18.59mm
+.307 / 7.80mm, .314 / 7.97mm, .323 / 8.20mm, .330 / 8.38mm, .345 / 8.76mm, .347 / 8.81mm, .350 / 8.89mm, .354 / 8.99mm, .362 / 9.19mm, .373 / 9.47mm, .375 / 9.52mm, .395 / 10.03mm, .400 / 10.16mm, .411 / 10.44mm, .415 / 10.54mm, .430 / 10.92mm, .435 / 11.05mm, .437 / 11.10mm, .440 / 11.18mm, .445 / 11.30mm, .447 / 11.35mm, .450 / 11.43mm, .451 / 11.45mm, .454 / 11.53mm, .457 / 11.61mm, .458 / 11.63mm, .459 / 11.66mm, .462 / 11.73mm, .464 / 11.78mm, .490 / 12.45mm, .495 / 12.57mm, .500 / 12.70mm, .504 / 12.80mm, .512 / 13.00mm, .535 / 13.59mm, .540 / 13.72mm, .541 / 13.74mm, .547 / 13.89mm, .575 / 14.60mm, .577 / 14.65mm, .580 / 14.73mm, .585 / 14.86mm, .614 / 15.60mm, .673 / 17.09mm, .675 / 17.14mm, .682 / 17.32mm, .695 / 17.65mm, .715 / 18.16mm, .732 / 18.59mm
 
 ### Grenade & Ordnance Calibers
 22mm Grenade: 22×90mm NATO rifle grenade; 22mm spigot (blank-launched rifle grenade)
-30mm Grenade: 30×29mm (VOG-17/AGS-17); 30×30mm (AGS-30)
-37mm Grenade: 37×113mmSR (low-velocity); 37mm gas/signal cartridge
+30mm Grenade: 30×29mm (VOG-17 / AGS-17); 30×30mm (AGS-30)
+37mm Grenade: 37×113mmSR (low-velocity); 37mm gas / signal cartridge
 40mm Grenade (low velocity): 40×46mm LV
 40mm Grenade (medium velocity): 40×51mm MV
 40mm Grenade (high velocity): 40×53mm HV
@@ -254,8 +278,8 @@ Some functionality (e.g. QuickShot) depends on exact caliber formatting. In-app 
 66mm RPG: 66mm M72 LAW
 70mm RPG: 70mm PG-7V (early RPG-7)
 72-73mm RPG: 72.5mm RPG-26 Aglen
-80-85mm RPG: 84mm Carl Gustaf (M2/M3/M4); 85mm PG-7VL (RPG-7)
-90mm RPG: 90mm M67 recoilless/rocket family
+80-85mm RPG: 84mm Carl Gustaf (M2 / M3 / M4); 85mm PG-7VL (RPG-7)
+90mm RPG: 90mm M67 recoilless / rocket family
 93mm RPG: 93mm PG-7VR tandem (RPG-7)
 100-106mm RPG: 105mm RPG-27 Tavolga; 105mm RPG-29 Vampir; 106mm Panzerfaust 3
 
@@ -282,7 +306,7 @@ Yes. Arsenal uses SQLCipher, an open-source database encryption library, to encr
 Decryption failures are extremely rare and usually indicate corruption of the encryption key or secure storage. Unfortunately, without the encryption key the database cannot be recovered. Regular backups are therefore strongly recommended.
 
 **What permissions does Arsenal need, and why?**
-Arsenal needs permission to access your file system (to import/export your database and select images from your gallery) and to access your camera (to take photos of collection items and scan QR codes).
+Arsenal needs permission to access your file system (to import/export your database and select images from your gallery) and to access your camera (to take photos of collection items directly from within the app and to scan QR codes).
 
 **Does Arsenal collect analytics?**
 No, Arsenal itself does not collect analytics, telemetry, usage statistics or collection data, nor does it transmit your collection to the developer. Google Play and the Apple App Store may collect their own diagnostic, purchase or download information per their own privacy policies — this is outside Arsenal's control and does not include any application data.
@@ -317,7 +341,10 @@ No, Arsenal currently doesn't offer a trial version. Since the app is a one-time
 ### Practical Use
 
 **Which platforms are supported?**
-Arsenal is available for both Android and iOS. It requires Android 7.0 or newer, and iOS 15.5 or newer.
+Arsenal is available for both Android and iOS. Requirements:
+- Android 7.0 or newer. All Android 7.0-capable devices and newer are supported, however the app runs anything but smoothly on such old devices: the Huawei MediaPad M5 lite (2018, Android 8.0, 3GB RAM) cannot run Arsenal smoothly. Arsenal was developed on a Samsung Galaxy S21FE in 2024, so a device with at least Android 14 and more than 1GB RAM is recommended.
+- iOS 16.4 or newer (from iPhone 8, from iPhone X).
+- iPadOS 16.4 or newer (from iPad 5th Generation, iPad Air 3rd Generation, iPad Mini 5th Generation, iPad Pro 12.9", iPad Pro 9.7", iPad Pro 10.5" 2nd Generation, iPad Pro 11").
 
 **Does Arsenal work offline?**
 Yes, Arsenal has been built with strict offline operation in mind and does not require any internet connection to function. The About section contains links to external resources that require internet to display; all collection management features continue to work fully offline.
@@ -342,12 +369,29 @@ English, German, French, Italian, and Rumantsch Grischun. Changing language is s
 
 ### General
 
-**I already use a competitor app, why should I switch to Arsenal?**
-There are several alternative apps, especially on Android, serving the same purpose as Arsenal. However, per the developer: most are US-oriented; they seem to have no language selection or employ auto-translation; they do not seem to have the same range of functions, or if they do, they seem unintuitive and cumbersome; the developer can sometimes be difficult to identify or contact (an LLC in front of the developer) and sometimes appears not to interact with the community; they can cost twice as much, may have non-transparent in-app purchases or advertising, or subscription-based payment models; some seem to not be in active development.
+**I already use a competitor app, why should I switch and why to Arsenal specifically?**
+There are indeed several alternative apps that serve the same purpose as Arsenal, some are even similarly named, a few even feel like suspiciously close copies, bugs included. Per the developer:
+- Most are US-oriented, so a lot of the features are of no use to a user outside of the US.
+- Most are in English only, or auto-translate their content.
+- Most do not have the same range of functionality, or if they do, it is mostly implemented rudimentary.
+- Most of the developers can sometimes be difficult to identify or contact (LLC in front of the developer, no community engagement).
+- Some can cost twice as much, may have partly non-transparent in-app purchases or advertising, or offer subscription-based payment models.
+- Some seem to not be in active development anymore.
+- Some seem to show telltale signs of AI-generated code rather than hands-on development.
 
-Arsenal, on the other hand: is primarily tailored to Swiss needs but also usable worldwide, offering a choice in displayed units of measurement; is available in five languages, with German and English translated by hand and French, Italian and Rumantsch Grischun via a Swiss translation service; has a modern, simple, and functional user interface; has a private Swiss developer who is actively known in the Swiss weapons and shooting community and interacts with it; costs a one-time fee of 5 CHF for life, including all future updates, with no ads, subscriptions, or in-app purchases; is in constant development.
+Arsenal, on the other hand:
+- Is primarily tailored to Swiss needs, but is also usable worldwide through country-specific functionality and free choice of units of measurement.
+- Is available in five languages, with translations into German and English made by hand. French, Italian and Rumantsch Grischun are translated via supertext.com, a Swiss translation service, and checked against plausibility and context awareness.
+- Features functionality implemented by an actual gun collector, with community feedback, in continuous development and improvement.
+- Is programmed by a private Swiss developer who is actively known in the Swiss weapons and shooting community and interacts with that community regularly.
+- Costs a one-time fee of 5 CHF for life, including all future updates. No ads, no subscriptions, no in-app purchases.
+- Is in constant development.
+- Is programmed by hand in a code editor, not generated via prompts in an AI environment.
 
-Ultimately, everyone decides for themselves which app, if any, is best suited — sometimes a spreadsheet is sufficient.
+Ultimately, everyone decides for themselves which app, if any, is best suited.
+
+**Why should I use an app in the first place, I have an Excel sheet that does its job just fine!**
+Sometimes that Excel sheet is perfectly fine and sufficient and you don't need an app. The Excel sheet gets cumbersome pretty quickly if you are trying to implement relations between entries (such as attaching an optic to a pistol), or when you try to alter the underlying data schema. Arsenal is basically a pretty user interface for a database that has guardrails in place. You have it with you in your pocket, so if you're at a gun show and are not sure if you already have a book, or how much 7.65 Browning ammo you still have at home, Arsenal can show you that quickly and comfortably. If you don't need or want all that, Arsenal (or any other app) isn't for you. Nobody has to use an app. Arsenal solves a real problem, but if you don't have that problem, you don't need the solution.
 
 ### Support
 
