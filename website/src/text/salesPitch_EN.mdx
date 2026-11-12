@@ -1,4 +1,7 @@
 import Reviews from '../components/Reviews.tsx';
+import Gallery from '../components/Gallery.tsx';
+import Gallery_Single from '../components/Gallery_Single.tsx';
+import realisticScenario from '../assets/realisticScenario.png';
 
 # Arsenal - The Swiss App for Gun Collectors
 
@@ -22,18 +25,28 @@ Create a wide variety of **collections**, with photos and many parameters:
 Each entry has a **history**, so every change can be tracked at any time. You can also record **sales**.\
 Consumable items (ammunition, powder, bullets, etc.) additionally include a **cost overview**.
 
-Discover detailed and insightful **statistics** for all your collections and entries, including charts!
+<Gallery client:only="react" language={props.language} topic="Collection"/>
+
+Discover detailed and insightful **statistics** for all your collections and entries, including charts!\
+Be surprised at which year you bought the most firearms. Analyze how many books you own by a specific author.\
+Try to ignore the chart that sums up what you paid for your collection and rather enjoy the pie chart that shows the distribution of reticle colors!
+
+<Gallery client:only="react" language={props.language} topic="Statistics"/>
 
 Use **smart tools** that make everyday life as a firearms collector and shooter easier:
 - QuickShot for quickly logging round counts, linked to your ammunition inventory
 - QuickStock for easy management of consumables such as ammunition, powder, bullets, and more, including cost tracking
 - QuickMount to conveniently assign accessories and parts to a firearm or another accessory or part
 
+<Gallery client:only="react" language={props.language} topic="Utility"/>
+
 **PDF exports** are easy to generate too. Choose between predefined lists or **create your own** with exactly the attributes you need - for example for insurance purposes.\
 CSV **export/import** is also integrated, as well as full database backup as a ZIP file including all images.
 
 Already using **QR codes** on your firearms? Integrate them seamlessly into the app and scan directly to the desired item.\
 Not using QR labels yet? **Create them right inside the app** - using a wide range of predefined label formats (Avery) or define your own.
+
+<Gallery client:only="react" language={props.language} topic="Data"/>
 
 There are **many additional features** such as stock warnings, cleaning interval reminders, keyword filters, search and sort functions, autocomplete, multiple views and color themes (light and dark), freely selectable units of measurement and much more.
 
@@ -43,7 +56,7 @@ All data is stored **locally on your device** and can be exported at any time. N
 The app is available in **five languages**: German, French, Italian, English and... Rumantsch Grischun!
 
 Developed in Switzerland, it is primarily tailored to the needs of Swiss firearms collectors.\
-International users can select their country (e.g. the USA), and the app automatically adapts by displaying country-specific firearm categories or input fields.\
+International users can select their country (e.g. the USA), and the app automatically adapts by displaying country-specific firearm categories or input fields.
 
 Currently the following countries are supported:
 - Switzerland
@@ -51,3 +64,5 @@ Currently the following countries are supported:
 - Germany
 
 **One-time purchase, use forever**, updates for as long as the app exists. **No subscriptions, no in-app purchases, no ads!**
+
+<Gallery_Single image={realisticScenario} />

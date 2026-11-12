@@ -109,6 +109,13 @@ a {
 .highLight{
     background: var(--highlight);
     padding: 0;
+    box-sizing: border-box;
+    border-top-color: var(--primary);
+    border-top-style: solid;
+    border-top-width: 0.25rem;
+    border-bottom-color: var(--primary);
+    border-bottom-style: solid;
+    border-bottom-width: 0.25rem;
 }
 
 .noPadding{

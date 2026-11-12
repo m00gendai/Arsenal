@@ -1,26 +1,27 @@
 ---
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
-import { metadata_appName, metadata_description, metadata_featureImageAlt, metadata_title } from "../text/text_metadata"
+import { metadata_appName, metadata_featureImageAlt, metadata_pages, metadata_slugs } from "../text/text_metadata"
 import type { Language } from "../types/types_global"
 import Layout_Base from "./Layout_Base.astro"
 import favicon16 from "../assets/icon/favicon-16x16.png"
 import favicon32 from "../assets/icon/favicon-32x32.png"
 import appleTouchIcon from "../assets/icon/apple-touch-icon.png"
 import "../styles/styles.css"
+import type { MetaPage } from "../text/text_metadata"
 
 interface Props{
 	language: Language
+    path?: string
 }
 
-const fetchAppstoreData = await fetch(
-    "https://itunes.apple.com/lookup?id=6670214648&country=ch"
-)
-const appstoreData = await fetchAppstoreData.json();
+let userRatingCount, averageUserRating;
+try {
+    const res = await fetch("https://itunes.apple.com/lookup?id=6670214648&country=ch");
+    if (res.ok) ({ userRatingCount, averageUserRating } = (await res.json()).results?.[0] ?? {});
+} catch {}
 
-const { userRatingCount, averageUserRating } = appstoreData.results[0]
-
-const { language } = Astro.props;
+const { language, path = "" } = Astro.props;
 
 const locales = { 
 	de: "de_DE", 
@@ -29,44 +30,32 @@ const locales = {
     it: "it_IT"
 }
 
-const ogLocale = locales[language] ?? "de_DE"
+const ogLocale = locales[language] ?? "en_US"
 
 const ogAlternates = Object.values(locales).filter(locale => locale !== ogLocale)
 
 const baseURL = `https://arsenal-app.ch/`
----
+const pageURL = `${baseURL}${language}/${path}`
 
-<Layout_Base language={language}>
-    <head>
-		<meta charset="UTF-8">
-        <meta name="viewport"                   content="width=device-width, initial-scale=1.0">
-        <meta name="description"                content={metadata_description[language]}>
-        <meta name="author"                     content="Marcel Weber">
-        <link rel="apple-touch-icon"            sizes="180x180"     href=`${appleTouchIcon.src}`>
-        <link rel="icon"                        type="image/png"    sizes="32x32" href=`${favicon32.src}`>
-        <link rel="icon"                        type="image/png"    sizes="16x16" href=`${favicon16.src}`>
-        <link rel="manifest"                    href="/site.webmanifest">
-        <link rel="canonical"                   href=`${baseURL}${language}/`>
-        <link rel="alternate"                   hreflang="en"           href=`${baseURL}en/`>
-        <link rel="alternate"                   hreflang="de"           href=`${baseURL}de/`>
-        <link rel="alternate"                   hreflang="fr"           href=`${baseURL}fr/`>
-        <link rel="alternate"                   hreflang="it"           href=`${baseURL}it/`>
-        <link rel="alternate"                   hreflang="x-default"    href=`${baseURL}en/`>
-        <link rel="sitemap"                     href="/sitemap-index.xml" />
-        <title>{metadata_title[language]}</title>
-        <meta property="og:title"               content={metadata_title[language]} />
-        <meta property="og:description"         content={metadata_description[language]} />
-        <meta property="og:locale"              content={ogLocale} />
-		{ogAlternates.map(locale => {
-            return <meta property="og:locale:alternate" content={locale} />
-        })}
-        <meta property="og:image"               content=`${baseURL}assets/feature_${language}.png` />
-        <meta property="og:image:alt"           content={metadata_featureImageAlt[language]} />
-        <meta property="og:url"                 content=`${baseURL}${language}/` />
-        <meta property="og:type"                content="website" /><meta property="og:site_name" content="Arsenal App" />
-        <meta property="product:price:amount" content="5.00" />
-        <meta property="product:price:currency" content="CHF" />
-        <script type="application/ld+json" set:html={JSON.stringify({
+const cleanPath = path.replace(/\/$/, "")
+
+const knownKey = (Object.keys(metadata_slugs) as MetaPage[])
+    .find(key => metadata_slugs[key][language] === cleanPath)
+
+if (!knownKey && import.meta.env.DEV) {
+    console.warn(`[Layout] Unknown path "${path}" for language "${language}"; check metadata_slugs`)
+}
+
+const pageKey: MetaPage = knownKey ?? "home"
+const meta = metadata_pages[pageKey] ?? metadata_pages.home
+const pageTitle = meta.title[language]
+const pageDescription = meta.description[language]
+
+const isHome = cleanPath === ""
+const noindex = pageKey === "privacy" || pageKey === "imprint"
+const languagesList = Object.keys(locales) as Language[]
+
+const softwareJsonLd = {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 "name": metadata_appName[language],
@@ -79,8 +68,8 @@ const baseURL = `https://arsenal-app.ch/`
                 "operatingSystem": "Android, iOS",
                 "applicationCategory": "UtilitiesApplication",
                 "applicationSubCategory": "Inventory Management",
-                "description": metadata_description[language],
-                "url": `${baseURL}${language}/`,
+                "description": metadata_pages.home.description[language],
+                "url": `${pageURL}`,
                 "inLanguage": ["de", "en", "fr", "it", "rm"],
                 "countryOfOrigin": "CH",
                 "author": {
@@ -116,7 +105,11 @@ const baseURL = `https://arsenal-app.ch/`
                     "QuickMount accessory linking",
                     "QR code generation and scanning",
                     "Custom PDF report generation",
-                    "CSV and full database import/export"
+                    "CSV and full database import/export",
+                    "Change history of every collection entry",
+                    "Available in German, English, French, Italian and Rumantsch Grischun", 
+                    "Country specific functionality for Switzerland, Germany and USA",
+                    "Detailed statistics with charts across all collections",
                 ],
                 ...(userRatingCount && userRatingCount > 0 && {
                     "aggregateRating": {
@@ -128,7 +121,52 @@ const baseURL = `https://arsenal-app.ch/`
                     },
                 }),
                 "image": `${baseURL}assets/appIcon.png`
-            })} />
+            }
+
+const featureImage = `${baseURL}assets/feature_${language}.png`
+---
+
+<Layout_Base language={language}>
+    <head>
+		<meta charset="UTF-8">
+        <meta name="viewport"                   content="width=device-width, initial-scale=1.0">
+        <meta name="description"                content={pageDescription}>
+        <meta name="author"                     content="Marcel Weber">
+        <link rel="apple-touch-icon"            sizes="180x180"     href=`${appleTouchIcon.src}`>
+        <link rel="icon"                        type="image/png"    sizes="32x32" href=`${favicon32.src}`>
+        <link rel="icon"                        type="image/png"    sizes="16x16" href=`${favicon16.src}`>
+        <link rel="manifest"                    href="/site.webmanifest">
+        <link rel="canonical"                   href=`${pageURL}`>
+        {knownKey && languagesList.map(l => (
+            <link rel="alternate" hreflang={l} href={`${baseURL}${l}/${metadata_slugs[knownKey][l]}`} />
+        ))}
+        {knownKey && (
+            <link rel="alternate" hreflang="x-default" href={`${baseURL}en/${metadata_slugs[knownKey].en}`} />
+        )}
+        {noindex && <meta name="robots" content="noindex" />}
+        <link rel="sitemap"                     href="/sitemap-index.xml" />
+        <title>{pageTitle}</title>
+        <meta property="og:title"               content={pageTitle} />
+        <meta property="og:description"         content={pageDescription} />
+        <meta property="og:locale"              content={ogLocale} />
+		{ogAlternates.map(locale => {
+            return <meta property="og:locale:alternate" content={locale} />
+        })}
+        <meta property="og:image"               content=`${featureImage}` />
+        <meta property="og:image:alt"           content={metadata_featureImageAlt[language]} />
+        <meta property="og:url"                 content=`${pageURL}` />
+        <meta property="og:type"                content="website" /><meta property="og:site_name" content="Arsenal App" />
+        <meta name="twitter:card"               content="summary_large_image" />
+        <meta name="twitter:site"               content="@Arsenal_App_CH" />
+        <meta name="twitter:title"              content={pageTitle} />
+        <meta name="twitter:description"        content={pageDescription} />
+        <meta name="twitter:image"              content={featureImage} />
+        <meta name="twitter:image:alt"          content={metadata_featureImageAlt[language]} />
+        <meta property="product:price:amount"   content="5.00" />
+        <meta property="product:price:currency" content="CHF" />
+        {isHome && (
+    <script type="application/ld+json" set:html={JSON.stringify(softwareJsonLd)} />
+)}
 	</head>
 	<body>
         <Navbar language={language} client:load/>

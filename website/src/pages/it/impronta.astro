@@ -1,11 +1,12 @@
 ---
 import Layout_Body from '../../layouts/Layout_Body.astro';
 import type { Language } from '../../types/types_global';
+import { metadata_slugs } from '../../text/text_metadata'
 
 const language = Astro.currentLocale as Language
 ---
 
-<Layout_Body language={language}>
+<Layout_Body language={language} path={metadata_slugs.imprint[language]}}>
 <section class="content">
                 <div class="jmdsnippet" data-jmd-snippet-version="3" style="position: relative;min-height: 80vh;">
 <div id="jmdwrapper-1773910595083" data-jmdwrapper="1773910595083">

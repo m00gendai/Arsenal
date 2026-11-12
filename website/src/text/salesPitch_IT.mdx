@@ -1,4 +1,7 @@
 import Reviews from '../components/Reviews.tsx';
+import Gallery from '../components/Gallery.tsx';
+import Gallery_Single from '../components/Gallery_Single.tsx';
+import realisticScenario from '../assets/realisticScenario.png';
 
 # Arsenal - L’app svizzera per collezionisti di armi
 
@@ -22,18 +25,28 @@ Crea una grande varietà di **collezioni**, con foto e molti parametri:
 Ogni voce ha un **registro**, quindi ogni modifica è sempre rintracciabile. Puoi anche registrare le **vendite**.\
 I materiali di consumo (munizioni, polvere, proiettili, ecc.) includono anche una **panoramica dei costi**.
 
-Scopri **statistiche** dettagliate e approfondite su tutte le tue collezioni e i tuoi elementi, con grafici!
+<Gallery client:only="react" language={props.language} topic="Collection"/>
+
+Scopri **statistiche** dettagliate e approfondite su tutte le tue collezioni e i tuoi elementi, con grafici!\
+Indovina in quale anno hai acquistato più armi. Analizza quanti libri possiedi di un determinato autore.\
+Cerca di ignorare il grafico che riassume la spesa totale per la tua collezione e goditi piuttosto il grafico a torta che mostra la distribuzione dei colori dei reticoli!
+
+<Gallery client:only="react" language={props.language} topic="Statistics"/>
 
 Utilizza **strumenti intelligenti** che semplificano la tua vita quotidiana come collezionista e tiratore:
 - QuickShot per registrare rapidamente i colpi sparati, con aggiornamento automatico del magazzino munizioni
 - QuickStock per gestire facilmente materiali di consumo come munizioni, polvere e proiettili, con monitoraggio dei costi
 - QuickMount per assegnare comodamente accessori e parti a un'arma o a un altro accessorio o parte
 
+<Gallery client:only="react" language={props.language} topic="Utility"/>
+
 Anche gli **export PDF** sono semplici da generare. Scegli tra liste predefinite o **crea la tua lista** con gli attributi di cui hai bisogno - ad esempio per la tua assicurazione.\
 L'**export/import** CSV è anch'esso integrato, così come il backup completo come file ZIP con database e tutte le immagini.
 
 Hai già contrassegnato le tue armi con **codici QR**? Integrali facilmente nell'app e accedi direttamente all'oggetto desiderato tramite scansione.\
 Non utilizzi ancora etichette QR? **Creale direttamente nell'app** - con una vasta gamma di formati predefiniti (Avery Zweckform) o definisci il tuo.
+
+<Gallery client:only="react" language={props.language} topic="Data"/>
 
 Sono disponibili **molte altre funzionalità** come avvisi di scorta, promemoria di pulizia, filtri per parole chiave, ricerca e ordinamento, completamento automatico, diverse visualizzazioni e palette di colori (chiaro e scuro), unità di misura liberamente selezionabili e molto altro.
 
@@ -51,3 +64,5 @@ Attualmente sono supportati i seguenti paesi:
 – Germania
 
 **Acquisto unico, utilizzo per sempre**, aggiornamenti per tutta la vita dell'app. **Nessun abbonamento, nessun acquisto in-app, nessuna pubblicità!**
+
+<Gallery_Single image={realisticScenario} />
