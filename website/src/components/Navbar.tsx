@@ -62,16 +62,16 @@ export default function Navbar({language}:Props){
                 {visible ? <div className={s.mobileContainer}>
                     <ul className={s.flags_mobile}>
                         <li>
-                            <a href={`/de/${target}`} className={s.flag} id={s.flag_de} aria-label="Deutsch"></a>
+                            <a href={`/de/${target}`} className={s.flag_mobile} id={s.flag_de} aria-label="Deutsch"></a>
                         </li>
                         <li>
-                            <a href={`/en/${target}`} className={s.flag} id={s.flag_en} aria-label="English"></a>
+                            <a href={`/en/${target}`} className={s.flag_mobile} id={s.flag_en} aria-label="English"></a>
                         </li>
                         <li>
-                            <a href={`/fr/${target}`} className={s.flag} id={s.flag_fr} aria-label="Francais"></a>
+                            <a href={`/fr/${target}`} className={s.flag_mobile} id={s.flag_fr} aria-label="Francais"></a>
                         </li>
                         <li>
-                            <a href={`/it/${target}`} className={s.flag} id={s.flag_it} aria-label="Italiano"></a>
+                            <a href={`/it/${target}`} className={s.flag_mobile} id={s.flag_it} aria-label="Italiano"></a>
                         </li>
                     </ul>
                     <ul className={s.anchors_mobile}>
