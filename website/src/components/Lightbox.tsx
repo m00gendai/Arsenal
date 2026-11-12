@@ -1,15 +1,41 @@
 import type { Image } from "./Gallery"
 import s from "../styles/lightbox.module.css"
+import { useEffect } from "react"
 
 interface Props{
     image: Image
     currentIndex: number
+    lightboxVisible: boolean
     setLightboxVisible: React.Dispatch<React.SetStateAction<boolean>>
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
     imageCount: number
 }
 
-export default function Lightbox({image, currentIndex, setLightboxVisible, setCurrentIndex, imageCount}:Props){
+export default function Lightbox({image, currentIndex, lightboxVisible, setLightboxVisible, setCurrentIndex, imageCount}:Props){
+
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                setLightboxVisible(false);
+            }
+
+            if (e.key === "ArrowRight") {
+                indexing("forward");
+            }
+
+            if (e.key === "ArrowLeft") {
+                indexing("backward");
+            }
+        }
+
+        if (lightboxVisible) {
+            window.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [lightboxVisible, currentIndex]);
 
     function closeOnBackdrop(e){
         if (e.target === e.currentTarget) {
@@ -54,9 +80,12 @@ export default function Lightbox({image, currentIndex, setLightboxVisible, setCu
     const aspectRatio = getAspectRatio(image)
 
     return(
-        <div className={s.wrapper} onClick={(e) => closeOnBackdrop(e)}>
+        <div className={s.wrapper} onClick={(e) => closeOnBackdrop(e)} onKeyUp={(e) => closeOnBackdrop(e)}>
             <div className={s.container} style={{aspectRatio: aspectRatio}}>
                 <div className={s.menu}>
+                    <div className={s.index}>
+                        {currentIndex+1} / {imageCount}
+                    </div>
                     <div className={s.close} onClick={() => closeOnClose()}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>window-close</title>
@@ -67,7 +96,7 @@ export default function Lightbox({image, currentIndex, setLightboxVisible, setCu
                 <div className={s.image}>
                     <img loading="lazy" src={image.src} alt={`App Screenshot`} />
                 </div>
-                <div className={s.bottommenu}>
+                <div className={s.menu}>
                     <div className={s.arrow} onClick={()=>indexing("backward")}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <title>arrow-left-bold</title>

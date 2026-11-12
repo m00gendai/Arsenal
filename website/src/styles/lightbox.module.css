@@ -29,16 +29,18 @@
     background-color: var(--surface);
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     align-content: center;
 }
 
-.bottommenu{
-    background-color: var(--surface);
-    width: 100%;
+.index{
+    height: 2rem;
+    color: var(--on-surface);
+    margin: 1rem;
+    user-select: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     align-content: center;
 }

@@ -95,7 +95,7 @@ export default function Gallery({language, topic}:Props){
                     </button>
                 ))}
             </div>
-            {lightboxVisible ? <Lightbox image={images[currentIndex]} setLightboxVisible={setLightboxVisible} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} imageCount={images.length}/> : null}
+            {lightboxVisible ? <Lightbox image={images[currentIndex]} lightboxVisible={lightboxVisible} setLightboxVisible={setLightboxVisible} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} imageCount={images.length}/> : null}
         </>
     )
 }
